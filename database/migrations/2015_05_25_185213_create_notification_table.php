@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserassetTable extends Migration {
+class CreateNotificationTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,16 @@ class CreateUserassetTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('userasset', function(Blueprint $table)
+		Schema::create('notification', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('user_id')->unsigned();
+
+            $table->string('name');
+            $table->enum('action', ['spam', 'delete']);
+            $table->enum('type', ['user', 'ticket','category','article','asset']);
+            $table->integer('user_id')->unsigned();
 			$table->foreign('user_id')->references('id')->on('users');
-			$table->integer('asset_id')->unsigned();
-			$table->foreign('asset_id')->references('id')->on('assets');
+			
 			$table->timestamps();
 		});
 	}
@@ -30,7 +33,7 @@ class CreateUserassetTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('userasset');
+		Schema::drop('notification');
 	}
 
 }
