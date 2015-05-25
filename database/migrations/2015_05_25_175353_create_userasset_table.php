@@ -19,6 +19,7 @@ class CreateUserassetTable extends Migration {
 			$table->foreign('user_id')->references('id')->on('users');
 			$table->integer('asset_id')->unsigned();
 			$table->foreign('asset_id')->references('id')->on('assets');
+			$table->primary(['user_id', 'asset_id']);
 			$table->timestamps();
 		});
 	}
