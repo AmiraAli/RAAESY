@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c5439af3cc1727defa868a5855e023d2",
+    "hash": "352a7c84ffa42f86d8340bed360a67e1",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -1564,17 +1564,17 @@
         },
         {
             "name": "symfony/security-core",
-            "version": "v2.6.4",
+            "version": "v2.6.7",
             "target-dir": "Symfony/Component/Security/Core",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-core.git",
-                "reference": "4603bcc66e20e23f018c67f7f9f3f8146a100c11"
+                "reference": "d25c17db741f58c0f615e52006a47f6fb23cd9b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-core/zipball/4603bcc66e20e23f018c67f7f9f3f8146a100c11",
-                "reference": "4603bcc66e20e23f018c67f7f9f3f8146a100c11",
+                "url": "https://api.github.com/repos/symfony/security-core/zipball/d25c17db741f58c0f615e52006a47f6fb23cd9b3",
+                "reference": "d25c17db741f58c0f615e52006a47f6fb23cd9b3",
                 "shasum": ""
             },
             "require": {
@@ -1586,6 +1586,7 @@
                 "symfony/event-dispatcher": "~2.1",
                 "symfony/expression-language": "~2.6",
                 "symfony/http-foundation": "~2.4",
+                "symfony/phpunit-bridge": "~2.7",
                 "symfony/translation": "~2.0,>=2.0.5",
                 "symfony/validator": "~2.5,>=2.5.5"
             },
@@ -1623,21 +1624,21 @@
             ],
             "description": "Symfony Security Component - Core Library",
             "homepage": "http://symfony.com",
-            "time": "2015-01-25 04:39:26"
+            "time": "2015-03-30 15:54:10"
         },
         {
             "name": "symfony/translation",
-            "version": "v2.6.4",
+            "version": "v2.6.7",
             "target-dir": "Symfony/Component/Translation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Translation.git",
-                "reference": "f289cdf8179d32058c1e1cbac723106a5ff6fa39"
+                "reference": "398e0eedcb89243ad34a10d079a4b6ea4c0b61ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Translation/zipball/f289cdf8179d32058c1e1cbac723106a5ff6fa39",
-                "reference": "f289cdf8179d32058c1e1cbac723106a5ff6fa39",
+                "url": "https://api.github.com/repos/symfony/Translation/zipball/398e0eedcb89243ad34a10d079a4b6ea4c0b61ff",
+                "reference": "398e0eedcb89243ad34a10d079a4b6ea4c0b61ff",
                 "shasum": ""
             },
             "require": {
@@ -1647,6 +1648,7 @@
                 "psr/log": "~1.0",
                 "symfony/config": "~2.3,>=2.3.12",
                 "symfony/intl": "~2.3",
+                "symfony/phpunit-bridge": "~2.7",
                 "symfony/yaml": "~2.2"
             },
             "suggest": {
@@ -1671,35 +1673,38 @@
             ],
             "authors": [
                 {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                },
-                {
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
                 }
             ],
             "description": "Symfony Translation Component",
-            "homepage": "http://symfony.com",
-            "time": "2015-01-03 15:33:07"
+            "homepage": "https://symfony.com",
+            "time": "2015-05-05 16:51:00"
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v2.6.4",
+            "version": "v2.6.7",
             "target-dir": "Symfony/Component/VarDumper",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "c3d5a36c3e3298bd8b070488fba5537174647353"
+                "reference": "89eec96645fb44af4a454a26c74c72ba6311f5bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/c3d5a36c3e3298bd8b070488fba5537174647353",
-                "reference": "c3d5a36c3e3298bd8b070488fba5537174647353",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/89eec96645fb44af4a454a26c74c72ba6311f5bc",
+                "reference": "89eec96645fb44af4a454a26c74c72ba6311f5bc",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "~2.7"
             },
             "suggest": {
                 "ext-symfony_debug": ""
@@ -1724,21 +1729,21 @@
             ],
             "authors": [
                 {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                },
-                {
                     "name": "Nicolas Grekas",
                     "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
                 }
             ],
             "description": "Symfony mechanism for exploring and dumping PHP variables",
-            "homepage": "http://symfony.com",
+            "homepage": "https://symfony.com",
             "keywords": [
                 "debug",
                 "dump"
             ],
-            "time": "2015-02-02 16:32:08"
+            "time": "2015-05-01 14:14:24"
         },
         {
             "name": "twbs/bootstrap",
