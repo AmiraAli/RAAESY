@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration {
+class CreateAssetsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,17 +12,15 @@ class CreateUsersTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('users', function(Blueprint $table)
+		Schema::create('assets', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('name');
-			$table->string('email')->unique();
-			$table->string('password', 60);
-			$table->string('phone');
+			$table->string('serialno')->unique();
 			$table->string('location');
-			$table->boolean('isspam')->default(0);
-			$table->enum('type', ['admin', 'tech','regular'])->default('reqular');
-			$table->rememberToken();
+			$table->string('comment');
+			$table->integer('manufacture_id')->unsigned();
+			$table->foreign('manufacture_id')->references('id')->on('manufacturies');
 			$table->timestamps();
 		});
 	}
@@ -34,7 +32,7 @@ class CreateUsersTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('users');
+		Schema::drop('assets');
 	}
 
 }
