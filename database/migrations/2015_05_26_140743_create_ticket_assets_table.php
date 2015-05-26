@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTickettagTable extends Migration {
+class CreateTicketAssetsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,11 @@ class CreateTickettagTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tickettag', function(Blueprint $table)
+		Schema::create('ticket_assets', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('tag_id')->unsigned();
-			$table->foreign('tag_id')->references('id')->on('tags');
+			$table->integer('asset_id')->unsigned();
+			$table->foreign('asset_id')->references('id')->on('assets');
 			$table->integer('ticket_id')->unsigned();
 			$table->foreign('ticket_id')->references('id')->on('tickets');
 			$table->timestamps();
@@ -30,7 +30,7 @@ class CreateTickettagTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('tickettag');
+		Schema::drop('ticket_assets');
 	}
 
 }

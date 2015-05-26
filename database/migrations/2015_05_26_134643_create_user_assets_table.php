@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsercategoryTable extends Migration {
+class CreateUserAssetsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,13 @@ class CreateUsercategoryTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('usercategory', function(Blueprint $table)
+		Schema::create('user_assets', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('category_id')->unsigned();
-			$table->foreign('category_id')->references('id')->on('categories');
 			$table->integer('user_id')->unsigned();
-			$table->foreign('user_id')->references('id')->on('users');	
+			$table->foreign('user_id')->references('id')->on('users');
+			$table->integer('asset_id')->unsigned();
+			$table->foreign('asset_id')->references('id')->on('assets');
 			$table->timestamps();
 		});
 	}
@@ -30,7 +30,7 @@ class CreateUsercategoryTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('usercategory');
+		Schema::drop('user_assets');
 	}
 
 }

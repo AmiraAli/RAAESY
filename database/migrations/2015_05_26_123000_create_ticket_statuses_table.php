@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateManufacturiesTable extends Migration {
+class CreateTicketStatusesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,10 @@ class CreateManufacturiesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('manufacturies', function(Blueprint $table)
+		Schema::create('ticket_statuses', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('name')->unique();
-			$table->integer('type_id')->unsigned();
-			$table->foreign('type_id')->references('id')->on('types');
+			$table->enum('value', ['close', 'open']);
 			$table->timestamps();
 		});
 	}
@@ -29,7 +27,7 @@ class CreateManufacturiesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('manufacturies');
+		Schema::drop('ticket_statuses');
 	}
 
 }
