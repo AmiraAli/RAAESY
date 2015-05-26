@@ -24,7 +24,7 @@ class TicketsController extends Controller {
 	 */
 	public function create()
 	{
-		//
+		
 	}
 
 	/**
