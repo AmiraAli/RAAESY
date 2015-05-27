@@ -1,5 +1,5 @@
+<!-- @if (Auth::check()) -->
 @extends('app')
-
 @section('content')
 <div class="container">
  {!! Form::open(['route'=>'tickets.store','method'=>'post']) !!}
@@ -44,4 +44,5 @@
   {!! Form::close() !!}
 </div>
 @endsection
-
+<!-- @endif
+ -->
