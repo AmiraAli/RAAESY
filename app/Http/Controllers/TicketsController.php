@@ -4,7 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
-
+use App\Subject;
 class TicketsController extends Controller {
 
 	/**
@@ -24,7 +24,8 @@ class TicketsController extends Controller {
 	 */
 	public function create()
 	{
-		
+		$subjects=Subject::all();
+		return view('tickets.create',compact('subjects'));
 	}
 
 	/**

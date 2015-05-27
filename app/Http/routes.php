@@ -11,11 +11,12 @@
 |
 */
 Route::resource('/tickets','TicketsController');
+
 Route::resource('tickets.comments', 'CommentsController');
 
 
+Route::resource('/articles','ArticlesController');
 
-Route::get('/tickets/{tickets}/comments/{comments}', 'CommentsController@destroy');
 
 
 Route::get('/', 'WelcomeController@index');
