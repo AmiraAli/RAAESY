@@ -10,6 +10,9 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+
+Route::resource('/categories','CategoriesController');
+Route::resource('/sections','SectionsController');
 Route::resource('/tickets','TicketsController');
 Route::get('/', 'WelcomeController@index');
 
