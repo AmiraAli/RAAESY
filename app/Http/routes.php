@@ -11,6 +11,8 @@
 |
 */
 
+Route::resource('/assets', 'AssetsController');
+
 Route::get('/', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');
