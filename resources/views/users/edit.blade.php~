@@ -5,33 +5,21 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
-				<div class="panel-heading">Register</div>
+				<div class="panel-heading">Edit User</div>
 				<div class="panel-body">
-					@if (count($errors) > 0)
-						<div class="alert alert-danger">
-							<strong>Whoops!</strong> There were some problems with your input.<br><br>
-							<ul>
-								@foreach ($errors->all() as $error)
-									<li>{{ $error }}</li>
-								@endforeach
-							</ul>
-						</div>
-					@endif
+{!! Form::open(['route'=>['users.update',$user->id],'method'=>'put'])!!}
 
-					<form class="form-horizontal" role="form" method="POST" action="{{ url('/auth/register') }}">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-						<div class="form-group">
+<div class="form-group">
 							<label class="col-md-4 control-label">First Name</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="fname" value="{{ old('fname') }}">
+								<input type="text" class="form-control" name="fname" value="{{ $user->fname}}">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Last Name</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="lname" value="{{ old('lname') }}">
+								<input type="text" class="form-control" name="lname" value="{{$user->lname}}">
 							</div>
 						</div>
 
@@ -41,7 +29,7 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">E-Mail Address</label>
 							<div class="col-md-6">
-								<input type="email" class="form-control" name="email" value="{{ old('email') }}">
+								<input type="email" class="form-control" name="email" value="{{ $user->email }}">
 							</div>
 						</div>
 
@@ -63,7 +51,7 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">Phone</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="phone" value="{{ old('phone') }}">
+								<input type="text" class="form-control" name="phone" value="{{$user->phone}}">
 							</div>
 						</div>
 
@@ -71,7 +59,7 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">Location</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="location" value="{{ old('location') }}">
+								<input type="text" class="form-control" name="location" value="{{$user->location}}">
 							</div>
 						</div>
 
@@ -82,10 +70,10 @@
 								</button>
 							</div>
 						</div>
-					</form>
+					{!!Form::close()!!}
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-@endsection
+@stop

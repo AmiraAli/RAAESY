@@ -3,8 +3,11 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Illuminate\Http\Request;
+use Request;
 use App\Subject;
+use App\Ticket;
+use App\Category;
+use App\Section;
 class TicketsController extends Controller {
 
 	/**
@@ -14,7 +17,8 @@ class TicketsController extends Controller {
 	 */
 	public function index()
 	{
-		//
+		$tickets=Ticket::all();
+		return view('tickets.index',compact('tickets'));
 	}
 
 	/**
@@ -25,7 +29,9 @@ class TicketsController extends Controller {
 	public function create()
 	{
 		$subjects=Subject::all();
-		return view('tickets.create',compact('subjects'));
+		$categories=Category::all();
+		$sections=Section::all();
+		return view('tickets.create',compact('subjects','categories','sections'));
 	}
 
 	/**
@@ -35,7 +41,19 @@ class TicketsController extends Controller {
 	 */
 	public function store()
 	{
-		//
+		$ticket= new Ticket;
+		$ticket->description=Request::get('description');
+		$ticket->priority=Request::get('priority');
+		$ticket->file=Request::get('file');
+		$ticket->category_id=Request::get('category');
+		$ticket->subject_id=Request::get('subject');
+		$ticket->createddate=date('Y-m-d H:i:s');
+		$ticket->user_id=1;
+		$ticket->tech_id=1;
+		$ticket->admin_id=1;
+		$id=$ticket->save();
+		$tickets=Ticket::all();
+		return view('tickets.index',compact('tickets'));
 	}
 
 	/**
@@ -46,7 +64,8 @@ class TicketsController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		$ticket=Ticket::findOrFail($id);
+		return view('tickets.show',compact('ticket'));
 	}
 
 	/**
@@ -57,7 +76,11 @@ class TicketsController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$ticket=Ticket::find($id);
+		$subjects=Subject::all();
+		$categories=Category::all();
+		$sections=Section::all();
+		return view('tickets.edit',compact('ticket','subjects','categories','sections'));
 	}
 
 	/**
@@ -68,7 +91,18 @@ class TicketsController extends Controller {
 	 */
 	public function update($id)
 	{
-		//
+		$ticket=  Ticket::find($id);
+		$ticket->description=Request::get('description');
+		$ticket->priority=Request::get('priority');
+		$ticket->file=Request::get('file');
+		$ticket->category_id=Request::get('category');
+		$ticket->subject_id=Request::get('subject');
+		$ticket->createddate=date('Y-m-d H:i:s');
+		$ticket->user_id=1;
+		$ticket->tech_id=1;
+		$ticket->admin_id=1;
+		$ticket->save();
+		return  redirect("/tickets/".$id);
 	}
 
 	/**
@@ -79,7 +113,8 @@ class TicketsController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		$ticket=Ticket::find($id);
+		$ticket->delete();
 	}
 
 }
