@@ -13,16 +13,6 @@
 Route::resource('/users','UsersController');
 Route::get('users/destroy/{id}','UsersController@destroy');
 Route::resource('/tickets','TicketsController');
-
-Route::resource('tickets.comments', 'CommentsController');
-
-
-Route::resource('/articles','ArticlesController');
-
-
-
-Route::resource('/assets', 'AssetsController');
-
 Route::get('/', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');
