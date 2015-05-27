@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
+
 	use Authenticatable, CanResetPassword;
 
 	/**
@@ -30,5 +31,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * @var array
 	 */
 	protected $hidden = ['password', 'remember_token'];
+
+
+
+	public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
 
 }
