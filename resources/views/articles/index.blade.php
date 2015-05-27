@@ -27,8 +27,8 @@
              <td>{{ $article->subject }}</td>
              <td>{{ $article->body }}</td>
              <td>{{ $article->isshow }}</td>
-             <td>{{ $article->category_id }}</td>
-             <td>{{ $article->user_id }}</td>
+             <td>{{ $article->category->name }}</td>
+             <td>{{ $article->user->name }}</td>
              <td>{{ $article->created_at }}</td>
              <td>{{ $article->updated_at }}</td>
              <td><a href="{{url('articles',$article->id)}}" class="btn btn-primary">Read</a></td>

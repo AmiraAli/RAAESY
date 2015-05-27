@@ -111,6 +111,7 @@ class ArticlesController extends Controller {
 		//$article = new Article;
 		$article=Article::find($id);
 	    $article->subject=Request::get('subject');
+	    $article->body=Request::get('body');
 	    #$article->category_id=1;
 	    $article->user_id=1;
 	    $isshow=Request::get('isshow');
@@ -127,8 +128,8 @@ class ArticlesController extends Controller {
 	   # $category=Category::where('name',$catName);
 	    #$catId=$category->id;
 	    $article->category_id=$catId;
-	    $article->save;
-	    return view('articles');
+	    $article->save();
+	    return redirect('articles');
 	}
 
 	/**

@@ -2,7 +2,7 @@
 @extends('app')
 
 @section('content')
-	{!! Form::open(array('class' => 'form-inline', 'method' => 'POST', 'route' => array('articles.update'))) !!}
+	{!! Form::open(array('class' => 'form-inline', 'method' => 'PATCH', 'route' => array('articles.update',$article->id))) !!}
 	<div class="form-group">
         {!! Form::label('SUBJECT', 'SUBJECT:') !!}
         {!! Form::text('subject',$article->subject,['class'=>'form-control']) !!}
