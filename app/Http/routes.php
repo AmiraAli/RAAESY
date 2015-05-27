@@ -11,6 +11,10 @@
 |
 */
 Route::resource('/tickets','TicketsController');
+
+Route::resource('/articles','ArticlesController');
+
+
 Route::get('/', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');
