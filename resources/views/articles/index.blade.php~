@@ -1,0 +1,46 @@
+@extends('app')
+
+@section('content')
+
+<h1>Articles ^_^ :))</h1>
+ <a href="{{url('/articles/create')}}" class="btn btn-success">Create Article</a>
+ <hr>
+ <table class="table table-striped table-bordered table-hover">
+     <thead>
+     <tr class="bg-info">
+         <th>Id</th>
+         <th>Subject</th>
+         <th>Body</th>
+         <th>Is Show !?</th>
+         <th>user_id_id</th>
+         <th>created_at </th>
+         <th>updated_at </th>
+         <th colspan="3">Actions</th>
+     </tr>
+     </thead>
+     <tbody>
+     @foreach ($articles as $article)
+         <tr>
+             <td>{{ $article->id }}</td>
+             <td>{{ $article->subject }}</td>
+             <td>{{ $article->body }}</td>
+             <td>{{ $article->isshow }}</td>
+             <td>{{ $article->created_at }}</td>
+             <td>{{ $article->updated_at }}</td>
+             
+             <!-- <td><a href="{{url('books',$book->id)}}" class="btn btn-primary">Read</a></td>
+             <td><a href="{{route('books.edit',$book->id)}}" class="btn btn-warning">Update</a></td> -->
+             <td>
+            <!--  {!! Form::open(['method' => 'DELETE', 'route'=>['books.destroy', $book->id]]) !!}
+             {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+             {!! Form::close() !!} -->
+             </td>
+         </tr>
+     @endforeach
+
+     </tbody>
+
+ </table>
+
+
+@endsection

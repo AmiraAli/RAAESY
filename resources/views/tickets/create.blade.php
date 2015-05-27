@@ -4,7 +4,7 @@
 @extends('app')
 
 @section('content')
-<div class="container">
+<!-- <div class="container">
 <form>
   <div class="form-group">
     <label>Subject</label>
@@ -26,8 +26,19 @@
   </div>
   <textarea class="form-control" rows="3"></textarea>
   <button type="submit" class="btn btn-default">Submit</button>
+
+
+
 </form>
-</div>
+</div> -->
+<!-- 
+
+@foreach ($categories as $category)
+    <p>This is category {{ $category->id }}</p>
+@endforeach -->
+
+
+
 @endsection
 
 
