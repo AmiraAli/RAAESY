@@ -21,8 +21,9 @@ class CreateUsersTable extends Migration {
 			$table->string('password');
 			$table->string('phone');
 			$table->string('location');
-			$table->boolean('isspam');
-			$table->enum('type', ['admin', 'tech','regular']);
+			$table->boolean('isspam')->default(0);
+			$table->enum('type', ['admin', 'tech','regular'])->default('regular');
+			$table->rememberToken();
 			$table->timestamps();
 		});
 	}

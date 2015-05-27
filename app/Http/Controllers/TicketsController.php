@@ -47,7 +47,6 @@ class TicketsController extends Controller {
 		$ticket->file=Request::get('file');
 		$ticket->category_id=Request::get('category');
 		$ticket->subject_id=Request::get('subject');
-		$ticket->createddate=date('Y-m-d H:i:s');
 		$ticket->user_id=1;
 		$ticket->tech_id=1;
 		$ticket->admin_id=1;
@@ -97,7 +96,6 @@ class TicketsController extends Controller {
 		$ticket->file=Request::get('file');
 		$ticket->category_id=Request::get('category');
 		$ticket->subject_id=Request::get('subject');
-		$ticket->createddate=date('Y-m-d H:i:s');
 		$ticket->user_id=1;
 		$ticket->tech_id=1;
 		$ticket->admin_id=1;
