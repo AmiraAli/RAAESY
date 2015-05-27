@@ -29,6 +29,6 @@
 </form>
 </div>
 @endsection
-
-
+@else
+redirect()->guest('auth/login');
 @endif
