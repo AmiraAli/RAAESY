@@ -18,15 +18,20 @@ Route::resource('/users','UsersController');
 Route::get('users/destroy/{id}','UsersController@destroy');
 
 Route::resource('/tickets','TicketsController');
+Route::post('tickets/addSubject', 'TicketsController@addSubject');
+
 
 Route::resource('tickets.comments', 'CommentsController');
 
 Route::resource('/articles','ArticlesController');
 
 
+
 Route::get('/assets/search', 'AssetsController@search');
 Route::post('assets/searchAssets', 'AssetsController@searchAssets');
+
 Route::resource('/assets', 'AssetsController');
+Route::post('assets/addType', 'AssetsController@addType');
 
 
 Route::get('/', 'WelcomeController@index');
