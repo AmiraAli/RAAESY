@@ -19,13 +19,17 @@ Route::resource('/users','UsersController');
 Route::get('users/destroy/{id}','UsersController@destroy');
 
 Route::resource('/tickets','TicketsController');
-Route::post('/tickets','TicketsController@updatestatus');
+
+Route::post('/tickets/updatestatus','TicketsController@updatestatus');
+
+Route::post('tickets/addSubject', 'TicketsController@addSubject');
+
+
 
 Route::resource('tickets.comments', 'CommentsController');
 
 
 Route::resource('/articles','ArticlesController');
-
 
 
 Route::resource('/assets', 'AssetsController');
