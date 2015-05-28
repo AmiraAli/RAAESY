@@ -22,5 +22,4 @@ class Ticket extends Model {
         return $this->hasMany('App\Comment');
     }
 
-
 }
