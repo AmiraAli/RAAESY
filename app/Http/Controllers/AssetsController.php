@@ -5,10 +5,12 @@ use App\Http\Controllers\Controller;
 
 // use Illuminate\Http\Request;
 use Request;
+use DB;
 
 use App\AssetType;
 use App\User;
 use App\Asset;
+use App\Tag;
 
 class AssetsController extends Controller {
 
@@ -115,7 +117,23 @@ class AssetsController extends Controller {
 	 */
 	public function destroy($id)
 	{
+
 		Asset::find($id)->delete();
+	}
+
+	public function addType($name)
+	{
+		$type = new AssetType;
+		$type->name = $name;
+		$type->save();
+		$type = DB::table('asset_types')->orderBy('created_at', 'desc')->first();
+
+	    $reply['name'] = $type->name; 
+	    $reply['id'] = $type->id;
+	    
+	    echo json_encode($reply);
+		
+		
 	}
 
 }

@@ -38,12 +38,13 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">Type</label>
 							<div class="col-md-6">
-								<select class="form-control" name="assettype_id">
+								<select class="form-control" name="assettype_id" id="types">
 									@foreach ($types as $type)
 									    <option value="{{ $type->id }}">{{ $type->name }}</option>
 									@endforeach
 								</select>
-								<a href="/types/create" >Add new type</a>
+								
+								<div class="new-type"><a href="#" onclick="addType()">Add new type</a></div>
 							</div>
 						</div>
 
@@ -59,7 +60,7 @@
 							<div class="col-md-6">
 								<select class="form-control" name="user_id">
 									@foreach ($users as $user)
-									    <option value="{{ $user->id }}">{{ $user->name }}</option>
+									    <option value="{{ $user->id }}">{{ $user->fname }} {{ $user->lname }}</option>
 									@endforeach
 								</select>
 								<a href="/users/create" >Add new user</a>
@@ -95,4 +96,40 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	
+	function addType(){
+
+		$(".new-type").html('<br><div class="form-group"><label class="col-md-4 control-label">New Type</label><div class="col-md-6"><input type="text" id="type-name" class="form-control" name="name"></div></div><div class="form-group"><div class="col-md-6 col-md-offset-4"><a href="#" class="btn btn-primary btn" onclick="saveType()">Add</a>&nbsp<a href="#" class="btn btn-primary btn" onclick="cancel()">Cancel</a></div></div>');
+	}
+
+	function saveType(){
+
+		$.ajax({
+			dataType: "json",
+		    url: '/assets/addType/' + $("#type-name").val(),
+		    data: [],
+		    success: function(result) {
+		    	$(".new-type").html('<a href="#" onclick="addType()">Add new type</a>');
+		    	$('#types')
+		         .append($("<option></option>")
+		         .attr("value",result["id"])
+		         .text(result["name"])); 
+				console.log(result["name"]);
+				$("#types").val(result["id"]);
+		    	
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+		    }
+		})
+	}
+
+	function cancel(){
+
+    	$(".new-type").html('<a href="#" onclick="addType()">Add new type</a>');
+	}
+</script>
+
 @endsection

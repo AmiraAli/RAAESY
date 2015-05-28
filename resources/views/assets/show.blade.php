@@ -15,6 +15,7 @@
 		<h2>Location :</h2>
 			{{ $asset->location }}
 	
+	<h2>related articles</h2>
 
 
 @endsection
