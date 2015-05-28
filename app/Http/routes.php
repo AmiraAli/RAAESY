@@ -10,6 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+Route::get('search/autocomplete', 'ArticlesController@autocomplete');
 Route::resource('/tickets','TicketsController');
 
 Route::resource('/articles','ArticlesController');
