@@ -16,6 +16,8 @@ class CreateTicketStatusesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->enum('value', ['close', 'open']);
+			$table->integer('ticket_id')->unsigned();
+		    $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade');
 			$table->timestamps();
 		});
 	}

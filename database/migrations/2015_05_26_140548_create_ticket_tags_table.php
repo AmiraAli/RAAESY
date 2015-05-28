@@ -16,9 +16,9 @@ class CreateTicketTagsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('tag_id')->unsigned();
-			$table->foreign('tag_id')->references('id')->on('tags');
+			$table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
 			$table->integer('ticket_id')->unsigned();
-			$table->foreign('ticket_id')->references('id')->on('tickets');
+			$table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade');
 			$table->timestamps();
 		});
 	}

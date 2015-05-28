@@ -4,6 +4,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Asset extends Model {
 
-	//
+
+	public function user() {
+        return $this->belongsTo('App\User');
+    }
+
+	public function assettype(){
+		return $this->belongsTo('App\AssetType'); 
+	}
+
+	public function tickets() {
+        return $this->hasMany('App\Ticket');
+    }
 
 }
