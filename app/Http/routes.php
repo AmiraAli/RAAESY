@@ -11,7 +11,6 @@
 |
 */
 
-
 Route::resource('/categories','CategoriesController');
 Route::resource('/sections','SectionsController');
 
@@ -27,12 +26,16 @@ Route::post('tickets/addSubject', 'TicketsController@addSubject');
 
 Route::resource('tickets.comments', 'CommentsController');
 
-
 Route::resource('/articles','ArticlesController');
 
 
+
+Route::get('/assets/search', 'AssetsController@search');
+Route::post('assets/searchAssets', 'AssetsController@searchAssets');
+
 Route::resource('/assets', 'AssetsController');
 Route::post('assets/addType', 'AssetsController@addType');
+
 
 Route::get('/', 'WelcomeController@index');
 
