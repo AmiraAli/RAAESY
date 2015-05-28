@@ -44,3 +44,33 @@ function submit_subject () {
 		alert("Please Enter subject value!!...");
 	}
 }
+
+/**
+* ajax requests for auto complete search by tags
+**/
+$(document).ready(function(){
+    $("#search").keyup(function(){ 
+     var name= $("#search").val();
+     var parsed=[];
+     //ajax request
+		$.ajax({
+		      url: '/tickets/getTags',
+		      type: "post",
+		      data: {'q':name},
+		      datatype:'json',
+		      success: function(data){
+		        for (var i = 0; i < JSON.parse(data).length; i++) {
+		        	parsed[i]=JSON.parse(data)[i]['name'];
+		        	// alert(parsed[i]);
+		        };
+		        // alert(parsed);
+			       $( "#search" ).autocomplete({
+						source: parsed
+					});
+     		      },
+			  error: function(jqXHR, textStatus, errorThrown) {
+				alert(errorThrown);
+			  }
+		    });
+  		});
+	}); 

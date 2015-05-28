@@ -20,6 +20,7 @@ Route::get('users/destroy/{id}','UsersController@destroy');
 
 Route::resource('/tickets','TicketsController');
 Route::post('tickets/addSubject', 'TicketsController@addSubject');
+Route::post('tickets/getTags', 'TicketsController@getTags');
 
 
 Route::resource('tickets.comments', 'CommentsController');
