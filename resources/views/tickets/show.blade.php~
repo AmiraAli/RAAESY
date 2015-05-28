@@ -38,7 +38,7 @@ _____________________________________________
 @endif
 
 @if($checkStatus->value=='close')
-<button name="open" id="{{$ticket->id}}" onclick="Status({{$ticket->id}})" >reopen</button>
+<button name="open" onclick="Status({{$ticket->id}})" >reopen</button>
 @endif
 
 

@@ -76,7 +76,8 @@ class TicketsController extends Controller {
 	// Check status of ticket closed or open
 	$checkStatus=TicketStatus::where('ticket_id', $id)->first();
 	//tech id must accept null
-	
+	$id = Input::get("ticket_id");
+	$status = Input::get("status");
 
 
 

@@ -19,6 +19,7 @@ Route::resource('/users','UsersController');
 Route::get('users/destroy/{id}','UsersController@destroy');
 
 Route::resource('/tickets','TicketsController');
+Route::post('/tickets','TicketsController@updatestatus');
 
 Route::resource('tickets.comments', 'CommentsController');
 
