@@ -11,7 +11,6 @@
 |
 */
 
-
 Route::resource('/categories','CategoriesController');
 Route::resource('/sections','SectionsController');
 
@@ -22,12 +21,13 @@ Route::resource('/tickets','TicketsController');
 
 Route::resource('tickets.comments', 'CommentsController');
 
-
 Route::resource('/articles','ArticlesController');
 
 
-
+Route::get('/assets/search', 'AssetsController@search');
+Route::post('assets/searchAssets', 'AssetsController@searchAssets');
 Route::resource('/assets', 'AssetsController');
+
 
 Route::get('/', 'WelcomeController@index');
 

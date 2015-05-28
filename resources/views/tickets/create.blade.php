@@ -1,4 +1,4 @@
-<!-- @if (Auth::check()) -->
+
 @extends('app')
 @section('content')
 <div class="container">
@@ -44,5 +44,3 @@
   {!! Form::close() !!}
 </div>
 @endsection
-<!-- @endif
- -->

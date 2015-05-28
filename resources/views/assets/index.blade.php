@@ -22,7 +22,7 @@
 			            <td class="text-center">{{ $asset->manufacturer }}</td>
 			            <td class="text-center">{{ $asset->assettype->name }}</td>
 			            <td class="text-center">{{ $asset->serialno }}</td>
-			            <td class="text-center">{{ $asset->user->name }}</td>
+			            <td class="text-center">{{ $asset->user->fname }}</td>
 			            <td class="text-center">{{ $asset->location }}</td>
 			            <td class="text-center">
 			            	<a href="/assets/{{$asset->id}}" class="btn btn-success btn">Open</a>

@@ -59,7 +59,7 @@
 							<div class="col-md-6">
 								<select class="form-control" name="user_id">
 									@foreach ($users as $user)
-									    <option value="{{ $user->id }}">{{ $user->name }}</option>
+									    <option value="{{ $user->id }}">{{ $user->fname }}</option>
 									@endforeach
 								</select>
 								<a href="/users/create" >Add new user</a>
