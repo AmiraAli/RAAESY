@@ -29,7 +29,7 @@ Route::resource('/articles','ArticlesController');
 
 
 Route::resource('/assets', 'AssetsController');
-Route::resource('/assets/addType/{name}', 'AssetsController@addType');
+Route::post('assets/addType', 'AssetsController@addType');
 
 Route::get('/', 'WelcomeController@index');
 

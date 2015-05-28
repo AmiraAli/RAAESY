@@ -1,6 +1,9 @@
 @extends('app')
 
 @section('content')
+
+<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
+
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
@@ -44,7 +47,9 @@
 									@endforeach
 								</select>
 								
-								<div class="new-type"><a href="#" onclick="addType()">Add new type</a></div>
+								<div class="new-type">
+									<a href="#" onclick="addType()">Add new type</a>
+								</div>
 							</div>
 						</div>
 
@@ -98,36 +103,49 @@
 </div>
 
 <script>
+
+	window.onload = function() {
+	    $.ajaxSetup({
+            headers: {
+                'X-XSRF-Token': $('meta[name="_token"]').attr('content')
+            }
+		});
+	};
 	
 	function addType(){
 
-		$(".new-type").html('<br><div class="form-group"><label class="col-md-4 control-label">New Type</label><div class="col-md-6"><input type="text" id="type-name" class="form-control" name="name"></div></div><div class="form-group"><div class="col-md-6 col-md-offset-4"><a href="#" class="btn btn-primary btn" onclick="saveType()">Add</a>&nbsp<a href="#" class="btn btn-primary btn" onclick="cancel()">Cancel</a></div></div>');
+		$(".new-type").html('<br><div class="form-group"><label class="col-md-4 control-label">New Type</label><div class="col-md-6"><input type="text" id="type-name" class="form-control" name="name"></div></div><div class="error" id="type-error"></div><div class="form-group"><div class="col-md-6 col-md-offset-4"><a href="#" class="btn btn-primary btn" onclick="saveType()">Add</a>&nbsp<a href="#" class="btn btn-primary btn" onclick="cancel()">Cancel</a></div></div>');
 	}
 
 	function saveType(){
+		if ($("#type-name").val() != ""){
+			$.ajax({
+			    url: '/assets/addType',
+			    type: "post",
+			    data: {'name' : $("#type-name").val()},
+			    success: function(result) {
+			    	alert(result);
+			    	$(".new-type").html('<a href="#" onclick="addType()">Add new type</a>');
+			    	$('#types')
+			         .append($("<option></option>")
+			         .attr("value",result["id"])
+			         .text(result["name"])); 
+					console.log(result["name"]);
+					$("#types").val(result["id"]);
+			    	
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+	                console.log(errorThrown);
+			    }
+			})
 
-		$.ajax({
-			dataType: "json",
-		    url: '/assets/addType/' + $("#type-name").val(),
-		    data: [],
-		    success: function(result) {
-		    	$(".new-type").html('<a href="#" onclick="addType()">Add new type</a>');
-		    	$('#types')
-		         .append($("<option></option>")
-		         .attr("value",result["id"])
-		         .text(result["name"])); 
-				console.log(result["name"]);
-				$("#types").val(result["id"]);
-		    	
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-                console.log(errorThrown);
-		    }
-		})
+		}
+		else{
+			$("#type-error").html("please enter the type name");
+		}
 	}
 
 	function cancel(){
-
     	$(".new-type").html('<a href="#" onclick="addType()">Add new type</a>');
 	}
 </script>

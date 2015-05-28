@@ -117,21 +117,27 @@ class AssetsController extends Controller {
 	 */
 	public function destroy($id)
 	{
+		$tag = new Tag;
 
-		Asset::find($id)->delete();
+		$asset = Asset::find($id);
+
+		$asset->delete();
 	}
 
-	public function addType($name)
+	public function addType()
 	{
-		$type = new AssetType;
-		$type->name = $name;
-		$type->save();
-		$type = DB::table('asset_types')->orderBy('created_at', 'desc')->first();
+		if(Request::ajax()) {
+			$type = new AssetType;
+			$type->name = Request::input('name');
+			$type->save();
 
-	    $reply['name'] = $type->name; 
-	    $reply['id'] = $type->id;
-	    
-	    echo json_encode($reply);
+			$type = DB::table('asset_types')->orderBy('created_at', 'desc')->first();
+
+		    $reply['name'] = $type->name; 
+		    $reply['id'] = $type->id;
+		    
+		    echo json_encode($reply);
+		}
 		
 		
 	}
