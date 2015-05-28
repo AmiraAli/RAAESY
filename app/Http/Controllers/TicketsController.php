@@ -4,11 +4,13 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Input;
 use Auth;
+use DB;
 use Request;
 use App\Subject;
 use App\Ticket;
 use App\Category;
 use App\Section;
+use App\User;
 
 use App\Tag;
 use App\TicketStatus;
@@ -38,7 +40,16 @@ class TicketsController extends Controller {
 		$subjects=Subject::all();
 		$categories=Category::all();
 		$sections=Section::all();
-		return view('tickets.create',compact('subjects','categories','sections'));
+		// render all technical users who has tickets < 5
+		$users=array();
+		$users_tech=User::where('type','tech')->get();
+		for($i=0;$i<count($users_tech);$i++){
+			$count=Ticket::where('tech_id',$users_tech[$i]->id)->count();
+			if($count<5){
+				array_push($users,$users_tech[$i]);
+			}
+		}
+		return view('tickets.create',compact('subjects','categories','sections','users'));
 	}
 
 	/**
@@ -50,14 +61,15 @@ class TicketsController extends Controller {
 	{
 		$ticket= new Ticket;
 		$ticket->description=Request::get('description');
-		$ticket->priority=Request::get('priority');
 		$ticket->file=Request::get('file');
 		$ticket->category_id=Request::get('category');
 		$ticket->subject_id=Request::get('subject');
 		$ticket->user_id=Auth::user()->id;
 		if(Auth::user()->type === "admin")
 		{
-			$ticket->tech_id=1;
+			$ticket->priority=Request::get('priority');
+			$ticket->deadline=Request::get('deadline');
+			$ticket->tech_id=Request::get('tech');
 			$ticket->admin_id=Auth::user()->id;
 		}else{
 			$ticket->tech_id=1;
@@ -108,7 +120,16 @@ class TicketsController extends Controller {
 		$subjects=Subject::all();
 		$categories=Category::all();
 		$sections=Section::all();
-		return view('tickets.edit',compact('ticket','subjects','categories','sections'));
+		// render all technical users who has tickets < 5
+		$users=array();
+		$users_tech=User::where('type','tech')->get();
+		for($i=0;$i<count($users_tech);$i++){
+			$count=Ticket::where('tech_id',$users_tech[$i]->id)->count();
+			if($count<5){
+				array_push($users,$users_tech[$i]);
+			}
+		}
+		return view('tickets.edit',compact('ticket','subjects','categories','sections','users'));
 	}
 
 	/**
@@ -128,7 +149,9 @@ class TicketsController extends Controller {
 		$ticket->user_id=Auth::user()->id;
 		if(Auth::user()->type === "admin")
 		{
-			$ticket->tech_id=1;
+			$ticket->priority=Request::get('priority');
+			$ticket->deadline=Request::get('deadline');
+			$ticket->tech_id=Request::get('tech');
 			$ticket->admin_id=Auth::user()->id;
 		}else{
 			$ticket->tech_id=1;

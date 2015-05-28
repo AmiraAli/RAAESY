@@ -53,6 +53,19 @@
 						    <option value="critical">Critical</option>
 						</select>
 					</div>
+					<div class="form-group col-md-6">
+						<label class="col-md-4 control-label">Due</label>
+						<input type="date" name="deadline" class="form-control" />
+					</div>
+					<div class="form-group col-md-6">
+						<label class="col-md-4 control-label">Assign</label>
+					    <select class="form-control" name="tech">
+						    @foreach ($users as $user)
+						    	<option value="{{ $user->id }}"> {{ $user->fname }}</option>
+							@endforeach
+						</select>
+					</div>
+
 				@endif
 
 			    <div class="form-group">

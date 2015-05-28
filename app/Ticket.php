@@ -31,5 +31,4 @@ class Ticket extends Model {
         return $this->belongsToMany('App\Asset','ticket_assets');
     }
 
-
 }
