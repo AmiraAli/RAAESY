@@ -67,21 +67,20 @@
 						</select>
 					</div>
 
-					<div class="form-group  col-md-12">
+					<div class="form-group  col-md-6" id="tags_selected">
 						<label class="col-md-4 control-label">Tags</label>
 						<input type="text" id="search" class="form-control">
 					</div>
-
 				@endif
 
-			    <div class="form-group">
+			    <div class ="form-group">
 				    <label >Attach File</label>
 				    <input type="file" name="file">
 			    </div>
 
-			    	<div class="col-md-6 col-md-offset-4">
-			    		<button type="submit" class="btn btn-primary">Submit</button>
-			    	</div>
+			    <div class="col-md-6 col-md-offset-4">
+			    	<button type="submit" class="btn btn-primary">Submit</button>
+			    </div>
 
 			  {!! Form::close() !!}
 			 </div>
