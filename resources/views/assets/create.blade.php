@@ -27,14 +27,14 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">Model Name</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="name">
+								<input type="text" class="form-control" name="name" value="{{ old('name') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Manufacturer</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="manufacturer">
+								<input type="text" class="form-control" name="manufacturer" value="{{ old('manufacturer') }}">
 							</div>
 						</div>
 
@@ -43,7 +43,7 @@
 							<div class="col-md-6">
 								<select class="form-control" name="assettype_id" id="types">
 									@foreach ($types as $type)
-									    <option value="{{ $type->id }}">{{ $type->name }}</option>
+									    <option value="{{ $type->id }}" <?php if(old('assettype_id') === $type->id){ echo "selected"; } ?>>{{ $type->name }}</option>
 									@endforeach
 								</select>
 								
@@ -56,7 +56,7 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">Serial Number</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="serialno">
+								<input type="text" class="form-control" name="serialno" value="{{ old('serialno') }}">
 							</div>
 						</div>
 
@@ -66,7 +66,7 @@
 								<select class="form-control" name="user_id">
 									@foreach ($users as $user)
 
-									    <option value="{{ $user->id }}">{{ $user->fname }} {{ $user->lname }}</option>
+									    <option value="{{ $user->id }}" <?php if(old('user_id') === $user->id){ echo "selected"; } ?>>{{ $user->fname }} {{ $user->lname }}</option>
 									@endforeach
 								</select>
 								<a href="/users/create" >Add new user</a>
@@ -77,14 +77,14 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">Location</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="location">
+								<input type="text" class="form-control" name="location" value="{{ old('location') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Comment</label>
 							<div class="col-md-6">
-								<textarea class="form-control" rows="3" name="comment"></textarea>
+								<textarea class="form-control" rows="3" name="comment" value="{{ old('comment') }}"></textarea>
 							</div>
 						</div>
 
@@ -104,7 +104,6 @@
 </div>
 
 <script>
-
 	window.onload = function() {
 	    $.ajaxSetup({
             headers: {
@@ -121,11 +120,12 @@
 	function saveType(){
 		if ($("#type-name").val() != ""){
 			$.ajax({
+				dataType: "json",
 			    url: '/assets/addType',
 			    type: "post",
 			    data: {'name' : $("#type-name").val()},
 			    success: function(result) {
-			    	alert(result);
+			    	// alert(result);
 			    	$(".new-type").html('<a href="#" onclick="addType()">Add new type</a>');
 			    	$('#types')
 			         .append($("<option></option>")
@@ -136,7 +136,7 @@
 			    	
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
-	                console.log(errorThrown);
+	                $("#type-error").html("this type is already exists");
 			    }
 			})
 
