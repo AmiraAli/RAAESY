@@ -19,6 +19,9 @@ Route::resource('/sections','SectionsController');
 
 Route::resource('/users','UsersController');
 Route::get('users/destroy/{id}','UsersController@destroy');
+Route::post('users/get_user_types','UsersController@get_user_types');
+
+
 
 
 Route::resource('/tickets','TicketsController');
