@@ -134,8 +134,23 @@ class UsersController extends Controller {
 		
 		return json_encode($selectedUsers);
 
+	}
 
 
+	/**
+	 * Select users from storage for autocomplete (called by AJAX).
+	 *
+	 * @param  string  $data
+	 * @return Response
+	 */
+
+	public function autocomplete()
+	{
+
+		$data = Request::get('data');
+		$users  = User::select('id', 'fname', 'lname')->where('fname', 'LIKE', "%$data%")->orWhere('lname', 'LIKE', "%$data%")->orWhere('email', 'LIKE', "%$data%")->get();
+		
+		return json_encode($users);
 
 
 	}
