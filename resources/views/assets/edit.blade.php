@@ -58,7 +58,7 @@
 							<div class="col-md-6">
 								<select class="form-control" name="user_id">
 									@foreach ($users as $user)
-									    <option value="{{ $user->id }}" <?php if ($asset->user_id == $user->id){ echo "selected"; } ?>>{{ $user->name }}</option>
+									    <option value="{{ $user->id }}" <?php if ($asset->user_id == $user->id){ echo "selected"; } ?>>{{ $user->fname }} {{ $user->lname }}</option>
 									@endforeach
 								</select>
 							</div>

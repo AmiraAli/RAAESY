@@ -1,20 +1,13 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <!-- <title>jQuery UI Autocomplete - Default functionality</title> -->
-
-  
- 
-</head>
 @extends('app')
-
 @section('content')
-  <script type="text/javascript" src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+
+
+
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/text_editor/jquery-te-1.4.0.min.js" charset="utf-8"></script>
+<link type="text/css" rel="stylesheet" href="/css/text_editor/jquery-te-1.4.0.css">
+
   
-    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-   
 	{!! Form::open(array('class' => 'form-inline', 'method' => 'POST', 'route' => array('articles.store'))) !!}
 	<div class="form-group">
         {!! Form::label('SUBJECT', 'SUBJECT:') !!}
@@ -23,9 +16,7 @@
     <br/>
     <div class="form-group">
         {!! Form::label('BODY', 'BODY:') !!}
-        <!-- {!! Form::text('body',null,['class'=>'form-control']) !!} -->
-        <!-- {!! Editor::view() !!} -->
-        {!! Editor::view('body', 'hhh', ['class' => 'form-control']) !!}
+        {!! Form::textarea('body',null,['class'=>'jqte-test']) !!}
     </div>
     <br/>
 
@@ -56,6 +47,11 @@
     <div class="form-group">
         {!! Form::submit('Save', ['class' => 'btn btn-primary form-control']) !!}
     </div>
+
+
+    <script>
+         $('.jqte-test').jqte();
+    </script>
 
 
 @endsection

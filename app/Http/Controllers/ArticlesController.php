@@ -26,6 +26,7 @@ class ArticlesController extends Controller {
 		return view('articles.index',compact('articles'));
 	}
 
+
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -65,9 +66,13 @@ class ArticlesController extends Controller {
 
 	    $catId=Request::get('category');
 	    $article->category_id=$catId;
-	    $input = Input::get(Editor::input());
-	    $content = Editor::content($input);
-	    $article->body=$content;
+
+	    // $input = Input::get(Editor::input());
+	    // $content = Editor::content($input);
+	    // $article->body=$content;
+
+	    $article->body= Request::get('body');
+
 	    $article->save();
 	    return redirect('articles');
 	}
