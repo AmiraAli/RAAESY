@@ -31,14 +31,7 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
-
-        $id=Auth::user()->id;
-        //$name=Auth::user()->fname;
-        // $email=Session::get('email');
-        // Mail::send('emails.welcome', array('name' => 'The New Topic'),   function($message){
-        // $message->to($email, 'The New Topic')->subject('Test Email');
-        // });
-		return view('home',compact('id'));
+		return view('home');
 	}
 
 	// public function home()
