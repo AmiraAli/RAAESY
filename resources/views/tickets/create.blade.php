@@ -71,6 +71,7 @@
 						<label class="col-md-4 control-label">Tags</label>
 						<input type="text" id="search" class="form-control">
 					</div>
+					<input type="hidden" name="tagValues" id="tagValues">
 				@endif
 
 			    <div class ="form-group">

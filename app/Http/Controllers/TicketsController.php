@@ -12,6 +12,7 @@ use App\Category;
 use App\Section;
 use App\User;
 use App\Tag;
+use App\TicketTag;
 
 class TicketsController extends Controller {
 
@@ -61,17 +62,34 @@ class TicketsController extends Controller {
 		$ticket->category_id=Request::get('category');
 		$ticket->subject_id=Request::get('subject');
 		$ticket->user_id=Auth::user()->id;
+
 		if(Auth::user()->type === "admin")
 		{
 			$ticket->priority=Request::get('priority');
 			$ticket->deadline=Request::get('deadline');
 			$ticket->tech_id=Request::get('tech');
 			$ticket->admin_id=Auth::user()->id;
+
+			$ticket->save();
+
+			//insert into table ticket_tags each tag of this ticket
+			$tags=Request::get('tagValues');
+			$tags_array=explode(",",$tags);
+			for($i=0;$i<count($tags_array);$i++){
+				$tag=Tag::where('name',$tags_array[$i])->first();
+				$ticketTag=new TicketTag;
+				$ticketTag->tag_id=$tag->id;
+				$ticketTag->ticket_id=$ticket->id;
+				$ticketTag->save();
+			}
+
 		}else{
 			$ticket->tech_id=1;
 			$ticket->admin_id=1;
+
+			$ticket->save();
 		}
-		$id=$ticket->save();
+		
 		$tickets=Ticket::all();
 		return view('tickets.index',compact('tickets'));
 	}
@@ -133,11 +151,35 @@ class TicketsController extends Controller {
 			$ticket->deadline=Request::get('deadline');
 			$ticket->tech_id=Request::get('tech');
 			$ticket->admin_id=Auth::user()->id;
+
+			$ticket->save();
+
+			// check if tags of ticket is changed or not
+			$tags=Request::get('tagValues');
+			if( $tags != ""){
+				
+				// remove all prev tags
+				$prevTicketTags=TicketTag::where('ticket_id',$id);
+				$prevTicketTags->delete();
+
+				//insert into table ticket_tags each tag of this ticket
+				$tags_array=explode(",",$tags);
+				for($i=0;$i<count($tags_array);$i++){
+					$tag=Tag::where('name',$tags_array[$i])->first();
+					$ticketTag=new TicketTag;
+					$ticketTag->tag_id=$tag->id;
+					$ticketTag->ticket_id=$ticket->id;
+					$ticketTag->save();
+				}
+			}
+
 		}else{
 			$ticket->tech_id=1;
 			$ticket->admin_id=1;
+
+			$ticket->save();
 		}
-		$ticket->save();
+		
 		return  redirect("/tickets/".$id);
 	}
 
