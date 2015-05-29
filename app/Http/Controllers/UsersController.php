@@ -2,8 +2,6 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-//use Illuminate\Http\Request;
 use App\User;
 use Request;
 class UsersController extends Controller {
@@ -36,8 +34,6 @@ class UsersController extends Controller {
 	 */
 	public function store()
 	{
-
-
 
 		$user=new User();
 		$user->fname=Request::get('fname');
@@ -134,8 +130,23 @@ class UsersController extends Controller {
 		
 		return json_encode($selectedUsers);
 
+	}
 
 
+	/**
+	 * Select users from storage for autocomplete (called by AJAX).
+	 *
+	 * @param  string  $data
+	 * @return Response
+	 */
+
+	public function autocomplete()
+	{
+
+		$data = Request::get('data');
+		$users  = User::select('id', 'fname', 'lname')->where('fname', 'LIKE', "%$data%")->orWhere('lname', 'LIKE', "%$data%")->orWhere('email', 'LIKE', "%$data%")->get();
+		
+		return json_encode($users);
 
 
 	}

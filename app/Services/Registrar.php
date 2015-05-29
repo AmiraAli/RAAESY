@@ -22,6 +22,7 @@ class Registrar implements RegistrarContract {
 			'password' => 'required|confirmed|min:6',
 			'phone' => 'required|max:255',
 			'location' => 'required|max:255',
+			'captcha' => 'required|captcha',
 		]);
 	}
 
@@ -40,6 +41,9 @@ class Registrar implements RegistrarContract {
 			'password' => bcrypt($data['password']),
 			'phone' => $data['phone'],
 			'location' => $data['location'],
+
+
+
 		]);
 		$data['verification_code']  = $user->verification_code;
 

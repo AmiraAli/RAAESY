@@ -10,12 +10,11 @@
 @extends('app')
 
 @section('content')
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  <link rel="stylesheet" href="/resources/demos/style.css">
-<script src="/js/autocompleteTagArticle.js" type="text/javascript"></script>
-
+ <script type="text/javascript" src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+  
+ <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+   
 	{!! Form::open(array('class' => 'form-inline', 'method' => 'POST', 'route' => array('articles.store'))) !!}
 	<div class="form-group">
         {!! Form::label('SUBJECT', 'SUBJECT:') !!}
@@ -24,14 +23,19 @@
     <br/>
     <div class="form-group">
         {!! Form::label('BODY', 'BODY:') !!}
-        {!! Form::text('body',null,['class'=>'form-control']) !!}
+        <!-- {!! Form::text('body',null,['class'=>'form-control']) !!} -->
+        <!-- {!! Editor::view() !!} -->
+        {!! Editor::view('body', 'hhh', ['class' => 'form-control']) !!}
     </div>
     <br/>
+
+
     <div class="form-group">
     	{!! Form::label('IS SHOW', 'IS SHOW:') !!}
     	{!! Form::checkbox('isshow', 'value', true) !!}
     <div class="form-group">
     <br/>
+
     <div class="form-group">
 		<label>Category</label>
 	    <select class="form-control" name="category">
@@ -46,22 +50,12 @@
 		@endforeach
 		</select>
 	</div>
-	<!-- <div class="ui-widget">
-	  <label for="tags">Tags: </label>
-	  <input id="tags">
-	</div>
-	<div id='new-projects'> </div> -->
+  <br/>
+
+
     <div class="form-group">
         {!! Form::submit('Save', ['class' => 'btn btn-primary form-control']) !!}
     </div>
-
-	{!! Form::open(['action' => ['ArticlesController@autocomplete'], 'method' => 'GET']) !!}
-    {!! Form::text('q', '', ['id' =>  'q', 'placeholder' =>  'Enter name'])!!}
-    {!! Form::submit('Search', array('class' => 'button expand')) !!}
-    {!! Form::close() !!}
-
-
-	{!! Form::close() !!}
 
 
 @endsection
