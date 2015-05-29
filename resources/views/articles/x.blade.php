@@ -10,11 +10,13 @@
 @extends('app')
 
 @section('content')
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  <link rel="stylesheet" href="/resources/demos/style.css">
-<script src="/js/autocompleteTagArticle.js" type="text/javascript"></script>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<link rel="stylesheet" href="js/minified/themes/default.min.css" type="text/css" media="all" />
+<!-- <script type="text/javascript" src="js/minified/jquery.sceditor.bbcode.min.js"></script>
+ --><link rel="stylesheet" href="js/minified/jquery.sceditor.min.css" type="text/css" media="all" />
+  <script type="text/javascript" src="js/minified/jquery.sceditor.bbcode.min.js"></script>
+
+
 
 	{!! Form::open(array('class' => 'form-inline', 'method' => 'POST', 'route' => array('articles.store'))) !!}
 	<div class="form-group">
@@ -63,5 +65,14 @@
 
 	{!! Form::close() !!}
 
+  <textarea class="bbcode" rows="4" style="width: 100%">puts 'foo'</textarea>
+<script>
+$(function() {
+  $("textarea").sceditor({
+    plugins: "bbcode",
+    style: "minified/jquery.sceditor.default.min.css"
+  });
+});
+</script>
 
 @endsection
