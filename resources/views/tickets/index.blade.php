@@ -1,8 +1,9 @@
 @extends('app')
 @section('content')
 <script type="text/javascript" src="/js/ticket_delete.js"></script>
-<div class="container">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
+<div class="container">
 <div class="row" id="search">
  hiiii first
 </div>
@@ -38,14 +39,36 @@ hiiiiiii sort
 		  @foreach($tickets as $ticket)
 			   <tr id="{{ $ticket->id }}">
 			   		<td>{{ $ticket->subject->name }}</td>
-			   		<td>{{ $ticket->description }}</td>
+			   		<td>{!! $ticket->description !!}</td>
 			   		<td>{{ $ticket->category->name }}</td>
 			   		<td>{{ $ticket->file }}</td>
 			   		<td>{{ $ticket->priority }}</td>
 			   		<td>
-			   			<a href="/tickets/{{ $ticket->id }} ">Show</a>
-			   			<a href="/tickets/{{ $ticket->id }}/edit">Edit</a>
-			   			<a   onclick="Delete({{ $ticket->id }})">Delete</a>
+			   			<!-- Trigger the modal with a button -->
+  					<a  data-toggle="modal" data-target="#myModal">action</a>
+					  <!-- Modal -->
+					  <div class="modal fade" id="myModal" role="dialog">
+					    <div class="modal-dialog">
+					      <!-- Modal content-->
+					      <div class="modal-content">
+					        <div class="modal-header">
+					          <button type="button" class="close" data-dismiss="modal">&times;</button>
+					          <h4 class="modal-title">Actions</h4>
+					        </div>
+					        <div class="modal-body">
+					          <ul>
+					          <li><a href="/tickets/{{ $ticket->id }} ">Show</a></li>
+					          <li><a href="/tickets/{{ $ticket->id }}/edit">Edit</a></li>
+					          <li><a onclick="Delete({{ $ticket->id }})" data-dismiss="modal">Delete</a></li>
+					          </ul>
+					        </div>
+					        <div class="modal-footer">
+					          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					        </div>
+					      </div>
+					      
+					    </div>
+					  </div>
 			   		</td>
 			   </tr>
 		  @endforeach
@@ -53,9 +76,7 @@ hiiiiiii sort
 	</table>
 
 </div>
-
 </div>
-
-	
 </div>
+ <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 @endsection
