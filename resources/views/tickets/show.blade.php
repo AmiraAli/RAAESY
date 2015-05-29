@@ -11,6 +11,7 @@
 @extends('app')
 @section('content')
 <div class="container">
+
 <!------------------------------------------ticketbody------------------------------------------------------------------------->
   <div class="leftposition">
 	<div class="panel panel-default ticketbody">

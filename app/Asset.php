@@ -13,9 +13,14 @@ class Asset extends Model {
 		return $this->belongsTo('App\AssetType'); 
 	}
 
+
 	public function AssetTickets()
     {
         return $this->belongsToMany('App\Ticket','ticket_assets');
+	}
+	public function tickets() {
+         return $this->belongsToMany('App\Ticket','ticket_assets');
+
     }
 
 }

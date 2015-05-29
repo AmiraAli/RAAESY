@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,6 +41,8 @@
 						<li><a href="{{ url('/auth/login') }}">Login</a></li>
 						<li><a href="{{ url('/auth/register') }}">Register</a></li>
 					@else
+					    <?php $current_user = Auth::user() ?>
+					    <li> <a class="navbar-brand" href="/users/{{$current_user->id}}"> {{ $current_user->fname }}</a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
@@ -57,5 +60,6 @@
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="/bootstrab/js/bootstrap.min.js"></script>
+
 </body>
 </html>

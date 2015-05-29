@@ -2,8 +2,6 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-//use Illuminate\Http\Request;
 use App\User;
 use Request;
 class UsersController extends Controller {
@@ -36,8 +34,6 @@ class UsersController extends Controller {
 	 */
 	public function store()
 	{
-
-
 
 		$user=new User();
 		$user->fname=Request::get('fname');
@@ -107,4 +103,53 @@ class UsersController extends Controller {
 		//return redirect('/users');
 	}
 
-}
+
+
+	/**
+	 * Select specific users from storage ( called by AJAX).
+	 *
+	 * @param  string  $type
+	 * @return Response
+	 */
+
+	public function get_user_types()
+	{
+
+		$type = Request::get('type');
+		if ($type== "all"){
+			
+			$selectedUsers =User::all();
+
+		}elseif ($type== "disabled") {
+			
+			$selectedUsers =User::where('isspam', 1)->get();
+
+		}else{
+			$selectedUsers =User::where('type',$type )->get();	
+		}
+		
+		return json_encode($selectedUsers);
+
+	}
+
+
+	/**
+	 * Select users from storage for autocomplete (called by AJAX).
+	 *
+	 * @param  string  $data
+	 * @return Response
+	 */
+
+	public function autocomplete()
+	{
+
+		$data = Request::get('data');
+		$users  = User::select('id', 'fname', 'lname')->where('fname', 'LIKE', "%$data%")->orWhere('lname', 'LIKE', "%$data%")->orWhere('email', 'LIKE', "%$data%")->get();
+		
+		return json_encode($users);
+
+
+	}
+
+
+}	

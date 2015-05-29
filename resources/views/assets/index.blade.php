@@ -22,7 +22,7 @@
 			            <td class="text-center">{{ $asset->manufacturer }}</td>
 			            <td class="text-center">{{ $asset->assettype->name }}</td>
 			            <td class="text-center">{{ $asset->serialno }}</td>
-			            <td class="text-center">{{ $asset->user->name }}</td>
+			            <td class="text-center">{{ $asset->user->fname }} {{ $asset->user->lname }}</td>
 			            <td class="text-center">{{ $asset->location }}</td>
 			            <td class="text-center">
 			            	<a href="/assets/{{$asset->id}}" class="btn btn-success btn">Open</a>
@@ -54,8 +54,7 @@
             });
             };
 
-		function deleteAsset(id){
-			alert("aaa");  
+		function deleteAsset(id){ 
 			//ajax request
 		   $.ajax({
 			    url: '/assets/'+id,

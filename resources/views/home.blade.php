@@ -10,7 +10,7 @@
 
 				<div class="panel-body">
 					You are logged in!
-{{$id}}
+
 
 				</div>
 			</div>

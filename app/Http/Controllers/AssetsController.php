@@ -3,13 +3,18 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-// use Illuminate\Http\Request;
-use Request;
-
+use Illuminate\Http\Request;
+// use Request;
+use DB;
+use Auth;
 use App\AssetType;
 use App\User;
 use App\Asset;
 use App\TicketAsset;
+use App\Log;
+use Validator;
+
+
 class AssetsController extends Controller {
 
 	/**
@@ -36,25 +41,33 @@ class AssetsController extends Controller {
 	}
 
 	/**
-	 * Store a newly created resource in storage.
+	 * Storaae a newly created resource in storage.
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request)
 	{
+		$this->validate($request, [
+	        'name' => 'required',
+	        'manufacturer' => 'required',
+	        'serialno' => 'required',
+	        'location' => 'required'
+    	]);
+
 		$asset = new Asset;
 		
-		$asset->name = Request::get('name');
-		$asset->serialno = Request::get('serialno');
-		$asset->location = Request::get('location');
-		$asset->comment = Request::get('comment');
-		$asset->assettype_id = Request::get('assettype_id');
-		$asset->user_id = Request::get('user_id');
-		$asset->manufacturer = Request::get('manufacturer');
+		$asset->name = $request->get('name');
+		$asset->serialno = $request->get('serialno');
+		$asset->location = $request->get('location');
+		$asset->comment = $request->get('comment');
+		$asset->assettype_id = $request->get('assettype_id');
+		$asset->user_id = $request->get('user_id');
+		$asset->admin_id = Auth::user()->id;
+		$asset->manufacturer = $request->get('manufacturer');
 		
 		$asset->save();
-		
-		return redirect('/assets');
+		return redirect("assets");
+			
 	}
 
 	/**
@@ -90,17 +103,23 @@ class AssetsController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id, Request $request)
 	{
+		$this->validate($request, [
+	        'name' => 'required',
+	        'manufacturer' => 'required',
+	        'serialno' => 'required',
+	        'location' => 'required'
+    	]);
 		$asset = Asset::find($id);
 
-		$asset->name = Request::get('name');
-		$asset->serialno = Request::get('serialno');
-		$asset->location = Request::get('location');
-		$asset->comment = Request::get('comment');
-		$asset->manufacturer = Request::get('manufacturer');
-		$asset->assettype_id = Request::get('assettype_id');
-		$asset->user_id = Request::get('user_id');
+		$asset->name = $request->get('name');
+		$asset->serialno = $request->get('serialno');
+		$asset->location = $request->get('location');
+		$asset->comment = $request->get('comment');
+		$asset->manufacturer = $request->get('manufacturer');
+		$asset->assettype_id = $request->get('assettype_id');
+		$asset->user_id = $request->get('user_id');
 
 		$asset->save();
 
@@ -115,7 +134,88 @@ class AssetsController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		Asset::find($id)->delete();
+		$log = new Log;
+		$log->type_id = $id;
+		$log->action = 'delete';
+		$log->type = 'asset';
+		$log->user_id = Auth::user()->id;
+
+		$asset = Asset::find($id);
+
+		if($asset->delete()){
+			$log->save();
+		}
+	}
+
+	public function addType(Request $request)
+	{
+		if($request->ajax()) {
+			$type = new AssetType;
+			$type->name = $request->input('name');
+			$type->save();
+
+			$type = DB::table('asset_types')->orderBy('created_at', 'desc')->first();
+
+		    $reply['name'] = $type->name; 
+		    $reply['id'] = $type->id;
+		    
+		    echo json_encode($reply);
+		}		
+	}
+
+
+	/**
+	 * Show the form for searching for assets.
+	 *
+	 * @return Response
+	 */
+	public function search(Request $request)
+	{
+		$types = AssetType::all();
+		return view("assets.search",compact('types'));
+	}
+
+	/**
+	 * Search database for assets.
+	 *
+	 * @return Response
+	 */
+	public function searchAssets(Request $request)
+	{
+         if($request->ajax())
+         {           
+            $name = $request->input('name');
+            $serialno  = $request->input('serialno');
+            $location = $request->input('location');
+            $manufacturer= $request->input('manufacturer');
+            $assettype_id= $request->input('type');
+
+            //file_put_contents("/home/eman/" . "www.html", $name." ".$serialno." ".$location." ". $manufacturer." ".$assettype_id);
+
+            if ( !$name && !$serialno && !$location && !$manufacturer && !$assettype_id ) 
+            {
+            	$assets = Asset::all(); 
+            	return view("assets.searchAssets",compact('assets'));           	
+            }
+
+            // $assets =Asset::where('name', 'like', '%'.$name.'%')
+            //    				->where('serialno', 'like', '%'.$serialno.'%')
+            //           		->where('location', 'like', '%'.$location.'%')
+            //           		->where('manufacturer', 'like', '%'.$manufacturer.'%')
+            //           		->where('assettype_id', $assettype_id)
+           	// 				->get();
+
+            $assets =Asset::where('name', 'like', '%'.$name.'%');
+            $assets=$assets->get();
+            
+
+                			
+
+
+           	return view("assets.searchAssets",compact('assets'));  
+            
+         }
+
 	}
 	/**
 	 *This function is to select all assets to add assets to ticket
@@ -152,3 +252,4 @@ class AssetsController extends Controller {
 	}
 		
 }
+
