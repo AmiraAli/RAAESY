@@ -9,21 +9,36 @@
 
   
 	{!! Form::open(array('class' => 'form-inline', 'method' => 'POST', 'route' => array('articles.store'))) !!}
-	<div class="form-group">
+	
+     @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+       @endif
+
+   <br/>
+
+    <div class="form-group">
         {!! Form::label('SUBJECT', 'SUBJECT:') !!}
-        {!! Form::text('subject',null,['class'=>'form-control']) !!}
+
+        {!! Form::text('subject',old('subject'),['class'=>'form-control']) !!}
     </div>
     <br/>
     <div class="form-group">
         {!! Form::label('BODY', 'BODY:') !!}
-        {!! Form::textarea('body',null,['class'=>'jqte-test']) !!}
+        {!! Form::textarea('body',old('body'),['class'=>'jqte-test']) !!}
     </div>
     <br/>
 
 
     <div class="form-group">
     	{!! Form::label('IS SHOW', 'IS SHOW:') !!}
-    	{!! Form::checkbox('isshow', 'value', true) !!}
+    	{!! Form::checkbox('isshow', 'value', old('isshow')) !!}
     <div class="form-group">
     <br/>
 
@@ -34,7 +49,11 @@
 	    <optgroup label=" {{ $section->name }} " >
 		    @foreach ($categories as $category)
 		    	@if ($category->section_id === $section->id )
-		    		<option value="{{ $category->id }}" > {{ $category->name }}</option>
+                    @if(old('category') === $category->id)
+                    <option value="{{ $category->id }}" selected="true"> {{ $category->name }}</option>
+                  @else
+                    <option value="{{ $category->id }}"> {{ $category->name }}</option>   
+                  @endif 
 		    	@endif
 			@endforeach
 		</optgroup>

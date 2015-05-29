@@ -11,6 +11,7 @@ use Auth;
 use Request;
 use Input;
 use Editor;
+use Validator;
 
 class ArticlesController extends Controller {
 
@@ -48,6 +49,20 @@ class ArticlesController extends Controller {
 	public function store()
 	{
 		//
+
+		$v = Validator::make(Request::all(), [
+        'subject' => 'required|max:255|unique:articles',
+        'body' => 'required',
+        #'isshow' => 'required',
+        #'category' => 'required',
+        ]);
+        $subject=Request::get('subject');
+
+	    if ($v->fails())
+	    {
+	        return redirect()->back()->withErrors($v->errors())
+	        						 ->withInput();
+	    }else{
 		
 	    $article = new Article;
 	    $article->subject=Request::get('subject');
@@ -66,15 +81,11 @@ class ArticlesController extends Controller {
 
 	    $catId=Request::get('category');
 	    $article->category_id=$catId;
-
-	    // $input = Input::get(Editor::input());
-	    // $content = Editor::content($input);
-	    // $article->body=$content;
-
 	    $article->body= Request::get('body');
 
 	    $article->save();
 	    return redirect('articles');
+	  }
 	}
 
 	/**
@@ -113,29 +124,39 @@ class ArticlesController extends Controller {
 	 */
 	public function update($id)
 	{
-		//
-		//$article = new Article;
-		$article=Article::find($id);
-	    $article->subject=Request::get('subject');
-	    $article->body=Request::get('body');
-	    #$article->category_id=1;
-	    $article->user_id=1;
-	    $isshow=Request::get('isshow');
-	    if($isshow==null){
 
-	    	$valueOfisshow=1;
+	    $v = Validator::make(Request::all(), [
+        'subject' => 'required|max:255',
+        'body' => 'required',
+        #'isshow' => 'required',
+        #'category' => 'required',
+        ]);
+        $subject=Request::get('subject');
+
+	    if ($v->fails())
+	    {
+	        return redirect()->back()->withErrors($v->errors())
+	        						 ->withInput();
 	    }else{
+		
+			$article=Article::find($id);
+		    $article->subject=Request::get('subject');
+		    $article->body=Request::get('body');
+		    $isshow=Request::get('isshow');
+		    if($isshow==null){
 
-	    	$valueOfisshow=0;
-	    }
-	    $article->isshow=$valueOfisshow;
+		    	$valueOfisshow=1;
+		    }else{
 
-	    $catId=Request::get('category');
-	   # $category=Category::where('name',$catName);
-	    #$catId=$category->id;
-	    $article->category_id=$catId;
-	    $article->save();
-	    return redirect('articles');
+		    	$valueOfisshow=0;
+		    }
+		    $article->isshow=$valueOfisshow;
+
+		    $catId=Request::get('category');
+		    $article->category_id=$catId;
+		    $article->save();
+		    return redirect('articles');
+    	}
 	}
 
 	/**
