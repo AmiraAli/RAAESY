@@ -44,12 +44,12 @@ hiiiiiii sort
 			   		<td>{{ $ticket->file }}</td>
 			   		<td>{{ $ticket->priority }}</td>
 			   		<td>
-			   		<a href="#"  data-toggle="popover" data-trigger="focus" 
+			   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
 			   		data-content=
 			   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>
 			   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>
 			   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
-			   		>Click me</a>
+			   		></a>
 			   		</td>
 			   </tr>
 		  @endforeach
