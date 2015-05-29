@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 // use Illuminate\Http\Request;
 use Request;
 use DB;
-
+use Auth;
 use App\AssetType;
 use App\User;
 use App\Asset;
-use App\Tag;
+use App\Log;
 
 class AssetsController extends Controller {
 
@@ -52,6 +52,7 @@ class AssetsController extends Controller {
 		$asset->comment = Request::get('comment');
 		$asset->assettype_id = Request::get('assettype_id');
 		$asset->user_id = Request::get('user_id');
+		$asset->admin_id = Auth::user()->id;
 		$asset->manufacturer = Request::get('manufacturer');
 		
 		$asset->save();
@@ -117,11 +118,17 @@ class AssetsController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		$tag = new Tag;
+		$log = new Log;
+		$log->type_id = $id;
+		$log->action = 'delete';
+		$log->type = 'asset';
+		$log->user_id = Auth::user()->id;
 
 		$asset = Asset::find($id);
 
-		$asset->delete();
+		if($asset->delete()){
+			$log->save();
+		}
 	}
 
 	public function addType()
@@ -137,9 +144,6 @@ class AssetsController extends Controller {
 		    $reply['id'] = $type->id;
 		    
 		    echo json_encode($reply);
-		}
-		
-		
+		}		
 	}
-
 }

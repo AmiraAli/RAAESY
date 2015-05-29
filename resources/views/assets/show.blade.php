@@ -1,8 +1,10 @@
 @extends('app')
 
 @section('content')
-	
-		<h2>Model :</h2>
+
+
+<div class="container">
+	<h2>Model :</h2>
 			{{ $asset->name }}
 		<h2>Manufacturer :</h2>
 			{{ $asset->manufacturer }}
@@ -16,6 +18,14 @@
 			{{ $asset->location }}
 	
 	<h2>related articles</h2>
+
+
+	<ul>
+		 @foreach ($asset->tickets as $ticket)
+			<li>{{ $ticket->description }}</li>
+		@endforeach
+	</ul>
+	</div>
 
 
 @endsection

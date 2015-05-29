@@ -54,8 +54,7 @@
             });
             };
 
-		function deleteAsset(id){
-			alert("aaa");  
+		function deleteAsset(id){ 
 			//ajax request
 		   $.ajax({
 			    url: '/assets/'+id,
