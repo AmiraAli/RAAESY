@@ -147,7 +147,7 @@ class AssetsController extends Controller {
 
 	public function addType(Request $request)
 	{
-		if(Request::ajax()) {
+		if($request->ajax()) {
 			$type = new AssetType;
 			$type->name = $request->input('name');
 			$type->save();
@@ -167,7 +167,7 @@ class AssetsController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function search()
+	public function search(Request $request)
 	{
 		$types = AssetType::all();
 		return view("assets.search",compact('types'));
@@ -178,15 +178,15 @@ class AssetsController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function searchAssets()
+	public function searchAssets(Request $request)
 	{
-         if(Request::ajax())
+         if($request->ajax())
          {           
-            $name = Request::input('name');
-            $serialno  = Request::input('serialno');
-            $location = Request::input('location');
-            $manufacturer= Request::input('manufacturer');
-            $assettype_id= Request::input('type');
+            $name = $request->input('name');
+            $serialno  = $request->input('serialno');
+            $location = $request->input('location');
+            $manufacturer= $request->input('manufacturer');
+            $assettype_id= $request->input('type');
 
             //file_put_contents("/home/eman/" . "www.html", $name." ".$serialno." ".$location." ". $manufacturer." ".$assettype_id);
 
