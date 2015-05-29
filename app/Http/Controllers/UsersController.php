@@ -107,4 +107,38 @@ class UsersController extends Controller {
 		//return redirect('/users');
 	}
 
-}
+
+
+	/**
+	 * Select specific users from storage ( called by AJAX).
+	 *
+	 * @param  string  $type
+	 * @return Response
+	 */
+
+	public function get_user_types()
+	{
+
+		$type = Request::get('type');
+		if ($type== "all"){
+			
+			$selectedUsers =User::all();
+
+		}elseif ($type== "disabled") {
+			
+			$selectedUsers =User::where('isspam', 1)->get();
+
+		}else{
+			$selectedUsers =User::where('type',$type )->get();	
+		}
+		
+		return json_encode($selectedUsers);
+
+
+
+
+
+	}
+
+
+}	

@@ -145,5 +145,22 @@ class ArticlesController extends Controller {
    		#return redirect('articles');
 
 	}
+	public function autocomplete(){
+		$term = Input::get('term');
+		
+		$results = array();
+		
+		$queries = DB::table('articles')
+			->where('subject', 'LIKE', '%'.$term.'%')
+			->take(5)->get();
+		
+		foreach ($queries as $query)
+		{
+		    $results[] = [ 'id' => $query->id, 'value' => $query->subject.' '];
+		}
+		return Response::json($results);
+    }
+
+
 
 }

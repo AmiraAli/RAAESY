@@ -3,6 +3,7 @@
 use App\User;
 use Validator;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
+use Mail;
 
 class Registrar implements RegistrarContract {
 
@@ -32,7 +33,7 @@ class Registrar implements RegistrarContract {
 	 */
 	public function create(array $data)
 	{
-		return User::create([
+		$user = User::create([
 			'fname' => $data['fname'],
 			'lname' => $data['lname'],
 			'email' => $data['email'],
@@ -40,6 +41,16 @@ class Registrar implements RegistrarContract {
 			'phone' => $data['phone'],
 			'location' => $data['location'],
 		]);
+		$data['verification_code']  = $user->verification_code;
+
+		//Session::put('email', $data['email']);
+		Mail::send('emails.welcome', $data, function($message) use ($data)
+            {
+                $message->from('yoyo80884@gmail.com', "Site name");
+                $message->subject("Welcome to site name");
+                $message->to($data['email']);
+            });
+		return $user;
 	}
 
 }

@@ -95,6 +95,7 @@ class AssetsController extends Controller {
 	 */
 	public function update($id)
 	{
+		
 		$asset = Asset::find($id);
 
 		$asset->name = Request::get('name');
@@ -146,4 +147,61 @@ class AssetsController extends Controller {
 		    echo json_encode($reply);
 		}		
 	}
+
+
+	/**
+	 * Show the form for searching for assets.
+	 *
+	 * @return Response
+	 */
+	public function search()
+	{
+		$types = AssetType::all();
+		return view("assets.search",compact('types'));
+	}
+
+	/**
+	 * Search database for assets.
+	 *
+	 * @return Response
+	 */
+	public function searchAssets()
+	{
+         if(Request::ajax())
+         {           
+            $name = Request::input('name');
+            $serialno  = Request::input('serialno');
+            $location = Request::input('location');
+            $manufacturer= Request::input('manufacturer');
+            $assettype_id= Request::input('type');
+
+            //file_put_contents("/home/eman/" . "www.html", $name." ".$serialno." ".$location." ". $manufacturer." ".$assettype_id);
+
+            if ( !$name && !$serialno && !$location && !$manufacturer && !$assettype_id ) 
+            {
+            	$assets = Asset::all(); 
+            	return view("assets.searchAssets",compact('assets'));           	
+            }
+
+            // $assets =Asset::where('name', 'like', '%'.$name.'%')
+            //    				->where('serialno', 'like', '%'.$serialno.'%')
+            //           		->where('location', 'like', '%'.$location.'%')
+            //           		->where('manufacturer', 'like', '%'.$manufacturer.'%')
+            //           		->where('assettype_id', $assettype_id)
+           	// 				->get();
+
+            $assets =Asset::where('name', 'like', '%'.$name.'%');
+            $assets=$assets->get();
+            
+
+                			
+
+
+           	return view("assets.searchAssets",compact('assets'));  
+            
+         }
+
+	}
+
 }
+

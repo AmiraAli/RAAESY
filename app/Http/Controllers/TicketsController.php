@@ -11,6 +11,7 @@ use App\Ticket;
 use App\Category;
 use App\Section;
 use App\User;
+use App\Tag;
 
 class TicketsController extends Controller {
 
@@ -165,6 +166,21 @@ class TicketsController extends Controller {
 	      $subject->name=$data;
 	      $subject->save();
 	      print_r($subject->id);
+	    }
+	}
+
+	/**
+	* Function to get all tags by autocomplete
+	**/
+	public function getTags()
+	{
+		// Getting post data
+	    if(Request::ajax()) {
+	      // $data = Input::all();
+	      $data = Request::input('q');
+	      $tags=Tag::select('name')->where('name','like',"%".$data.'%')->get();
+	      // file_put_contents("/home/amira/test.html", $tags);
+	      echo json_encode($tags);
 	    }
 	}
 	
