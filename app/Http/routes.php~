@@ -21,7 +21,8 @@ Route::get('users/destroy/{id}','UsersController@destroy');
 Route::resource('/tickets','TicketsController');
 
 Route::post('/tickets/updatestatus','TicketsController@updatestatus');
-
+Route::post('/tickets/takeover','TicketsController@takeover');
+Route::post('/tickets/save','TicketsController@Save');
 Route::post('tickets/addSubject', 'TicketsController@addSubject');
 
 
@@ -33,6 +34,8 @@ Route::resource('/articles','ArticlesController');
 
 
 Route::resource('/assets', 'AssetsController');
+Route::post('/assets/addasset', 'AssetsController@AddAssets');
+Route::post('/assets/saveassets/', 'AssetsController@SaveAssets');
 
 Route::get('/', 'WelcomeController@index');
 

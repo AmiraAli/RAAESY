@@ -4,31 +4,40 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model {
 
-	 public function subject()
+		 public function subject()
 	    {
-	        return $this->belongsTo('App\Subject');
+		return $this->belongsTo('App\Subject');
 	    }
-	 public function category()
+		 public function category()
 	    {
-	        return $this->belongsTo('App\Category');
+		return $this->belongsTo('App\Category');
 	    }
-	 public function user()
+		 public function user()
 	    {
-	        return $this->belongsTo('App\User');
+		return $this->belongsTo('App\User','user_id','id');
+	    }
+		 public function tech()
+	    {
+
+		return $this->belongsTo('App\User', 'tech_id', 'id');
 	    }
 
-	public function comments()
-    {
-        return $this->hasMany('App\Comment');
-    }
-	public function TicketTags()
-    {
-        return $this->belongsToMany('App\Tag','ticket_tags');
-    }
+		public function comments()
+	    {
+		return $this->hasMany('App\Comment');
+	    }
+		public function TicketTags()
+	    {
+		return $this->belongsToMany('App\Tag','ticket_tags');
+	    }
 
-	public function TicketAssets()
-    {
-        return $this->belongsToMany('App\Asset','ticket_assets');
-    }
+		public function TicketAssets()
+	    {
+		return $this->belongsToMany('App\Asset','ticket_assets');
+	    }
+
+
+
+
 
 }
