@@ -11,6 +11,9 @@
 |
 */
 
+Route::get('search/autocomplete', 'ArticlesController@autocomplete');
+
+
 Route::resource('/categories','CategoriesController');
 Route::resource('/sections','SectionsController');
 
@@ -21,8 +24,10 @@ Route::post('users/autocomplete','UsersController@autocomplete');
 
 
 
+
 Route::resource('/tickets','TicketsController');
 Route::post('tickets/addSubject', 'TicketsController@addSubject');
+Route::post('tickets/getTags', 'TicketsController@getTags');
 
 
 Route::resource('tickets.comments', 'CommentsController');
