@@ -44,31 +44,12 @@ hiiiiiii sort
 			   		<td>{{ $ticket->file }}</td>
 			   		<td>{{ $ticket->priority }}</td>
 			   		<td>
-			   			<!-- Trigger the modal with a button -->
-  					<a  data-toggle="modal" data-target="#myModal">action</a>
-					  <!-- Modal -->
-					  <div class="modal fade" id="myModal" role="dialog">
-					    <div class="modal-dialog">
-					      <!-- Modal content-->
-					      <div class="modal-content">
-					        <div class="modal-header">
-					          <button type="button" class="close" data-dismiss="modal">&times;</button>
-					          <h4 class="modal-title">Actions</h4>
-					        </div>
-					        <div class="modal-body">
-					          <ul>
-					          <li><a href="/tickets/{{ $ticket->id }} ">Show</a></li>
-					          <li><a href="/tickets/{{ $ticket->id }}/edit">Edit</a></li>
-					          <li><a onclick="Delete({{ $ticket->id }})" data-dismiss="modal">Delete</a></li>
-					          </ul>
-					        </div>
-					        <div class="modal-footer">
-					          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					        </div>
-					      </div>
-					      
-					    </div>
-					  </div>
+			   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+			   		data-content=
+			   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>
+			   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>
+			   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
+			   		></a>
 			   		</td>
 			   </tr>
 		  @endforeach
@@ -78,5 +59,8 @@ hiiiiiii sort
 </div>
 </div>
 </div>
- <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/js/tickets_index.js"></script>
 @endsection

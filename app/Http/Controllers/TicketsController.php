@@ -1,12 +1,12 @@
 <?php namespace App\Http\Controllers;
 
-//use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Input;
 use Auth;
 use DB;
-use Request;
+//use Request;
 use App\Subject;
 use App\Ticket;
 use App\Category;
@@ -55,29 +55,33 @@ class TicketsController extends Controller {
 	 *
 	 * @return Response
 	 */
-	//Request $request
-	public function store()
+	public function store(Request $request)
 	{
-		#$this->validate($request,['description'=>'required','file'=>'required']);
+		$this->validate($request, [
+	        'description' => 'required',
+	        'file' => 'required',
+	        'subject' =>'required',
+	        'category'=>'required'
+    	]);
 
 		$ticket= new Ticket;
-		$ticket->description=Request::get('description');
-		$ticket->file=Request::get('file');
-		$ticket->category_id=Request::get('category');
-		$ticket->subject_id=Request::get('subject');
+		$ticket->description=$request->get('description');
+		$ticket->file=$request->get('file');
+		$ticket->category_id=$request->get('category');
+		$ticket->subject_id=$request->get('subject');
 		$ticket->user_id=Auth::user()->id;
 
 		if(Auth::user()->type === "admin")
 		{
-			$ticket->priority=Request::get('priority');
-			$ticket->deadline=Request::get('deadline');
-			$ticket->tech_id=Request::get('tech');
-			$ticket->admin_id=Auth::user()->id;
+			$ticket->priority=$request->get('priority');
+			$ticket->deadline=$request->get('deadline');
+			$ticket->tech_id=$request->get('tech');
+			$ticket->admin_id=$request->user()->id;
 
 			$ticket->save();
 
 			//insert into table ticket_tags each tag of this ticket
-				$tags=Request::get('tagValues');
+				$tags=$request->get('tagValues');
 				if( $tags != ""){
 					$tags_array=explode(",",$tags);
 					for($i=0;$i<count($tags_array);$i++){
@@ -142,26 +146,34 @@ class TicketsController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id,Request $request)
 	{
+
+		$this->validate($request, [
+	        'description' => 'required',
+	        'file' => 'required',
+	        'subject' =>'required',
+	        'category'=>'required'
+    	]);
+
 		$ticket=  Ticket::find($id);
-		$ticket->description=Request::get('description');
-		$ticket->priority=Request::get('priority');
-		$ticket->file=Request::get('file');
-		$ticket->category_id=Request::get('category');
-		$ticket->subject_id=Request::get('subject');
+		$ticket->description=$request->get('description');
+		$ticket->priority=$request->get('priority');
+		$ticket->file=$request->get('file');
+		$ticket->category_id=$request->get('category');
+		$ticket->subject_id=$request->get('subject');
 		$ticket->user_id=Auth::user()->id;
 		if(Auth::user()->type === "admin")
 		{
-			$ticket->priority=Request::get('priority');
-			$ticket->deadline=Request::get('deadline');
-			$ticket->tech_id=Request::get('tech');
+			$ticket->priority=$request->get('priority');
+			$ticket->deadline=$request->get('deadline');
+			$ticket->tech_id=$request->get('tech');
 			$ticket->admin_id=Auth::user()->id;
 
 			$ticket->save();
 
 			// check if tags of ticket is changed or not
-			$tags=Request::get('tagValues');
+			$tags=$request->get('tagValues');
 			if( $tags != ""){
 
 				// remove all prev tags
@@ -207,9 +219,9 @@ class TicketsController extends Controller {
 	public function addSubject()
 	{
 		// Getting post data
-	    if(Request::ajax()) {
+	    if($request->ajax()) {
 	      // $data = Input::all();
-	      $data = Request::input('newsubj');
+	      $data = $request->input('newsubj');
 	      $subject= new Subject;
 	      $subject->name=$data;
 	      $subject->save();
@@ -223,9 +235,9 @@ class TicketsController extends Controller {
 	public function getTags()
 	{
 		// Getting post data
-	    if(Request::ajax()) {
+	    if($request->ajax()) {
 	      // $data = Input::all();
-	      $data = Request::input('q');
+	      $data = $request->input('q');
 	      $tags=Tag::select('name')->where('name','like',"%".$data.'%')->get();
 	      // file_put_contents("/home/amira/test.html", $tags);
 	      echo json_encode($tags);
