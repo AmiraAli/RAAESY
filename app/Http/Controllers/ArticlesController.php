@@ -9,6 +9,8 @@ use App\Category;
 use App\Section;
 use Auth;
 use Request;
+use Input;
+use Editor;
 
 class ArticlesController extends Controller {
 
@@ -62,11 +64,9 @@ class ArticlesController extends Controller {
 	    $article->isshow=$valueOfisshow;
 
 	    $catId=Request::get('category');
-
-	   # $category=Category::where('name',$catName);
-	    #$catId=$category->id;
 	    $article->category_id=$catId;
-	    $article->body=Request::get('body');
+	    $input = Input::get(Editor::input());
+	    $article->body=$input;
 	    $article->save();
 	    return redirect('articles');
 	}
