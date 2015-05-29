@@ -142,3 +142,16 @@ function submit_tags () {
 	var tags_field=document.getElementById("tagValues");
 	tags_field.value=tags_array.toString();
 }
+
+/**
+* text editor jquery
+**/
+$('.jqte-test').jqte();
+	
+	// settings of status
+	var jqteStatus = true;
+	$(".status").click(function()
+	{
+		jqteStatus = jqteStatus ? false : true;
+		$('.jqte-test').jqte({"status" : jqteStatus})
+	});
