@@ -46,6 +46,14 @@ function submit_subject () {
 }
 
 /**
+*function to cancel new subject form 
+**/
+function cancel_subject () {
+	document.getElementById("subject_select").style.visibility = "visible";
+	document.getElementById("subject_new").style.visibility = "hidden";
+}
+
+/**
 * global array of tags selected 
 **/
 var tags_array = new Array();

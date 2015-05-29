@@ -13,7 +13,7 @@
 			<div class="panel-heading"> <strong>New ticket</strong> </div>
 			<div class="panel-body">
 			 {!! Form::open(['route'=>'tickets.store','method'=>'post']) !!}
-
+			  <div class="row">
 				<div class="form-group col-md-6">
 					<label class="col-md-4 control-label">Subject</label>
 				    <select class="form-control" name="subject" id="subject_select">
@@ -21,18 +21,25 @@
 					    	<option value="{{ $subject->id }}"> {{ $subject->name }}</option>
 						@endforeach
 					</select>
+				</div>
+				<div class="col-md-6">
 					<a class="col-md-4" onclick="add_new_subject()">Add New</a>
-					<div class="row"  id="subject_new" style="visibility:hidden;">
-						<input type="text" class="form-control col-md-2" id="new_subjvalue"/>
-						<a class="btn btn-primary col-md-2" onclick="submit_subject()"> add</a>
+					<div class="col-md-offset-2"  id="subject_new" style="visibility:hidden;">
+						<input type="text" class="form-control col-md-1" id="new_subjvalue"/>
+						<a class="btn btn-primary col-md-3" onclick="submit_subject()">Add</a>
+						<a class="btn btn-primary col-md-3" onclick="cancel_subject()">Cancel</a>
 					</div>
 				</div>
+			   </div>
 
-				<div class="form-group">
-					<textarea class="jqte-test" rows="3" name="description"></textarea>
+			   <div class="row">
+				<div class="form-group col-md-12">
+					<textarea class="jqte-test"  name="description"></textarea>
+				 </div>
 				</div>
 
-				<div class="form-group col-md-6">
+				<div class="row">
+				 <div class="form-group col-md-6">
 					<label class="col-md-4 control-label">Category</label>
 				    <select class="form-control" name="category">
 				    @foreach ($sections as $section)
@@ -45,9 +52,11 @@
 					</optgroup>
 					@endforeach
 					</select>
+				 </div>
 				</div>
 
 				@if (Auth::user()->type === "admin")
+				<div class="row">
 					<div class="form-group col-md-6">
 						<label class="col-md-4 control-label">Priority</label>
 					    <select class="form-control" name="priority">
@@ -74,20 +83,31 @@
 						<input type="text" id="search" class="form-control">
 					</div>
 					<input type="hidden" name="tagValues" id="tagValues">
+				</div>
 				@endif
 
-			    <div class ="form-group">
-				    <label >Attach File</label>
-				    <input type="file" name="file">
+				<div class="row col-md-offset-1">
+				    <div class ="form-group">
+					    <label >Attach File</label>
+					    <input type="file" name="file">
+				    </div>
 			    </div>
-
-			    <div class="col-md-6 col-md-offset-4">
-			    	<button type="submit" class="btn btn-primary">Submit</button>
+			    <div class="row">
+				    <div class="col-md-6 col-md-offset-4">
+				    	<button type="submit" class="btn btn-primary">Submit</button>
+				    </div>
 			    </div>
 
 			  {!! Form::close() !!}
 			 </div>
 		   </div>
+			   @if($errors->any())
+				<ul class="alert alert-danger">
+				@foreach($errors as $error)
+					<li> {{ $errors }} </li>
+				@endforeach
+				</ul>
+				@endif
 		 </div>
 		</div>
 	</div>

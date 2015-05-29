@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+//use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Input;
@@ -54,8 +55,11 @@ class TicketsController extends Controller {
 	 *
 	 * @return Response
 	 */
+	//Request $request
 	public function store()
 	{
+		#$this->validate($request,['description'=>'required','file'=>'required']);
+
 		$ticket= new Ticket;
 		$ticket->description=Request::get('description');
 		$ticket->file=Request::get('file');
@@ -73,14 +77,16 @@ class TicketsController extends Controller {
 			$ticket->save();
 
 			//insert into table ticket_tags each tag of this ticket
-			$tags=Request::get('tagValues');
-			$tags_array=explode(",",$tags);
-			for($i=0;$i<count($tags_array);$i++){
-				$tag=Tag::where('name',$tags_array[$i])->first();
-				$ticketTag=new TicketTag;
-				$ticketTag->tag_id=$tag->id;
-				$ticketTag->ticket_id=$ticket->id;
-				$ticketTag->save();
+				$tags=Request::get('tagValues');
+				if( $tags != ""){
+					$tags_array=explode(",",$tags);
+					for($i=0;$i<count($tags_array);$i++){
+						$tag=Tag::where('name',$tags_array[$i])->first();
+						$ticketTag=new TicketTag;
+						$ticketTag->tag_id=$tag->id;
+						$ticketTag->ticket_id=$ticket->id;
+						$ticketTag->save();
+					}
 			}
 
 		}else{
@@ -157,7 +163,7 @@ class TicketsController extends Controller {
 			// check if tags of ticket is changed or not
 			$tags=Request::get('tagValues');
 			if( $tags != ""){
-				
+
 				// remove all prev tags
 				$prevTicketTags=TicketTag::where('ticket_id',$id);
 				$prevTicketTags->delete();

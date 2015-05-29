@@ -1,15 +1,19 @@
+
 @if (Auth::check())
 	@extends('app')
 	@section('content')
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">	<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
+<link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">
+<link type="text/css" rel="stylesheet" href="/css/jquery-te-1.4.0.css">	
+<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 	<div class="container-fluid">
 	<div class="row">
 	 <div class="col-md-8 col-md-offset-2">
 		<div class="panel panel-danger">
-			<div class="panel-heading"> <strong>Edit ticket</strong> </div>
+			<div class="panel-heading"> <strong>New ticket</strong> </div>
 			<div class="panel-body">
- 				{!! Form::open(['route'=>['tickets.update',$ticket->id],'method'=>'put']) !!}
+			 {!! Form::open(['route'=>['tickets.update',$ticket->id],'method'=>'put']) !!}
+			  <div class="row">
 				<div class="form-group col-md-6">
 					<label class="col-md-4 control-label">Subject</label>
 				    <select class="form-control" name="subject" id="subject_select">
@@ -21,18 +25,25 @@
 							@endif
 						@endforeach
 					</select>
+				</div>
+				<div class="col-md-6">
 					<a class="col-md-4" onclick="add_new_subject()">Add New</a>
-					<div class="row"  id="subject_new" style="visibility:hidden;">
-						<input type="text" class="form-control col-md-2" id="new_subjvalue"/>
-						<a class="btn btn-primary col-md-2" onclick="submit_subject()"> add</a>
+					<div class="col-md-offset-2"  id="subject_new" style="visibility:hidden;">
+						<input type="text" class="form-control col-md-1" id="new_subjvalue"/>
+						<a class="btn btn-primary col-md-3" onclick="submit_subject()">Add</a>
+						<a class="btn btn-primary col-md-3" onclick="cancel_subject()">Cancel</a>
 					</div>
 				</div>
+			   </div>
 
-				<div class="form-group">
-					<textarea class="form-control" rows="3" name="description">{{ $ticket->description }}</textarea>
+			   <div class="row">
+				<div class="form-group col-md-12">
+					<textarea class="jqte-test"  name="description">{!! $ticket->description !!}</textarea>
+				 </div>
 				</div>
 
-				<div class="form-group col-md-6">
+				<div class="row">
+				 <div class="form-group col-md-6">
 					<label class="col-md-4 control-label">Category</label>
 				    <select class="form-control" name="category">
 				    @foreach ($sections as $section)
@@ -49,9 +60,11 @@
 					</optgroup>
 					@endforeach
 					</select>
+				 </div>
 				</div>
 
 				@if (Auth::user()->type === "admin")
+				<div class="row">
 					<div class="form-group col-md-6">
 						<label class="col-md-4 control-label">Priority</label>
 					    <select class="form-control" name="priority">
@@ -80,7 +93,11 @@
 						<label class="col-md-4 control-label">Assign</label>
 					    <select class="form-control" name="tech">
 						    @foreach ($users as $user)
-						    	<option value="{{ $user->id }}"> {{ $user->fname }}</option>
+						    	@if ($ticket->tech_id == $user->id)
+						    		<option value="{{ $user->id }}" selected="true"> {{ $user->fname }}</option>
+						    	@else
+						    		<option value="{{ $user->id }}"> {{ $user->fname }}</option>
+						    	@endif
 							@endforeach
 						</select>
 					</div>
@@ -90,15 +107,19 @@
 						<input type="text" id="search" class="form-control">
 					</div>
 					<input type="hidden" name="tagValues" id="tagValues">
+				</div>
 				@endif
 
-			    <div class ="form-group">
-				    <label >Attach File</label>
-				    <input type="file" name="file">
+				<div class="row col-md-offset-1">
+				    <div class ="form-group">
+					    <label >Attach File</label>
+					    <input type="file" name="file">
+				    </div>
 			    </div>
-
-			    <div class="col-md-6 col-md-offset-4">
-			    	<button type="submit" class="btn btn-primary">Submit</button>
+			    <div class="row">
+				    <div class="col-md-6 col-md-offset-4">
+				    	<button type="submit" class="btn btn-primary">Submit</button>
+				    </div>
 			    </div>
 
 			  {!! Form::close() !!}
@@ -109,6 +130,8 @@
 	</div>
  <script src="/js/jquery-2.1.3.js" type="text/javascript"> </script> 
  <script async src="//code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
+ <script type="text/javascript" src="/js/jquery-te-1.4.0.min.js"></script>
  <script type="text/javascript" src="/js/ticket_form.js"></script>
 	@endsection
 @endif
+
