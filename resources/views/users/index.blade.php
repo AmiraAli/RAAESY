@@ -78,16 +78,24 @@ Show:
 
 <td>
 
-<a href="/users/{{$user->id}}">show</a>
-<a href="/users/{{$user->id}}/edit">edit</a>
-<a href="#"class="delete" id="{{$user->id}}" onclick="Delete({{$user->id}})">delete</a>
+<a class="btn btn-primary" href="/users/{{$user->id}}">show</a>
+<a class="btn btn-primary" href="/users/{{$user->id}}/edit">edit</a>
+<a class="btn btn-primary delete" href="#"  id="{{$user->id}}" onclick="Delete({{$user->id}})">delete</a>
 </td>
 
 </tr>
 @endforeach
 </tbody>
 </table>
+<a class="btn btn-primary" href="/users/create" >Create new user</a>
+
+
+
+{!! captcha_img('flat'); !!}
+
+
 </div>
+
 @stop
 
 </body>

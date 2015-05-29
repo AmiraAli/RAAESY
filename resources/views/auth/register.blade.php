@@ -76,6 +76,18 @@
 						</div>
 
 						<div class="form-group">
+
+							<label class="col-md-4 control-label">Enter the word:</label>
+							<div class="col-md-6">
+								{!! captcha_img('flat'); !!}
+								<br><br>
+								<input type="text"  class="form-control" name="captcha">
+							</div>
+						</div>
+						
+
+
+						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn btn-primary">
 									Register

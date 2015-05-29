@@ -146,6 +146,10 @@ return [
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
 
+		//captcha
+		'Mews\Captcha\CaptchaServiceProvider',
+
+
 	],
 
 	/*
@@ -195,6 +199,9 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 		'Form'      => 'Illuminate\Html\FormFacade',
 		'Html'      => 'Illuminate\Html\HtmlFacade',
+
+		//captcha
+		'Captcha' => 'Mews\Captcha\Facades\Captcha',
 
 
 	],
