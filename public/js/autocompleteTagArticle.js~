@@ -1,0 +1,25 @@
+
+$(function() {
+   $( "#new-projects" ).load( "data.php" , function( response, status, xhr){
+        var obj = JSON.parse(response);
+        $( "#tags" ).autocomplete({
+            source: obj
+        }); 
+        
+       $( "#new-projects" ).text("");
+       }); 
+        
+       /* $.ajax({
+            type: "GET",
+            url: "data.php",
+            contenttype: 'json',
+            success: function (data) {
+                $("#tags").autocomplete({
+                    source: JSON.parse(data)
+                });
+            }
+        });*/
+   
+    
+    
+  });

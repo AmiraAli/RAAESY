@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 use Auth;
+use Mail;
 class HomeController extends Controller {
 
 	/*
@@ -31,9 +32,22 @@ class HomeController extends Controller {
 	public function index()
 	{
 
-$id=Auth::user()->id;
-
+        $id=Auth::user()->id;
+        //$name=Auth::user()->fname;
+        // $email=Session::get('email');
+        // Mail::send('emails.welcome', array('name' => 'The New Topic'),   function($message){
+        // $message->to($email, 'The New Topic')->subject('Test Email');
+        // });
 		return view('home',compact('id'));
 	}
+
+	// public function home()
+ //    {
+ //        Mail::send('emails.password', array('name' => 'The New Topic'),   function($message){
+ //        $message->to('rababzein2012@gmail.com', 'The New Topic')->subject('Test Email');
+
+ //    });
+ //    return View::make('home');
+ //    }
 
 }
