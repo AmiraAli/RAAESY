@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3f7fd2fec0e5d88f6fef0e59e06ea626",
+    "hash": "52b23b6b2d2c275b59bf2809e6e236be",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -1212,12 +1212,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "2343f6d8026306bd330e0c987e4c102483c213e7"
+                "reference": "b5ec0c11a204718f2b656357f5505a8e578f30dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/2343f6d8026306bd330e0c987e4c102483c213e7",
-                "reference": "2343f6d8026306bd330e0c987e4c102483c213e7",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/b5ec0c11a204718f2b656357f5505a8e578f30dd",
+                "reference": "b5ec0c11a204718f2b656357f5505a8e578f30dd",
                 "shasum": ""
             },
             "require": {
@@ -1261,7 +1261,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2015-05-22 14:53:08"
+            "time": "2015-05-29 14:42:58"
         },
         {
             "name": "symfony/debug",
@@ -1803,12 +1803,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Translation.git",
-                "reference": "d030b3d8d9699795dbf8c59e915ef879007a4483"
+                "reference": "89cdf3c43bc24c85dd8173dfcf5a979a95e5bd9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Translation/zipball/d030b3d8d9699795dbf8c59e915ef879007a4483",
-                "reference": "d030b3d8d9699795dbf8c59e915ef879007a4483",
+                "url": "https://api.github.com/repos/symfony/Translation/zipball/89cdf3c43bc24c85dd8173dfcf5a979a95e5bd9c",
+                "reference": "89cdf3c43bc24c85dd8173dfcf5a979a95e5bd9c",
                 "shasum": ""
             },
             "require": {
@@ -1853,7 +1853,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2015-05-22 14:37:51"
+            "time": "2015-05-29 14:42:58"
         },
         {
             "name": "symfony/var-dumper",
@@ -1921,12 +1921,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "7b9f204cb4b8fa5cb06b2a9233324997c093f629"
+                "reference": "3487898a6af8c1d5b12f7b040d30e71b19e34923"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/7b9f204cb4b8fa5cb06b2a9233324997c093f629",
-                "reference": "7b9f204cb4b8fa5cb06b2a9233324997c093f629",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/3487898a6af8c1d5b12f7b040d30e71b19e34923",
+                "reference": "3487898a6af8c1d5b12f7b040d30e71b19e34923",
                 "shasum": ""
             },
             "replace": {
@@ -1964,20 +1964,20 @@
                 "responsive",
                 "web"
             ],
-            "time": "2015-05-03 02:06:59"
+            "time": "2015-05-26 22:15:15"
         },
         {
             "name": "vinelab/laravel-editor",
-            "version": "v1.0.3",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Vinelab/laravel-editor.git",
-                "reference": "36a1a9342b34bcd889982a7e16e7f48596b79db1"
+                "reference": "1da7c9b24bec78603a2445aeecfc18ece3e10d0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Vinelab/laravel-editor/zipball/36a1a9342b34bcd889982a7e16e7f48596b79db1",
-                "reference": "36a1a9342b34bcd889982a7e16e7f48596b79db1",
+                "url": "https://api.github.com/repos/Vinelab/laravel-editor/zipball/1da7c9b24bec78603a2445aeecfc18ece3e10d0a",
+                "reference": "1da7c9b24bec78603a2445aeecfc18ece3e10d0a",
                 "shasum": ""
             },
             "require": {
@@ -2006,7 +2006,7 @@
                 }
             ],
             "description": "Markdown Text Editor (WYSIWYG) with social network embeds support and a nifty json output.",
-            "time": "2015-03-19 19:26:14"
+            "time": "2015-05-11 20:53:30"
         },
         {
             "name": "vlucas/phpdotenv",

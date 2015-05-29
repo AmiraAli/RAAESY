@@ -9,14 +9,9 @@
 		"laravel/framework": "5.0.*",
 		"twbs/bootstrap": "~3.3",
 		"illuminate/html": "~5.0",
+		"mews/captcha": "~2.0",
+		"vinelab/laravel-editor": "*"
 
-		"vinelab/laravel-editor": "^1.0",
-		"mews/captcha": "~2.0"
-
-
-		"vinelab/laravel-editor": "*",
-
-		"vinelab/laravel-editor": "^1.0"
 
 
 	},

@@ -91,9 +91,6 @@ Show:
 
 
 
-{!! captcha_img('flat'); !!}
-
-
 </div>
 
 @stop

@@ -10,9 +10,9 @@
 @extends('app')
 
 @section('content')
-  <script type="text/javascript" src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+ <script type="text/javascript" src="//code.jquery.com/jquery-2.1.3.min.js"></script>
   
-    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+ <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
    
 	{!! Form::open(array('class' => 'form-inline', 'method' => 'POST', 'route' => array('articles.store'))) !!}
