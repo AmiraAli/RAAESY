@@ -66,7 +66,8 @@ class ArticlesController extends Controller {
 	    $catId=Request::get('category');
 	    $article->category_id=$catId;
 	    $input = Input::get(Editor::input());
-	    $article->body=$input;
+	    $content = Editor::content($input);
+	    $article->body=$content;
 	    $article->save();
 	    return redirect('articles');
 	}
