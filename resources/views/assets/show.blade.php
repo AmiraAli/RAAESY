@@ -4,18 +4,24 @@
 
 
 <div class="container">
-	<h2>Model :</h2>
+	<strong>Model :</strong>
 			{{ $asset->name }}
-		<h2>Manufacturer :</h2>
+			<br><br>
+		<strong>Manufacturer :</strong>
 			{{ $asset->manufacturer }}
-		<h2>Type :</h2>
+			<br><br>
+		<strong>Type :</strong>
 			{{ $asset->assettype->name }}
-		<h2>Serial Number :</h2>
+			<br><br>
+		<strong>Serial Number :</strong>
 			{{ $asset->serialno }}
-		<h2>Belongs To :</h2>
+			<br><br>
+		<strong>Belongs To :</strong>
 			{{ $asset->user->fname }} {{ $asset->user->lname }}
-		<h2>Location :</h2>
+			<br><br>
+		<strong>Location :</strong>
 			{{ $asset->location }}
+			<br><br>
 	
 	<h2>related articles</h2>
 

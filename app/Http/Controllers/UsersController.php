@@ -2,8 +2,6 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-//use Illuminate\Http\Request;
 use App\User;
 use Request;
 class UsersController extends Controller {
@@ -36,8 +34,6 @@ class UsersController extends Controller {
 	 */
 	public function store()
 	{
-
-
 
 		$user=new User();
 		$user->fname=Request::get('fname');
