@@ -10,14 +10,11 @@
 @extends('app')
 
 @section('content')
-  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<link rel="stylesheet" href="js/minified/themes/default.min.css" type="text/css" media="all" />
-<!-- <script type="text/javascript" src="js/minified/jquery.sceditor.bbcode.min.js"></script>
- --><link rel="stylesheet" href="js/minified/jquery.sceditor.min.css" type="text/css" media="all" />
-  <script type="text/javascript" src="js/minified/jquery.sceditor.bbcode.min.js"></script>
-
-
-
+  <script type="text/javascript" src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+  
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+   
 	{!! Form::open(array('class' => 'form-inline', 'method' => 'POST', 'route' => array('articles.store'))) !!}
 	<div class="form-group">
         {!! Form::label('SUBJECT', 'SUBJECT:') !!}
@@ -26,14 +23,19 @@
     <br/>
     <div class="form-group">
         {!! Form::label('BODY', 'BODY:') !!}
-        {!! Form::text('body',null,['class'=>'form-control']) !!}
+        <!-- {!! Form::text('body',null,['class'=>'form-control']) !!} -->
+        <!-- {!! Editor::view() !!} -->
+        {!! Editor::view('body', 'hhh', ['class' => 'form-control']) !!}
     </div>
     <br/>
+
+
     <div class="form-group">
     	{!! Form::label('IS SHOW', 'IS SHOW:') !!}
     	{!! Form::checkbox('isshow', 'value', true) !!}
     <div class="form-group">
     <br/>
+
     <div class="form-group">
 		<label>Category</label>
 	    <select class="form-control" name="category">
@@ -48,31 +50,12 @@
 		@endforeach
 		</select>
 	</div>
-	<!-- <div class="ui-widget">
-	  <label for="tags">Tags: </label>
-	  <input id="tags">
-	</div>
-	<div id='new-projects'> </div> -->
+  <br/>
+
+
     <div class="form-group">
         {!! Form::submit('Save', ['class' => 'btn btn-primary form-control']) !!}
     </div>
 
-	{!! Form::open(['action' => ['ArticlesController@autocomplete'], 'method' => 'GET']) !!}
-    {!! Form::text('q', '', ['id' =>  'q', 'placeholder' =>  'Enter name'])!!}
-    {!! Form::submit('Search', array('class' => 'button expand')) !!}
-    {!! Form::close() !!}
-
-
-	{!! Form::close() !!}
-
-  <textarea class="bbcode" rows="4" style="width: 100%">puts 'foo'</textarea>
-<script>
-$(function() {
-  $("textarea").sceditor({
-    plugins: "bbcode",
-    style: "minified/jquery.sceditor.default.min.css"
-  });
-});
-</script>
 
 @endsection
