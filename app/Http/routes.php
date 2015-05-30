@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('search/autocomplete', 'ArticlesController@autocomplete');
+#Route::get('search/autocomplete', 'ArticlesController@autocomplete');
 
 
 Route::resource('/categories','CategoriesController');
@@ -25,11 +25,19 @@ Route::get('users/search','UsersController@search');
 
 
 
+Route::post('articles/autocomplete','ArticlesController@autocomplete');
+
+
 
 
 Route::resource('/tickets','TicketsController');
+
+Route::post('/tickets/updatestatus','TicketsController@updatestatus');
+Route::post('/tickets/takeover','TicketsController@takeover');
+Route::post('/tickets/save','TicketsController@Save');
 Route::post('tickets/addSubject', 'TicketsController@addSubject');
 Route::post('tickets/getTags', 'TicketsController@getTags');
+
 
 
 Route::resource('tickets.comments', 'CommentsController');
@@ -42,7 +50,10 @@ Route::get('/assets/search', 'AssetsController@search');
 Route::post('assets/searchAssets', 'AssetsController@searchAssets');
 
 Route::resource('/assets', 'AssetsController');
+Route::post('/assets/addasset', 'AssetsController@AddAssets');
+Route::post('/assets/saveassets/', 'AssetsController@SaveAssets');
 Route::post('assets/addType', 'AssetsController@addType');
+
 
 
 Route::get('/', 'WelcomeController@index');

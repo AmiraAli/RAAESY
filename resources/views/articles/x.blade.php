@@ -7,7 +7,7 @@
 <script type="text/javascript" src="/js/text_editor/jquery-te-1.4.0.min.js" charset="utf-8"></script>
 <link type="text/css" rel="stylesheet" href="/css/text_editor/jquery-te-1.4.0.css">
 
-  
+ <div class="container"> 
 	{!! Form::open(array('class' => 'form-inline', 'method' => 'POST', 'route' => array('articles.store'))) !!}
 	
      @if (count($errors) > 0)
@@ -41,9 +41,11 @@
     	{!! Form::checkbox('isshow', 'value', old('isshow')) !!}
     <div class="form-group">
     <br/>
+    <br/>
+    
 
     <div class="form-group">
-		<label>Category</label>
+		{!! Form::label('Category', 'Category:') !!}
 	    <select class="form-control" name="category">
 	    @foreach ($sections as $section)
 	    <optgroup label=" {{ $section->name }} " >
@@ -72,5 +74,5 @@
          $('.jqte-test').jqte();
     </script>
 
-
+</div>
 @endsection

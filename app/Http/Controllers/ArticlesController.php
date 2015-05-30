@@ -172,21 +172,18 @@ class ArticlesController extends Controller {
    		#return redirect('articles');
 
 	}
-	public function autocomplete(){
-		$term = Input::get('term');
+	
+
+    public function autocomplete()
+	{
+
+		$data = Request::get('data');
+		$articles  = Article::select('id', 'subject')->where('subject', 'LIKE', "%$data%")->get();
 		
-		$results = array();
-		
-		$queries = DB::table('articles')
-			->where('subject', 'LIKE', '%'.$term.'%')
-			->take(5)->get();
-		
-		foreach ($queries as $query)
-		{
-		    $results[] = [ 'id' => $query->id, 'value' => $query->subject.' '];
-		}
-		return Response::json($results);
-    }
+		return json_encode($articles);
+
+
+	}
 
 
 
