@@ -34,7 +34,6 @@ hiiii second
 	  <li role="presentation"><a href="#">Unclosed <span class="badge"></span></a></li>
 	  <li role="presentation"><a href="#">Unassigned <span class="badge">{{ count($unassignedTickets) }}</span></a></li>
 	  <li role="presentation"><a href="#">Closed <span class="badge"></span></a></li>
-	  <li role="presentation"><a href="#">Assigned to you <span class="badge">{{ count($myTickets) }}</span></a></li>
 	  <li role="presentation" class="active"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
 	</ul>
 </div>
