@@ -19,8 +19,40 @@ use App\Tag;
 use App\TicketStatus;
 use App\Asset;
 use App\TicketAsset;
+use App\Log;
 
 class TicketsController extends Controller {
+
+
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		$this->middleware('auth');
+	}
+
+
+	/**
+	 * Notify when ticket is spam/delete (called by AJAX).
+	 *
+	 * @param  object  $model_obj , string action
+	 * @return Response
+	 */
+
+	private function addnotification($action , $type , $model_obj ){
+
+		$notification = new Log();
+		$notification->type = $type ;
+		$notification->action = $action;
+		$notification->name = $model_obj->subject->name;
+		$notification->type_id = $model_obj->id;
+		$notification->user_id = Auth::user()->id;
+		$notification->save();
+
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -241,6 +273,10 @@ class TicketsController extends Controller {
 	public function destroy($id)
 	{
 		$ticket=Ticket::find($id);
+
+		// add the deleted ticket to log table
+		$this->addnotification("delete","ticket",$ticket);
+
 		$ticket->delete();
 	}
 	
@@ -408,7 +444,18 @@ class TicketsController extends Controller {
 	//}
 
 	
-
-
-
+	/**
+	* Function to spam ticket
+	**/
+	public function spamTicket(Request $request)
+	{
+		if($request->ajax()) {
+			$id=$request->input('id');
+			echo $id;
+			exit;
+			$ticket=Ticket::find($id);
+		// add the deleted ticket to log table
+		$this->addnotification("spam","ticket",$ticket);
+		}	
+	}
 }

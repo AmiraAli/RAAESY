@@ -6,7 +6,7 @@ window.onload = function() {
             });
             };
 
-function SearchButton()(){
+function SearchButton(){
   var subjectOfTicket = $('#searchticket').val();
   
                   
