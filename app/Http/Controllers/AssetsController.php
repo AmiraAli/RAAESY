@@ -25,7 +25,8 @@ class AssetsController extends Controller {
 	public function index()
 	{
 		$assets = Asset::all();
-		return view("assets.index",compact('assets'));
+		$types = AssetType::all();
+		return view("assets.index",compact('assets','types'));
 	}
 
 	/**
@@ -50,7 +51,7 @@ class AssetsController extends Controller {
 		$this->validate($request, [
 	        'name' => 'required',
 	        'manufacturer' => 'required',
-	        'serialno' => 'required',
+	        'serialno' => 'required|unique:assets',
 	        'location' => 'required'
     	]);
 
@@ -164,16 +165,6 @@ class AssetsController extends Controller {
 	}
 
 
-	/**
-	 * Show the form for searching for assets.
-	 *
-	 * @return Response
-	 */
-	public function search(Request $request)
-	{
-		$types = AssetType::all();
-		return view("assets.search",compact('types'));
-	}
 
 	/**
 	 * Search database for assets.
@@ -190,7 +181,7 @@ class AssetsController extends Controller {
             $manufacturer= $request->input('manufacturer');
             $assettype_id= $request->input('type');
 
-            //file_put_contents("/home/eman/" . "www.html", $name." ".$serialno." ".$location." ". $manufacturer." ".$assettype_id);
+            //file_put_contents("/home/eman/"."www.html", $assettype_id);
 
             if ( !$name && !$serialno && !$location && !$manufacturer && !$assettype_id ) 
             {
@@ -198,21 +189,34 @@ class AssetsController extends Controller {
             	return view("assets.searchAssets",compact('assets'));           	
             }
 
-            // $assets =Asset::where('name', 'like', '%'.$name.'%')
-            //    				->where('serialno', 'like', '%'.$serialno.'%')
-            //           		->where('location', 'like', '%'.$location.'%')
-            //           		->where('manufacturer', 'like', '%'.$manufacturer.'%')
-            //           		->where('assettype_id', $assettype_id)
-           	// 				->get();
+            else
+            {
+	            $assets =Asset::select('*');
 
-            $assets =Asset::where('name', 'like', '%'.$name.'%');
-            $assets=$assets->get();
-            
+	            if ($name) {
+	            	$assets=$assets->where('name', 'like', '%'.$name.'%');
+	            }
 
-                			
+	            if ($location) {
+	            	$assets=$assets->where('location', 'like', '%'.$location.'%');
+	            }
 
+	            if ($manufacturer) {
+	            	$assets=$assets->where('manufacturer', 'like', '%'.$manufacturer.'%');
+	            }
 
-           	return view("assets.searchAssets",compact('assets'));  
+	            if ($assettype_id) {
+	            	$assets=$assets->where('assettype_id', $assettype_id);
+	            }
+
+	            if ($serialno) {
+	            	$assets=$assets->where('serialno', 'like', '%'.$serialno.'%');
+	            }
+
+	            $assets=$assets->get();
+	            
+	           	return view("assets.searchAssets",compact('assets'));
+	        }  
             
          }
 
@@ -238,18 +242,19 @@ class AssetsController extends Controller {
 	 * 
 	 * @return jsonobject
 	 */
-	public function SaveAssets()
-	{	if(Request::ajax()) {
+	public function SaveAssets(Request $request)
+	{	if($request->ajax()) {
 			$ticketasset=new TicketAsset;
-			$ticketasset->asset_id=Request::input("asset_id");
-			$ticketasset->ticket_id=intval(Request::input("ticket_id"));
+			$ticketasset->asset_id=$request->input("asset_id");
+			$ticketasset->ticket_id=intval($request->input("ticket_id"));
 			$ticketasset->save();
 			file_put_contents("/home/aya/teesst.html", $ticketasset);	
-		$asset=Asset::find(Request::input("asset_id"));
-		$asset->ticket_id=intval(Request::input("ticket_id"));
+		$asset=Asset::find($request->input("asset_id"));
+		$asset->ticket_id=intval($request->input("ticket_id"));
 			}
 		echo json_encode($asset);
 	}
 		
 }
+
 

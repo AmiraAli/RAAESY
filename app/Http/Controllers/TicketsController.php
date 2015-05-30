@@ -30,7 +30,15 @@ class TicketsController extends Controller {
 	public function index()
 	{
 		$tickets=Ticket::all();
-		return view('tickets.index',compact('tickets'));
+		$myTickets = Ticket::where('tech_id', Auth::user()->id)->get();
+		$unassignedTickets = Ticket::where('tech_id', "")->get();
+		// $closed = Ticket::where('status', "close")->get();
+		
+		// $open = Ticket::where('status', "open")->get();
+		// $statuses=TicketStatus::all();
+		// $closed = TicketStatus::where('value', "close")->get();
+		// $closed = TicketStatus::where('value', "close")->get();
+		return view('tickets.index',compact('tickets','myTickets','unassignedTickets'));
 	}
 
 	/**
@@ -65,7 +73,6 @@ class TicketsController extends Controller {
 		{
 			$this->validate($request, [
 			'description' => 'required',
-			'file' => 'required',
 			'subject' =>'required',
 			'category'=>'required'
 			]);
@@ -96,8 +103,8 @@ class TicketsController extends Controller {
 				}
 			}
 		}else{
-			$ticket->tech_id=1;
-			$ticket->admin_id=1;
+			$ticket->tech_id=NULL;
+			$ticket->admin_id=NULL;
 			$ticket->save();
 		}
 		$tickets=Ticket::all();
@@ -171,7 +178,6 @@ class TicketsController extends Controller {
 	{
 		$this->validate($request, [
 		'description' => 'required',
-		'file' => 'required',
 		'subject' =>'required',
 		'category'=>'required'
 		]);
@@ -208,8 +214,8 @@ class TicketsController extends Controller {
 				}
 			}
 		}else{
-			$ticket->tech_id=1;
-			$ticket->admin_id=1;
+			$ticket->tech_id=NULL;
+			$ticket->admin_id=NULL;
 			$ticket->save();
 		}
 		return redirect("/tickets/".$id);
@@ -288,6 +294,43 @@ class TicketsController extends Controller {
 		file_put_contents("/home/aya/teesst.html", $notify);
 
 	}
+
+	/**
+	* Function to sort tickets
+	**/
+	public function sortTicket()
+	{
+		$data=Request::input();
+		$tickt= json_decode(json_encode($data['data']),TRUE);
+		$sortBy=$data['sortType'];
+	           // var_dump($tickt[0]['id']);
+
+		// Getting post data
+	  if(Request::ajax())
+	    {
+	    	$tickets = array();
+	        foreach ($tickt[0] as $key => $value)
+	        {
+	            $tickets[$key] = $value;
+	        }
+	    	//file_put_contents("/home/eman/"."aaaaa.html",(array)$tickets[0]);
+
+			function cmp($a, $b)
+			{
+				file_put_contents("/home/eman/"."gtt.html", "kkkk");
+			    return strcmp($a->id, $b->id);
+			}
+			//$tickets=(array)$tickets;
+
+			 usort($tickets, 'cmp');
+
+
+			 //file_put_contents("/home/eman/"."aaaaa.html", "ooooo");
+
+			return view("tickets.sortTicket",compact('tickets')); 
+
+		 }
+	}
 	/**
 	* Function to Get available user to assign user to ticket
 	**/
@@ -331,6 +374,27 @@ class TicketsController extends Controller {
 	}
 	echo $body;
 	}
+
+
+	public function SearchAllSubject(Request $request){
+	// Save notification
+	if($request->ajax()) {
+	$subjects=Subject::all()->lists('name');
+
+	}
+	echo json_encode($subjects);
+	}
+	//public function TicketAllSubject(Request $request){
+	//if($request->ajax()) {
+	//	$subjectName=$request->input("name");
+	//	$targetSubject=Subject::where('name',$subjectName)->first();
+	//	$subjectId=$targetSubject->id;
+
+	//	}
+
+
+
+	//}
 
 	
 

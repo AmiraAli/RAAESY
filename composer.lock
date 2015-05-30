@@ -1044,12 +1044,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "0b4acb8ca9f889e5372e90090f7f5b8cacb1f055"
+                "reference": "82c97542df75f569ff6b3711cf8d8c74a56d1ef2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/0b4acb8ca9f889e5372e90090f7f5b8cacb1f055",
-                "reference": "0b4acb8ca9f889e5372e90090f7f5b8cacb1f055",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/82c97542df75f569ff6b3711cf8d8c74a56d1ef2",
+                "reference": "82c97542df75f569ff6b3711cf8d8c74a56d1ef2",
                 "shasum": ""
             },
             "require": {
@@ -1120,7 +1120,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2015-05-28 07:51:17"
+            "time": "2015-05-30 09:18:55"
         },
         {
             "name": "mews/captcha",

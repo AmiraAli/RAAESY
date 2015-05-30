@@ -40,6 +40,7 @@ Route::post('articles/autocomplete','ArticlesController@autocomplete');
 
 
 
+Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
 Route::resource('/tickets','TicketsController');
 
 Route::post('/tickets/updatestatus','TicketsController@updatestatus');
@@ -47,16 +48,13 @@ Route::post('/tickets/takeover','TicketsController@takeover');
 Route::post('/tickets/save','TicketsController@Save');
 Route::post('tickets/addSubject', 'TicketsController@addSubject');
 Route::post('tickets/getTags', 'TicketsController@getTags');
-
-
+Route::post('/subjects/all/', 'TicketsController@SearchAllSubject');
+Route::post('/tickets/all/subjects', 'TicketsController@TicketAllSubject');
 
 Route::resource('tickets.comments', 'CommentsController');
 
 Route::resource('/articles','ArticlesController');
 
-
-
-Route::get('/assets/search', 'AssetsController@search');
 Route::post('assets/searchAssets', 'AssetsController@searchAssets');
 
 Route::resource('/assets', 'AssetsController');

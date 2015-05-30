@@ -6,6 +6,7 @@ use Auth;
 use App\User;
 use App\Log;
 use Request;
+use Validator;
 class UsersController extends Controller {
 
 	/**
@@ -60,6 +61,23 @@ class UsersController extends Controller {
 	public function store()
 	{
 
+		    $v = Validator::make(Request::all(), [
+           			'fname' => 'required|max:255',
+					'lname' => 'required|max:255',
+					'email' => 'required|email|max:255|unique:users',
+					'password' => 'required|confirmed|min:6',
+					'phone' => 'required|max:255',
+					'location' => 'required|max:255',
+					#'captcha' => 'required|captcha',
+        	]);
+        $subject=Request::get('subject');
+
+	    if ($v->fails())
+	    {
+	        return redirect()->back()->withErrors($v->errors())
+	        						 ->withInput();
+	    }else{
+
 		$user=new User();
 		$user->fname=Request::get('fname');
 		$user->lname=Request::get('lname');
@@ -72,6 +90,7 @@ class UsersController extends Controller {
 
 		$user->save();
 		return redirect('/users');
+	    }
 	}
 
 	/**
@@ -107,7 +126,24 @@ class UsersController extends Controller {
 	 */
 	public function update($id)
 	{
-		$user=User::find($id);
+		$v = Validator::make(Request::all(), [
+           			'fname' => 'required|max:255',
+					'lname' => 'required|max:255',
+					'email' => 'required|email|max:255',
+					'password' => 'required|confirmed|min:6',
+					'phone' => 'required|max:255',
+					'location' => 'required|max:255',
+					#'captcha' => 'required|captcha',
+        	]);
+        $subject=Request::get('subject');
+
+	    if ($v->fails())
+	    {
+	        return redirect()->back()->withErrors($v->errors())
+	        						 ->withInput();
+	    }else{
+
+			$user=User::find($id);
 		$user->fname=Request::get('fname');
 		$user->lname=Request::get('lname');
 		$user->email=Request::get('email');
@@ -132,6 +168,7 @@ class UsersController extends Controller {
 		$user->type=Request::get('type');
 		$user->save();
 		 return redirect('/users');
+		}
 	}
 
 	/**
