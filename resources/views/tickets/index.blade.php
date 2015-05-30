@@ -31,8 +31,8 @@ hiiii second
 
 	<ul class="nav nav-pills" role="tablist">
 	  <li role="presentation"><a href="#">Unanswered <span class="badge">42</span></a></li>
-	  <li role="presentation"><a href="#">Unclosed <span class="badge"></span></a></li>
 	  <li role="presentation"><a href="#">Unassigned <span class="badge">{{ count($unassignedTickets) }}</span></a></li>
+	  <li role="presentation"><a href="#">Unclosed <span class="badge"></span></a></li>	  
 	  <li role="presentation"><a href="#">Closed <span class="badge"></span></a></li>
 	  <li role="presentation" class="active"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
 	</ul>

@@ -31,7 +31,7 @@ class TicketsController extends Controller {
 	{
 		$tickets=Ticket::all();
 		$myTickets = Ticket::where('tech_id', Auth::user()->id)->get();
-		$unassignedTickets = Ticket::where('tech_id', "null")->get();
+		$unassignedTickets = Ticket::whereNull('tech_id')->get();
 		// $closed = Ticket::where('status', "close")->get();
 		
 		// $open = Ticket::where('status', "open")->get();
