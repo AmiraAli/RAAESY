@@ -12,7 +12,6 @@
 @section('content')
 <div class="container">
 
-<!------------------------------------------ticketbody------------------------------------------------------------------------->
   <div class="leftposition">
 	<div class="panel panel-default ticketbody">
 	  <div class="panel-body">
@@ -36,7 +35,6 @@
 	</div>
 
 
-<!---------------------------------------commentbody--------------------------------------------------------------->
   <div id="comments">
 	@foreach($comments as $comment)
 	  <div class="panel panel-default  commentbody" id="{{$comment->id}}Comments">
@@ -60,7 +58,6 @@
 
 	@endforeach
   </div>
-<!------------------------------------------AddComment------------------------------------------------------->
   <div>
      <form name="addForm" method = 'post'  class = 'form-horizontal' action="javascript:add({{$ticket->id}})">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -79,7 +76,6 @@
 	</form>
    </div>
 </div>
-<!---------------------------------------ticketdetails------------------------------------------------------------>
 <div class="rightposition">
 	<div class="panel panel-default ticketdetails">
 	  <div class="panel-heading">
@@ -95,7 +91,6 @@
 		<h4 class="title">AssignedTo </h4> {{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}<br>
 	  </div>
 	</div>
-<!-----------------------------------relatedassets-------------------------------------------------------------------------------->
 	<div class="panel panel-default relatedassets">
 		  <div class="panel-heading">
 			    <h3 class="panel-title">Related Assets</h3>
@@ -111,7 +106,6 @@
 			</div>
 		  </div>
 	</div>
-<!------------------------------------------relatedtags--------------------------------------------------------------------------->
 	<div class="panel panel-default relatedtags">
 		<div class="panel-heading">
 			<h3 class="panel-title">Related tags</h3>
@@ -127,7 +121,6 @@
 		</div>
 	</div>
 </div>
-<!------------------------------------------------------------------------------------------------------------------->
 </div>
 @endsection
 
