@@ -85,10 +85,24 @@ class UsersController extends Controller {
 		$user->password=bcrypt(Request::get('password'));
 		$user->phone=Request::get('phone');
 		$user->location=Request::get('location');
-		$user->isspam=Request::get('isspam');
+		
+
+		if (Request::get('isspam')){
+			$user->isspam= 1;
+		
+		}else{
+			$user->isspam=0;
+
+		}
 		$user->type=Request::get('type');
 
 		$user->save();
+
+		if ($user->isspam == 1){
+
+			//add notification in log
+			$this->addnotification("spam"  , "user" , $user );
+		}
 		return redirect('/users');
 	    }
 	}
@@ -130,10 +144,8 @@ class UsersController extends Controller {
            			'fname' => 'required|max:255',
 					'lname' => 'required|max:255',
 					'email' => 'required|email|max:255',
-					'password' => 'required|confirmed|min:6',
 					'phone' => 'required|max:255',
 					'location' => 'required|max:255',
-					#'captcha' => 'required|captcha',
         	]);
         $subject=Request::get('subject');
 
@@ -186,6 +198,32 @@ class UsersController extends Controller {
 		$user->delete();
 				
 	}
+
+
+
+	/**
+	 * Show the form for changing password.
+	 *
+	 * @return Response
+	 */
+	public function changepassword()
+	{
+		return view('users.changepassword');
+	}
+	
+
+	/**
+	 * Perform changing password process.
+	 * @param  string  $newPass
+	 *
+	 * @return Response
+	 */
+	public function changepass_process()
+	{
+		return view('users.changepassword');
+	}
+
+
 
 
 

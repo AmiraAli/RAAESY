@@ -20,9 +20,7 @@ Route::resource('/categories','CategoriesController');
 Route::resource('/sections','SectionsController');
 
 
-
-
-Route::get('users/addnotification','UsersController@addnotification');
+Route::get('users/changepassword','UsersController@changepassword');
 Route::resource('/users','UsersController');
 
 
