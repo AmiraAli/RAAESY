@@ -91,10 +91,10 @@
 
 						 <div class="form-group">
      						<label class="col-md-4 control-label">Disable:</label>
-							<div class="col-md-6">
-								<input type="checkbox" name="isspam" >
-							</div>
-					    </div>
+								<div class="form-group">
+		
+						            {!! Form::checkbox('isspam', 'value') !!}
+		   					    </div>
 			
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">

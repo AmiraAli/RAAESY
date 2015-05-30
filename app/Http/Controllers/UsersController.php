@@ -2,7 +2,9 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Auth;
 use App\User;
+use App\Log;
 use Request;
 use Validator;
 class UsersController extends Controller {
@@ -17,6 +19,29 @@ class UsersController extends Controller {
 		$users=User::all();
 		return view('users.index',compact('users'));
 	}
+
+	/**
+	 * Notify when user is spam/delete (called by AJAX).
+	 *
+	 * @param  object  $model_obj , string action
+	 * @return Response
+	 */
+
+	private function addnotification($action , $type , $model_obj ){
+
+		$notification = new Log();
+		$notification->type = $type ;
+		$notification->action = $action;
+		$notification->name = $model_obj->fname." ".$model_obj->lname;
+		$notification->type_id = $model_obj->id;
+		$notification->user_id = Auth::user()->id;
+		$notification->save();
+
+	}
+
+
+
+
 
 	/**
 	 * Show the form for creating a new resource.
@@ -60,10 +85,24 @@ class UsersController extends Controller {
 		$user->password=bcrypt(Request::get('password'));
 		$user->phone=Request::get('phone');
 		$user->location=Request::get('location');
-		$user->isspam=Request::get('isspam');
+		
+
+		if (Request::get('isspam')){
+			$user->isspam= 1;
+		
+		}else{
+			$user->isspam=0;
+
+		}
 		$user->type=Request::get('type');
 
 		$user->save();
+
+		if ($user->isspam == 1){
+
+			//add notification in log
+			$this->addnotification("spam"  , "user" , $user );
+		}
 		return redirect('/users');
 	    }
 	}
@@ -105,10 +144,8 @@ class UsersController extends Controller {
            			'fname' => 'required|max:255',
 					'lname' => 'required|max:255',
 					'email' => 'required|email|max:255',
-					'password' => 'required|confirmed|min:6',
 					'phone' => 'required|max:255',
 					'location' => 'required|max:255',
-					#'captcha' => 'required|captcha',
         	]);
         $subject=Request::get('subject');
 
@@ -125,7 +162,21 @@ class UsersController extends Controller {
 		//$user->password=bcrypt(Request::get('password'));
 		$user->phone=Request::get('phone');
 		$user->location=Request::get('location');
-		$user->isspam=Request::get('isspam');
+
+		if (Request::get('isspam')){
+			
+			//check if admin soan a user
+			if ($user->isspam == 0){
+
+				//add notification in log
+				$this->addnotification("spam"  , "user" , $user );
+			}
+			$user->isspam= 1;
+
+		}else{
+			$user->isspam=0;
+
+		}
 		$user->type=Request::get('type');
 		$user->save();
 		 return redirect('/users');
@@ -141,9 +192,38 @@ class UsersController extends Controller {
 	public function destroy($id)
 	{
 		$user=User::find($id);
+
+		//add notification wher user deleted
+		$this->addnotification("delete"  , "user" , $user );
 		$user->delete();
-		//return redirect('/users');
+				
 	}
+
+
+
+	/**
+	 * Show the form for changing password.
+	 *
+	 * @return Response
+	 */
+	public function changepassword()
+	{
+		return view('users.changepassword');
+	}
+	
+
+	/**
+	 * Perform changing password process.
+	 * @param  string  $newPass
+	 *
+	 * @return Response
+	 */
+	public function changepass_process()
+	{
+		return view('users.changepassword');
+	}
+
+
 
 
 
@@ -212,5 +292,10 @@ class UsersController extends Controller {
 
 
 	}
+
+
+
+	
+	
 
 }	
