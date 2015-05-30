@@ -2,6 +2,13 @@
 @extends('app')
 
 @section('content')
+
+
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/text_editor/jquery-te-1.4.0.min.js" charset="utf-8"></script>
+<link type="text/css" rel="stylesheet" href="/css/text_editor/jquery-te-1.4.0.css">
+
+
 	{!! Form::open(array('class' => 'form-inline', 'method' => 'PATCH', 'route' => array('articles.update',$article->id))) !!}
 	
       @if (count($errors) > 0)
@@ -21,9 +28,9 @@
         {!! Form::text('subject',$article->subject,['class'=>'form-control']) !!}
     </div>
     <br/>
-    <div class="form-group">
+   <div class="form-group">
         {!! Form::label('BODY', 'BODY:') !!}
-        {!! Form::text('body',$article->body,['class'=>'form-control']) !!}
+        {!! Form::textarea('body',$article->body,['class'=>'jqte-test']) !!}
     </div>
     <br/>
 
@@ -52,6 +59,7 @@
             </optgroup>
         @endforeach
         </select>
+        </div>
     <br/>
     
     <div class="form-group">
@@ -60,5 +68,11 @@
 
 
 	{!! Form::close() !!}
+
+
+    <script>
+         $('.jqte-test').jqte();
+    </script>
+
 
 @endsection
