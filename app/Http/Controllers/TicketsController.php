@@ -73,7 +73,6 @@ class TicketsController extends Controller {
 		{
 			$this->validate($request, [
 			'description' => 'required',
-			'file' => 'required',
 			'subject' =>'required',
 			'category'=>'required'
 			]);
@@ -104,8 +103,8 @@ class TicketsController extends Controller {
 				}
 			}
 		}else{
-			$ticket->tech_id=1;
-			$ticket->admin_id=1;
+			$ticket->tech_id=NULL;
+			$ticket->admin_id=NULL;
 			$ticket->save();
 		}
 		$tickets=Ticket::all();
@@ -179,7 +178,6 @@ class TicketsController extends Controller {
 	{
 		$this->validate($request, [
 		'description' => 'required',
-		'file' => 'required',
 		'subject' =>'required',
 		'category'=>'required'
 		]);
@@ -216,8 +214,8 @@ class TicketsController extends Controller {
 				}
 			}
 		}else{
-			$ticket->tech_id=1;
-			$ticket->admin_id=1;
+			$ticket->tech_id=NULL;
+			$ticket->admin_id=NULL;
 			$ticket->save();
 		}
 		return redirect("/tickets/".$id);
