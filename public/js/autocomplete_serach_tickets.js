@@ -1,9 +1,7 @@
 
-$(function() {
+alert("hello");
 
-
-
-
+$(document).ready(function(){
     var availableTags = [
       "ActionScript",
       "AppleScript",
@@ -32,5 +30,5 @@ $(function() {
       source: availableTags
     });
 
-  });
 
+  }); 
