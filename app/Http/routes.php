@@ -14,10 +14,20 @@
 #Route::get('search/autocomplete', 'ArticlesController@autocomplete');
 
 
+
+
 Route::resource('/categories','CategoriesController');
 Route::resource('/sections','SectionsController');
 
+
+
+
+Route::get('users/addnotification','UsersController@addnotification');
 Route::resource('/users','UsersController');
+
+
+
+
 Route::get('users/destroy/{id}','UsersController@destroy');
 Route::post('users/get_user_types','UsersController@get_user_types');
 Route::post('users/autocomplete','UsersController@autocomplete');

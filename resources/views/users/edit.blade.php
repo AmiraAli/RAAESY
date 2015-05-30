@@ -64,12 +64,15 @@
 
 						 <div class="form-group">
      						<label class="col-md-4 control-label">Disable:</label>
-							<div class="col-md-6">
-								<input type="checkbox" name="isspan" 
-								 @if($user->isspam ==="1") {{"checked=true"}} @endif>
+								<div>
+							        @if ($user->isspam == 0)
+							            {!! Form::checkbox('isspam', 'value') !!}
+							        @else
+							            {!! Form::checkbox('isspam', 'value',true) !!}
+							        @endif
+
+  						        </div>
 					    </div>
-
-
 
 
 						<div class="form-group">
