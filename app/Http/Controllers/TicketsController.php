@@ -13,6 +13,7 @@ use App\Category;
 use App\Section;
 use App\User;
 use App\Comment;
+use App\TicketTag;
 
 use App\Tag;
 use App\TicketStatus;
