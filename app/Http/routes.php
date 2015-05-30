@@ -21,6 +21,7 @@ Route::resource('/sections','SectionsController');
 
 
 Route::get('users/changepassword','UsersController@changepassword');
+Route::get('users/changepass_process','UsersController@changepassword');
 Route::resource('/users','UsersController');
 
 

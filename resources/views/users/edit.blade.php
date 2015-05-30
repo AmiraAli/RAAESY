@@ -74,7 +74,7 @@
 
 						 <div class="form-group">
      						<label class="col-md-4 control-label">Disable:</label>
-								<div>
+								<div class="col-md-6">
 							        @if ($user->isspam == 0)
 							            {!! Form::checkbox('isspam', 'value') !!}
 							        @else
@@ -84,11 +84,14 @@
   						        </div>
 					    </div>
 
+					    <a class="btn btn-link" href="{{ url('/users/changepassword') }}">Change Password</a>
+
+
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn btn-primary">
-									Register
+									Done Editing
 								</button>
 							</div>
 						</div>
