@@ -1,5 +1,5 @@
 
-alert("hello");
+//alert("hello");
 
 $(document).ready(function(){
     var availableTags = [

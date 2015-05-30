@@ -14,7 +14,7 @@
 	<form action="" class="navbar-form navbar-right">
 	   <div class="input-group">
 	   <input type="text" id="search" class="form-control">
-	       <input type="Search" placeholder="Search..." id="search" class="form-control" />
+	       <!-- <input type="Search" placeholder="Search..." id="search" class="form-control" /> -->
 	       <div class="input-group-btn">
 		   <button class="btn btn-info">
 		   <span class="glyphicon glyphicon-search"></span>
@@ -25,10 +25,10 @@
 </div>
 
 
-<div class="ui-widget">
+<!-- <div class="ui-widget">
   <label for="tags">Tags: </label>
   <input id="tags">
-</div>
+</div> -->
 
 <!-- table -->
 
