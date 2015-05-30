@@ -30,6 +30,7 @@ Route::post('articles/autocomplete','ArticlesController@autocomplete');
 
 
 
+Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
 Route::resource('/tickets','TicketsController');
 
 Route::post('/tickets/updatestatus','TicketsController@updatestatus');
@@ -44,9 +45,6 @@ Route::resource('tickets.comments', 'CommentsController');
 
 Route::resource('/articles','ArticlesController');
 
-
-
-Route::get('/assets/search', 'AssetsController@search');
 Route::post('assets/searchAssets', 'AssetsController@searchAssets');
 
 Route::resource('/assets', 'AssetsController');
