@@ -20,8 +20,12 @@ Route::resource('/categories','CategoriesController');
 Route::resource('/sections','SectionsController');
 
 
+Route::get('users/search','UsersController@search');
+Route::post('users/ajaxsearch','UsersController@ajaxsearch');
 Route::get('users/changepassword','UsersController@changepassword');
-Route::get('users/changepass_process','UsersController@changepassword');
+Route::post('users/changepassprocess','UsersController@changepassword');
+
+
 Route::resource('/users','UsersController');
 
 
@@ -30,7 +34,6 @@ Route::resource('/users','UsersController');
 Route::get('users/destroy/{id}','UsersController@destroy');
 Route::post('users/get_user_types','UsersController@get_user_types');
 Route::post('users/autocomplete','UsersController@autocomplete');
-Route::get('users/search','UsersController@search');
 
 
 

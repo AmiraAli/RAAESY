@@ -66,9 +66,8 @@ class UsersController extends Controller {
 					'lname' => 'required|max:255',
 					'email' => 'required|email|max:255|unique:users',
 					'password' => 'required|confirmed|min:6',
-					'phone' => 'required|max:255',
+					'phone' => 'required|max:20|numeric',
 					'location' => 'required|max:255',
-					#'captcha' => 'required|captcha',
         	]);
         $subject=Request::get('subject');
 
@@ -78,32 +77,32 @@ class UsersController extends Controller {
 	        						 ->withInput();
 	    }else{
 
-		$user=new User();
-		$user->fname=Request::get('fname');
-		$user->lname=Request::get('lname');
-		$user->email=Request::get('email');
-		$user->password=bcrypt(Request::get('password'));
-		$user->phone=Request::get('phone');
-		$user->location=Request::get('location');
-		
+			$user=new User();
+			$user->fname=Request::get('fname');
+			$user->lname=Request::get('lname');
+			$user->email=Request::get('email');
+			$user->password=bcrypt(Request::get('password'));
+			$user->phone=Request::get('phone');
+			$user->location=Request::get('location');
+			
 
-		if (Request::get('isspam')){
-			$user->isspam= 1;
-		
-		}else{
-			$user->isspam=0;
+			if (Request::get('isspam')){
+				$user->isspam= 1;
+			
+			}else{
+				$user->isspam=0;
 
-		}
-		$user->type=Request::get('type');
+			}
+			$user->type=Request::get('type');
 
-		$user->save();
+			$user->save();
 
-		if ($user->isspam == 1){
+			if ($user->isspam == 1){
 
-			//add notification in log
-			$this->addnotification("spam"  , "user" , $user );
-		}
-		return redirect('/users');
+				//add notification in log
+				$this->addnotification("spam"  , "user" , $user );
+			}
+			return redirect('/users');
 	    }
 	}
 
@@ -144,7 +143,7 @@ class UsersController extends Controller {
            			'fname' => 'required|max:255',
 					'lname' => 'required|max:255',
 					'email' => 'required|email|max:255',
-					'phone' => 'required|max:255',
+					'phone' => 'required|max:20|numeric',
 					'location' => 'required|max:255',
         	]);
         $subject=Request::get('subject');
@@ -208,9 +207,10 @@ class UsersController extends Controller {
 	 */
 	public function changepassword()
 	{
+		
 		return view('users.changepassword');
 	}
-	
+
 
 	/**
 	 * Perform changing password process.
@@ -218,9 +218,33 @@ class UsersController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function changepass_process()
+	public function changepassprocess()
 	{
-		return view('users.changepassword');
+
+		//$user_id = Auth::User()->id;
+		$v = Validator::make(Request::all(), [
+					'password' => 'required'
+					//'oldpassword' => "required|exists:users,id,$user_id",
+
+        	]);
+        
+	    if ($v->fails())
+	    {
+	        return redirect()->back()->withErrors($v->errors())
+	        						 ->withInput();
+	    }else{
+
+	    		echo "jun";
+	    		exit;
+
+		// 	$user=User::find($id);
+		// $user->fname=Request::get('fname');
+		// $user->lname=Request::get('lname');
+		// $user->email=Request::get('email');
+	    	   // return redirect()->back();
+		
+		}
+
 	}
 
 
@@ -284,12 +308,17 @@ class UsersController extends Controller {
 
 	public function search()
 	{
-
 	
-		echo "ok";
-		exit;
+		return view('users.search');
+
+	}
 
 
+
+	public function ajaxsearch()
+	{
+	
+		return view('users.ajaxsearch',compact('users'));
 
 	}
 
