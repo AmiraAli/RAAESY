@@ -31,7 +31,7 @@
 
 		</div>
 		<h4>  {{ $ticket->subject->name }}</h4>
-		<p>  {{ $ticket->description }}</p>
+		<p>  {!! $ticket->description !!}</p>
 	  </div>
 	</div>
 

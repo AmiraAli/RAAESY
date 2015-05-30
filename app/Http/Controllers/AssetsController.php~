@@ -238,15 +238,15 @@ class AssetsController extends Controller {
 	 * 
 	 * @return jsonobject
 	 */
-	public function SaveAssets()
-	{	if(Request::ajax()) {
+	public function SaveAssets(Request $request)
+	{	if($request->ajax()) {
 			$ticketasset=new TicketAsset;
-			$ticketasset->asset_id=Request::input("asset_id");
-			$ticketasset->ticket_id=intval(Request::input("ticket_id"));
+			$ticketasset->asset_id=$request->input("asset_id");
+			$ticketasset->ticket_id=intval($request->input("ticket_id"));
 			$ticketasset->save();
 			file_put_contents("/home/aya/teesst.html", $ticketasset);	
-		$asset=Asset::find(Request::input("asset_id"));
-		$asset->ticket_id=intval(Request::input("ticket_id"));
+		$asset=Asset::find($request->input("asset_id"));
+		$asset->ticket_id=intval($request->input("ticket_id"));
 			}
 		echo json_encode($asset);
 	}

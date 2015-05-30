@@ -23,7 +23,7 @@
 			@if($checkStatus->value=='close')
 			   <button name="open" id="{{$ticket->id}}" onclick="Status({{$ticket->id}})" >reopen</button>
 			@endif
-			@if(!$ticket->tech_id and $checkStatus->value=='open')
+			@if($ticket->tech_id and $checkStatus->value=='open')
 			   <button id="{{$ticket->id}},takeover" onclick="TakeOver({{$ticket->id}}+',takeover')">takeover</button>
 			@endif
 		@endif
