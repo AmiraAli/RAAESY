@@ -7,6 +7,16 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">Edit User</div>
 				<div class="panel-body">
+				 @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+       			 @endif
 {!! Form::open(['route'=>['users.update',$user->id],'method'=>'put'])!!}
 
 <div class="form-group">
@@ -33,21 +43,7 @@
 							</div>
 						</div>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Password</label>
-							<div class="col-md-6">
-								<input type="password" class="form-control" name="password">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-4 control-label">Confirm Password</label>
-							<div class="col-md-6">
-								<input type="password" class="form-control" name="password_confirmation">
-							</div>
-						</div>
-
-
+						
 						<div class="form-group">
 							<label class="col-md-4 control-label">Phone</label>
 							<div class="col-md-6">
@@ -62,6 +58,29 @@
 								<input type="text" class="form-control" name="location" value="{{$user->location}}">
 							</div>
 						</div>
+						<div class="form-group">
+     						<label class="col-md-4 control-label">Type:</label>
+							<div class="col-md-6">
+						        <select  name="type">
+							        <option value="regular"
+									@if($user->type ==="regular") {{"selected=true"}} @endif >Regular user</option>
+							        <option value="tech"
+							        @if($user->type ==="tech") {{"selected=true"}} @endif >Technician</option>
+							        <option value="admin"
+							        @if($user->type ==="admin") {{"selected=true"}} @endif >Admin</option>
+							    </select>
+						    </div>
+					    </div>
+
+						 <div class="form-group">
+     						<label class="col-md-4 control-label">Disable:</label>
+							<div class="col-md-6">
+								<input type="checkbox" name="isspan" 
+								 @if($user->isspam ==="1") {{"checked=true"}} @endif>
+					    </div>
+
+
+
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">

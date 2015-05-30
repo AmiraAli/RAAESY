@@ -136,7 +136,7 @@ return [
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Html\HtmlServiceProvider',
-
+        'Vinelab\Editor\EditorServiceProvider',
 		/*
 		 * Application Service Providers...
 		 */
@@ -145,6 +145,13 @@ return [
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
+
+		//captcha
+		'Mews\Captcha\CaptchaServiceProvider',
+
+		//user provider in views
+		'App\Providers\MyUserProvider',
+
 
 	],
 
@@ -195,6 +202,9 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 		'Form'      => 'Illuminate\Html\FormFacade',
 		'Html'      => 'Illuminate\Html\HtmlFacade',
+
+		//captcha
+		'Captcha' => 'Mews\Captcha\Facades\Captcha',
 
 
 	],

@@ -26,7 +26,7 @@
 			            <td class="text-center">{{ $asset->manufacturer }}</td>
 			            <td class="text-center">{{ $asset->assettype->name }}</td>
 			            <td class="text-center">{{ $asset->serialno }}</td>
-			            <td class="text-center">{{ $asset->user->fname }}</td>
+			            <td class="text-center">{{ $asset->user->fname }} {{ $asset->user->lname }}</td>
 			            <td class="text-center">{{ $asset->location }}</td>
 			            <td class="text-center">
 			            	 <a href="/assets/{{$asset->id}}/edit " class="btn btn-success btn" >Edit</a>
@@ -97,6 +97,7 @@
 								<input type="text" class="form-control" name="serialno" id="serialno">
 							</div>
 						</div>
+
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Location</label>
