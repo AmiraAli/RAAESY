@@ -37,8 +37,8 @@ Route::post('/tickets/takeover','TicketsController@takeover');
 Route::post('/tickets/save','TicketsController@Save');
 Route::post('tickets/addSubject', 'TicketsController@addSubject');
 Route::post('tickets/getTags', 'TicketsController@getTags');
-
-
+Route::post('/subjects/all/', 'TicketsController@SearchAllSubject');
+Route::post('/tickets/all/subjects', 'TicketsController@TicketAllSubject');
 
 Route::resource('tickets.comments', 'CommentsController');
 

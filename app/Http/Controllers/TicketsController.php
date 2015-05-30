@@ -332,6 +332,27 @@ class TicketsController extends Controller {
 	echo $body;
 	}
 
+
+	public function SearchAllSubject(Request $request){
+	// Save notification
+	if($request->ajax()) {
+	$subjects=Subject::all()->lists('name');
+
+	}
+	echo json_encode($subjects);
+	}
+	//public function TicketAllSubject(Request $request){
+	//if($request->ajax()) {
+	//	$subjectName=$request->input("name");
+	//	$targetSubject=Subject::where('name',$subjectName)->first();
+	//	$subjectId=$targetSubject->id;
+
+	//	}
+
+
+
+	//}
+
 	
 
 
