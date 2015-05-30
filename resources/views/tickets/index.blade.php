@@ -25,24 +25,26 @@
 <!-- table---------------------------------------------------------------------------------------------------------->
 
 <div class="row" id="icons_list">
-hiiii second
 
 	<ul class="nav nav-pills" role="tablist">
 	  <li role="presentation"><a href="#">Unanswered <span class="badge">42</span></a></li>
-	  <li role="presentation"><a href="#">Unclosed <span class="badge"></span></a></li>
 	  <li role="presentation"><a href="#">Unassigned <span class="badge">{{ count($unassignedTickets) }}</span></a></li>
+	  <li role="presentation"><a href="#">Deadline exceeded <span class="badge"></span></a></li>
+	  <li role="presentation"><a href="#">Unclosed <span class="badge"></span></a></li>	  
 	  <li role="presentation"><a href="#">Closed <span class="badge"></span></a></li>
-	  <li role="presentation"><a href="#">Assigned to you <span class="badge">{{ count($myTickets) }}</span></a></li>
 	  <li role="presentation" class="active"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
+	  <li role="presentation"><a href="#">Spam <span class="badge">42</span></a></li>	
 	</ul>
 </div>
+
+<br>
 
 <div class="row">
 
 <div class="col-md-3 ">
 
 <div class="row" id="category_list">
-hiiiiiiiiiii category
+
 
 <div class="list-group">
   <a href="#" class="list-group-item disabled">

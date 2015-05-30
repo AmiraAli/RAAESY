@@ -63,14 +63,14 @@ class TicketsController extends Controller {
 	{
 		$tickets=Ticket::all();
 		$myTickets = Ticket::where('tech_id', Auth::user()->id)->get();
-		$unassignedTickets = Ticket::where('tech_id', "")->get();
+		$unassignedTickets = Ticket::whereNull('tech_id')->get();
 		// $closed = Ticket::where('status', "close")->get();
 		
 		// $open = Ticket::where('status', "open")->get();
 		// $statuses=TicketStatus::all();
 		// $closed = TicketStatus::where('value', "close")->get();
 		// $closed = TicketStatus::where('value', "close")->get();
-		return view('tickets.index',compact('tickets','myTickets','unassignedTickets'));
+		return view('tickets.index',compact('tickets','unassignedTickets'));
 	}
 
 	/**
