@@ -2,6 +2,7 @@
 @extends('app')
 @section('content')
 <script type="text/javascript" src="/js/ticket_delete.js"></script>
+<script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" /> 
 <link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">
@@ -9,28 +10,21 @@
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 <div class="container">
 
-<!-- search-->
+<!------------------------------- search------------------------------------------------------------------------------------------->
 <div class="row" id="search">
 	<form action="" class="navbar-form navbar-right">
 	   <div class="input-group">
-	   <input type="text" id="search" class="form-control">
-	       <!-- <input type="Search" placeholder="Search..." id="search" class="form-control" /> -->
+
+	        <input type="Search" placeholder="Search..." id="searchticket" class="form-control" /> 
 	       <div class="input-group-btn">
-		   <button class="btn btn-info">
+		   <button class="btn btn-info" >
 		   <span class="glyphicon glyphicon-search"></span>
 		   </button>
 	       </div>
 	   </div>
 	</form>
 </div>
-
-
-<!-- <div class="ui-widget">
-  <label for="tags">Tags: </label>
-  <input id="tags">
-</div> -->
-
-<!-- table -->
+<!-- table---------------------------------------------------------------------------------------------------------->
 
 <div class="row" id="icons_list">
 hiiii second
@@ -144,6 +138,8 @@ hhhhhhhhhhhh
  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
  <script type="text/javascript" src="/js/tickets_index.js"></script>
  <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
+<script type="text/javascript" src="/js/search_ticket_by_subject.js"></script>
+
  <script >
 		
 window.onload = function() {
@@ -171,6 +167,7 @@ var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
 					console.log(errorThrown);
 			    }
 			});
+
 
 		
 });
