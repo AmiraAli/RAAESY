@@ -26,8 +26,8 @@ Route::get('users/search','UsersController@search');
 
 
 Route::post('articles/autocomplete','ArticlesController@autocomplete');
-
-
+Route::post('articles/getTags', 'ArticlesController@getTags');
+Route::post('articles/search', 'ArticlesController@search');
 
 
 Route::resource('/tickets','TicketsController');

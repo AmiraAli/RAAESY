@@ -38,7 +38,7 @@ class CommentsController extends Controller {
 	public function store($ticket_id)
 	{
 		
-		$comment = new Comment;
+		    $comment = new Comment;
 	    	$comment->body = Request::get('body');
 	    	$comment->ticket_id = $ticket_id;
 	    	$comment->user_id = 1;
@@ -84,7 +84,7 @@ class CommentsController extends Controller {
 		$comment->body = Request::get('body');
 		$comment->save();
 		$comment->name="name";
-	echo json_encode($comment);
+	    echo json_encode($comment);
 	}
 
 	/**

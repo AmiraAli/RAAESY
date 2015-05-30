@@ -1,3 +1,4 @@
+@if (Auth::check())
 <html>
 <head>
 
@@ -12,17 +13,61 @@
 
 <body>
 
+
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 @extends('app')
 
 @section('content')
 <h1>Articles ^_^ :))</h1>
  <a href="{{url('/articles/create')}}" class="btn btn-success">Create Article</a>
- 
+
+<!-- Advance Search --> 
+<label for="">Category: </label>
+<!-- <input type="text" id="cat"> -->
+
+<select  name="category" id="cat">
+     <option value="0" selected="true"> Select Category</option>
+        @foreach ($sections as $section)
+        <optgroup label=" {{ $section->name }} " >
+            @foreach ($categories as $category)
+                @if ($category->section_id === $section->id )
+                    @if(old('category') === $category->id)
+                    <option value="{{ $category->id }}" selected="true"> {{ $category->name }}</option>
+                  @else
+                    <option value="{{ $category->id }}"> {{ $category->name }}</option>   
+                  @endif 
+                @endif
+             @endforeach
+        </optgroup>
+        @endforeach
+</select>
+
+
+<select  name="tag" id="tag">
+    <option value="0" selected="true"> Select Tags</option>
+        @foreach ($tags as $tag)
+       
+        
+                
+                  @if(old('tag') === $tag->id)
+                    <option value="{{ $tag->id }}" selected="true"> {{ $tag->name }}</option>
+                  @else
+                    <option value="{{ $tag->id }}"> {{ $tag->name }}</option>   
+                  @endif 
+             
+  
+        
+        @endforeach
+</select>
 
 
 
-<div class="container">
+
+<button onclick="show()">Advance Search</button>
+
+
+
+<div  class="container">
 <label for="">Quick Search: </label>
 <input type="text" class="glyphicon glyphicon-search parent" onkeyup="myAutocomplete(this.value)" name="term" id="quickSearch"  autocomplete="on">
 
@@ -37,7 +82,7 @@
 
 
  <hr>
- <table class="table table-striped table-bordered table-hover">
+ <table class="table table-striped table-bordered table-hover" id="con">
      <thead>
      <tr class="bg-info">
          <th>Id</th>
@@ -57,7 +102,13 @@
              <td>{{ $article->id }}</td>
              <td>{{ $article->subject }}</td>
              <td>{!!  stripcslashes ($article->body);  !!}</td>
-             <td>{{ $article->isshow }}</td>
+             <td>
+                @if ($article->isshow==1)
+                    Technicals only
+                @else
+                    Technicals and Users 
+                @endif 
+             </td>
              <td>{{ $article->category->name }}</td>
              <td>{{ $article->user->fname }}</td>
              <td>{{ $article->created_at }}</td>
@@ -79,5 +130,7 @@
 
 @endsection
 <script type="text/javascript" src="/js/deleteArticle.js"></script>
+
 </body>
 </html>
+@endif
