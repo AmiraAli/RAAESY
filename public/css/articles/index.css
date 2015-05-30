@@ -1,0 +1,22 @@
+	label{
+        		margin : 10px;
+        	}
+
+        	#searchDiv{
+        		clear: both !important;
+        	}
+
+        	#autocompletemenu{
+        		border: 1px solid #B9BCBE;
+				border-radius: 3px;
+				padding-top: 3px;
+				padding-bottom: 3px;
+				padding-left: 6px;
+				background: none repeat scroll 0% 0% #FFF;
+				margin-right: 5px;
+        	}
+        	li {
+	        	cursor: pointer;
+				display: block;
+			
+			}
