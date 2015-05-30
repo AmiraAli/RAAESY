@@ -22,4 +22,9 @@ class Ticket extends Model {
         return $this->hasMany('App\Comment');
     }
 
+    public function status()
+    {
+        return $this->hasOne('App\TicketStatus');
+    }
+
 }

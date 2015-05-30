@@ -10,6 +10,15 @@
 
 <div class="row" id="icons_list">
 hiiii second
+
+	<ul class="nav nav-pills" role="tablist">
+	  <li role="presentation"><a href="#">Unanswered <span class="badge">42</span></a></li>
+	  <li role="presentation"><a href="#">Unclosed <span class="badge"></span></a></li>
+	  <li role="presentation"><a href="#">Unassigned <span class="badge">{{ count($unassignedTickets) }}</span></a></li>
+	  <li role="presentation"><a href="#">Closed <span class="badge"></span></a></li>
+	  <li role="presentation"><a href="#">Assigned to you <span class="badge">{{ count($myTickets) }}</span></a></li>
+	  <li role="presentation" class="active"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
+	</ul>
 </div>
 
 <div class="row">
@@ -18,6 +27,18 @@ hiiii second
 
 <div class="row" id="category_list">
 hiiiiiiiiiii category
+
+<div class="list-group">
+  <a href="#" class="list-group-item disabled">
+    Cras justo odio
+  </a>
+  <a href="#" class="list-group-item active"><span class="badge">14</span>Dapibus ac facilisis in</a>
+  <a href="#" class="list-group-item">Morbi leo risus</a>
+  <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+  <a href="#" class="list-group-item">Vestibulum at eros</a>
+</div>
+
+
 </div>
 
 <div class="row" id="sort_list">

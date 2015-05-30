@@ -48,7 +48,7 @@ class AssetsController extends Controller {
 		$this->validate($request, [
 	        'name' => 'required',
 	        'manufacturer' => 'required',
-	        'serialno' => 'required',
+	        'serialno' => 'required|unique:assets',
 	        'location' => 'required'
     	]);
 
@@ -217,4 +217,3 @@ class AssetsController extends Controller {
 	}
 
 }
-
