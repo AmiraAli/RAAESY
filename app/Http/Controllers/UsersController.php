@@ -42,6 +42,9 @@ class UsersController extends Controller {
 		$user->password=bcrypt(Request::get('password'));
 		$user->phone=Request::get('phone');
 		$user->location=Request::get('location');
+		$user->isspam=Request::get('isspam');
+		$user->type=Request::get('type');
+
 		$user->save();
 		return redirect('/users');
 	}
@@ -83,9 +86,11 @@ class UsersController extends Controller {
 		$user->fname=Request::get('fname');
 		$user->lname=Request::get('lname');
 		$user->email=Request::get('email');
-		$user->password=bcrypt(Request::get('password'));
+		//$user->password=bcrypt(Request::get('password'));
 		$user->phone=Request::get('phone');
 		$user->location=Request::get('location');
+		$user->isspam=Request::get('isspam');
+		$user->type=Request::get('type');
 		$user->save();
 		 return redirect('/users');
 	}
@@ -151,5 +156,24 @@ class UsersController extends Controller {
 
 	}
 
+
+
+	/**
+	 * Search users (called by AJAX).
+	 *
+	 * @param  string  $fname , $lname , ... (optional fields)
+	 * @return Response
+	 */
+
+	public function search()
+	{
+
+	
+		echo "ok";
+		exit;
+
+
+
+	}
 
 }	

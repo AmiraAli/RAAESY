@@ -149,6 +149,9 @@ return [
 		//captcha
 		'Mews\Captcha\CaptchaServiceProvider',
 
+		//user provider in views
+		'App\Providers\MyUserProvider',
+
 
 	],
 

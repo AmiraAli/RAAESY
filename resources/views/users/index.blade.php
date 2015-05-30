@@ -14,6 +14,13 @@
 @section('content')
 
 
+
+<a class="btn btn-primary" href="/users/create" >Create New User</a>
+<a class="btn btn-primary" href="/users/search" >Search Users</a>
+
+
+
+
 <div class="container">
 Show: 
 <label><input type="radio" name="user" value="all"   onclick="show(this)"> All</label> |
@@ -87,7 +94,6 @@ Show:
 @endforeach
 </tbody>
 </table>
-<a class="btn btn-primary" href="/users/create" >Create new user</a>
 
 
 
