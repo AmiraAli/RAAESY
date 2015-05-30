@@ -2,6 +2,7 @@
 @extends('app')
 @section('content')
 <script type="text/javascript" src="/js/ticket_delete.js"></script>
+<script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" /> 
 

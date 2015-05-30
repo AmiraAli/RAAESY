@@ -2,10 +2,11 @@
 @extends('app')
 @section('content')
 <script type="text/javascript" src="/js/ticket_delete.js"></script>
+<script type="text/javascript" src="/js/ticket_delete.js"></script>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" /> 
 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
 <link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">
 <link type="text/css" rel="stylesheet" href="/css/jquery-te-1.4.0.css">	
 
