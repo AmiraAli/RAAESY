@@ -167,5 +167,42 @@ class TicketsController extends Controller {
 	      print_r($subject->id);
 	    }
 	}
+
+	/**
+	* Function to sort tickets
+	**/
+	public function sortTicket()
+	{
+		$data=Request::input();
+		$tickt= json_decode(json_encode($data['data']),TRUE);
+		$sortBy=$data['sortType'];
+	           // var_dump($tickt[0]['id']);
+
+		// Getting post data
+	  if(Request::ajax())
+	    {
+	    	$tickets = array();
+	        foreach ($tickt[0] as $key => $value)
+	        {
+	            $tickets[$key] = $value;
+	        }
+	    	//file_put_contents("/home/eman/"."aaaaa.html",(array)$tickets[0]);
+
+			function cmp($a, $b)
+			{
+				file_put_contents("/home/eman/"."gtt.html", "kkkk");
+			    return strcmp($a->id, $b->id);
+			}
+			//$tickets=(array)$tickets;
+
+			 usort($tickets, 'cmp');
+
+
+			 //file_put_contents("/home/eman/"."aaaaa.html", "ooooo");
+
+			return view("tickets.sortTicket",compact('tickets')); 
+
+		 }
+	}
 	
 }

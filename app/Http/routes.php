@@ -17,6 +17,7 @@ Route::resource('/sections','SectionsController');
 Route::resource('/users','UsersController');
 Route::get('users/destroy/{id}','UsersController@destroy');
 
+Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
 Route::resource('/tickets','TicketsController');
 Route::post('tickets/addSubject', 'TicketsController@addSubject');
 
@@ -25,9 +26,6 @@ Route::resource('tickets.comments', 'CommentsController');
 
 Route::resource('/articles','ArticlesController');
 
-
-
-Route::get('/assets/search', 'AssetsController@search');
 Route::post('assets/searchAssets', 'AssetsController@searchAssets');
 
 Route::resource('/assets', 'AssetsController');
