@@ -90,6 +90,12 @@ class TicketsController extends Controller {
 			$ticket->admin_id=$request->user()->id;
 			$ticket->save();
 
+			// save ticket as open status in ticket status table
+			$ticketStatus=new TicketStatus;
+			$ticketStatus->value='open';
+			$ticketStatus->ticket_id=$ticket->id;
+			$ticketStatus->save();
+
 			//insert into table ticket_tags each tag of this ticket
 			$tags=$request->get('tagValues');
 			if( $tags != ""){
@@ -106,6 +112,12 @@ class TicketsController extends Controller {
 			$ticket->tech_id=NULL;
 			$ticket->admin_id=NULL;
 			$ticket->save();
+
+			// save ticket as open status in ticket status table
+			$ticketStatus=new TicketStatus;
+			$ticketStatus->value='open';
+			$ticketStatus->ticket_id=$ticket->id;
+			$ticketStatus->save();
 		}
 		return redirect('/tickets');
 	}
