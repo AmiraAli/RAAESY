@@ -138,9 +138,8 @@ hhhhhhhhhhhh
  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
  <script type="text/javascript" src="/js/tickets_index.js"></script>
  <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
-<<<<<<< HEAD
 <script type="text/javascript" src="/js/search_ticket_by_subject.js"></script>
-=======
+
  <script >
 		
 window.onload = function() {
@@ -168,7 +167,7 @@ var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
 					console.log(errorThrown);
 			    }
 			});
->>>>>>> a1aba36cb966e5ada80238e027bad9ab4ca9225b
+
 
 		
 });

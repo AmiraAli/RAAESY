@@ -17,7 +17,7 @@
 
 	        <input type="Search" placeholder="Search..." id="searchticket" class="form-control" /> 
 	       <div class="input-group-btn">
-		   <button class="btn btn-info" onclick="SearchButton()">
+		   <button class="btn btn-info" >
 		   <span class="glyphicon glyphicon-search"></span>
 		   </button>
 	       </div>
@@ -28,6 +28,15 @@
 
 <div class="row" id="icons_list">
 hiiii second
+
+	<ul class="nav nav-pills" role="tablist">
+	  <li role="presentation"><a href="#">Unanswered <span class="badge">42</span></a></li>
+	  <li role="presentation"><a href="#">Unclosed <span class="badge"></span></a></li>
+	  <li role="presentation"><a href="#">Unassigned <span class="badge">{{ count($unassignedTickets) }}</span></a></li>
+	  <li role="presentation"><a href="#">Closed <span class="badge"></span></a></li>
+	  <li role="presentation"><a href="#">Assigned to you <span class="badge">{{ count($myTickets) }}</span></a></li>
+	  <li role="presentation" class="active"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
+	</ul>
 </div>
 
 <div class="row">
@@ -36,15 +45,60 @@ hiiii second
 
 <div class="row" id="category_list">
 hiiiiiiiiiii category
+
+<div class="list-group">
+  <a href="#" class="list-group-item disabled">
+    Cras justo odio
+  </a>
+  <a href="#" class="list-group-item active"><span class="badge">14</span>Dapibus ac facilisis in</a>
+  <a href="#" class="list-group-item">Morbi leo risus</a>
+  <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+  <a href="#" class="list-group-item">Vestibulum at eros</a>
+</div>
+
+
 </div>
 
 <div class="row" id="sort_list">
-hiiiiiii sort
+
+<div class="form-group">
+							<label class="col-md-4 control-label">Type</label>
+							<div class="col-md-6">
+								<select class="form-control" name="sort" id="sortBy">
+								<option value="">Sort By</option>							
+								<option value="1">Subject</option>
+								<option value="2">Deadline</option>
+								<option value="3">Create Date</option>
+								<option value="4">priority</option>
+									
+								</select>
+							
+							</div>
+						</div>
+
+<?php 
+
+//  $result = array();
+//         foreach ($tickets as $key => $value)
+//         {
+//             $result[$key] = $value;
+//         }
+// 	    	//file_put_contents("/home/eman/"."aaaaa.html", $result);
+
+// function cmp($a, $b)
+// {
+//     return strcmp($a->priority, $b->priority);
+// }
+
+// usort($result, "cmp");
+
+?>
 </div>
 
 </div>
 
 <div class="col-md-9 "  id="table_show">
+hhhhhhhhhhhh
 <table class="table table-condensed">
 		<tr>
 			<td>Subject</td>
@@ -86,4 +140,36 @@ hiiiiiii sort
  <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
 <script type="text/javascript" src="/js/search_ticket_by_subject.js"></script>
 
+ <script >
+		
+window.onload = function() {
+                    $.ajaxSetup({
+                headers: {
+                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
+                }
+            });
+            };
+            
+$( "#sortBy" ).change(function() 
+{
+
+var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
+
+		   $.ajax({
+			    url: '/tickets/sortTicket',
+			    type: 'post',
+			    data: { data : tickets , sortType: $('#sortBy option:selected').text() },
+			    success: function(result) {
+					 $('#table_show').html(result);
+
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					console.log(errorThrown);
+			    }
+			});
+
+
+		
+});
+</script>
 @endsection
