@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-
-    "hash": "0e178af1a4519361a1ab4b201056c0fb",
-
-    "hash": "b7f49c347fbc651d9caa95de86463741",
-
+    "hash": "d314cd76e8a06e9b0467132f6a9cd0b2",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -922,12 +918,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "85f12207cf45cc288e9e6b9b5d184aad5f08e2ca"
+                "reference": "1e897aede52fe7ac1bc53ff2bba8d614e47ed375"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/85f12207cf45cc288e9e6b9b5d184aad5f08e2ca",
-                "reference": "85f12207cf45cc288e9e6b9b5d184aad5f08e2ca",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/1e897aede52fe7ac1bc53ff2bba8d614e47ed375",
+                "reference": "1e897aede52fe7ac1bc53ff2bba8d614e47ed375",
                 "shasum": ""
             },
             "require": {
@@ -1040,7 +1036,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2015-05-29 18:56:49"
+            "time": "2015-05-29 21:32:23"
         },
         {
             "name": "league/flysystem",
@@ -1048,12 +1044,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "0b4acb8ca9f889e5372e90090f7f5b8cacb1f055"
+                "reference": "82c97542df75f569ff6b3711cf8d8c74a56d1ef2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/0b4acb8ca9f889e5372e90090f7f5b8cacb1f055",
-                "reference": "0b4acb8ca9f889e5372e90090f7f5b8cacb1f055",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/82c97542df75f569ff6b3711cf8d8c74a56d1ef2",
+                "reference": "82c97542df75f569ff6b3711cf8d8c74a56d1ef2",
                 "shasum": ""
             },
             "require": {
@@ -1124,7 +1120,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2015-05-28 07:51:17"
+            "time": "2015-05-30 09:18:55"
         },
         {
             "name": "mews/captcha",
@@ -1948,12 +1944,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "11b371afd72af42c574d5aeb4b3a6075f7d2775f"
+                "reference": "f43ab49b2634f8987398ceab03fff6bc8436b26f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/11b371afd72af42c574d5aeb4b3a6075f7d2775f",
-                "reference": "11b371afd72af42c574d5aeb4b3a6075f7d2775f",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/f43ab49b2634f8987398ceab03fff6bc8436b26f",
+                "reference": "f43ab49b2634f8987398ceab03fff6bc8436b26f",
                 "shasum": ""
             },
             "require": {
@@ -2017,7 +2013,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2015-05-27 00:47:03"
+            "time": "2015-05-29 23:26:13"
         },
         {
             "name": "symfony/process",

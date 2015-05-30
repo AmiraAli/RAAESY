@@ -3,40 +3,48 @@
     <h1>Article Show</h1>
 
     
-        <div class="form-group">
+        <div class="container">
             <label for="subject" class="col-sm-2 control-label">SUBJECT</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="subject" placeholder={{$article->subject}} readonly>
+                {{$article->subject}}
             </div>
-        </div>
-
-        <div class="form-group">
+      
+       <br/>
+       <br/>
+        
             <label for="body" class="col-sm-2 control-label">BODY</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="subject" placeholder={{$article->body}} readonly>
+                {!!  stripcslashes ($article->body);  !!}
             </div>
-        </div>
         
-          <div class="form-group">
+        <br/>
+        <br/>
+          
             <label for="isshow" class="col-sm-2 control-label">isshow!?</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="isshow" placeholder={{$article->isshow}} readonly>
-            </div>
-        </div>
 
-         <div class="form-group">
+                @if ($article->isshow==1)
+                   Show for Technicals only
+                @else
+                    Show for Technicals and Users 
+                @endif     
+            </div>
+    
+        <br/>
+        <br/>
+        
             <label for="category" class="col-sm-2 control-label">Category</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="category" placeholder={{$article->category->name}} readonly>
+                {{$article->category->name}}
             </div>
-        </div>
-
-         <div class="form-group">
-            <label for="isshow" class="col-sm-2 control-label">isshow!?</label>
+    
+        <br/>
+        <br/>
+         
+            <label for="isshow" class="col-sm-2 control-label">Owner</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="isshow" placeholder={{$article->user->name}} readonly>
+                {{$article->user->fname}} {{$article->user->lname}}
             </div>
+     
         </div>
-        
-    </form>
 @endsection

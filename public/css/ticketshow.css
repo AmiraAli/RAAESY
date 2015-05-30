@@ -1,0 +1,49 @@
+.relatedassets{
+width:400px;
+clear:both;
+float:right;
+}
+.relatedtags{
+width:400px;
+clear:both;
+float:right;
+}
+.ticketbody{
+width:700px;
+float:left;
+}
+.commentbody{
+width:700px;
+float:left;
+}
+.ticketdetails{
+width:400px;
+
+float:right;
+}
+.title{
+width:10px
+    display: inline-block;
+
+}
+.rightposition{
+width:400px;
+
+float:right;
+}
+.leftposition{
+width:700px;
+
+float:left;
+}
+
+.buttonright {
+    text-align: right;
+    float: right;
+}
+.buttonsave {
+    text-align: right;
+    float: right;
+}
+
+

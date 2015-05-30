@@ -10,9 +10,6 @@
 		"twbs/bootstrap": "~3.3",
 		"illuminate/html": "~5.0",
 
-
-
-
 		"doctrine/dbal": "^2.5",
 
 		"mews/captcha": "~2.0",
@@ -36,6 +33,12 @@
 			"tests/TestCase.php"
 		]
 	},
+
+
+
+
+
+
 	"scripts": {
 		"post-install-cmd": [
 			"php artisan clear-compiled",

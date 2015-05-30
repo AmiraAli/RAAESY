@@ -1,12 +1,36 @@
+
 @extends('app')
 @section('content')
 <script type="text/javascript" src="/js/ticket_delete.js"></script>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" /> 
+<link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">
+<link type="text/css" rel="stylesheet" href="/css/jquery-te-1.4.0.css">
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 <div class="container">
+
+<!-- search-->
 <div class="row" id="search">
- hiiii first
+	<form action="" class="navbar-form navbar-right">
+	   <div class="input-group">
+	   <input type="text" id="search" class="form-control">
+	       <!-- <input type="Search" placeholder="Search..." id="search" class="form-control" /> -->
+	       <div class="input-group-btn">
+		   <button class="btn btn-info">
+		   <span class="glyphicon glyphicon-search"></span>
+		   </button>
+	       </div>
+	   </div>
+	</form>
 </div>
+
+
+<!-- <div class="ui-widget">
+  <label for="tags">Tags: </label>
+  <input id="tags">
+</div> -->
+
+<!-- table -->
 
 <div class="row" id="icons_list">
 hiiii second
@@ -42,12 +66,45 @@ hiiiiiiiiiii category
 </div>
 
 <div class="row" id="sort_list">
-hiiiiiii sort
+
+<div class="form-group">
+							<label class="col-md-4 control-label">Type</label>
+							<div class="col-md-6">
+								<select class="form-control" name="sort" id="sortBy">
+								<option value="">Sort By</option>							
+								<option value="1">Subject</option>
+								<option value="2">Deadline</option>
+								<option value="3">Create Date</option>
+								<option value="4">priority</option>
+									
+								</select>
+							
+							</div>
+						</div>
+
+<?php 
+
+//  $result = array();
+//         foreach ($tickets as $key => $value)
+//         {
+//             $result[$key] = $value;
+//         }
+// 	    	//file_put_contents("/home/eman/"."aaaaa.html", $result);
+
+// function cmp($a, $b)
+// {
+//     return strcmp($a->priority, $b->priority);
+// }
+
+// usort($result, "cmp");
+
+?>
 </div>
 
 </div>
 
 <div class="col-md-9 "  id="table_show">
+hhhhhhhhhhhh
 <table class="table table-condensed">
 		<tr>
 			<td>Subject</td>
@@ -65,31 +122,12 @@ hiiiiiii sort
 			   		<td>{{ $ticket->file }}</td>
 			   		<td>{{ $ticket->priority }}</td>
 			   		<td>
-			   			<!-- Trigger the modal with a button -->
-  					<a  data-toggle="modal" data-target="#myModal">action</a>
-					  <!-- Modal -->
-					  <div class="modal fade" id="myModal" role="dialog">
-					    <div class="modal-dialog">
-					      <!-- Modal content-->
-					      <div class="modal-content">
-					        <div class="modal-header">
-					          <button type="button" class="close" data-dismiss="modal">&times;</button>
-					          <h4 class="modal-title">Actions</h4>
-					        </div>
-					        <div class="modal-body">
-					          <ul>
-					          <li><a href="/tickets/{{ $ticket->id }} ">Show</a></li>
-					          <li><a href="/tickets/{{ $ticket->id }}/edit">Edit</a></li>
-					          <li><a onclick="Delete({{ $ticket->id }})" data-dismiss="modal">Delete</a></li>
-					          </ul>
-					        </div>
-					        <div class="modal-footer">
-					          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					        </div>
-					      </div>
-					      
-					    </div>
-					  </div>
+			   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+			   		data-content=
+			   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>
+			   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>
+			   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
+			   		></a>
 			   		</td>
 			   </tr>
 		  @endforeach
@@ -99,5 +137,42 @@ hiiiiiii sort
 </div>
 </div>
 </div>
+
+ <script src="/js/jquery-2.1.3.js" type="text/javascript"> </script> 
+ <script async src="//code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
+ <script type="text/javascript" src="/js/jquery-te-1.4.0.min.js"></script>
  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+ <script type="text/javascript" src="/js/tickets_index.js"></script>
+ <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
+ <script >
+		
+window.onload = function() {
+                    $.ajaxSetup({
+                headers: {
+                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
+                }
+            });
+            };
+            
+$( "#sortBy" ).change(function() 
+{
+
+var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
+
+		   $.ajax({
+			    url: '/tickets/sortTicket',
+			    type: 'post',
+			    data: { data : tickets , sortType: $('#sortBy option:selected').text() },
+			    success: function(result) {
+					 $('#table_show').html(result);
+
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					console.log(errorThrown);
+			    }
+			});
+
+		
+});
+</script>
 @endsection
