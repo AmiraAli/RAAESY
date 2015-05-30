@@ -107,8 +107,7 @@ class TicketsController extends Controller {
 			$ticket->admin_id=NULL;
 			$ticket->save();
 		}
-		$tickets=Ticket::all();
-		return view('tickets.index',compact('tickets'));
+		return redirect('/tickets');
 	}
 
 	/**
