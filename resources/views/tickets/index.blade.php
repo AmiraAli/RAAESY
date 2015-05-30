@@ -5,27 +5,17 @@
 <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" /> 
-
-
 <link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">
-<link type="text/css" rel="stylesheet" href="/css/jquery-te-1.4.0.css">	
-
-
-
-
-
-
-
-
-
-
+<link type="text/css" rel="stylesheet" href="/css/jquery-te-1.4.0.css">
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 <div class="container">
-<!-------------------------------Search----------------------------------------->
+
+<!-- search-->
 <div class="row" id="search">
 	<form action="" class="navbar-form navbar-right">
 	   <div class="input-group">
-	       <input type="Search" placeholder="Search..." id="search" class="form-control" />
+	   <input type="text" id="search" class="form-control">
+	       <!-- <input type="Search" placeholder="Search..." id="search" class="form-control" /> -->
 	       <div class="input-group-btn">
 		   <button class="btn btn-info">
 		   <span class="glyphicon glyphicon-search"></span>
@@ -36,25 +26,13 @@
 </div>
 
 
-
-
-
-<div class="ui-widget">
+<!-- <div class="ui-widget">
   <label for="tags">Tags: </label>
   <input id="tags">
-</div>
+</div> -->
 
+<!-- table -->
 
-
-
-
-
-
-
-
-
-
-<!----------------------------------------------------------------------------------------------->
 <div class="row" id="icons_list">
 hiiii second
 </div>
@@ -107,15 +85,11 @@ hiiiiiii sort
 </div>
 </div>
 
-<script src="/js/jquery-2.1.3.js" type="text/javascript"> </script> 
+ <script src="/js/jquery-2.1.3.js" type="text/javascript"> </script> 
  <script async src="//code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
  <script type="text/javascript" src="/js/jquery-te-1.4.0.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/js/tickets_index.js"></script>
-
-
-
-
-
+ <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+ <script type="text/javascript" src="/js/tickets_index.js"></script>
+ <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
 
 @endsection

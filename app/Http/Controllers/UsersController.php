@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
 use Request;
+use Validator;
 class UsersController extends Controller {
 
 	/**
@@ -35,6 +36,35 @@ class UsersController extends Controller {
 	public function store()
 	{
 
+<<<<<<< HEAD
+		    $v = Validator::make(Request::all(), [
+           			'fname' => 'required|max:255',
+					'lname' => 'required|max:255',
+					'email' => 'required|email|max:255|unique:users',
+					'password' => 'required|confirmed|min:6',
+					'phone' => 'required|max:255',
+					'location' => 'required|max:255',
+					#'captcha' => 'required|captcha',
+        	]);
+        $subject=Request::get('subject');
+
+	    if ($v->fails())
+	    {
+	        return redirect()->back()->withErrors($v->errors())
+	        						 ->withInput();
+	    }else{
+
+			$user=new User();
+			$user->fname=Request::get('fname');
+			$user->lname=Request::get('lname');
+			$user->email=Request::get('email');
+			$user->password=bcrypt(Request::get('password'));
+			$user->phone=Request::get('phone');
+			$user->location=Request::get('location');
+			$user->save();
+			return redirect('/users');
+	    }
+=======
 		$user=new User();
 		$user->fname=Request::get('fname');
 		$user->lname=Request::get('lname');
@@ -47,6 +77,7 @@ class UsersController extends Controller {
 
 		$user->save();
 		return redirect('/users');
+>>>>>>> 3c2cc8dd03484a0b59ef8b9f2d185fe70fb54451
 	}
 
 	/**
@@ -82,6 +113,35 @@ class UsersController extends Controller {
 	 */
 	public function update($id)
 	{
+<<<<<<< HEAD
+		$v = Validator::make(Request::all(), [
+           			'fname' => 'required|max:255',
+					'lname' => 'required|max:255',
+					'email' => 'required|email|max:255',
+					'password' => 'required|confirmed|min:6',
+					'phone' => 'required|max:255',
+					'location' => 'required|max:255',
+					#'captcha' => 'required|captcha',
+        	]);
+        $subject=Request::get('subject');
+
+	    if ($v->fails())
+	    {
+	        return redirect()->back()->withErrors($v->errors())
+	        						 ->withInput();
+	    }else{
+
+			$user=User::find($id);
+			$user->fname=Request::get('fname');
+			$user->lname=Request::get('lname');
+			$user->email=Request::get('email');
+			$user->password=bcrypt(Request::get('password'));
+			$user->phone=Request::get('phone');
+			$user->location=Request::get('location');
+			$user->save();
+			return redirect('/users');
+		}
+=======
 		$user=User::find($id);
 		$user->fname=Request::get('fname');
 		$user->lname=Request::get('lname');
@@ -93,6 +153,7 @@ class UsersController extends Controller {
 		$user->type=Request::get('type');
 		$user->save();
 		 return redirect('/users');
+>>>>>>> 3c2cc8dd03484a0b59ef8b9f2d185fe70fb54451
 	}
 
 	/**
