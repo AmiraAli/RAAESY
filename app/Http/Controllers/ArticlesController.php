@@ -287,5 +287,16 @@ class ArticlesController extends Controller {
 	}
 
 
+	public function home(){
+
+
+		$categories = Category::all();
+		$sections=Section::all();
+		$articles=Article::all();
+
+		return view('articles.home',compact('categories','sections','articles'));
+	}
+
+
 
 }

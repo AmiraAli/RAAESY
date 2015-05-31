@@ -40,6 +40,10 @@ Route::post('users/autocomplete','UsersController@autocomplete');
 Route::post('articles/autocomplete','ArticlesController@autocomplete');
 Route::post('articles/getTags', 'ArticlesController@getTags');
 Route::post('articles/search', 'ArticlesController@search');
+Route::get('articles/home', 'ArticlesController@home');
+
+
+
 
 
 Route::post('tickets/searchTicket', 'TicketsController@searchTicket');
