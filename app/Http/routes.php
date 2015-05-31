@@ -28,13 +28,9 @@ Route::post('users/changepassprocess','UsersController@changepassprocess');
 
 Route::resource('/users','UsersController');
 
-
-
-
 Route::get('users/destroy/{id}','UsersController@destroy');
 Route::post('users/get_user_types','UsersController@get_user_types');
 Route::post('users/autocomplete','UsersController@autocomplete');
-
 
 
 Route::post('articles/autocomplete','ArticlesController@autocomplete');
@@ -58,10 +54,14 @@ Route::post('tickets/addSubject', 'TicketsController@addSubject');
 Route::post('tickets/getTags', 'TicketsController@getTags');
 Route::post('/subjects/all/', 'TicketsController@SearchAllSubject');
 Route::post('/tickets/all/subjects', 'TicketsController@TicketAllSubject');
+
+Route::post('/tickets/advancedsearch', 'TicketsController@AdvancedSearch');
+
 Route::post('/tickets/spamTicket', 'TicketsController@spamTicket');
 Route::post('/tickets/closeTicket', 'TicketsController@closeTicket');
 Route::post('/tickets/openTicket', 'TicketsController@openTicket');
 Route::post('tickets/addTag', 'TicketsController@addTag');
+
 
 
 

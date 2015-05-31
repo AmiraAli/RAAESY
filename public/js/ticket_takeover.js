@@ -71,17 +71,24 @@ $.ajax({
 	var currentDate=currentdate.getFullYear()+"-"+currentdate.getMonth()+"-"+currentdate.getDay()+" "+currentdate.getHours()+":" + 		currentdate.getMinutes() + ":"+ currentdate.getSeconds();
 	
 
-	var leftDiv=document.querySelector(".leftposition");
+	var leftDiv=document.querySelector("#comments");
 	var newLine=document.createElement("br");
 	var commentDiv=document.createElement('div');
 	 commentDiv.setAttribute("class","panel panel-default  commentbody");
+
 	var commentDiv1=document.createElement('div');
+	var headDiv=document.createElement('div');
+		  headDiv.setAttribute('class','panel-heading');
+		var head=document.createTextNode("name");
+
 	 commentDiv1.setAttribute("class","panel-body ");
 	var text=document.createTextNode(result);
 	var textDate=document.createTextNode(currentDate);
+	headDiv.appendChild(head);
 	commentDiv1.appendChild(text);
 	commentDiv1.appendChild(newLine);
 	commentDiv1.appendChild(textDate);
+	commentDiv.appendChild(headDiv);
 	commentDiv.appendChild(commentDiv1);
 	leftDiv.appendChild(commentDiv);
 

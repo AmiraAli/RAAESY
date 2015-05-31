@@ -1,40 +1,46 @@
 
 @extends('app')
 @section('content')
-
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-
+<link href="/css/searchticket.css" rel="stylesheet">
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 <div class="container">
 
 
 <!------------------------------- search------------------------------------------------------------------------------------------->
 <div class="row" id="search">
-	<form action="" class="navbar-form navbar-right">
+
 	   <div class="input-group">
 
-	        <input type="Search" placeholder="Search..." id="searchticket" class="form-control" /> 
+			   		
+	        <input type="Search" placeholder="subject...." id="searchticket" class="form-control" /> 
 	       <div class="input-group-btn">
-		   <button class="btn btn-info" >
+		   <button class="btn btn-info" onclick="SearchButton()" >
 		   <span class="glyphicon glyphicon-search"></span>
 		   </button>
+
+
 	       </div>
 	   </div>
-	</form>
+
+
+	
 </div>
 <!-- table---------------------------------------------------------------------------------------------------------->
-
+<a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Ticket</a>
 
 <div class="row" id="icons_list">
 
 	<ul class="nav nav-pills" role="tablist">
-	  <li role="presentation" id="unanswered"><a href="#" onclick="searchTicket({{ $unassigned }}, 'unanswered')">Unanswered <span class="badge">42</span></a></li>
-	  <li role="presentation" id="unassigned"><a href="#" onclick="searchTicket({{ $unassigned }}, 'unassigned')">Unassigned <span class="badge">{{ count($unassigned) }}</span></a></li>
-	  <li role="presentation" id="expired"><a href="#" onclick="searchTicket({{ $expired }}, 'expired')">Deadline exceeded <span class="badge">{{ count($expired) }}</span></a></li>
-	  <li role="presentation" id="open"><a href="#" onclick="searchTicket({{ $open }}, 'open')">Unclosed <span class="badge">{{ count($open) }}</span></a></li>	  
-	  <li role="presentation" id="closed"><a href="#" onclick="searchTicket({{ $closed }}, 'closed')">Closed <span class="badge">{{ count($closed) }}</span></a></li>
-	  <li role="presentation" id="all" class="active" onclick="searchTicket({{ $allTickets }}, 'all')"><a href="#">All(including closed) <span class="badge">{{ count($allTickets) }}</span></a></li>
-	  <li role="presentation" id="spam"><a href="#" onclick="searchTicket({{ $spam }}, 'spam')">Spam <span class="badge">{{ count($spam) }}</span></a></li>	
+
+	  <li role="presentation" id="unanswered"><a href="#" onclick="searchTicket('unanswered')">Unanswered <span class="badge">{{ count($unanswered) }}</span></a></li>
+	  <li role="presentation" id="unassigned"><a href="#" onclick="searchTicket('unassigned')">Unassigned <span class="badge">{{ count($unassigned) }}</span></a></li>
+	  <li role="presentation" id="expired"><a href="#" onclick="searchTicket('expired')">Deadline exceeded <span class="badge">{{ count($expired) }}</span></a></li>
+	  <li role="presentation" id="open"><a href="#" onclick="searchTicket('open')">Unclosed <span class="badge">{{ count($open) }}</span></a></li>	  
+	  <li role="presentation" id="closed"><a href="#" onclick="searchTicket('closed')">Closed <span class="badge">{{ count($closed) }}</span></a></li>
+	  <li role="presentation" id="all" class="active" onclick="searchTicket('all')"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
+	  <li role="presentation" id="spam"><a href="#" onclick="searchTicket('spam')">Spam <span class="badge">{{ count($spam) }}</span></a></li>	
+
 	</ul>
 </div>
 
@@ -48,10 +54,14 @@
 
 
 <div class="list-group">
-  <a href="#" class="list-group-item active"><span class="badge">14</span>All categories</a>
-  <a href="#" class="list-group-item"><span class="badge">14</span>Morbi leo risus</a>
-  <a href="#" class="list-group-item"><span class="badge">14</span>Porta ac consectetur ac</a>
-  <a href="#" class="list-group-item"><span class="badge">14</span>Vestibulum at eros</a>
+	<a href="#" class="list-group-item active" id="cat_all" onclick="searchByCat('cat_all')"><strong>All categories</strong></a>
+	@foreach ($sections as $section)
+		<a href="#" class="list-group-item" id="sec_{{ $section->id }}" onclick="searchByCat('sec_{{ $section->id }}')"> &nbsp &nbsp<strong>{{ $section->name }}</strong></a>
+		@foreach ($section->categories as $category)
+			<a href="#" class="list-group-item" id="cat_{{ $category->id }}" onclick="searchByCat('cat_{{ $category->id }}')"> &nbsp &nbsp &nbsp &nbsp{{ $category->name }}</a>
+		@endforeach	        			         
+    @endforeach
+  
 </div>
 
 
@@ -118,11 +128,34 @@
 		</div>
 	</div>
 
+
+<button id="toggle" class="glyphicon glyphicon-glass"></button>
+
+	<div class="panel panel-default advancedSearchDiv">
+	  <div class='panel-heading'>AdvancedSearch</div>
+	  <div class='panel-body'>
+	   Priority: <select id='ticketPriority'>
+		<option></option>
+		<option>low</option>
+		<option>high</option>
+		<option>critical</option>
+					</select><br><br>
+	   From: <input id='ticketStartDate' type='date'><br><br> 
+	   To: <input id='ticketEndDate' type='date'><br><br>
+	   Technical Name: <select id='ticketTechnical'>
+		<option></option>
+		@foreach($technicals as $technical)
+			<option id="{{$technical->id}},technical">{{$technical->fname}} {{$technical->lname}}</option>
+		@endforeach
+			</select><br><br>
+		<button onclick='AdvancedSearch()' class="btn btn-primary advancedsearchbuttonwithall">Search</button>
+	  </div>
+	</div>
+
+
 </div>
 
 <div class="col-md-9 "  id="table_show">
-
-
 	<table class="table table-condensed">
 			<tr>
 				<td> ID </td>
@@ -132,7 +165,7 @@
 				<td class="priority">Periorty</td>
 				<td>Settings</td>
 			</tr>
-			  @foreach($allTickets as $ticket)
+			  @foreach($tickets as $ticket)
 				   <tr id="{{ $ticket->id }}">
 				   		<td>#{{ $ticket->id }} </td>
 				   		<td>{{ $ticket->subject->name }}</td>
@@ -190,12 +223,12 @@
 		  
 		</table>
 
+
 </div>
 </div>
 </div>
 
-
-
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
  <script src="/js/jquery-2.1.3.js" type="text/javascript"> </script> 
  <script async src="//code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
  <script type="text/javascript" src="/js/jquery-te-1.4.0.min.js"></script>
@@ -203,10 +236,21 @@
  <script type="text/javascript" src="/js/tickets_index.js"></script>
  <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
  <script type="text/javascript" src="/js/search_ticket_by_subject.js"></script>
- <script type="text/javascript" src="/js/ticket_search.js"></script>
+  <script type="text/javascript" src="/js/ticket_search.js"></script>
+ <script type="text/javascript" src="/js/ticket_advanced_search.js"></script>
+ <script type="text/javascript" src="/js/toggleadvacedsearch.js"></script>
 
 
-<script>
+ <script >
+		
+window.onload = function() {
+                    $.ajaxSetup({
+                headers: {
+                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
+                }
+            });
+            };
+
 $( "#selectFields" ).click(function() {
   $( '#check' ).slideToggle( "fast" );
 });
@@ -222,17 +266,6 @@ $( "#selectFields" ).click(function() {
         	$('.'+$(this).val()).show();
         }
     });
-</script>
-
- <script >
-		
-window.onload = function() {
-                    $.ajaxSetup({
-                headers: {
-                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
-                }
-            });
-            };
             
 $( "#sortBy" ).change(function() 
 {
