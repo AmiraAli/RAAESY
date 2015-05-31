@@ -1,6 +1,9 @@
 <?php namespace App\Http\Controllers;
 use Auth;
 use Mail;
+use App\Category;
+use App\Section;
+use App\Article;
 class HomeController extends Controller {
 
 	/*
@@ -31,7 +34,11 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
-		return view('home');
+		$categories = Category::all();
+		$sections=Section::all();
+		$articles=Article::all();
+
+		return view('home',compact('categories','sections','articles'));
 	}
 
 	// public function home()

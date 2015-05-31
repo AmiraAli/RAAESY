@@ -17,6 +17,14 @@ use Validator;
 
 class AssetsController extends Controller {
 
+	public function __construct()
+	{
+		if (Auth::User()->type !="admin"){
+			exit;
+		}
+		
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *

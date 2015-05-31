@@ -129,7 +129,7 @@
 			<h3 class="panel-title">Related tags</h3>
 		</div>
 		<div class="panel-body"> 
-
+<<<<<<< HEAD
 
 			@foreach($relatedTickets as $Ticket)
 				@if($Ticket->ticket_id!=$ticket->id)
@@ -137,7 +137,15 @@
 				@endif
 			@endforeach
 
+=======
+		@foreach($relatedTickets as $Ticket)
+		
+				@if($Ticket->id!=$ticket->id)
+					<a href="/tickets/{{$Ticket->ticket_id}}">{{substr($Ticket->description,0,10)."....."}}</a><br>
+				@endif
 
+		@endforeach
+>>>>>>> 9b75bdc724a3aee6d0cfd17feb8fdfe6e50a94c1
 		</div>
 	</div>
 @endif
