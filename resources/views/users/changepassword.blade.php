@@ -10,8 +10,12 @@
 				<div class="panel-body">
 				 
 
-
-  @if (count($errors) > 0)
+					@if (isset ($status) )
+						<div class="alert alert-success">
+							{{ $status }}
+						</div>
+					@endif
+  					@if (count($errors) > 0)
                         <div class="alert alert-danger">
                             <strong>Whoops!</strong> There were some problems with your input.<br><br>
                             <ul>
@@ -30,21 +34,21 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">Old Password</label>
 							<div class="col-md-6">
-								<input type="password" class="form-control" name="oldpassword" >
+								<input type="password" class="form-control" name="oldPassword" >
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">New Password</label>
 							<div class="col-md-6">
-								<input type="password" class="form-control" name="password">
+								<input type="password" class="form-control" name="newPassword">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Confirm New Password</label>
 							<div class="col-md-6">
-								<input type="password" class="form-control" name="password_confirmation">
+								<input type="password" class="form-control" name="newPassword_confirmation">
 							</div>
 						</div>
 

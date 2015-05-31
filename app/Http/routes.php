@@ -23,7 +23,7 @@ Route::resource('/sections','SectionsController');
 Route::get('users/search','UsersController@search');
 Route::post('users/ajaxsearch','UsersController@ajaxsearch');
 Route::get('users/changepassword','UsersController@changepassword');
-Route::post('users/changepassprocess','UsersController@changepassword');
+Route::post('users/changepassprocess','UsersController@changepassprocess');
 
 
 Route::resource('/users','UsersController');
