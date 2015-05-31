@@ -20,6 +20,8 @@ class AssetsController extends Controller {
 	public function __construct()
 	{
 		if (Auth::User()->type !="admin"){
+				
+			
 			exit;
 		}
 		

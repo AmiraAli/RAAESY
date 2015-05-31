@@ -686,7 +686,7 @@ class TicketsController extends Controller {
 				$tickets = Ticket::leftJoin('comments','tickets.id','=','comments.ticket_id')
             		->selectRaw('tickets.*, sum(comments.readonly) as c')->where('is_spam', "0")
                     ->groupBy('tickets.id')
-                    ->HAVING("c" , '='  , "0");
+                    ->HAVING("c" , '<'  , "1");
 			}
 			if($request->input('cat')){
 				if($request->input('cat') != "all"){
