@@ -33,7 +33,7 @@
 	  <li role="presentation" id="expired"><a href="#" onclick="searchTicket({{ $expired }}, 'expired')">Deadline exceeded <span class="badge">{{ count($expired) }}</span></a></li>
 	  <li role="presentation" id="open"><a href="#" onclick="searchTicket({{ $open }}, 'open')">Unclosed <span class="badge">{{ count($open) }}</span></a></li>	  
 	  <li role="presentation" id="closed"><a href="#" onclick="searchTicket({{ $closed }}, 'closed')">Closed <span class="badge">{{ count($closed) }}</span></a></li>
-	  <li role="presentation" id="all" class="active" onclick="searchTicket({{ $allTickets }}, 'all')"><a href="#">All(including closed) <span class="badge">{{ count($allTickets) }}</span></a></li>
+	  <li role="presentation" id="all" class="active" onclick="searchTicket({{ $tickets }}, 'all')"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
 	  <li role="presentation" id="spam"><a href="#" onclick="searchTicket({{ $spam }}, 'spam')">Spam <span class="badge">{{ count($spam) }}</span></a></li>	
 	</ul>
 </div>
@@ -121,8 +121,6 @@
 </div>
 
 <div class="col-md-9 "  id="table_show">
-
-
 	<table class="table table-condensed">
 			<tr>
 				<td> ID </td>
@@ -132,7 +130,7 @@
 				<td class="priority">Periorty</td>
 				<td>Settings</td>
 			</tr>
-			  @foreach($allTickets as $ticket)
+			  @foreach($tickets as $ticket)
 				   <tr id="{{ $ticket->id }}">
 				   		<td>#{{ $ticket->id }} </td>
 				   		<td>{{ $ticket->subject->name }}</td>
@@ -206,7 +204,17 @@
  <script type="text/javascript" src="/js/ticket_search.js"></script>
 
 
-<script>
+
+ <script >
+		
+window.onload = function() {
+                    $.ajaxSetup({
+                headers: {
+                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
+                }
+            });
+            };
+
 $( "#selectFields" ).click(function() {
   $( '#check' ).slideToggle( "fast" );
 });
@@ -222,17 +230,6 @@ $( "#selectFields" ).click(function() {
         	$('.'+$(this).val()).show();
         }
     });
-</script>
-
- <script >
-		
-window.onload = function() {
-                    $.ajaxSetup({
-                headers: {
-                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
-                }
-            });
-            };
             
 $( "#sortBy" ).change(function() 
 {

@@ -66,11 +66,11 @@ class TicketsController extends Controller {
 	 */
 	public function index()
 	{
-		$tickets=Ticket::all();
+
 		$tags=Tag::all();
 
 		//all tickets except spam tickets
-		$allTickets = Ticket::where('is_spam', "0")->get();
+		$tickets = Ticket::where('is_spam', "0")->get();
 		// unassigned tickets except spam tickets
 		$unassigned = Ticket::whereNull('tech_id')->where('is_spam', "0")->get();
 		// closed tickets except spam tickets
@@ -84,7 +84,7 @@ class TicketsController extends Controller {
 		// unanswered tickets tickets except spam tickets
 		// $unanswered = Ticket::where('status', "close");
 
-		return view('tickets.index',compact('tickets','allTickets','unassigned','open','closed','expired','spam','tags'));
+		return view('tickets.index',compact('tickets','unassigned','open','closed','expired','spam','tags'));
 
 	}
 
@@ -461,7 +461,7 @@ class TicketsController extends Controller {
 			}
 
 			//convert array to object
-			$tickets = json_decode(json_encode($tickets), FALSE);
+			$tickets  = json_decode(json_encode($tickets), FALSE);
 
 			return view("tickets.sortTicket",compact('tickets')); 
 
@@ -509,11 +509,11 @@ class TicketsController extends Controller {
 			}
 
 			//convert array to object
-			$tickets = json_decode(json_encode($relatTickets), FALSE);
+			$tickets  = json_decode(json_encode($relatTickets), FALSE);
 			return view("tickets.sortTicket",compact('tickets')); 
 
 		 }
-		 //return view("tickets.sortTicket",compact('ticket'));
+		 
 	}
 	
 	/**

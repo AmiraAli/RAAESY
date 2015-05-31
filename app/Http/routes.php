@@ -28,13 +28,9 @@ Route::post('users/changepassprocess','UsersController@changepassprocess');
 
 Route::resource('/users','UsersController');
 
-
-
-
 Route::get('users/destroy/{id}','UsersController@destroy');
 Route::post('users/get_user_types','UsersController@get_user_types');
 Route::post('users/autocomplete','UsersController@autocomplete');
-
 
 
 Route::post('articles/autocomplete','ArticlesController@autocomplete');
