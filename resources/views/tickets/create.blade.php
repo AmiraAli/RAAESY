@@ -77,11 +77,12 @@
 					</div>
 					<div class="form-group col-md-6">
 						<label class="col-md-4 control-label">Due</label>
-						<input type="date" name="deadline" class="form-control" />
+						<input type="date" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('+1 day')) ?>" />
 					</div>
 					<div class="form-group col-md-6">
 						<label class="col-md-4 control-label">Assign</label>
 					    <select class="form-control" name="tech">
+					    	<option value="">Not assigned</option>
 						    @foreach ($users as $user)
 						    	<option value="{{ $user->id }}"> {{ $user->fname }}</option>
 							@endforeach
