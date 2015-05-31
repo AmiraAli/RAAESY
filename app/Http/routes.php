@@ -38,7 +38,7 @@ Route::post('articles/autocomplete','ArticlesController@autocomplete');
 
 
 
-
+Route::post('tickets/searchTicket', 'TicketsController@searchTicket');
 Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
 Route::resource('/tickets','TicketsController');
 

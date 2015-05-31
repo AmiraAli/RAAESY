@@ -2,7 +2,7 @@
 @extends('app')
 @section('content')
 <script type="text/javascript" src="/js/ticket_delete.js"></script>
-<script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
+<!-- <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script> -->
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" /> 
 <link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">
@@ -29,13 +29,13 @@
 <div class="row" id="icons_list">
 
 	<ul class="nav nav-pills" role="tablist">
-	  <li role="presentation"><a href="#">Unanswered <span class="badge">42</span></a></li>
-	  <li role="presentation"><a href="#">Unassigned <span class="badge">{{ count($unassignedTickets) }}</span></a></li>
-	  <li role="presentation"><a href="#">Deadline exceeded <span class="badge"></span></a></li>
-	  <li role="presentation"><a href="#">Unclosed <span class="badge"></span></a></li>	  
-	  <li role="presentation"><a href="#">Closed <span class="badge"></span></a></li>
-	  <li role="presentation" class="active"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
-	  <li role="presentation"><a href="#">Spam <span class="badge">42</span></a></li>	
+	  <li role="presentation" id="unanswered"><a href="#" onclick="searchTicket({{ $unassigned }}, 'unanswered')">Unanswered <span class="badge">42</span></a></li>
+	  <li role="presentation" id="unassigned"><a href="#" onclick="searchTicket({{ $unassigned }}, 'unassigned')">Unassigned <span class="badge">{{ count($unassigned) }}</span></a></li>
+	  <li role="presentation" id="expired"><a href="#" onclick="searchTicket({{ $expired }}, 'expired')">Deadline exceeded <span class="badge">{{ count($expired) }}</span></a></li>
+	  <li role="presentation" id="open"><a href="#" onclick="searchTicket({{ $open }}, 'open')">Unclosed <span class="badge">{{ count($open) }}</span></a></li>	  
+	  <li role="presentation" id="closed"><a href="#" onclick="searchTicket({{ $closed }}, 'closed')">Closed <span class="badge">{{ count($closed) }}</span></a></li>
+	  <li role="presentation" id="all" class="active" onclick="searchTicket({{ $allTickets }}, 'all')"><a href="#">All(including closed) <span class="badge">{{ count($allTickets) }}</span></a></li>
+	  <li role="presentation" id="spam"><a href="#" onclick="searchTicket({{ $spam }}, 'spam')">Spam <span class="badge">{{ count($spam) }}</span></a></li>	
 	</ul>
 </div>
 
@@ -49,13 +49,10 @@
 
 
 <div class="list-group">
-  <a href="#" class="list-group-item disabled">
-    Cras justo odio
-  </a>
-  <a href="#" class="list-group-item active"><span class="badge">14</span>Dapibus ac facilisis in</a>
-  <a href="#" class="list-group-item">Morbi leo risus</a>
-  <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-  <a href="#" class="list-group-item">Vestibulum at eros</a>
+  <a href="#" class="list-group-item active"><span class="badge">14</span>All categories</a>
+  <a href="#" class="list-group-item"><span class="badge">14</span>Morbi leo risus</a>
+  <a href="#" class="list-group-item"><span class="badge">14</span>Porta ac consectetur ac</a>
+  <a href="#" class="list-group-item"><span class="badge">14</span>Vestibulum at eros</a>
 </div>
 
 
@@ -100,7 +97,7 @@
 </div>
 
 <div class="col-md-9 "  id="table_show">
-hhhhhhhhhhhh
+
 <table class="table table-condensed">
 		<tr>
 			<td>Subject</td>
@@ -141,6 +138,7 @@ hhhhhhhhhhhh
  <script type="text/javascript" src="/js/tickets_index.js"></script>
  <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
 <script type="text/javascript" src="/js/search_ticket_by_subject.js"></script>
+ <script type="text/javascript" src="/js/ticket_search.js"></script>
 
  <script >
 		
