@@ -83,11 +83,10 @@ class TicketsController extends Controller {
 		$spam = Ticket::where('is_spam', "1")->get();
 		// unanswered tickets tickets except spam tickets
 		// $unanswered = Ticket::where('status', "close");
-<<<<<<< HEAD
-$technicals=User::where('type','=','tech')->get();
-=======
+
+
 		$technicals=User::where('type','=','tech')->get();
->>>>>>> d35a50d8ce18a5b65cb374ef8bd52fc4a20a87a4
+
 		return view('tickets.index',compact('tickets','allTickets','unassigned','open','closed','expired','spam','tags','technicals'));
 
 
@@ -412,7 +411,10 @@ $technicals=User::where('type','=','tech')->get();
 		$notify->ticket_id=intval($ticket_id);
 		$notify->user_id=Auth::user()->id;
 		$notify->save();
-		file_put_contents("/home/aya/teesst.html", $notify);
+		$notify->fname=Auth::user()->fname;
+		$notify->lname=Auth::user()->lname;
+		echo json_encode($notify)
+		//file_put_contents("/home/aya/teesst.html", $notify);
 
 	}
 
