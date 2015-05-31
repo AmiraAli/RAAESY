@@ -45,8 +45,10 @@ Route::get('articles/home', 'ArticlesController@home');
 
 
 
+
 Route::post('tickets/searchTicket', 'TicketsController@searchTicket');
 Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
+Route::post('tickets/relatedTag', 'TicketsController@relatedTag');
 Route::resource('/tickets','TicketsController');
 
 Route::post('/tickets/updatestatus','TicketsController@updatestatus');

@@ -67,6 +67,8 @@ class TicketsController extends Controller {
 	public function index()
 	{
 		$tickets=Ticket::all();
+		$tags=Tag::all();
+
 		//all tickets except spam tickets
 		$allTickets = Ticket::where('is_spam', "0")->get();
 		// unassigned tickets except spam tickets
@@ -82,7 +84,8 @@ class TicketsController extends Controller {
 		// unanswered tickets tickets except spam tickets
 		// $unanswered = Ticket::where('status', "close");
 
-		return view('tickets.index',compact('tickets','allTickets','unassigned','open','closed','expired','spam'));
+		return view('tickets.index',compact('tickets','allTickets','unassigned','open','closed','expired','spam','tags'));
+
 	}
 
 	/**
@@ -401,39 +404,118 @@ class TicketsController extends Controller {
 	/**
 	* Function to sort tickets
 	**/
-	public function sortTicket()
+	public function sortTicket(Request $request)
 	{
-		$data=Request::input();
+		$data=$request->input();
 		$tickt= json_decode(json_encode($data['data']),TRUE);
-		$sortBy=$data['sortType'];
-	           // var_dump($tickt[0]['id']);
-
+		$sortBy=$data['sortBy'];
+		$sortType=$data['sortType'];
 		// Getting post data
-	  if(Request::ajax())
+	   if($request->ajax())
 	    {
+	    	//convert object to array
 	    	$tickets = array();
-	        foreach ($tickt[0] as $key => $value)
-	        {
-	            $tickets[$key] = $value;
-	        }
-	    	//file_put_contents("/home/eman/"."aaaaa.html",(array)$tickets[0]);
 
-			function cmp($a, $b)
-			{
-				file_put_contents("/home/eman/"."gtt.html", "kkkk");
-			    return strcmp($a->id, $b->id);
+	    	for ($i=0; $i < count($tickt) ; $i++)
+	        { 		    			    	
+		        foreach ($tickt[$i] as $key => $value)
+		        {
+		            $tickets[$i][$key] = $value;
+		        }
 			}
-			//$tickets=(array)$tickets;
+			
+			foreach ($tickets as $key => $row)
+			{
+				if ($sortBy == "subject") 
+				{		
+					$sort[$key] = $row['subject']['name'];
+				}
+				else 
+				{
+					$sort[$key] = $row[$sortBy];
+				}			    				    
+			}
 
-			 usort($tickets, 'cmp');
+			//sorting function
+			if ($sortType == "DESC") 
+			{	
+				if($sortBy == "priority")
+				{
+					array_multisort($sort, SORT_DESC, $tickets);
+				}
+				else
+				{	
+					array_multisort($sort, SORT_ASC, $tickets);
+				}
+			}
+			elseif ($sortType == "ASC")
+			{
+				if($sortBy == "priority")
+				{
+					array_multisort($sort, SORT_ASC, $tickets);
+				}
+				else
+				{	
+					array_multisort($sort, SORT_DESC, $tickets);
+				}
+			}
 
-
-			 //file_put_contents("/home/eman/"."aaaaa.html", "ooooo");
+			//convert array to object
+			$tickets = json_decode(json_encode($tickets), FALSE);
 
 			return view("tickets.sortTicket",compact('tickets')); 
 
 		 }
 	}
+
+	/**
+	* Function to get related tickets by tags
+	**/
+	public function relatedTag(Request $request)
+	{
+		$data=$request->input();
+		$tickt= json_decode(json_encode($data['data']),TRUE);
+		$tag=$data['tagId'];
+
+		// Getting post data
+	   if($request->ajax() && $tag)
+	    {
+	    	//convert object to array
+	    	$tickets = array();
+	    	
+	    	for ($i=0; $i < count($tickt) ; $i++)
+	        { 		    			    	
+		        foreach ($tickt[$i] as $key => $value)
+		        {
+		            $tickets[$i][$key] = $value;
+		        }
+			}
+			
+			for ($i=0; $i < count($tickt); $i++) 
+			{ 	
+	  			$ticket=Ticket::findOrFail((int)$tickets[$i]['id']);
+				// Get Related Tags
+				$relatTagIds[] = Ticket::find((int)$tickets[$i]['id'])->TicketTags;
+
+				for ($j=0; $j < count($relatTagIds[$i]); $j++) 
+				{
+				  
+					if ($relatTagIds[$i][$j]['name'] == $tag) 
+					{
+					 	$relatTickets[]=$tickets[$i];				 	
+					}
+
+				 }				 
+			}
+
+			//convert array to object
+			$tickets = json_decode(json_encode($relatTickets), FALSE);
+			return view("tickets.sortTicket",compact('tickets')); 
+
+		 }
+		 //return view("tickets.sortTicket",compact('ticket'));
+	}
+	
 	/**
 	* Function to Get available user to assign user to ticket
 	**/
