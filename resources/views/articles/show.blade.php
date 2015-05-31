@@ -76,15 +76,48 @@
 
                      
                        @foreach ($tagOfArts as $tagOfArt)
-                         {{$tagOfArt->tag->name}}<br/>
+                         
                           @foreach ($articletags as $articletag)
                             @if($tagOfArt->tag_id==$articletag->tag->id)
                                @if($article->id != $articletag->article->id)
-                                    <a href="/articles/{{$articletag->article->id}}">{{$articletag->article->subject}}</a> <br/>
+                                 <?php $art[]=$articletag->article->id; ?>
+                                 <?php $artSub[$articletag->article->id]=$articletag->article->subject; ?>
+                                    <!-- <a href="/articles/{{$articletag->article->id}}">{{$articletag->article->subject}}</a> <br/> -->
                                 @endif
                             @endif
                            @endforeach
-                       @endforeach   
+                       @endforeach 
+
+
+                       <?php
+
+                         $distinct[0]=0;
+                         $z=0;
+                         for ($i=0; $i <sizeof($art) ; $i++) { 
+                             # code...
+                            $f=0;
+                            for ($j=0; $j <sizeof($distinct) ; $j++) { 
+                              # code...
+                            
+                              if ($distinct[$j] == $art[$i]) {
+                                # code...
+                                    $f=1;
+                                    
+                              }
+
+                            }
+                            
+                            if ($f != 1) {
+                              # code...
+                              $distinct[$z]=$art[$i];
+                              $z=$z+1;
+                              echo "<a href=/articles/".$art[$i].">".$artSub[$art[$i]]."</a>"."<br/>";
+                               $f=0;
+                            }
+                         }
+
+
+                       ?>  
               
             
         </div>

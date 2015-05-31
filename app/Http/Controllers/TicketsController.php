@@ -84,7 +84,12 @@ class TicketsController extends Controller {
 		// unanswered tickets tickets except spam tickets
 		// $unanswered = Ticket::where('status', "close");
 
-		return view('tickets.index',compact('tickets','unassigned','open','closed','expired','spam','tags'));
+
+		$technicals=User::where('type','=','tech')->get();
+
+		return view('tickets.index',compact('tickets','unassigned','open','closed','expired','spam','tags','technicals'));
+
+
 
 	}
 
@@ -158,22 +163,22 @@ class TicketsController extends Controller {
 
 			// check if assigned to technical will send mail to him
 
-			if($request->get('tech')){
+			// if($request->get('tech')){
 
-				$ticket_array=json_decode(json_encode($ticket), true);
-				$ticket_array['verification_code']  = $ticket->verification_code;
-				$ticket_array['tech_fname']=$ticket->tech->fname;
-				$ticket_array['tech_lname']=$ticket->tech->lname;
-				$ticket_array['tech_email']=$ticket->tech->email;
-				$ticket_array['subj_name']=$ticket->subject->name;
+			// 	$ticket_array=json_decode(json_encode($ticket), true);
+			// 	$ticket_array['verification_code']  = $ticket->verification_code;
+			// 	$ticket_array['tech_fname']=$ticket->tech->fname;
+			// 	$ticket_array['tech_lname']=$ticket->tech->lname;
+			// 	$ticket_array['tech_email']=$ticket->tech->email;
+			// 	$ticket_array['subj_name']=$ticket->subject->name;
 
-				Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
-            	{
-	                $message->from('yoyo80884@gmail.com', "RAAESY");
-	                $message->subject("RAAESY");
-	                $message->to($ticket_array['tech_email']);
-            	});
-			}
+			// 	Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
+   //          	{
+	  //               $message->from('yoyo80884@gmail.com', "RAAESY");
+	  //               $message->subject("RAAESY");
+	  //               $message->to($ticket_array['tech_email']);
+   //          	});
+			// }
 
 		}else{
 			$ticket->tech_id=NULL;
@@ -197,23 +202,33 @@ class TicketsController extends Controller {
 	 */
 	public function show($id)
 	{
-	$ticket=Ticket::findOrFail($id);
+	$ticket=Ticket::find($id);
 	// Get Related Tags
+
 	$relatedTagIds = Ticket::find($id)->TicketTags;
-	$relatedTickets=array();
+
+	$relatedIds=array();
 	foreach($relatedTagIds as $relatedTagId){
-	$relatedTickets[] = Tag::find($relatedTagId->id)->tickets;
+	$relatedIds[]=$relatedTagId->id;
 	}
 
+	$relatedTickets=Ticket::join('ticket_tags', 'tickets.id', '=', 'ticket_tags.ticket_id')
+	->whereIn('ticket_tags.tag_id',$relatedIds)->groupBy('tickets.id')->get();
+
+	file_put_contents("/home/aya/teesst.html", $relatedTickets);
+
 	// Get Related Assests
+
 	$relatedAssets = Ticket::find($id)->TicketAssets;
+//$relatedAssets = Ticket::join('ticket_assets', 'tickets.id', '=', 'ticket_assets.ticket_id')->where('tickets.id','=',$id)->get();
+	//get all comments
+	$comments=Ticket::find($id)->comments;
 
 	// Check status of ticket closed or open
 	$checkStatus=TicketStatus::where('ticket_id', $id)->first();
 
-	//get all comments
-	$comments=Ticket::find($id)->comments;
 	
+
 	//get assigned to and user created it
 	//$users=Ticket::find($id)->user;
 
@@ -298,22 +313,22 @@ class TicketsController extends Controller {
 
 			// check if assigned to another technical will send mail to him
 
-			if($request->get('tech') != $prev_tech_id){
+			// if($request->get('tech') != $prev_tech_id){
 
-				$ticket_array=json_decode(json_encode($ticket), true);
-				$ticket_array['verification_code']  = $ticket->verification_code;
-				$ticket_array['tech_fname']=$ticket->tech->fname;
-				$ticket_array['tech_lname']=$ticket->tech->lname;
-				$ticket_array['tech_email']=$ticket->tech->email;
-				$ticket_array['subj_name']=$ticket->subject->name;
+			// 	$ticket_array=json_decode(json_encode($ticket), true);
+			// 	$ticket_array['verification_code']  = $ticket->verification_code;
+			// 	$ticket_array['tech_fname']=$ticket->tech->fname;
+			// 	$ticket_array['tech_lname']=$ticket->tech->lname;
+			// 	$ticket_array['tech_email']=$ticket->tech->email;
+			// 	$ticket_array['subj_name']=$ticket->subject->name;
 
-				Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
-            	{
-	                $message->from('yoyo80884@gmail.com', "RAAESY");
-	                $message->subject("RAAESY");
-	                $message->to($ticket_array['tech_email']);
-            	});
-			}
+			// 	Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
+   //          	{
+	  //               $message->from('yoyo80884@gmail.com', "RAAESY");
+	  //               $message->subject("RAAESY");
+	  //               $message->to($ticket_array['tech_email']);
+   //          	});
+			// }
 
 		}else{
 			$ticket->tech_id=NULL;
@@ -386,7 +401,7 @@ class TicketsController extends Controller {
 		$ticketStatus->save();
 
 		// save notification
-		$readonly=1;
+		$readonly=0;
 		if($status=='close')
 		$body="this ticket has be closed";
 		if($status=='open')
@@ -395,7 +410,7 @@ class TicketsController extends Controller {
 		$notify->body=$body;
 		$notify->readonly=intval($readonly);
 		$notify->ticket_id=intval($ticket_id);
-		$notify->user_id=intval(2);
+		$notify->user_id=Auth::user()->id;
 		$notify->save();
 		file_put_contents("/home/aya/teesst.html", $notify);
 
@@ -543,8 +558,8 @@ class TicketsController extends Controller {
 	if($request->ajax()) {
 	
 	$body="this ticket has been taken";
-	$user_id=1;
-	$readonly=1;
+	$user_id=Auth::user()->id;
+	$readonly=0;
 	$ticket_id=$request->input("ticket_id");
 	$notification=new Comment;
 	$notification->body=$body;
@@ -556,10 +571,15 @@ class TicketsController extends Controller {
 	$ticket=Ticket::find($ticket_id);
 	$ticket->tech_id=$request->input("tech_id");
 	$ticket->save();
+	$ticket->fname=Auth::user()->fname;
+	$ticket->lname=Auth::user()->lname;
+	$ticket->body="this ticket has been taken";
 	}
-	echo $body;
+	echo json_encode($ticket);
 	}
-
+	/**
+	* Function to get all subject in auto complete
+	**/
 
 	public function SearchAllSubject(Request $request){
 	// Save notification
@@ -569,17 +589,64 @@ class TicketsController extends Controller {
 	}
 	echo json_encode($subjects);
 	}
-	//public function TicketAllSubject(Request $request){
-	//if($request->ajax()) {
-	//	$subjectName=$request->input("name");
-	//	$targetSubject=Subject::where('name',$subjectName)->first();
-	//	$subjectId=$targetSubject->id;
+	/**
+	* Function to get tickets related to the specific subject in search
+	**/
 
-	//	}
+	public function TicketAllSubject(Request $request){
+	if($request->ajax()) {
+		$subjectName=$request->input("name");
+		$targetSubject=Subject::where('name',$subjectName)->first();
+		$subjectId=$targetSubject->id;
+		$targetTickets=Ticket::where('subject_id',$subjectId)->get();
+		}
 
+	//echo json_encode($targetTickets);
+		return (string) view('tickets.ajax',compact('targetTickets'));
+	}
 
+	/**
+	* Function to Search by more than on field in ticket
+	**/
 
-	//}
+	public function AdvancedSearch(Request $request){
+	if($request->ajax()) {
+		$priority=$request->input("priority");
+		$deadLine=$request->input("enddate");
+		$startDate=$request->input("created_at");
+		$techId=$request->input("tech_id");
+		$startDate=$startDate+" "+"00:00:00";
+		$deadLine=$deadLine+" "+"23:59:59";
+		}
+
+	if ( !$priority && !$techId && !$deadLine && !$startDate  ) 
+            {
+            	$Tickets = Ticket::all(); 
+		return (string) view('tickets.adavcedticketsearch',compact('Tickets'));
+            }
+
+            else
+            {
+	            $Tickets =Ticket::select('*');
+
+	            if ($priority) {
+	            	$Tickets=$Tickets->where('priority',$priority);
+	            }
+
+	            if ($techId) {
+	            	$Tickets=$Tickets->where('tech_id',$techId);
+	            }
+		    if($deadLine and $startDate){
+	            	$Tickets=$Tickets->where('updated_at','>=',$startDate);
+			$Tickets=$Tickets->where('deadline','<=',$deadLine);
+			}
+
+	            $Tickets=$Tickets->get();
+	            
+	return (string) view('tickets.adavcedticketsearch',compact('Tickets'));
+	        }  
+	
+	}
 
 
 	public function searchTicket(Request $request){

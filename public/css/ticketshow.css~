@@ -46,4 +46,8 @@ float:left;
     float: right;
 }
 
+#newelement{
 
+width:80px;
+float:left;
+}

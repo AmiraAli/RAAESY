@@ -12,7 +12,6 @@
 @section('content')
 <div class="container">
 
-<!------------------------------------------ticketbody------------------------------------------------------------------------->
   <div class="leftposition">
 	<div class="panel panel-default ticketbody">
 	  <div class="panel-body">
@@ -23,7 +22,7 @@
 			@if($checkStatus->value=='close')
 			   <button name="open" id="{{$ticket->id}}" onclick="Status({{$ticket->id}})" >reopen</button>
 			@endif
-			@if(!$ticket->tech_id and $checkStatus->value=='open')
+			@if($ticket->tech_id and $checkStatus->value=='open')
 			   <button id="{{$ticket->id}},takeover" onclick="TakeOver({{$ticket->id}}+',takeover')">takeover</button>
 			@endif
 		@endif
@@ -36,7 +35,6 @@
 	</div>
 
 
-<!---------------------------------------commentbody--------------------------------------------------------------->
   <div id="comments">
 	@foreach($comments as $comment)
 	  <div class="panel panel-default  commentbody" id="{{$comment->id}}Comments">
@@ -60,7 +58,6 @@
 
 	@endforeach
   </div>
-<!------------------------------------------AddComment------------------------------------------------------->
   <div>
      <form name="addForm" method = 'post'  class = 'form-horizontal' action="javascript:add({{$ticket->id}})">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -79,7 +76,6 @@
 	</form>
    </div>
 </div>
-<!---------------------------------------ticketdetails------------------------------------------------------------>
 <div class="rightposition">
 	<div class="panel panel-default ticketdetails">
 	  <div class="panel-heading">
@@ -92,26 +88,25 @@
 		<h4 class="title">StartDate  </h4>{{ $ticket->created_at }}<br>
 		<h4 class="title">Due        </h4>{{ $ticket->deadline }}<br>
 		<h4 class="title">From       </h4> {{ $ticket->user->fname }} {{$ticket->user->lname}}<br>
-		<h4 class="title">AssignedTo </h4> {{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}<br>
+		<h4 class="title">AssignedTo </h4> @if($ticket->tech){{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}@endif<br>
 	  </div>
 	</div>
-<!-----------------------------------relatedassets-------------------------------------------------------------------------------->
 	<div class="panel panel-default relatedassets">
 		  <div class="panel-heading">
 			    <h3 class="panel-title">Related Assets</h3>
 		  </div>
 	          <div class="panel-body">
+@if($relatedAssets)
 			@foreach($relatedAssets as $relatedAsset)
 				<input type="hidden" id="{{$relatedAsset->id}}:showenassets" class="showenasset">
 				<a href="/assets/{{$relatedAsset->id}}">{{$relatedAsset->name}}</a><br>
 			@endforeach
-
+@endif
 			<div id="addnewasset">
 				<button id="{{$ticket->id}}:newasset" onclick="AddAssets({{$ticket->id}}+':newasset')">AddAsset</button>
 			</div>
 		  </div>
 	</div>
-<!------------------------------------------relatedtags--------------------------------------------------------------------------->
 	<div class="panel panel-default relatedtags">
 		<div class="panel-heading">
 			<h3 class="panel-title">Related tags</h3>
@@ -127,7 +122,6 @@
 		</div>
 	</div>
 </div>
-<!------------------------------------------------------------------------------------------------------------------->
 </div>
 @endsection
 
