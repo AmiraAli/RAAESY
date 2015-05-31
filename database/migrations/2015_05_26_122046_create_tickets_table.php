@@ -16,7 +16,7 @@ class CreateTicketsTable extends Migration {
 		{
 			$table->increments('id');
 			$table->text('description');
-			$table->string('file');
+			$table->string('file')->nullable();
 			$table->enum('priority', ['low', 'high','critical'])->default('low');
 			$table->dateTime('deadline');
 		
@@ -29,10 +29,10 @@ class CreateTicketsTable extends Migration {
 			$table->integer('user_id')->unsigned();
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-			$table->integer('tech_id')->unsigned();
+			$table->integer('tech_id')->unsigned()->nullable();
 			$table->foreign('tech_id')->references('id')->on('users')->onDelete('cascade');
 
-			$table->integer('admin_id')->unsigned();
+			$table->integer('admin_id')->unsigned()->nullable();
 			$table->foreign('admin_id')->references('id')->on('users')->onDelete('cascade');
 
 			$table->timestamps();

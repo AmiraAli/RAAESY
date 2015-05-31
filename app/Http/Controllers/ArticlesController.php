@@ -6,8 +6,12 @@ use App\Http\Controllers\Controller;
 
 //use Illuminate\Http\Request;
 use App\Article;
+
 //use App\Tag;
 use App\ArticleTag;
+
+use App\Log;
+
 use App\Category;
 use App\Section;
 use Auth;
@@ -38,6 +42,27 @@ class ArticlesController extends Controller {
 		$articles=Article::all();
 		$tags=Tag::all();
 		return view('articles.index',compact('articles','categories','sections','tags'));
+	}
+
+
+	/**
+	 * Notify when user is spam/delete (called by AJAX).
+	 *
+	 * @param  object  $model_obj , string action
+	 * @return Response
+	 */
+
+
+	public function addnotification($action , $type , $model_obj ){
+
+		$notification = new Log();
+		$notification->type = $type ;
+		$notification->action = $action;
+		$notification->name = $model_obj->subject;
+		$notification->type_id = $model_obj->id;
+		$notification->user_id = Auth::user()->id;
+		$notification->save();
+
 	}
 
 
@@ -198,10 +223,12 @@ class ArticlesController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
-		Article::find($id)->delete();
-   		#return redirect('articles');
-
+		
+		$article = Article::find($id);
+		
+		//add notification wher article deleted
+		$this->addnotification("delete"  , "article" , $article );
+		$article->delete();
 	}
 	
 

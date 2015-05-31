@@ -101,6 +101,7 @@
          <tr id="{{ $article->id }}">
              <td>{{ $article->id }}</td>
              <td>{{ $article->subject }}</td>
+
              <td>{!!  stripcslashes ($article->body);  !!}</td>
              <td>
                 @if ($article->isshow==1)
@@ -109,6 +110,10 @@
                     Technicals and Users 
                 @endif 
              </td>
+
+             <td>{!!  $article->body  !!}</td>
+             <td>{{ $article->isshow }}</td>
+
              <td>{{ $article->category->name }}</td>
              <td>{{ $article->user->fname }}</td>
              <td>{{ $article->created_at }}</td>

@@ -1,9 +1,13 @@
+@if (Auth::user()->type === "admin")
 @extends('app')
 
 @section('content')
+<script type="text/javascript" src="/js/deleteAsset.js"></script>
+<script type="text/javascript" src="/js/searchAsset.js"></script>
 
-	<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
-
+<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
+	<div class="container" style="width:1300px;" >
+<div id="search_result" class="col-md-8 ">
 	<table class="table table-hover">
 		<thead>
 			<tr>
@@ -18,22 +22,16 @@
 		<tbody>
      		@foreach ($assets as $asset)
 			        <tr id="{{ $asset->id }}">
-			            <td class="text-center">{{ $asset->name }}</td>
+			             <td class="text-center"><a href="/assets/{{ $asset->id }}"><b>{{ $asset->name }}</b></a></td>
 			            <td class="text-center">{{ $asset->manufacturer }}</td>
 			            <td class="text-center">{{ $asset->assettype->name }}</td>
 			            <td class="text-center">{{ $asset->serialno }}</td>
 			            <td class="text-center">{{ $asset->user->fname }} {{ $asset->user->lname }}</td>
 			            <td class="text-center">{{ $asset->location }}</td>
 			            <td class="text-center">
-			            	<a href="/assets/{{$asset->id}}" class="btn btn-success btn">Open</a>
+			            	 <a href="/assets/{{$asset->id}}/edit " class="btn btn-success btn" >Edit</a>
 			            </td>
 			            <td class="text-center">
-			            	 <a href="/assets/{{$asset->id}}/edit " class="btn btn-warning btn" >Edit</a>
-			            </td>
-			            <td class="text-center">
-			            	<!-- {!! Form::open(['method' => 'Delete', 'route'=>['assets.destroy', $asset->id]]) !!}
-				            {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-				            {!! Form::close() !!} -->
 
 				            <button class="btn btn-danger" onclick="deleteAsset( {{ $asset->id }} )">Delete</button>
 
@@ -44,30 +42,84 @@
 
      	</tbody>
 	</table>
-	<script>
+</div>
+	
 
-		window.onload = function() {
-                    $.ajaxSetup({
-                headers: {
-                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
-                }
-            });
-            };
+		<div class="col-md-4 ">
+			<div class="panel panel-success">
+				<div class="panel-heading">Search</div>
+				<div class="panel-body">
+					@if (count($errors) > 0)
+						<div class="alert alert-danger">
+							<strong>Whoops!</strong> There were some problems with your input.<br><br>
+							<ul>
+								@foreach ($errors->all() as $error)
+									<li>{{ $error }}</li>
+								@endforeach
+							</ul>
+						</div>
+					@endif
 
-		function deleteAsset(id){ 
-			//ajax request
-		   $.ajax({
-			    url: '/assets/'+id,
-			    type: 'DELETE',
-			    success: function(result) {
-					 $('#'+id).remove();    
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					console.log(errorThrown);
-			    }
-			});
+					
+					<form class= "form-horizontal" onsubmit="return false">					
+						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-		}
+						<div class="form-group">
+							<label class="col-md-4 control-label">Model Name</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="name" id="model_name">
+							</div>
+						</div>
 
-	</script>
+						<div class="form-group">
+							<label class="col-md-4 control-label">Manufacturer</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="manufacturer" id="manufacturer">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label">Type</label>
+							<div class="col-md-6">
+								<select class="form-control" name="assettype_id" id="type">
+								<option value="">Select Type</option>
+									@foreach ($types as $type)
+									    <option value="{{ $type->id }}">{{ $type->name }}</option>
+									@endforeach
+								</select>
+							
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-4 control-label">Serial Number</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="serialno" id="serialno">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label class="col-md-4 control-label">Location</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="location" id="location">
+							</div>
+						</div>
+
+						
+						<div class="form-group">
+							<div class="col-md-6 col-md-offset-4">
+								<button type="submit" onclick="searchAsset()" class="btn btn-primary">
+									Search
+								</button>
+							</div>
+						</div>
+					
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
 @endsection
+@endif

@@ -14,14 +14,26 @@
 #Route::get('search/autocomplete', 'ArticlesController@autocomplete');
 
 
+
+
 Route::resource('/categories','CategoriesController');
 Route::resource('/sections','SectionsController');
 
+
+Route::get('users/search','UsersController@search');
+Route::post('users/ajaxsearch','UsersController@ajaxsearch');
+Route::get('users/changepassword','UsersController@changepassword');
+Route::post('users/changepassprocess','UsersController@changepassword');
+
+
 Route::resource('/users','UsersController');
+
+
+
+
 Route::get('users/destroy/{id}','UsersController@destroy');
 Route::post('users/get_user_types','UsersController@get_user_types');
 Route::post('users/autocomplete','UsersController@autocomplete');
-Route::get('users/search','UsersController@search');
 
 
 
@@ -30,6 +42,7 @@ Route::post('articles/getTags', 'ArticlesController@getTags');
 Route::post('articles/search', 'ArticlesController@search');
 
 
+Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
 Route::resource('/tickets','TicketsController');
 
 Route::post('/tickets/updatestatus','TicketsController@updatestatus');
@@ -37,16 +50,13 @@ Route::post('/tickets/takeover','TicketsController@takeover');
 Route::post('/tickets/save','TicketsController@Save');
 Route::post('tickets/addSubject', 'TicketsController@addSubject');
 Route::post('tickets/getTags', 'TicketsController@getTags');
-
-
+Route::post('/subjects/all/', 'TicketsController@SearchAllSubject');
+Route::post('/tickets/all/subjects', 'TicketsController@TicketAllSubject');
 
 Route::resource('tickets.comments', 'CommentsController');
 
 Route::resource('/articles','ArticlesController');
 
-
-
-Route::get('/assets/search', 'AssetsController@search');
 Route::post('assets/searchAssets', 'AssetsController@searchAssets');
 
 Route::resource('/assets', 'AssetsController');
