@@ -19,6 +19,9 @@ use App\Tag;
 use App\TicketStatus;
 use App\Asset;
 use App\TicketAsset;
+
+use Carbon\Carbon;
+
 use App\Log;
 use Mail;
 
@@ -64,15 +67,22 @@ class TicketsController extends Controller {
 	public function index()
 	{
 		$tickets=Ticket::all();
-		$myTickets = Ticket::where('tech_id', Auth::user()->id)->get();
-		$unassignedTickets = Ticket::whereNull('tech_id')->get();
-		// $closed = Ticket::where('status', "close")->get();
-		
-		// $open = Ticket::where('status', "open")->get();
-		// $statuses=TicketStatus::all();
-		// $closed = TicketStatus::where('value', "close")->get();
-		// $closed = TicketStatus::where('value', "close")->get();
-		return view('tickets.index',compact('tickets','unassignedTickets'));
+		//all tickets except spam tickets
+		$allTickets = Ticket::where('is_spam', "0")->get();
+		// unassigned tickets except spam tickets
+		$unassigned = Ticket::whereNull('tech_id')->where('is_spam', "0")->get();
+		// closed tickets except spam tickets
+		$closed = Ticket::where('status', "close")->where('is_spam', "0")->get();
+		// open tickets except spam tickets
+		$open = Ticket::where('status', "open")->where('is_spam', "0")->get();
+		// deadline exceeded except spam tickets
+		$expired = Ticket::where('deadline', '<', Carbon::now())->where('is_spam', "0")->get();
+		// spam tickets except spam tickets
+		$spam = Ticket::where('is_spam', "1")->get();
+		// unanswered tickets tickets except spam tickets
+		// $unanswered = Ticket::where('status', "close");
+
+		return view('tickets.index',compact('tickets','allTickets','unassigned','open','closed','expired','spam'));
 	}
 
 	/**
@@ -161,7 +171,7 @@ class TicketsController extends Controller {
 	                $message->to($ticket_array['tech_email']);
             	});
 			}
-			
+
 		}else{
 			$ticket->tech_id=NULL;
 			$ticket->admin_id=NULL;
@@ -489,6 +499,34 @@ class TicketsController extends Controller {
 
 	//}
 
+
+	public function searchTicket(Request $request){
+		if($request->ajax()){  
+			if($request->input('name') == "unassigned"){
+				$tickets = Ticket::whereNull('tech_id')->where('is_spam', "0")->get();				
+			}
+			else if($request->input('name') == "open"){
+				$tickets = Ticket::where('status', "open")->where('is_spam', "0")->get();
+			}
+			else if($request->input('name') == "closed"){
+				$tickets = Ticket::where('status', "close")->where('is_spam', "0")->get();
+			}
+			else if($request->input('name') == "all"){
+				$tickets = Ticket::where('is_spam', "0")->get();
+			}
+			else if($request->input('name') == "expired"){
+				$tickets = Ticket::where('deadline', '<', Carbon::now())->where('is_spam', "0")->get();
+			}
+			else if($request->input('name') == "spam"){
+				$tickets = Ticket::where('is_spam', "1")->get();
+			}
+			else if($request->input('name') == "unanswered"){
+
+			}
+			return view("tickets.searchTicket",compact('tickets')); 
+		}
+	}
+
 	
 	/**
 	* Function to spam ticket
@@ -543,5 +581,23 @@ class TicketsController extends Controller {
 			$ticketStatus->ticket_id=$ticket->id;
 			$ticketStatus->save();
 			}	
+	}
+
+
+
+	/**
+	* Function to add subject for ticket
+	**/
+	public function addTag(Request $request)
+	{
+		// Getting post data
+		if($request->ajax()) {
+			// $data = Input::all();
+			$data = $request->input('newtag');
+			$tag= new Tag;
+			$tag->name=$data;
+			$tag->save();
+			print_r($tag->id);
+		}
 	}
 }

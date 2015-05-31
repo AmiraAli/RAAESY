@@ -27,13 +27,13 @@
 <div class="row" id="icons_list">
 
 	<ul class="nav nav-pills" role="tablist">
-	  <li role="presentation"><a href="#">Unanswered <span class="badge">42</span></a></li>
-	  <li role="presentation"><a href="#">Unassigned <span class="badge">{{ count($unassignedTickets) }}</span></a></li>
-	  <li role="presentation"><a href="#">Deadline exceeded <span class="badge"></span></a></li>
-	  <li role="presentation"><a href="#">Unclosed <span class="badge"></span></a></li>	  
-	  <li role="presentation"><a href="#">Closed <span class="badge"></span></a></li>
-	  <li role="presentation" class="active"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
-	  <li role="presentation"><a href="#">Spam <span class="badge">42</span></a></li>	
+	  <li role="presentation" id="unanswered"><a href="#" onclick="searchTicket({{ $unassigned }}, 'unanswered')">Unanswered <span class="badge">42</span></a></li>
+	  <li role="presentation" id="unassigned"><a href="#" onclick="searchTicket({{ $unassigned }}, 'unassigned')">Unassigned <span class="badge">{{ count($unassigned) }}</span></a></li>
+	  <li role="presentation" id="expired"><a href="#" onclick="searchTicket({{ $expired }}, 'expired')">Deadline exceeded <span class="badge">{{ count($expired) }}</span></a></li>
+	  <li role="presentation" id="open"><a href="#" onclick="searchTicket({{ $open }}, 'open')">Unclosed <span class="badge">{{ count($open) }}</span></a></li>	  
+	  <li role="presentation" id="closed"><a href="#" onclick="searchTicket({{ $closed }}, 'closed')">Closed <span class="badge">{{ count($closed) }}</span></a></li>
+	  <li role="presentation" id="all" class="active" onclick="searchTicket({{ $allTickets }}, 'all')"><a href="#">All(including closed) <span class="badge">{{ count($allTickets) }}</span></a></li>
+	  <li role="presentation" id="spam"><a href="#" onclick="searchTicket({{ $spam }}, 'spam')">Spam <span class="badge">{{ count($spam) }}</span></a></li>	
 	</ul>
 </div>
 
@@ -47,13 +47,10 @@
 
 
 <div class="list-group">
-  <a href="#" class="list-group-item disabled">
-    Cras justo odio
-  </a>
-  <a href="#" class="list-group-item active"><span class="badge">14</span>Dapibus ac facilisis in</a>
-  <a href="#" class="list-group-item">Morbi leo risus</a>
-  <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-  <a href="#" class="list-group-item">Vestibulum at eros</a>
+  <a href="#" class="list-group-item active"><span class="badge">14</span>All categories</a>
+  <a href="#" class="list-group-item"><span class="badge">14</span>Morbi leo risus</a>
+  <a href="#" class="list-group-item"><span class="badge">14</span>Porta ac consectetur ac</a>
+  <a href="#" class="list-group-item"><span class="badge">14</span>Vestibulum at eros</a>
 </div>
 
 
@@ -98,42 +95,68 @@
 </div>
 
 <div class="col-md-9 "  id="table_show">
+
 	<table class="table table-condensed">
 			<tr>
+				<td> ID </td>
 				<td>Subject</td>
-				<td>Description</td>
+				<td>Status</td>
 				<td>Category</td>
-				<td>File Attached</td>
 				<td>Periorty</td>
-				<td>Action</td>
+				<td>Settings</td>
 			</tr>
-			  @foreach($tickets as $ticket)
+			  @foreach($allTickets as $ticket)
 				   <tr id="{{ $ticket->id }}">
+				   		<td>#{{ $ticket->id }} </td>
 				   		<td>{{ $ticket->subject->name }}</td>
-				   		<td>{!! $ticket->description !!}</td>
+				   		<td> {{ $ticket->status }}</td>
 				   		<td>{{ $ticket->category->name }}</td>
-				   		<td>{{ $ticket->file }}</td>
-				   		<td>{{ $ticket->priority }}</td>
+				   		@if($ticket->priority == "low")
+				   			<td><b class="alert-success">{{ $ticket->priority }}</b></td>
+				   		@elseif($ticket->priority == "high")
+				   			<td><b class="alert-warning">{{ $ticket->priority }}</b></td>
+				   		@else
+				   			<td><b class="alert-danger">{{ $ticket->priority }}</b></td>
+				   		@endif
 				   		<td>
-				   		@if($ticket->status == 'open')
-					   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
-					   		data-content=
-					   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
-					   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
-					   		<a onclick='spam({{ $ticket->id }})'>Spam</a>|
-					   		<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
-					   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
-					   		></a>
-					   	@else
-					   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
-					   		data-content=
-					   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
-					   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
-					   		<a onclick='spam({{ $ticket->id }})'>Spam</a>|
-					   		<a onclick='openTeckit({{ $ticket->id }})'>Open</a>|
-					   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
-					   		></a>
-					   	@endif
+				   		@if (Auth::user()->type == "admin")
+					   		@if($ticket->status == 'open')
+						   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+						   		data-content=
+						   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
+						   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
+						   		<a onclick='spam({{ $ticket->id }})'>Spam</a>|
+						   		<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
+						   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
+						   		></a>
+						   	@else
+						   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+						   		data-content=
+						   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
+						   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
+						   		<a onclick='spam({{ $ticket->id }})'>Spam</a>|
+						   		<a onclick='openTeckit({{ $ticket->id }})'>Open</a>|
+						   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
+						   		></a>
+						   	@endif
+						@else
+							@if($ticket->status == 'open')
+						   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+						   		data-content=
+						   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
+						   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
+						   		<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>"
+						   		></a>
+						   	@else
+						   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+						   		data-content=
+						   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
+						   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
+						   		<a onclick='openTeckit({{ $ticket->id }})'>Open</a>"
+						   		></a>
+						   	@endif
+						@endif
+
 				   		</td>
 				   </tr>
 			  @endforeach
@@ -150,8 +173,9 @@
  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
  <script type="text/javascript" src="/js/tickets_index.js"></script>
  <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
- <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
  <script type="text/javascript" src="/js/search_ticket_by_subject.js"></script>
+ <script type="text/javascript" src="/js/ticket_search.js"></script>
+
 
  <script >
 		

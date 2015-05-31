@@ -163,3 +163,41 @@ $('.jqte-test').jqte();
 		jqteStatus = jqteStatus ? false : true;
 		$('.jqte-test').jqte({"status" : jqteStatus})
 	});
+
+/**
+*function to show new tag form 
+**/
+function add_new_tag () {
+	document.getElementById("tag_new").style.visibility = "visible";
+}
+
+/**
+*function to get new tag value 
+**/
+function submit_tag () {
+
+	var newtag= document.getElementById("new_tagvalue").value;
+	if (newtag != ""){
+		//ajax request
+		$.ajax({
+		      url: '/tickets/addTag',
+		      type: "post",
+		      data: {'newtag':newtag},
+		      success: function(data){
+				document.getElementById("tag_new").style.visibility = "hidden";
+		      },
+			  error: function(jqXHR, textStatus, errorThrown) {
+				alert("May be tag is already exists or something wrong!!....");
+			  }
+		    });
+	}else{
+		alert("Please Enter tag value!!...");
+	}
+}
+
+/**
+*function to cancel new tag form 
+**/
+function cancel_tag () {
+	document.getElementById("tag_new").style.visibility = "hidden";
+}

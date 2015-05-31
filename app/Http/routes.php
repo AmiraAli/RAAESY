@@ -41,7 +41,7 @@ Route::post('articles/autocomplete','ArticlesController@autocomplete');
 
 
 
-
+Route::post('tickets/searchTicket', 'TicketsController@searchTicket');
 Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
 Route::resource('/tickets','TicketsController');
 
@@ -55,6 +55,8 @@ Route::post('/tickets/all/subjects', 'TicketsController@TicketAllSubject');
 Route::post('/tickets/spamTicket', 'TicketsController@spamTicket');
 Route::post('/tickets/closeTicket', 'TicketsController@closeTicket');
 Route::post('/tickets/openTicket', 'TicketsController@openTicket');
+Route::post('tickets/addTag', 'TicketsController@addTag');
+
 
 
 Route::resource('tickets.comments', 'CommentsController');
