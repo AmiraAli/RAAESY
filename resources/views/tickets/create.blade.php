@@ -28,7 +28,7 @@
 					<label class="col-md-4 control-label">Subject</label>
 				    <select class="form-control" name="subject" id="subject_select">
 					    @foreach ($subjects as $subject)
-					    	<option value="{{ $subject->id }}"> {{ $subject->name }}</option>
+					    	<option value="{{ $subject->id }}" <?php if(old('subject') === $subject->id){ echo "selected"; } ?>> {{ $subject->name }}</option>
 						@endforeach
 					</select>
 				</div>
@@ -70,9 +70,9 @@
 					<div class="form-group col-md-6">
 						<label class="col-md-4 control-label">Priority</label>
 					    <select class="form-control" name="priority">
-						    <option value="low">LOW</option>
-						    <option value="high">High</option>
-						    <option value="critical">Critical</option>
+						    <option value="low" <?php if(old('priority') === "low"){ echo "selected"; } ?>>LOW</option>
+						    <option value="high" <?php if(old('priority') === "high"){ echo "selected"; } ?>>High</option>
+						    <option value="critical" <?php if(old('priority') === "critical"){ echo "selected"; } ?>>Critical</option>
 						</select>
 					</div>
 					<div class="form-group col-md-6">
@@ -82,9 +82,9 @@
 					<div class="form-group col-md-6">
 						<label class="col-md-4 control-label">Assign</label>
 					    <select class="form-control" name="tech">
-					    	<option value="">Not assigned</option>
+					    	<option value="" selected>Not assigned</option>
 						    @foreach ($users as $user)
-						    	<option value="{{ $user->id }}"> {{ $user->fname }}</option>
+						    	<option value="{{ $user->id }}" <?php if(old('tech') === $user->id){ echo "selected"; } ?>> {{ $user->fname }}</option>
 							@endforeach
 						</select>
 					</div>

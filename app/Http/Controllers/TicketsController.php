@@ -86,9 +86,10 @@ class TicketsController extends Controller {
 		// unanswered tickets tickets except spam tickets
 
 		$unanswered = Ticket::leftJoin('comments','tickets.id','=','comments.ticket_id')
-            ->selectRaw('tickets.*, sum(comments.readonly) as c')->where('is_spam', "0")
+            ->selectRaw('tickets.*, sum(comments.readonly) as c')
                     ->groupBy('tickets.id')
-                    ->HAVING("c" , '='  , "0")
+                    // ->HAVINGNULL("c")
+                    //->orHAVING("c" , '='  , '0')
                      ->get();
 
 		$technicals=User::where('type','=','tech')->get();
