@@ -143,7 +143,11 @@ class TicketsController extends Controller {
 		{
 			$ticket->priority=$request->get('priority');
 			$ticket->deadline=$request->get('deadline');
-			$ticket->tech_id=$request->get('tech');
+			if($request->get('tech') == ""){
+				$ticket->tech_id = null;
+			}else{
+				$ticket->tech_id=$request->get('tech');
+			}
 			$ticket->admin_id=$request->user()->id;
 			$ticket->save();
 
