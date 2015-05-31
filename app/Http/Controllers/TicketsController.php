@@ -90,7 +90,7 @@ class TicketsController extends Controller {
                      ->get();
 
 		$technicals=User::where('type','=','tech')->get();
-		return view('tickets.index',compact('unanswered','allTickets','unassigned','open','closed','expired','spam','tags','technicals'));
+		return view('tickets.index',compact('unanswered','tickets','unassigned','open','closed','expired','spam','tags','technicals','sections'));
 
 
 
