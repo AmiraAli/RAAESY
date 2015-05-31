@@ -95,3 +95,36 @@ $("#autocompletemenu").mouseout(function(){
 
 
 }
+
+
+function show(){
+
+	var category = document.getElementById('cat').value;
+	var tag = document.getElementById('tag').value;
+	//var category = elm;
+    // alert(category);
+     //alert(tag);
+	$.ajax({
+    url: '/articles/search',
+    type: 'POST',
+    data: {  
+   		dataCat: category,
+        dataTag: tag,
+   	    },
+    success: function(result) {
+    			var container = document.getElementById('con');
+    			container.innerHTML = "";
+    			container.innerHTML = result;
+			  },
+	error: function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown);
+           }
+
+
+
+
+
+	});
+
+
+}

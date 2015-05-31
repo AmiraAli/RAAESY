@@ -60,7 +60,9 @@ function show(elm){
    	type: type
    	    },
     success: function(result) {
-		result = JSON.parse(result) ; 
+
+    	$("#tbody").html(result);
+		/*result = JSON.parse(result) ; 
 		console.log(result);
 		$("#tbody").html('');
 		var disabledCheckbox ;
@@ -76,10 +78,10 @@ function show(elm){
 				disabledCheckbox += " >";
 			}
 
+*/
+		//$("#tbody").html("<tr id="+row['id']+"><td>"+row['fname']+"</td><td>"+row['lname']+"</td><td>"+row['email']+"</td><td>"+row['phone']+"</td><td>"+row['location']+"</td><td>"+disabledCheckbox+"</td><td><a href='/users/"+row['id']+"'>show</a><a href='/users/"+row['id']+"/edit'>edit</a><a href='#' class='delete' id="+row['id']+" onclick='Delete("+row['id']+")''>delete</a></td></tr>");
 
-		$("#tbody").append("<tr id="+row['id']+"><td>"+row['fname']+"</td><td>"+row['lname']+"</td><td>"+row['email']+"</td><td>"+row['phone']+"</td><td>"+row['location']+"</td><td>"+disabledCheckbox+"</td><td><a href='/users/"+row['id']+"'>show</a><a href='/users/"+row['id']+"/edit'>edit</a><a href='#' class='delete' id="+row['id']+" onclick='Delete("+row['id']+")''>delete</a></td></tr>");
-
-		}
+//		}
 
 		
 			},
@@ -142,3 +144,43 @@ function myAutocomplete(data) {
 
 }
 
+function search(){
+
+	var fname = document.getElementById('fname').value;
+	var lname = document.getElementById('lname').value;
+	var email = document.getElementById('email').value;
+	var phone = document.getElementById('phone').value;
+	var location = document.getElementById('location').value;
+
+     // alert(fname);
+     // alert(lname);
+     // alert(email);
+     // alert(phone);
+     // alert(location);
+	$.ajax({
+    url: '/users/ajaxsearch',
+    type: 'POST',
+    data: {  
+   		fname: fname,
+        lname: lname,
+        email: email,
+        phone: phone,
+        location: location,
+   	    },
+    success: function(result) {
+    			var container = document.getElementById('con');
+    			container.innerHTML = "";
+    			container.innerHTML = result;
+			  },
+	error: function(jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+           }
+
+
+
+
+
+	});
+
+
+}
