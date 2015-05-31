@@ -83,8 +83,8 @@ class TicketsController extends Controller {
 		$spam = Ticket::where('is_spam', "1")->get();
 		// unanswered tickets tickets except spam tickets
 		// $unanswered = Ticket::where('status', "close");
-
-		return view('tickets.index',compact('tickets','allTickets','unassigned','open','closed','expired','spam','tags'));
+		$technicals=User::where('type','=','tech')->get();
+		return view('tickets.index',compact('tickets','allTickets','unassigned','open','closed','expired','spam','tags','technicals'));
 
 
 	}
@@ -159,22 +159,22 @@ class TicketsController extends Controller {
 
 			// check if assigned to technical will send mail to him
 
-			if($request->get('tech')){
+			// if($request->get('tech')){
 
-				$ticket_array=json_decode(json_encode($ticket), true);
-				$ticket_array['verification_code']  = $ticket->verification_code;
-				$ticket_array['tech_fname']=$ticket->tech->fname;
-				$ticket_array['tech_lname']=$ticket->tech->lname;
-				$ticket_array['tech_email']=$ticket->tech->email;
-				$ticket_array['subj_name']=$ticket->subject->name;
+			// 	$ticket_array=json_decode(json_encode($ticket), true);
+			// 	$ticket_array['verification_code']  = $ticket->verification_code;
+			// 	$ticket_array['tech_fname']=$ticket->tech->fname;
+			// 	$ticket_array['tech_lname']=$ticket->tech->lname;
+			// 	$ticket_array['tech_email']=$ticket->tech->email;
+			// 	$ticket_array['subj_name']=$ticket->subject->name;
 
-				Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
-            	{
-	                $message->from('yoyo80884@gmail.com', "RAAESY");
-	                $message->subject("RAAESY");
-	                $message->to($ticket_array['tech_email']);
-            	});
-			}
+			// 	Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
+   //          	{
+	  //               $message->from('yoyo80884@gmail.com', "RAAESY");
+	  //               $message->subject("RAAESY");
+	  //               $message->to($ticket_array['tech_email']);
+   //          	});
+			// }
 
 		}else{
 			$ticket->tech_id=NULL;
@@ -308,22 +308,22 @@ class TicketsController extends Controller {
 
 			// check if assigned to another technical will send mail to him
 
-			if($request->get('tech') != $prev_tech_id){
+			// if($request->get('tech') != $prev_tech_id){
 
-				$ticket_array=json_decode(json_encode($ticket), true);
-				$ticket_array['verification_code']  = $ticket->verification_code;
-				$ticket_array['tech_fname']=$ticket->tech->fname;
-				$ticket_array['tech_lname']=$ticket->tech->lname;
-				$ticket_array['tech_email']=$ticket->tech->email;
-				$ticket_array['subj_name']=$ticket->subject->name;
+			// 	$ticket_array=json_decode(json_encode($ticket), true);
+			// 	$ticket_array['verification_code']  = $ticket->verification_code;
+			// 	$ticket_array['tech_fname']=$ticket->tech->fname;
+			// 	$ticket_array['tech_lname']=$ticket->tech->lname;
+			// 	$ticket_array['tech_email']=$ticket->tech->email;
+			// 	$ticket_array['subj_name']=$ticket->subject->name;
 
-				Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
-            	{
-	                $message->from('yoyo80884@gmail.com', "RAAESY");
-	                $message->subject("RAAESY");
-	                $message->to($ticket_array['tech_email']);
-            	});
-			}
+			// 	Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
+   //          	{
+	  //               $message->from('yoyo80884@gmail.com', "RAAESY");
+	  //               $message->subject("RAAESY");
+	  //               $message->to($ticket_array['tech_email']);
+   //          	});
+			// }
 
 		}else{
 			$ticket->tech_id=NULL;
