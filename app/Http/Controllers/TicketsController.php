@@ -436,6 +436,7 @@ class TicketsController extends Controller {
 	{
 		$data=$request->input();
 		$tickt= json_decode(json_encode($data['data']),TRUE);
+		var_dump($tickt);
 		$sortBy=$data['sortBy'];
 		$sortType=$data['sortType'];
 		// Getting post data
@@ -504,7 +505,7 @@ class TicketsController extends Controller {
 		$data=$request->input();
 		$tickt= json_decode(json_encode($data['data']),TRUE);
 		$tag=$data['tagId'];
-
+		$flag=1;
 		// Getting post data
 	   if($request->ajax() && $tag)
 	    {
@@ -530,17 +531,26 @@ class TicketsController extends Controller {
 				  
 					if ($relatTagIds[$i][$j]['name'] == $tag) 
 					{
-					 	$relatTickets[]=$tickets[$i];				 	
+					 	$relatTickets[]=$tickets[$i];
+					 	$flag=0;
 					}
+
 
 				 }				 
 			}
+			if( $flag == 1 )
+				{
+					
+					$relatTickets=[];
+				}
 
 			//convert array to object
 			$tickets  = json_decode(json_encode($relatTickets), FALSE);
 			return view("tickets.sortTicket",compact('tickets')); 
 
 		 }
+		 $tickets=[];
+		 return view("tickets.sortTicket",compact('tickets')); 
 		 
 	}
 	

@@ -76,7 +76,7 @@
 		<div class="panel-body">
 			<div class="form-group" style="display:inline;">
 				<div class="col-md-8">
-					<select class="form-control" name="sort" id="sortBy">						
+					<select class="form-control" name="sort" id="sortBy" onchange="sortBy()">						
 					<option value="subject">Subject</option>
 					<option value="deadline">Deadline</option>
 					<option value="created_at">Create Date</option>
@@ -84,7 +84,7 @@
 					</select>
 				</div>
 			</div>
-			<button class="btn btn-info" id="sortType" style="display:inline;">ASC</button>
+			<button class="btn btn-info" id="sortType" onclick="sortType()" style="display:inline;">ASC</button>
 		</div>
 		<br>
 		<div class="form-group container">
@@ -115,7 +115,7 @@
 		<div class="panel-body">
 			<div class="form-group" style="display:inline;">
 				<div class="col-md-8">
-					<select class="form-control" name="tag" id="tag">
+					<select class="form-control" name="tag" id="tag" onchange="tag()">
 					<option value="">Select Tag</option>	
 					@foreach ($tags as $tag)				
 					<option value="{{$tag->name}}">{{$tag->name}}</option>
@@ -249,6 +249,7 @@ window.onload = function() {
                     'X-XSRF-Token': $('meta[name="_token"]').attr('content')
                 }
             });
+                    sortBy();
             };
 
 $( "#selectFields" ).click(function() {
@@ -267,7 +268,8 @@ $( "#selectFields" ).click(function() {
         }
     });
             
-$( "#sortBy" ).change(function() 
+//$( "#sortBy" ).change(
+	function sortBy() 
 {
 
 var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
@@ -294,6 +296,7 @@ var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
 			        }
 			    
 			});
+			tag();
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log(errorThrown);
@@ -301,9 +304,11 @@ var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
 	});
 
 		
-});
+}//);
 
-$("#sortType").click(function(){
+//$("#sortType").click(
+
+	function sortType(){
 
 	var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
 
@@ -342,10 +347,12 @@ $("#sortType").click(function(){
 	    }
 	});
     
-});
+}//);
 
-$( "#tag" ).change(function() 
+//$( "#tag" ).change(
+	function tag() 
 {
+	if($('#tag').val()){
 var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
 
     $.ajax({
@@ -375,7 +382,7 @@ var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
 	});
 
 
-		
-});
+}		
+}//);
 </script>
 @endsection
