@@ -1,29 +1,15 @@
 
 @extends('app')
 @section('content')
+
+
 <script type="text/javascript" src="/js/ticket_delete.js"></script>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" /> 
-<link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">
-<link type="text/css" rel="stylesheet" href="/css/jquery-te-1.4.0.css">
+
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 <div class="container">
 
 <!-- search-->
-<div class="row" id="search">
-	<form action="" class="navbar-form navbar-right">
-	   <div class="input-group">
-	   <input type="text" id="search" class="form-control">
-	       <!-- <input type="Search" placeholder="Search..." id="search" class="form-control" /> -->
-	       <div class="input-group-btn">
-		   <button class="btn btn-info">
-		   <span class="glyphicon glyphicon-search"></span>
-		   </button>
-	       </div>
-	   </div>
-	</form>
-</div>
-
 
 <!-- <div class="ui-widget">
   <label for="tags">Tags: </label>
@@ -46,60 +32,90 @@ hiiiiiiiiiii category
 
 <div class="row" id="sort_list">
 
-<div class="form-group">
-							<label class="col-md-4 control-label">Type</label>
-							<div class="col-md-6">
-								<select class="form-control" name="sort" id="sortBy">
-								<option value="">Sort By</option>							
-								<option value="1">Subject</option>
-								<option value="2">Deadline</option>
-								<option value="3">Create Date</option>
-								<option value="4">priority</option>
-									
-								</select>
-							
-							</div>
-						</div>
+	<div class="panel panel-danger">
+		<div class="panel-heading">
+			<h3 class="panel-title">Sort By</h3>
+		</div>
+		<div class="panel-body">
+			<div class="form-group" style="display:inline;">
+				<div class="col-md-8">
+					<select class="form-control" name="sort" id="sortBy">						
+					<option value="subject">Subject</option>
+					<option value="deadline">Deadline</option>
+					<option value="created_at">Create Date</option>
+					<option value="priority">Priority</option>							
+					</select>
+				</div>
+			</div>
+			<button class="btn btn-info" id="sortType" style="display:inline;">ASC</button>
+		</div>
+		<br>
+		<div class="form-group container">
+<a href="javascript:;" id="selectFields">Select Column To Show</a>
+		<br>
+		<div style="display:none" id="check">
+		<div class="checkbox" >
+			<label>
+				<input type="checkbox" class="checkbox1" value="discription" checked >
+				discription
+			</label>
+			</div>
+			<div class="checkbox">
+			<label>
+				<input type="checkbox"  class="checkbox1" value="category" checked >
+				category
+			</label>
+			</div>
+			<div class="checkbox">
+			<label>
+				<input type="checkbox"  class="checkbox1" value="priority" checked >
+				priority
+			</label>
+			</div>
+			</div>
+		</div>
+	</div>
 
-<?php 
-
-//  $result = array();
-//         foreach ($tickets as $key => $value)
-//         {
-//             $result[$key] = $value;
-//         }
-// 	    	//file_put_contents("/home/eman/"."aaaaa.html", $result);
-
-// function cmp($a, $b)
-// {
-//     return strcmp($a->priority, $b->priority);
-// }
-
-// usort($result, "cmp");
-
-?>
-</div>
+	<div class="panel panel-danger">
+		<div class="panel-heading">
+			<h3 class="panel-title">Tags</h3>
+		</div>
+		<div class="panel-body">
+			<div class="form-group" style="display:inline;">
+				<div class="col-md-8">
+					<select class="form-control" name="tag" id="tag">
+					<option value="">Select Tag</option>	
+					@foreach ($tags as $tag)				
+					<option value="{{$tag->name}}">{{$tag->name}}</option>
+						@endforeach					
+					</select>
+				</div>
+			</div>
+		
+			</div>
+		</div>
+	</div>
 
 </div>
 
 <div class="col-md-9 "  id="table_show">
-hhhhhhhhhhhh
+
 <table class="table table-condensed">
 		<tr>
 			<td>Subject</td>
-			<td>Description</td>
-			<td>Category</td>
+			<td class="discription">Description</td>
+			<td class="category">Category</td>
 			<td>File Attached</td>
-			<td>Periorty</td>
+			<td class="priority">Periorty</td>
 			<td>Action</td>
 		</tr>
 		  @foreach($tickets as $ticket)
 			   <tr id="{{ $ticket->id }}">
 			   		<td>{{ $ticket->subject->name }}</td>
-			   		<td>{!! $ticket->description !!}</td>
-			   		<td>{{ $ticket->category->name }}</td>
-			   		<td>{{ $ticket->file }}</td>
-			   		<td>{{ $ticket->priority }}</td>
+			   		<td class="discription">{!! $ticket->description !!}</td>
+			   		<td class="category">{{ $ticket->category->name }}</td>
+			   		<td >{{ $ticket->file }}</td>
+			   		<td class="priority">{{ $ticket->priority }}</td>
 			   		<td>
 			   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
 			   		data-content=
@@ -117,12 +133,34 @@ hhhhhhhhhhhh
 </div>
 </div>
 
+
+
  <script src="/js/jquery-2.1.3.js" type="text/javascript"> </script> 
  <script async src="//code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
  <script type="text/javascript" src="/js/jquery-te-1.4.0.min.js"></script>
  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
  <script type="text/javascript" src="/js/tickets_index.js"></script>
  <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
+ 
+ 
+<script>
+$( "#selectFields" ).click(function() {
+  $( '#check' ).slideToggle( "fast" );
+});
+
+
+  $('.checkbox1').change(function() {
+        if(!$(this).is(":checked")) 
+        {
+            $('.'+$(this).val()).hide();
+        }
+        else
+        {
+        	$('.'+$(this).val()).show();
+        }
+    });
+</script>
+
  <script >
 		
 window.onload = function() {
@@ -138,18 +176,107 @@ $( "#sortBy" ).change(function()
 
 var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
 
-		   $.ajax({
-			    url: '/tickets/sortTicket',
-			    type: 'post',
-			    data: { data : tickets , sortType: $('#sortBy option:selected').text() },
-			    success: function(result) {
-					 $('#table_show').html(result);
+    $.ajax({
+	    url: '/tickets/sortTicket',
+	    type: 'post',
+	    data: { data : tickets , sortBy: $('#sortBy ').val() , sortType : "DESC"},
+	    success: function(result) {
+			 $('#table_show').html(result);
+			 $("#sortType").html("ASC");
 
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					console.log(errorThrown);
-			    }
+			$('.checkbox1').each(function () {
+				 if(!$(this).is(":checked")) 
+			        {
+			        	
+			            $('.'+$(this).val()).hide();
+
+			        }
+			        else
+			        {
+			        
+			        	$('.'+$(this).val()).show();
+			        }
+			    
 			});
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			console.log(errorThrown);
+	    }
+	});
+
+		
+});
+
+$("#sortType").click(function(){
+
+	var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
+
+   $.ajax({
+	    url: '/tickets/sortTicket',
+	    type: 'post',
+	    data: { data : tickets , sortBy: $('#sortBy ').val() , sortType : $("#sortType").text()},
+	    success: function(result) {
+			 $('#table_show').html(result);
+
+			 if ($("#sortType").text() == "ASC")
+			 {
+			 	$("#sortType").html("DESC");
+			 } 
+			 else
+			 {
+			 	$("#sortType").html("ASC")
+			 };
+			 $('.checkbox1').each(function () {
+			 if(!$(this).is(":checked")) 
+		     {
+		        	
+		       $('.'+$(this).val()).hide();
+
+		     }
+		     else
+		     {
+		        
+		        $('.'+$(this).val()).show();
+		     }
+    
+});
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			console.log(errorThrown);
+	    }
+	});
+    
+});
+
+$( "#tag" ).change(function() 
+{
+var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
+
+    $.ajax({
+	    url: '/tickets/relatedTag',
+	    type: 'post',
+	    data: { data : tickets , tagId : $('#tag').val() },
+	    success: function(result) {
+			 $('#table_show').html(result);
+			 $('.checkbox1').each(function () {
+				 if(!$(this).is(":checked")) 
+			        {
+			        	
+			            $('.'+$(this).val()).hide();
+
+			        }
+			        else
+			        {
+			        
+			        	$('.'+$(this).val()).show();
+			        }
+			    
+			});
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			console.log(errorThrown);
+	    }
+	});
 
 		
 });

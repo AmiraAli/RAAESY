@@ -28,9 +28,8 @@ Route::get('users/search','UsersController@search');
 Route::post('articles/autocomplete','ArticlesController@autocomplete');
 
 
-
-
 Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
+Route::post('tickets/relatedTag', 'TicketsController@relatedTag');
 Route::resource('/tickets','TicketsController');
 
 Route::post('/tickets/updatestatus','TicketsController@updatestatus');
