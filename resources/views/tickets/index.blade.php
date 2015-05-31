@@ -32,13 +32,15 @@
 <div class="row" id="icons_list">
 
 	<ul class="nav nav-pills" role="tablist">
-	  <li role="presentation" id="unanswered"><a href="#" onclick="searchTicket({{ $unassigned }}, 'unanswered')">Unanswered <span class="badge">42</span></a></li>
-	  <li role="presentation" id="unassigned"><a href="#" onclick="searchTicket({{ $unassigned }}, 'unassigned')">Unassigned <span class="badge">{{ count($unassigned) }}</span></a></li>
-	  <li role="presentation" id="expired"><a href="#" onclick="searchTicket({{ $expired }}, 'expired')">Deadline exceeded <span class="badge">{{ count($expired) }}</span></a></li>
-	  <li role="presentation" id="open"><a href="#" onclick="searchTicket({{ $open }}, 'open')">Unclosed <span class="badge">{{ count($open) }}</span></a></li>	  
-	  <li role="presentation" id="closed"><a href="#" onclick="searchTicket({{ $closed }}, 'closed')">Closed <span class="badge">{{ count($closed) }}</span></a></li>
-	  <li role="presentation" id="all" class="active" onclick="searchTicket({{ $tickets }}, 'all')"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
-	  <li role="presentation" id="spam"><a href="#" onclick="searchTicket({{ $spam }}, 'spam')">Spam <span class="badge">{{ count($spam) }}</span></a></li>	
+
+	  <li role="presentation" id="unanswered"><a href="#" onclick="searchTicket('unanswered')">Unanswered <span class="badge">{{ count($unanswered) }}</span></a></li>
+	  <li role="presentation" id="unassigned"><a href="#" onclick="searchTicket('unassigned')">Unassigned <span class="badge">{{ count($unassigned) }}</span></a></li>
+	  <li role="presentation" id="expired"><a href="#" onclick="searchTicket('expired')">Deadline exceeded <span class="badge">{{ count($expired) }}</span></a></li>
+	  <li role="presentation" id="open"><a href="#" onclick="searchTicket('open')">Unclosed <span class="badge">{{ count($open) }}</span></a></li>	  
+	  <li role="presentation" id="closed"><a href="#" onclick="searchTicket('closed')">Closed <span class="badge">{{ count($closed) }}</span></a></li>
+	  <li role="presentation" id="all" class="active" onclick="searchTicket('all')"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
+	  <li role="presentation" id="spam"><a href="#" onclick="searchTicket('spam')">Spam <span class="badge">{{ count($spam) }}</span></a></li>	
+
 	</ul>
 </div>
 
@@ -52,10 +54,14 @@
 
 
 <div class="list-group">
-  <a href="#" class="list-group-item active"><span class="badge">14</span>All categories</a>
-  <a href="#" class="list-group-item"><span class="badge">14</span>Morbi leo risus</a>
-  <a href="#" class="list-group-item"><span class="badge">14</span>Porta ac consectetur ac</a>
-  <a href="#" class="list-group-item"><span class="badge">14</span>Vestibulum at eros</a>
+	<a href="#" class="list-group-item active" id="cat_all" onclick="searchByCat('cat_all')"><strong>All categories</strong></a>
+	@foreach ($sections as $section)
+		<a href="#" class="list-group-item" id="sec_{{ $section->id }}" onclick="searchByCat('sec_{{ $section->id }}')"> &nbsp &nbsp<strong>{{ $section->name }}</strong></a>
+		@foreach ($section->categories as $category)
+			<a href="#" class="list-group-item" id="cat_{{ $category->id }}" onclick="searchByCat('cat_{{ $category->id }}')"> &nbsp &nbsp &nbsp &nbsp{{ $category->name }}</a>
+		@endforeach	        			         
+    @endforeach
+  
 </div>
 
 

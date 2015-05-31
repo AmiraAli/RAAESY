@@ -67,6 +67,8 @@ class TicketsController extends Controller {
 	public function index()
 	{
 
+		$sections = Section::all();
+
 		$tags=Tag::all();
 
 		//all tickets except spam tickets
@@ -82,14 +84,18 @@ class TicketsController extends Controller {
 		// spam tickets except spam tickets
 		$spam = Ticket::where('is_spam', "1")->get();
 		// unanswered tickets tickets except spam tickets
-		// $unanswered = Ticket::where('status', "close");
 
+		$unanswered = Ticket::leftJoin('comments','tickets.id','=','comments.ticket_id')
+            ->selectRaw('tickets.*, sum(comments.readonly) as c')
+                    ->groupBy('tickets.id')
+                    // ->HAVINGNULL("c")
+                    //->orHAVING("c" , '='  , '0')
+                     ->get();
 
 		$technicals=User::where('type','=','tech')->get();
 
-		return view('tickets.index',compact('tickets','unassigned','open','closed','expired','spam','tags','technicals'));
 
-
+		return view('tickets.index',compact('tickets','unassigned','open','closed','expired','spam','tags','technicals','unanswered','sections'));
 
 	}
 
@@ -138,7 +144,11 @@ class TicketsController extends Controller {
 		{
 			$ticket->priority=$request->get('priority');
 			$ticket->deadline=$request->get('deadline');
-			$ticket->tech_id=$request->get('tech');
+			if($request->get('tech') == ""){
+				$ticket->tech_id = null;
+			}else{
+				$ticket->tech_id=$request->get('tech');
+			}
 			$ticket->admin_id=$request->user()->id;
 			$ticket->save();
 
@@ -215,7 +225,7 @@ class TicketsController extends Controller {
 	$relatedTickets=Ticket::join('ticket_tags', 'tickets.id', '=', 'ticket_tags.ticket_id')
 	->whereIn('ticket_tags.tag_id',$relatedIds)->groupBy('tickets.id')->get();
 
-	file_put_contents("/home/aya/teesst.html", $relatedTickets);
+	#file_put_contents("/home/aya/teesst.html", $relatedTickets);
 
 	// Get Related Assests
 
@@ -412,7 +422,10 @@ class TicketsController extends Controller {
 		$notify->ticket_id=intval($ticket_id);
 		$notify->user_id=Auth::user()->id;
 		$notify->save();
-		file_put_contents("/home/aya/teesst.html", $notify);
+		$notify->fname=Auth::user()->fname;
+		$notify->lname=Auth::user()->lname;
+		echo json_encode($notify);
+		//file_put_contents("/home/aya/teesst.html", $notify);
 
 	}
 
@@ -662,30 +675,52 @@ class TicketsController extends Controller {
 	public function searchTicket(Request $request){
 		if($request->ajax()){  
 			if($request->input('name') == "unassigned"){
-				$tickets = Ticket::whereNull('tech_id')->where('is_spam', "0")->get();				
+				$tickets = Ticket::whereNull('tech_id')->where('is_spam', "0");				
 			}
 			else if($request->input('name') == "open"){
-				$tickets = Ticket::where('status', "open")->where('is_spam', "0")->get();
+				$tickets = Ticket::where('status', "open")->where('is_spam', "0");
 			}
 			else if($request->input('name') == "closed"){
-				$tickets = Ticket::where('status', "close")->where('is_spam', "0")->get();
+				$tickets = Ticket::where('status', "close")->where('is_spam', "0");
 			}
 			else if($request->input('name') == "all"){
-				$tickets = Ticket::where('is_spam', "0")->get();
+				$tickets = Ticket::where('is_spam', "0");
 			}
 			else if($request->input('name') == "expired"){
-				$tickets = Ticket::where('deadline', '<', Carbon::now())->where('is_spam', "0")->get();
+				$tickets = Ticket::where('deadline', '<', Carbon::now())->where('is_spam', "0");
 			}
 			else if($request->input('name') == "spam"){
-				$tickets = Ticket::where('is_spam', "1")->get();
+				$tickets = Ticket::where('is_spam', "1");
 			}
 			else if($request->input('name') == "unanswered"){
-
+				$tickets = Ticket::leftJoin('comments','tickets.id','=','comments.ticket_id')
+            		->selectRaw('tickets.*, sum(comments.readonly) as c')->where('is_spam', "0")
+                    ->groupBy('tickets.id')
+                    ->HAVING("c" , '='  , "0");
 			}
+			if($request->input('cat')){
+				if($request->input('cat') != "all"){
+					$tickets = $tickets->where('category_id', $request->input('cat'));
+				}
+			}
+			else if($request->input('sec')){
+
+				$categories = Category::select("id")->where("section_id", 1)->get();
+				// $categories = json_decode(json_encode($categories), TRUE);
+				// file_put_contents("/home/samah/text.html", $categories[0]);
+				$i = 0;
+				foreach ($categories as $key => $value) {
+					$arr[$i] = $value->id;
+					$i++;
+				}
+				// file_put_contents("/home/samah/text.html",$arr[$i]);
+
+				$tickets = $tickets->whereIn('category_id', $arr);
+			}
+			$tickets = $tickets->get();
 			return view("tickets.searchTicket",compact('tickets')); 
 		}
 	}
-
 	
 	/**
 	* Function to spam ticket

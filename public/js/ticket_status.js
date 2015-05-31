@@ -6,9 +6,11 @@
             });
             };
 
-function Status(elm,techid){
+function Status(elm){
   var ticket_id = elm;
   var status =document.getElementById(elm).name;
+techid=document.getElementById("techid").value.split(',')[1];
+console.log(techid);
 console.log(techid);
                   
 $.ajax({
@@ -17,6 +19,7 @@ $.ajax({
     data: { ticket_id: ticket_id,status:status },
 
     success: function(result) {
+result=JSON.parse(result);
 	var currentdate = new Date(); 
 	var currentDate=currentdate.getFullYear()+"-"+currentdate.getMonth()+"-"+currentdate.getDay()+" "+currentdate.getHours()+":" + 		currentdate.getMinutes() + ":"+ currentdate.getSeconds();
 	if($('#'+ticket_id).text()=='closed'){
@@ -43,7 +46,7 @@ $.ajax({
 		  commentDiv.setAttribute("class","panel panel-default  commentbody");
 		var headDiv=document.createElement('div');
 		  headDiv.setAttribute('class','panel-heading');
-		var head=document.createTextNode("name");
+		var head=document.createTextNode(result['fname']+" "+result['lname']);
 		var commentDiv1=document.createElement('div');
 		  commentDiv1.setAttribute("class","panel-body ");
 		var textDate=document.createTextNode(currentDate);

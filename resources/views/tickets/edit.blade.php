@@ -60,7 +60,7 @@
 				    <optgroup label=" {{ $section->name }} " >
 					    @foreach ($categories as $category)
 					    	@if ($category->section_id === $section->id )
-					    		@if($ticket->scategory_id === $category->id)
+					    		@if($ticket->category_id === $category->id)
 							    	<option value="{{ $category->id }} " selected="true"> {{ $category->name }}</option>
 								@else
 								    <option value="{{ $category->id }}"> {{ $category->name }}</option>	
