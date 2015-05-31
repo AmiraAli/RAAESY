@@ -1,49 +1,64 @@
+@if (Auth::check())
+<html>
+<head>
+
+     
+     
+     <script src="/js/users/index.js"></script>
+
+  
+
+        
+</head>
+
+<body>
+
+
+<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
+
+
+
 @extends('app')
 @section('content')
 
 
-<div class="container col-md-8"  style="border:solid 2px;" > <!--style="float:left; border:solid 2px; width:50%" >-->
+<div class="container col-md-8"  style="border:solid 2px;" id="con"> 
 </div>
 
 	<div class="col-md-4">
 			<div class="panel panel-success">
 				<div class="panel-heading">Search</div>
 				<div class="panel-body">
-	
-
-<!-- 					<form class="form-horizontal" role="form" method="POST" action="{{ url('/users/ajaxsearch') }}">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
- -->
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">First Name</label>
 							<div class="col-md-6">
-								<input type="fname" class="form-control" name="fname" value="{{ old('email') }}">
+								<input type="text" id="fname" class="form-control" name="fname" value="{{ old('email') }}">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label">Last Name</label>
 							<div class="col-md-6">
-								<input type="lname" class="form-control" name="lname" value="{{ old('email') }}">
+								<input type="text" id="lname" class="form-control" name="lname" value="{{ old('email') }}">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label">E-Mail Address</label>
 							<div class="col-md-6">
-								<input type="email" class="form-control" name="email" value="{{ old('email') }}">
+								<input type="email" id="email" class="form-control" name="email" value="{{ old('email') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Phone</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="phone">
+								<input type="text" id="phone" class="form-control" name="phone">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label">Location</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="location">
+								<input type="text" id="location" class="form-control" name="location">
 							</div>
 						</div>
 
@@ -60,3 +75,6 @@
 		</div></div></div>				
 </div>
 @stop
+</body>
+</html>
+@endif

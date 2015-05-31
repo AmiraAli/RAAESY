@@ -1,4 +1,5 @@
 
+
 function searchTicket (id) {
 	$("#icons_list").find(".active").removeClass("active");
 	$("#"+id).addClass("active");
