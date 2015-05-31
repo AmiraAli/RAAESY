@@ -66,6 +66,7 @@ class TicketsController extends Controller {
 	 */
 	public function index()
 	{
+		$sections = Section::all();
 		$tickets=Ticket::all();
 		//all tickets except spam tickets
 		$allTickets = Ticket::where('is_spam', "0")->get();
@@ -80,9 +81,13 @@ class TicketsController extends Controller {
 		// spam tickets except spam tickets
 		$spam = Ticket::where('is_spam', "1")->get();
 		// unanswered tickets tickets except spam tickets
-		// $unanswered = Ticket::where('status', "close");
+		$unanswered = Ticket::leftJoin('comments','tickets.id','=','comments.ticket_id')
+            ->selectRaw('tickets.*, sum(comments.readonly) as c')->where('is_spam', "0")
+                    ->groupBy('tickets.id')
+                    ->HAVING("c" , '='  , "0")
+                     ->get();
 
-		return view('tickets.index',compact('tickets','allTickets','unassigned','open','closed','expired','spam'));
+		return view('tickets.index',compact('tickets','allTickets','unassigned','open','closed','expired','spam','sections','unanswered'));
 	}
 
 	/**
@@ -503,30 +508,52 @@ class TicketsController extends Controller {
 	public function searchTicket(Request $request){
 		if($request->ajax()){  
 			if($request->input('name') == "unassigned"){
-				$tickets = Ticket::whereNull('tech_id')->where('is_spam', "0")->get();				
+				$tickets = Ticket::whereNull('tech_id')->where('is_spam', "0");				
 			}
 			else if($request->input('name') == "open"){
-				$tickets = Ticket::where('status', "open")->where('is_spam', "0")->get();
+				$tickets = Ticket::where('status', "open")->where('is_spam', "0");
 			}
 			else if($request->input('name') == "closed"){
-				$tickets = Ticket::where('status', "close")->where('is_spam', "0")->get();
+				$tickets = Ticket::where('status', "close")->where('is_spam', "0");
 			}
 			else if($request->input('name') == "all"){
-				$tickets = Ticket::where('is_spam', "0")->get();
+				$tickets = Ticket::where('is_spam', "0");
 			}
 			else if($request->input('name') == "expired"){
-				$tickets = Ticket::where('deadline', '<', Carbon::now())->where('is_spam', "0")->get();
+				$tickets = Ticket::where('deadline', '<', Carbon::now())->where('is_spam', "0");
 			}
 			else if($request->input('name') == "spam"){
-				$tickets = Ticket::where('is_spam', "1")->get();
+				$tickets = Ticket::where('is_spam', "1");
 			}
 			else if($request->input('name') == "unanswered"){
-
+				$tickets = Ticket::leftJoin('comments','tickets.id','=','comments.ticket_id')
+            		->selectRaw('tickets.*, sum(comments.readonly) as c')->where('is_spam', "0")
+                    ->groupBy('tickets.id')
+                    ->HAVING("c" , '='  , "0");
 			}
+			if($request->input('cat')){
+				if($request->input('cat') != "all"){
+					$tickets = $tickets->where('category_id', $request->input('cat'));
+				}
+			}
+			else if($request->input('sec')){
+
+				$categories = Category::select("id")->where("section_id", 1)->get();
+				// $categories = json_decode(json_encode($categories), TRUE);
+				// file_put_contents("/home/samah/text.html", $categories[0]);
+				$i = 0;
+				foreach ($categories as $key => $value) {
+					$arr[$i] = $value->id;
+					$i++;
+				}
+				// file_put_contents("/home/samah/text.html",$arr[$i]);
+
+				$tickets = $tickets->whereIn('category_id', $arr);
+			}
+			$tickets = $tickets->get();
 			return view("tickets.searchTicket",compact('tickets')); 
 		}
 	}
-
 	
 	/**
 	* Function to spam ticket
