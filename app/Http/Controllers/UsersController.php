@@ -221,12 +221,12 @@ class UsersController extends Controller {
 	public function changepassprocess()
 	{
 
-		//$user_id = Auth::User()->id;
-		$v = Validator::make(Request::all(), [
-					'password' => 'required'
-					//'oldpassword' => "required|exists:users,id,$user_id",
+		$user_id = Auth::User()->id;
 
-        	]);
+		$v = Validator::make( Request::all() , [
+					'oldPassword' => "required|passmatch:$user_id",
+					'newPassword' => 'required|confirmed|min:6',
+		]);
         
 	    if ($v->fails())
 	    {
@@ -234,21 +234,17 @@ class UsersController extends Controller {
 	        						 ->withInput();
 	    }else{
 
-	    		echo "jun";
-	    		exit;
+	    		
 
-		// 	$user=User::find($id);
-		// $user->fname=Request::get('fname');
-		// $user->lname=Request::get('lname');
-		// $user->email=Request::get('email');
-	    	   // return redirect()->back();
-		
+		 	$user=User::find($user_id);
+		    $user->password = bcrypt(Request::get('newPassword'));
+			$user->save();
+			$status = "Your password has been changed successfully.";
+			return view('users.changepassword', compact('status'));
+
 		}
 
 	}
-
-
-
 
 
 	/**
