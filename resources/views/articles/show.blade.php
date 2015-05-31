@@ -5,7 +5,8 @@
     
        <div class="container-fluid">
           <div class="col-md-8">
-            <h1>Article Show</h1>
+            <div class="panel-heading">
+            <h3 class="panel-title">Article Show</h3></div>
             <label for="subject" class="col-sm-2 control-label">SUBJECT</label>
             <div class="col-sm-10">
                 {{$article->subject}}
@@ -28,7 +29,7 @@
                 @if ($article->isshow==1)
                    Show for Technicals only
                 @else
-                    Show for Technicals and Users 
+                   Show for Technicals and Users 
                 @endif     
             </div>
     
@@ -69,8 +70,11 @@
          <br/>
          <h1>Articles Related</h1>
         <div class="row">
-         
-            <label for="ReleateArticlesByTags" class="col-sm-2 control-label">ReleateArticlesByTags</label>
+           
+            <label for="ReleateArticlesByTags" class="col-sm-2 control-label">
+            <div class="panel-heading"><h3 class="panel-title">ReleateArticlesByTags</h3></div>
+            </label>
+            <div class="panel-body">
             <br/>
             <div class="col-sm-10">
 
@@ -93,6 +97,9 @@
 
                          $distinct[0]=0;
                          $z=0;
+                         if (!empty($art)) {
+                           # code...
+                         
                          for ($i=0; $i <sizeof($art) ; $i++) { 
                              # code...
                             $f=0;
@@ -115,20 +122,22 @@
                                $f=0;
                             }
                          }
-
+                       }
 
                        ?>  
               
-            
+        </div>    
         </div>
         </div>
         <div class="row">
-       
-            <label for="ReleateArticlesByCategory" class="col-sm-2 control-label">ReleateArticlesByCategory</label>
+        <label for="ReleateArticlesByCategory" class="col-sm-2 control-label">
+       <div class="panel-heading"><h3 class="panel-title">
+            ReleateArticlesByCategory</h3></div></label>
             <br/>
+            
             <div class="col-sm-10">
-
-                      {{$article->category->name}}<br/>
+            <div class="panel-body">
+                    
                        @foreach ($articles as $art)
                        
                               
@@ -141,7 +150,7 @@
                        @endforeach   
               
             </div>
-       
+            </div>
         </div>
        </div>
        </div>

@@ -220,7 +220,7 @@ class TicketsController extends Controller {
 	$relatedTickets=Ticket::join('ticket_tags', 'tickets.id', '=', 'ticket_tags.ticket_id')
 	->whereIn('ticket_tags.tag_id',$relatedIds)->groupBy('tickets.id')->get();
 
-	file_put_contents("/home/aya/teesst.html", $relatedTickets);
+	#file_put_contents("/home/aya/teesst.html", $relatedTickets);
 
 	// Get Related Assests
 

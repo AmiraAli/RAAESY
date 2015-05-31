@@ -112,12 +112,12 @@
 			<h3 class="panel-title">Related tags</h3>
 		</div>
 		<div class="panel-body"> 
-		@foreach($relatedTickets as $relatedTicket)
-			@foreach($relatedTicket as $Ticket)
+		@foreach($relatedTickets as $Ticket)
+		
 				@if($Ticket->id!=$ticket->id)
-					<a href="/tickets/{{$Ticket->id}}">{{substr($Ticket->description,0,10)."....."}}</a><br>
+					<a href="/tickets/{{$Ticket->ticket_id}}">{{substr($Ticket->description,0,10)."....."}}</a><br>
 				@endif
-			@endforeach
+
 		@endforeach
 		</div>
 	</div>
