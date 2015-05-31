@@ -55,6 +55,8 @@ Route::post('/tickets/all/subjects', 'TicketsController@TicketAllSubject');
 Route::post('/tickets/spamTicket', 'TicketsController@spamTicket');
 Route::post('/tickets/closeTicket', 'TicketsController@closeTicket');
 Route::post('/tickets/openTicket', 'TicketsController@openTicket');
+Route::post('tickets/addTag', 'TicketsController@addTag');
+
 
 
 Route::resource('tickets.comments', 'CommentsController');

@@ -161,7 +161,7 @@ class TicketsController extends Controller {
 	                $message->to($ticket_array['tech_email']);
             	});
 			}
-			
+
 		}else{
 			$ticket->tech_id=NULL;
 			$ticket->admin_id=NULL;
@@ -543,5 +543,22 @@ class TicketsController extends Controller {
 			$ticketStatus->ticket_id=$ticket->id;
 			$ticketStatus->save();
 			}	
+	}
+
+
+	/**
+	* Function to add subject for ticket
+	**/
+	public function addTag(Request $request)
+	{
+		// Getting post data
+		if($request->ajax()) {
+			// $data = Input::all();
+			$data = $request->input('newtag');
+			$tag= new Tag;
+			$tag->name=$data;
+			$tag->save();
+			print_r($tag->id);
+		}
 	}
 }
