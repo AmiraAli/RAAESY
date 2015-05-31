@@ -17,6 +17,34 @@ class UsersController extends Controller {
 		$this->middleware('auth');
 	}
 
+
+	/**
+	 * Authorize admin
+	 * @param  integer $user_id
+	 * @return Response
+	 */
+	private function adminAuth()
+	{		
+		if (Auth::User()->type !="admin"){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Authorize user can view the page
+	 *
+	 * @return Response
+	 */
+	private function userAuth($id)
+	{		
+		if (Auth::User()->id !=$id ){
+			return false;
+		}
+		return true;
+	}
+
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -24,6 +52,11 @@ class UsersController extends Controller {
 	 */
 	public function index()
 	{
+		//authenticate admin
+		if (!$this->adminAuth()){
+			return view('errors.authorization');
+		}
+
 		$users=User::all();
 		return view('users.index',compact('users'));
 	}
@@ -58,6 +91,11 @@ class UsersController extends Controller {
 	 */
 	public function create()
 	{
+		//authorization
+		if (!$this->adminAuth() ){
+			return view('errors.authorization');
+		}
+
 		return view('users.create');
 	}
 
@@ -145,6 +183,11 @@ class UsersController extends Controller {
 	 */
 	public function show($id)
 	{
+		//authorization
+		if (!$this->adminAuth() && !$this->userAuth($id)){
+			return view('errors.authorization');
+		}
+
 		$user = User::findOrFail($id);
 		return view('users.show',compact('user'));
 	}
@@ -157,9 +200,15 @@ class UsersController extends Controller {
 	 */
 	public function edit($id)
 	{
+		
+		//authorization
+		if (!$this->adminAuth() && !$this->userAuth($id)){
+			return view('errors.authorization');
+		}
+
 		$user = User::find($id);
 
-		return view('users.edit',compact('user'));
+		return view('users.edit',compact('user', 'id'));
 	}
 
 	/**
@@ -174,7 +223,7 @@ class UsersController extends Controller {
            			'fname' => 'required|max:255',
 					'lname' => 'required|max:255',
 					'email' => 'required|email|max:255',
-					'phone' => 'required|max:20|numeric',
+					'phone' => 'required|numeric',
 					'location' => 'required|max:255',
         	]);
         $subject=Request::get('subject');
@@ -189,7 +238,6 @@ class UsersController extends Controller {
 		$user->fname=Request::get('fname');
 		$user->lname=Request::get('lname');
 		$user->email=Request::get('email');
-		//$user->password=bcrypt(Request::get('password'));
 		$user->phone=Request::get('phone');
 		$user->location=Request::get('location');
 
@@ -237,9 +285,12 @@ class UsersController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function changepassword()
+	public function changepassword($id)
 	{
-		
+		//authorization
+		if (!$this->userAuth($id)){
+			return view('errors.authorization');
+		}
 		return view('users.changepassword');
 	}
 
@@ -253,12 +304,12 @@ class UsersController extends Controller {
 	public function changepassprocess()
 	{
 
-		//$user_id = Auth::User()->id;
-		$v = Validator::make(Request::all(), [
-					'password' => 'required'
-					//'oldpassword' => "required|exists:users,id,$user_id",
+		$user_id = Auth::User()->id;
 
-        	]);
+		$v = Validator::make( Request::all() , [
+					'oldPassword' => "required|passmatch:$user_id",
+					'newPassword' => 'required|confirmed|min:6',
+		]);
         
 	    if ($v->fails())
 	    {
@@ -266,21 +317,17 @@ class UsersController extends Controller {
 	        						 ->withInput();
 	    }else{
 
-	    		echo "jun";
-	    		exit;
+	    		
 
-		// 	$user=User::find($id);
-		// $user->fname=Request::get('fname');
-		// $user->lname=Request::get('lname');
-		// $user->email=Request::get('email');
-	    	   // return redirect()->back();
-		
+		 	$user=User::find($user_id);
+		    $user->password = bcrypt(Request::get('newPassword'));
+			$user->save();
+			$status = "Your password has been changed successfully.";
+			return view('users.changepassword', compact('status'));
+
 		}
 
 	}
-
-
-
 
 
 	/**
@@ -296,17 +343,19 @@ class UsersController extends Controller {
 		$type = Request::get('type');
 		if ($type== "all"){
 			
-			$selectedUsers =User::all();
+			$users =User::all();
 
 		}elseif ($type== "disabled") {
 			
-			$selectedUsers =User::where('isspam', 1)->get();
+			$users =User::where('isspam', 1)->get();
 
 		}else{
-			$selectedUsers =User::where('type',$type )->get();	
+			$users =User::where('type',$type )->get();	
 		}
 		
-		return json_encode($selectedUsers);
+		//return json_encode($selectedUsers);
+		return view('users.indexAjax' , compact('users'));
+
 
 	}
 

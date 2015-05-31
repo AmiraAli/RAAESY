@@ -60,7 +60,9 @@ function show(elm){
    	type: type
    	    },
     success: function(result) {
-		result = JSON.parse(result) ; 
+
+    	$("#tbody").html(result);
+		/*result = JSON.parse(result) ; 
 		console.log(result);
 		$("#tbody").html('');
 		var disabledCheckbox ;
@@ -76,10 +78,10 @@ function show(elm){
 				disabledCheckbox += " >";
 			}
 
+*/
+		//$("#tbody").html("<tr id="+row['id']+"><td>"+row['fname']+"</td><td>"+row['lname']+"</td><td>"+row['email']+"</td><td>"+row['phone']+"</td><td>"+row['location']+"</td><td>"+disabledCheckbox+"</td><td><a href='/users/"+row['id']+"'>show</a><a href='/users/"+row['id']+"/edit'>edit</a><a href='#' class='delete' id="+row['id']+" onclick='Delete("+row['id']+")''>delete</a></td></tr>");
 
-		$("#tbody").append("<tr id="+row['id']+"><td>"+row['fname']+"</td><td>"+row['lname']+"</td><td>"+row['email']+"</td><td>"+row['phone']+"</td><td>"+row['location']+"</td><td>"+disabledCheckbox+"</td><td><a href='/users/"+row['id']+"'>show</a><a href='/users/"+row['id']+"/edit'>edit</a><a href='#' class='delete' id="+row['id']+" onclick='Delete("+row['id']+")''>delete</a></td></tr>");
-
-		}
+//		}
 
 		
 			},
