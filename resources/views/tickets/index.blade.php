@@ -76,7 +76,7 @@
 		<div class="panel-body">
 			<div class="form-group" style="display:inline;">
 				<div class="col-md-8">
-					<select class="form-control" name="sort" id="sortBy" onchange="sortBy()">						
+					<select class="form-control" name="sort" id="sortBy">						
 					<option value="subject">Subject</option>
 					<option value="deadline">Deadline</option>
 					<option value="created_at">Create Date</option>
@@ -84,7 +84,7 @@
 					</select>
 				</div>
 			</div>
-			<button class="btn btn-info" id="sortType" style="display:inline;" onclick="sortType()">ASC</button>
+			<button class="btn btn-info" id="sortType" style="display:inline;">ASC</button>
 		</div>
 		<br>
 		<div class="form-group container">
@@ -115,7 +115,7 @@
 		<div class="panel-body">
 			<div class="form-group" style="display:inline;">
 				<div class="col-md-8">
-					<select class="form-control" name="tag" id="tag" onchange="tag()">
+					<select class="form-control" name="tag" id="tag">
 					<option value="">Select Tag</option>	
 					@foreach ($tags as $tag)				
 					<option value="{{$tag->name}}">{{$tag->name}}</option>
@@ -267,7 +267,7 @@ $( "#selectFields" ).click(function() {
         }
     });
             
-function sortBy() 
+$( "#sortBy" ).change(function() 
 {
 
 var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
@@ -301,9 +301,9 @@ var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
 	});
 
 		
-}
+});
 
-function sortType(){
+$("#sortType").click(function(){
 
 	var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
 
@@ -342,9 +342,9 @@ function sortType(){
 	    }
 	});
     
-}
+});
 
-function tag() 
+$( "#tag" ).change(function() 
 {
 var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
 
@@ -372,9 +372,10 @@ var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log(errorThrown);
 	    }
-
 	});
-	sortBy();		
-}
+
+
+		
+});
 </script>
 @endsection
