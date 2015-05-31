@@ -107,7 +107,7 @@
 			<td>Periorty</td>
 			<td>Action</td>
 		</tr>
-		  @foreach($tickets as $ticket)
+		  @foreach($allTickets as $ticket)
 			   <tr id="{{ $ticket->id }}">
 			   		<td>{{ $ticket->subject->name }}</td>
 			   		<td>{!! $ticket->description !!}</td>
