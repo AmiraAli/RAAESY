@@ -1,8 +1,6 @@
 
 @extends('app')
 @section('content')
-<script type="text/javascript" src="/js/ticket_delete.js"></script>
-<script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" /> 
 <link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">
@@ -100,35 +98,47 @@
 </div>
 
 <div class="col-md-9 "  id="table_show">
-hhhhhhhhhhhh
-<table class="table table-condensed">
-		<tr>
-			<td>Subject</td>
-			<td>Description</td>
-			<td>Category</td>
-			<td>File Attached</td>
-			<td>Periorty</td>
-			<td>Action</td>
-		</tr>
-		  @foreach($tickets as $ticket)
-			   <tr id="{{ $ticket->id }}">
-			   		<td>{{ $ticket->subject->name }}</td>
-			   		<td>{!! $ticket->description !!}</td>
-			   		<td>{{ $ticket->category->name }}</td>
-			   		<td>{{ $ticket->file }}</td>
-			   		<td>{{ $ticket->priority }}</td>
-			   		<td>
-			   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
-			   		data-content=
-			   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>
-			   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>
-			   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
-			   		></a>
-			   		</td>
-			   </tr>
-		  @endforeach
-	  
-	</table>
+	<table class="table table-condensed">
+			<tr>
+				<td>Subject</td>
+				<td>Description</td>
+				<td>Category</td>
+				<td>File Attached</td>
+				<td>Periorty</td>
+				<td>Action</td>
+			</tr>
+			  @foreach($tickets as $ticket)
+				   <tr id="{{ $ticket->id }}">
+				   		<td>{{ $ticket->subject->name }}</td>
+				   		<td>{!! $ticket->description !!}</td>
+				   		<td>{{ $ticket->category->name }}</td>
+				   		<td>{{ $ticket->file }}</td>
+				   		<td>{{ $ticket->priority }}</td>
+				   		<td>
+				   		@if($ticket->status == 'open')
+					   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+					   		data-content=
+					   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
+					   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
+					   		<a onclick='spam({{ $ticket->id }})'>Spam</a>|
+					   		<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
+					   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
+					   		></a>
+					   	@else
+					   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+					   		data-content=
+					   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
+					   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
+					   		<a onclick='spam({{ $ticket->id }})'>Spam</a>|
+					   		<a onclick='openTeckit({{ $ticket->id }})'>Open</a>|
+					   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
+					   		></a>
+					   	@endif
+				   		</td>
+				   </tr>
+			  @endforeach
+		  
+		</table>
 
 </div>
 </div>
@@ -140,7 +150,8 @@ hhhhhhhhhhhh
  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
  <script type="text/javascript" src="/js/tickets_index.js"></script>
  <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
-<script type="text/javascript" src="/js/search_ticket_by_subject.js"></script>
+ <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
+ <script type="text/javascript" src="/js/search_ticket_by_subject.js"></script>
 
  <script >
 		

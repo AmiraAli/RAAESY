@@ -36,9 +36,9 @@ class Ticket extends Model {
 		return $this->belongsToMany('App\Asset','ticket_assets');
 	    }
 
-    public function status()
-    {
-        return $this->hasOne('App\TicketStatus');
-    }
+	    public function status()
+	    {
+	        return $this->hasOne('App\TicketStatus');
+	    }
 
 }
