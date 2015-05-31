@@ -8,7 +8,10 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">Add User</div>
 				<div class="panel-body">
-				    @if (count($errors) > 0)
+				 
+
+
+  @if (count($errors) > 0)
                         <div class="alert alert-danger">
                             <strong>Whoops!</strong> There were some problems with your input.<br><br>
                             <ul>
@@ -18,20 +21,21 @@
                             </ul>
                         </div>
        				@endif
+				 
 
-					<form class="form-horizontal" role="form" method="POST" action="{{ url('/users/changepass_process') }}">
+					<form class="form-horizontal" role="form" method="POST" action="{{ url('/users/changepassprocess') }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Old Password</label>
 							<div class="col-md-6">
-								<input type="password" class="form-control" name="fname" >
+								<input type="password" class="form-control" name="oldpassword" >
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Password</label>
+							<label class="col-md-4 control-label">New Password</label>
 							<div class="col-md-6">
 								<input type="password" class="form-control" name="password">
 							</div>
