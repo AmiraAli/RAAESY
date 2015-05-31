@@ -33,12 +33,14 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="{{ url('/') }}">Home</a></li>
-					@if(Auth::user()->type == "admin")
-						<li><a href="{{ url('/tickets') }}">Tickets</a></li>
-						<li><a href="{{ url('/assets') }}">Assets</a></li>
-						<li><a href="{{ url('/users') }}">Users</a></li>
-						<li><a href="{{ url('/categories') }}">Categories&Sections</a></li>
-						<li><a href="#">Reports</a></li>
+					@if (Auth::check())
+						@if(Auth::user()->type == "admin")
+							<li><a href="{{ url('/tickets') }}">Tickets</a></li>
+							<li><a href="{{ url('/assets') }}">Assets</a></li>
+							<li><a href="{{ url('/users') }}">Users</a></li>
+							<li><a href="{{ url('/categories') }}">Categories&Sections</a></li>
+							<li><a href="#">Reports</a></li>
+						@endif
 					@endif
 				</ul>
 
