@@ -1,3 +1,5 @@
+@if (Auth::check())
+
 @extends('app')
 @section('content')
 
@@ -6,6 +8,12 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="/js/text_editor/jquery-te-1.4.0.min.js" charset="utf-8"></script>
 <link type="text/css" rel="stylesheet" href="/css/text_editor/jquery-te-1.4.0.css">
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">
+<link type="text/css" rel="stylesheet" href="/css/jquery-te-1.4.0.css"> 
+<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" /> 
+
 
  <div class="container"> 
 	{!! Form::open(array('class' => 'form-inline', 'method' => 'POST', 'route' => array('articles.store'))) !!}
@@ -65,6 +73,14 @@
   <br/>
 
 
+
+  <div class="form-group  col-md-6" id="tags_selected">
+       <label class="col-md-4 control-label">Tags</label>
+       <input type="text" id="search" class="form-control">
+  </div>
+  <input type="hidden" name="tagValues" id="tagValues">
+
+
     <div class="form-group">
         {!! Form::submit('Save', ['class' => 'btn btn-primary form-control']) !!}
     </div>
@@ -74,5 +90,11 @@
          $('.jqte-test').jqte();
     </script>
 
-</div>
+
+ <script src="/js/jquery-2.1.3.js" type="text/javascript"> </script> 
+ <script async src="//code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
+ <script type="text/javascript" src="/js/jquery-te-1.4.0.min.js"></script>
+ <script type="text/javascript" src="/js/articles/tags.js"></script>
+ </div>
 @endsection
+@endif

@@ -1,4 +1,5 @@
 
+$(function() {
 
 $('#searchticket').keyup(function(){var x=$('#searchticket').val(); 
 
@@ -29,5 +30,3 @@ console.log(subjects);
 
 
 
-
-   

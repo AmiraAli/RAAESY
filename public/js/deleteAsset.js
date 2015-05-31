@@ -7,7 +7,6 @@ window.onload = function() {
             };
 
 		function deleteAsset(id){
-			alert("aaa");  
 			//ajax request
 		   $.ajax({
 			    url: '/assets/'+id,

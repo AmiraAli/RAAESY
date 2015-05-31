@@ -1,11 +1,17 @@
 <?php namespace App\Http\Controllers;
 
+//use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 //use Illuminate\Http\Request;
 use App\Article;
+
+//use App\Tag;
+use App\ArticleTag;
+
 use App\Log;
+
 use App\Category;
 use App\Section;
 use Auth;
@@ -13,8 +19,15 @@ use Request;
 use Input;
 use Editor;
 use Validator;
+use App\Tag;
 
 class ArticlesController extends Controller {
+
+
+	public function __construct()
+	{
+		$this->middleware('auth');
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -24,8 +37,11 @@ class ArticlesController extends Controller {
 	public function index()
 	{
 		//
+		$categories=Category::all();
+		$sections=Section::all();
 		$articles=Article::all();
-		return view('articles.index',compact('articles'));
+		$tags=Tag::all();
+		return view('articles.index',compact('articles','categories','sections','tags'));
 	}
 
 
@@ -106,6 +122,20 @@ class ArticlesController extends Controller {
 	    $article->body= Request::get('body');
 
 	    $article->save();
+
+	    $tags=Request::get('tagValues');
+			if( $tags != ""){
+				$tags_array=explode(",",$tags);
+				for($i=0;$i<count($tags_array);$i++){
+					$tag=Tag::where('name',$tags_array[$i])->first();
+					$articleTag=new ArticleTag;
+					$articleTag->tag_id=$tag->id;
+					$articleTag->article_id=$article->id;
+					$articleTag->save();
+				}
+			}
+
+	    
 	    return redirect('articles');
 	  }
 	}
@@ -120,7 +150,11 @@ class ArticlesController extends Controller {
 	{
 		//
 		$article=Article::find($id);
-		return view('articles.show',compact('article'));
+	    $articletags=ArticleTag::all();
+		$articles = Article::all();
+		$tags=Tag::all();
+		$tagOfArts=ArticleTag::select('tag_id')->where('article_id','like',"%".$id.'%')->get();
+		return view('articles.show',compact('article','articletags','tags','tagOfArts','articles'));
 	}
 
 	/**
@@ -206,6 +240,49 @@ class ArticlesController extends Controller {
 		
 		return json_encode($articles);
 
+
+	}
+
+	public function getTags()
+	{
+		// Getting post data
+		if(Request::ajax()) {
+			// $data = Input::all();
+			$data = Request::input('q');
+			$tags=Tag::select('name')->where('name','like',"%".$data.'%')->get();
+			// file_put_contents("/home/amira/test.html", $tags);
+			echo json_encode($tags);
+		}
+	}
+
+	public function search()
+	{
+
+		$category_id = Request::get('dataCat');
+		$tag_id = Request::get('dataTag');
+		//var_dump($category_id);
+		//var_dump($tag_id); exit();
+        if($category_id !=0 && $tag_id !=0){
+        	//echo "inside if"; exit();
+			$articles=Article::where('category_id','=',$category_id)->get();
+	        $articleTags= ArticleTag::where('tag_id','=',$tag_id)->get();			
+		    return view('articles.searchCategoryTag',compact('articles','articleTags'));
+
+	    }elseif ($category_id==0){
+           // echo "inside elseif 1"; exit();
+	    	$articleTags= ArticleTag::where('tag_id','=',$tag_id)->get();
+	    	$articles= Article::all();
+	    	//var_dump($articleTags); exit();
+	    	return view('articles.searchTag',compact('articleTags','articles'));
+
+	    }elseif ($tag_id==0){
+
+	    	$articles=Article::where('category_id','=',$category_id)->get();
+	    	return view('articles.searchCategory',compact('articles'));
+
+	    }
+
+		
 
 	}
 

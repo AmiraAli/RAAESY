@@ -44,7 +44,7 @@
 
 			   <div class="row">
 				<div class="form-group col-md-12">
-					<textarea class="jqte-test"  name="description"></textarea>
+					<textarea class="jqte-test"  name="description">{{ Input::old('description')}}</textarea>
 				 </div>
 				</div>
 
@@ -91,9 +91,15 @@
 					<div class="form-group  col-md-6" id="tags_selected">
 						<label class="col-md-4 control-label">Tags</label>
 						<input type="text" id="search" class="form-control">
+						<a class="col-md-4" onclick="add_new_tag()">Add New Tag</a>
+						<div class="col-md-offset-2"  id="tag_new" style="visibility:hidden;">
+							<input type="text" class="form-control col-md-1" id="new_tagvalue"/>
+							<a class="btn btn-primary col-md-3" onclick="submit_tag()">Add</a>
+							<a class="btn btn-primary col-md-3" onclick="cancel_tag()">Cancel</a>
+						</div>
 					</div>
 					<input type="hidden" name="tagValues" id="tagValues">
-				</div>
+			</div>
 				@endif
 
 				<div class="row col-md-offset-1">

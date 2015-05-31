@@ -40,7 +40,7 @@ class CommentsController extends Controller {
 	public function store($ticket_id)
 	{
 		
-		$comment = new Comment;
+		    $comment = new Comment;
 	    	$comment->body = Request::get('body');
 	    	$comment->ticket_id = $ticket_id;
 	    	$comment->user_id = Auth::user()->id;
@@ -95,9 +95,14 @@ class CommentsController extends Controller {
 		$comment = Comment::findOrFail($comment_id);
 		$comment->body = Request::get('body');
 		$comment->save();
+
 		$comment->fname=Auth::user()->fname;
 		$comment->lname=Auth::user()->lname;
 		echo json_encode($comment);
+
+		$comment->name="name";
+	    echo json_encode($comment);
+
 	}
 
 	/**

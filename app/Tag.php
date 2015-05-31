@@ -9,4 +9,9 @@ class Tag extends Model {
         return $this->belongsToMany('App\Ticket','ticket_tags');
     }
 
+    public function articles()
+    {
+        return $this->belongsToMany('App\Article','article_tags');
+    }
+
 }

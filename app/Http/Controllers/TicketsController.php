@@ -19,6 +19,9 @@ use App\Tag;
 use App\TicketStatus;
 use App\Asset;
 use App\TicketAsset;
+
+use Carbon\Carbon;
+
 use App\Log;
 use Mail;
 
@@ -64,17 +67,24 @@ class TicketsController extends Controller {
 	public function index()
 	{
 		$tickets=Ticket::all();
-		$myTickets = Ticket::where('tech_id', Auth::user()->id)->get();
-		$unassignedTickets = Ticket::whereNull('tech_id')->get();
-		// $closed = Ticket::where('status', "close")->get();
-		$technicals = User::where('type', 'tech')->get();
-		// $open = Ticket::where('status', "open")->get();
-		// $statuses=TicketStatus::all();
-		// $closed = TicketStatus::where('value', "close")->get();
-		// $closed = TicketStatus::where('value', "close")->get();
+		$tags=Tag::all();
 
-		return view('tickets.index',compact('tickets','myTickets','unassignedTickets','technicals'));
+		//all tickets except spam tickets
+		$allTickets = Ticket::where('is_spam', "0")->get();
+		// unassigned tickets except spam tickets
+		$unassigned = Ticket::whereNull('tech_id')->where('is_spam', "0")->get();
+		// closed tickets except spam tickets
+		$closed = Ticket::where('status', "close")->where('is_spam', "0")->get();
+		// open tickets except spam tickets
+		$open = Ticket::where('status', "open")->where('is_spam', "0")->get();
+		// deadline exceeded except spam tickets
+		$expired = Ticket::where('deadline', '<', Carbon::now())->where('is_spam', "0")->get();
+		// spam tickets except spam tickets
+		$spam = Ticket::where('is_spam', "1")->get();
+		// unanswered tickets tickets except spam tickets
+		// $unanswered = Ticket::where('status', "close");
 
+		return view('tickets.index',compact('tickets','allTickets','unassigned','open','closed','expired','spam','tags'));
 
 
 	}
@@ -165,7 +175,7 @@ class TicketsController extends Controller {
 	                $message->to($ticket_array['tech_email']);
             	});
 			}
-			
+
 		}else{
 			$ticket->tech_id=NULL;
 			$ticket->admin_id=NULL;
@@ -404,39 +414,118 @@ class TicketsController extends Controller {
 	/**
 	* Function to sort tickets
 	**/
-	public function sortTicket()
+	public function sortTicket(Request $request)
 	{
-		$data=Request::input();
+		$data=$request->input();
 		$tickt= json_decode(json_encode($data['data']),TRUE);
-		$sortBy=$data['sortType'];
-	           // var_dump($tickt[0]['id']);
-
+		$sortBy=$data['sortBy'];
+		$sortType=$data['sortType'];
 		// Getting post data
-	  if(Request::ajax())
+	   if($request->ajax())
 	    {
+	    	//convert object to array
 	    	$tickets = array();
-	        foreach ($tickt[0] as $key => $value)
-	        {
-	            $tickets[$key] = $value;
-	        }
-	    	//file_put_contents("/home/eman/"."aaaaa.html",(array)$tickets[0]);
 
-			function cmp($a, $b)
-			{
-				file_put_contents("/home/eman/"."gtt.html", "kkkk");
-			    return strcmp($a->id, $b->id);
+	    	for ($i=0; $i < count($tickt) ; $i++)
+	        { 		    			    	
+		        foreach ($tickt[$i] as $key => $value)
+		        {
+		            $tickets[$i][$key] = $value;
+		        }
 			}
-			//$tickets=(array)$tickets;
+			
+			foreach ($tickets as $key => $row)
+			{
+				if ($sortBy == "subject") 
+				{		
+					$sort[$key] = $row['subject']['name'];
+				}
+				else 
+				{
+					$sort[$key] = $row[$sortBy];
+				}			    				    
+			}
 
-			 usort($tickets, 'cmp');
+			//sorting function
+			if ($sortType == "DESC") 
+			{	
+				if($sortBy == "priority")
+				{
+					array_multisort($sort, SORT_DESC, $tickets);
+				}
+				else
+				{	
+					array_multisort($sort, SORT_ASC, $tickets);
+				}
+			}
+			elseif ($sortType == "ASC")
+			{
+				if($sortBy == "priority")
+				{
+					array_multisort($sort, SORT_ASC, $tickets);
+				}
+				else
+				{	
+					array_multisort($sort, SORT_DESC, $tickets);
+				}
+			}
 
-
-			 //file_put_contents("/home/eman/"."aaaaa.html", "ooooo");
+			//convert array to object
+			$tickets = json_decode(json_encode($tickets), FALSE);
 
 			return view("tickets.sortTicket",compact('tickets')); 
 
 		 }
 	}
+
+	/**
+	* Function to get related tickets by tags
+	**/
+	public function relatedTag(Request $request)
+	{
+		$data=$request->input();
+		$tickt= json_decode(json_encode($data['data']),TRUE);
+		$tag=$data['tagId'];
+
+		// Getting post data
+	   if($request->ajax() && $tag)
+	    {
+	    	//convert object to array
+	    	$tickets = array();
+	    	
+	    	for ($i=0; $i < count($tickt) ; $i++)
+	        { 		    			    	
+		        foreach ($tickt[$i] as $key => $value)
+		        {
+		            $tickets[$i][$key] = $value;
+		        }
+			}
+			
+			for ($i=0; $i < count($tickt); $i++) 
+			{ 	
+	  			$ticket=Ticket::findOrFail((int)$tickets[$i]['id']);
+				// Get Related Tags
+				$relatTagIds[] = Ticket::find((int)$tickets[$i]['id'])->TicketTags;
+
+				for ($j=0; $j < count($relatTagIds[$i]); $j++) 
+				{
+				  
+					if ($relatTagIds[$i][$j]['name'] == $tag) 
+					{
+					 	$relatTickets[]=$tickets[$i];				 	
+					}
+
+				 }				 
+			}
+
+			//convert array to object
+			$tickets = json_decode(json_encode($relatTickets), FALSE);
+			return view("tickets.sortTicket",compact('tickets')); 
+
+		 }
+		 //return view("tickets.sortTicket",compact('ticket'));
+	}
+	
 	/**
 	* Function to Get available user to assign user to ticket
 	**/
@@ -554,6 +643,34 @@ class TicketsController extends Controller {
 	
 	}
 
+
+	public function searchTicket(Request $request){
+		if($request->ajax()){  
+			if($request->input('name') == "unassigned"){
+				$tickets = Ticket::whereNull('tech_id')->where('is_spam', "0")->get();				
+			}
+			else if($request->input('name') == "open"){
+				$tickets = Ticket::where('status', "open")->where('is_spam', "0")->get();
+			}
+			else if($request->input('name') == "closed"){
+				$tickets = Ticket::where('status', "close")->where('is_spam', "0")->get();
+			}
+			else if($request->input('name') == "all"){
+				$tickets = Ticket::where('is_spam', "0")->get();
+			}
+			else if($request->input('name') == "expired"){
+				$tickets = Ticket::where('deadline', '<', Carbon::now())->where('is_spam', "0")->get();
+			}
+			else if($request->input('name') == "spam"){
+				$tickets = Ticket::where('is_spam', "1")->get();
+			}
+			else if($request->input('name') == "unanswered"){
+
+			}
+			return view("tickets.searchTicket",compact('tickets')); 
+		}
+	}
+
 	
 	/**
 	* Function to spam ticket
@@ -608,5 +725,23 @@ class TicketsController extends Controller {
 			$ticketStatus->ticket_id=$ticket->id;
 			$ticketStatus->save();
 			}	
+	}
+
+
+
+	/**
+	* Function to add subject for ticket
+	**/
+	public function addTag(Request $request)
+	{
+		// Getting post data
+		if($request->ajax()) {
+			// $data = Input::all();
+			$data = $request->input('newtag');
+			$tag= new Tag;
+			$tag->name=$data;
+			$tag->save();
+			print_r($tag->id);
+		}
 	}
 }
