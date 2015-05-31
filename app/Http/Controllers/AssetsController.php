@@ -30,6 +30,25 @@ class AssetsController extends Controller {
 	}
 
 	/**
+	 * Notify when user is spam/delete (called by AJAX).
+	 *
+	 * @param  object  $model_obj , string action
+	 * @return Response
+	 */
+
+	private function addnotification($action , $type , $model_obj ){
+
+		$notification = new Log();
+		$notification->type = $type ;
+		$notification->action = $action;
+		$notification->name = $model_obj->manufacturer." ".$model_obj->name;
+		$notification->type_id = $model_obj->id;
+		$notification->user_id = Auth::user()->id;
+		$notification->save();
+
+	}
+
+	/**
 	 * Show the form for creating a new resource.
 	 *
 	 * @return Response
@@ -51,7 +70,7 @@ class AssetsController extends Controller {
 		$this->validate($request, [
 	        'name' => 'required',
 	        'manufacturer' => 'required',
-	        'serialno' => 'required',
+	        'serialno' => 'required|unique:assets',
 	        'location' => 'required'
     	]);
 
@@ -135,16 +154,10 @@ class AssetsController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		$log = new Log;
-		$log->type_id = $id;
-		$log->action = 'delete';
-		$log->type = 'asset';
-		$log->user_id = Auth::user()->id;
-
 		$asset = Asset::find($id);
 
 		if($asset->delete()){
-			$log->save();
+			$this->addnotification("delete"  , "asset" , $asset );
 		}
 	}
 
@@ -256,4 +269,5 @@ class AssetsController extends Controller {
 	}
 		
 }
+
 

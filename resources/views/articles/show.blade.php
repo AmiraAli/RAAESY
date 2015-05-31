@@ -1,9 +1,11 @@
 @extends('app')
 @section('content')
-    <h1>Article Show</h1>
+    
 
     
-        <div class="container">
+       <div class="container-fluid">
+          <div class="col-md-8">
+            <h1>Article Show</h1>
             <label for="subject" class="col-sm-2 control-label">SUBJECT</label>
             <div class="col-sm-10">
                 {{$article->subject}}
@@ -45,6 +47,69 @@
             <div class="col-sm-10">
                 {{$article->user->fname}} {{$article->user->lname}}
             </div>
-     
+        <br/>
+        <br/>
+         
+            <label for="Tags" class="col-sm-2 control-label">Tags</label>
+            <div class="col-sm-10">
+               @foreach ($articletags as $articletag)
+                 @if($article->id==$articletag->article_id)
+                   -{{$articletag->tag->name}}-<br/>   
+                 @endif
+               @endforeach  
+            </div>
+
+
+        <br/>
+        <br/>
+        <br/>
+        <br/>
         </div>
+        <div class="col-md-4">
+         <br/>
+         <h1>Articles Related</h1>
+        <div class="row">
+         
+            <label for="ReleateArticlesByTags" class="col-sm-2 control-label">ReleateArticlesByTags</label>
+            <br/>
+            <div class="col-sm-10">
+
+                     
+                       @foreach ($tagOfArts as $tagOfArt)
+                         {{$tagOfArt->tag->name}}<br/>
+                          @foreach ($articletags as $articletag)
+                            @if($tagOfArt->tag_id==$articletag->tag->id)
+                               @if($article->id != $articletag->article->id)
+                                    <a href="/articles/{{$articletag->article->id}}">{{$articletag->article->subject}}</a> <br/>
+                                @endif
+                            @endif
+                           @endforeach
+                       @endforeach   
+              
+            
+        </div>
+        </div>
+        <div class="row">
+       
+            <label for="ReleateArticlesByCategory" class="col-sm-2 control-label">ReleateArticlesByCategory</label>
+            <br/>
+            <div class="col-sm-10">
+
+                      {{$article->category->name}}<br/>
+                       @foreach ($articles as $art)
+                       
+                              
+                               @if($article->category_id == $art->category_id )
+                                   @if($article->id != $art->category_id)
+                                        <a href="/articles/{{$art->id}}">{{$art->subject}}</a> <br/>
+                                   @endif
+                               @endif
+                        
+                       @endforeach   
+              
+            </div>
+       
+        </div>
+       </div>
+       </div>
 @endsection

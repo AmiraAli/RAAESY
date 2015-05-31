@@ -136,13 +136,13 @@
 			    	
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
-	                $("#type-error").html("this type is already exists");
+	                $("#type-error").html("<div class='alert alert-danger' role='alert'>this type is already exists</div>");
 			    }
 			})
 
 		}
 		else{
-			$("#type-error").html("please enter the type name");
+			$("#type-error").html("<div class='alert alert-danger' role='alert'>please enter the type name</div>");
 		}
 	}
 

@@ -2,10 +2,48 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Auth;
 use App\User;
+use App\Log;
 use Request;
 use Validator;
+use Mail;
 class UsersController extends Controller {
+
+
+
+	public function __construct()
+	{
+		$this->middleware('auth');
+	}
+
+
+	/**
+	 * Authorize admin
+	 * @param  integer $user_id
+	 * @return Response
+	 */
+	private function adminAuth()
+	{		
+		if (Auth::User()->type !="admin"){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Authorize user can view the page
+	 *
+	 * @return Response
+	 */
+	private function userAuth($id)
+	{		
+		if (Auth::User()->id !=$id ){
+			return false;
+		}
+		return true;
+	}
+
 
 	/**
 	 * Display a listing of the resource.
@@ -14,9 +52,37 @@ class UsersController extends Controller {
 	 */
 	public function index()
 	{
+		//authenticate admin
+		if (!$this->adminAuth()){
+			return view('errors.authorization');
+		}
+
 		$users=User::all();
 		return view('users.index',compact('users'));
 	}
+
+	/**
+	 * Notify when user is spam/delete (called by AJAX).
+	 *
+	 * @param  object  $model_obj , string action
+	 * @return Response
+	 */
+
+	private function addnotification($action , $type , $model_obj ){
+
+		$notification = new Log();
+		$notification->type = $type ;
+		$notification->action = $action;
+		$notification->name = $model_obj->fname." ".$model_obj->lname;
+		$notification->type_id = $model_obj->id;
+		$notification->user_id = Auth::user()->id;
+		$notification->save();
+
+	}
+
+
+
+
 
 	/**
 	 * Show the form for creating a new resource.
@@ -25,6 +91,11 @@ class UsersController extends Controller {
 	 */
 	public function create()
 	{
+		//authorization
+		if (!$this->adminAuth() ){
+			return view('errors.authorization');
+		}
+
 		return view('users.create');
 	}
 
@@ -36,15 +107,14 @@ class UsersController extends Controller {
 	public function store()
 	{
 
-<<<<<<< HEAD
+
 		    $v = Validator::make(Request::all(), [
            			'fname' => 'required|max:255',
 					'lname' => 'required|max:255',
 					'email' => 'required|email|max:255|unique:users',
 					'password' => 'required|confirmed|min:6',
-					'phone' => 'required|max:255',
+					'phone' => 'required|numeric',
 					'location' => 'required|max:255',
-					#'captcha' => 'required|captcha',
         	]);
         $subject=Request::get('subject');
 
@@ -55,29 +125,54 @@ class UsersController extends Controller {
 	    }else{
 
 			$user=new User();
-			$user->fname=Request::get('fname');
+            $user->fname=Request::get('fname');
 			$user->lname=Request::get('lname');
 			$user->email=Request::get('email');
 			$user->password=bcrypt(Request::get('password'));
 			$user->phone=Request::get('phone');
 			$user->location=Request::get('location');
+			
+
+			if (Request::get('isspam')){
+				$user->isspam= 1;
+			
+			}else{
+				$user->isspam=0;
+
+			}
+			$user->type=Request::get('type');
+
 			$user->save();
+
+			if ($user->isspam == 1){
+
+				//add notification in log
+				$this->addnotification("spam"  , "user" , $user );
+			}
+
+
+			//$data['verification_code']  = $user->verification_code;
+
+		//Session::put('email', $data['email']);
+			$data = array('fname' => $user->fname,
+						  'lname' => $user->lname, 
+						  'email' => $user->email,
+						  'phone' => $user->phone,
+						  'location' => $user->location,
+						  'password'=>Request::get('password'),
+				    );
+		Mail::send('emails.welcome', $data, function($message) use ($data)
+            {
+                $message->from('yoyo80884@gmail.com', "Site name");
+                $message->subject("Welcome to site name");
+                $message->to($data['email']);
+            });
+
+
 			return redirect('/users');
 	    }
-=======
-		$user=new User();
-		$user->fname=Request::get('fname');
-		$user->lname=Request::get('lname');
-		$user->email=Request::get('email');
-		$user->password=bcrypt(Request::get('password'));
-		$user->phone=Request::get('phone');
-		$user->location=Request::get('location');
-		$user->isspam=Request::get('isspam');
-		$user->type=Request::get('type');
 
-		$user->save();
-		return redirect('/users');
->>>>>>> 3c2cc8dd03484a0b59ef8b9f2d185fe70fb54451
+
 	}
 
 	/**
@@ -88,6 +183,11 @@ class UsersController extends Controller {
 	 */
 	public function show($id)
 	{
+		//authorization
+		if (!$this->adminAuth() && !$this->userAuth($id)){
+			return view('errors.authorization');
+		}
+
 		$user = User::findOrFail($id);
 		return view('users.show',compact('user'));
 	}
@@ -100,9 +200,15 @@ class UsersController extends Controller {
 	 */
 	public function edit($id)
 	{
+		
+		//authorization
+		if (!$this->adminAuth() && !$this->userAuth($id)){
+			return view('errors.authorization');
+		}
+
 		$user = User::find($id);
 
-		return view('users.edit',compact('user'));
+		return view('users.edit',compact('user', 'id'));
 	}
 
 	/**
@@ -113,15 +219,12 @@ class UsersController extends Controller {
 	 */
 	public function update($id)
 	{
-<<<<<<< HEAD
 		$v = Validator::make(Request::all(), [
            			'fname' => 'required|max:255',
 					'lname' => 'required|max:255',
 					'email' => 'required|email|max:255',
-					'password' => 'required|confirmed|min:6',
-					'phone' => 'required|max:255',
+					'phone' => 'required|numeric',
 					'location' => 'required|max:255',
-					#'captcha' => 'required|captcha',
         	]);
         $subject=Request::get('subject');
 
@@ -132,28 +235,31 @@ class UsersController extends Controller {
 	    }else{
 
 			$user=User::find($id);
-			$user->fname=Request::get('fname');
-			$user->lname=Request::get('lname');
-			$user->email=Request::get('email');
-			$user->password=bcrypt(Request::get('password'));
-			$user->phone=Request::get('phone');
-			$user->location=Request::get('location');
-			$user->save();
-			return redirect('/users');
-		}
-=======
-		$user=User::find($id);
 		$user->fname=Request::get('fname');
 		$user->lname=Request::get('lname');
 		$user->email=Request::get('email');
-		//$user->password=bcrypt(Request::get('password'));
 		$user->phone=Request::get('phone');
 		$user->location=Request::get('location');
-		$user->isspam=Request::get('isspam');
+
+		if (Request::get('isspam')){
+			
+			//check if admin soan a user
+			if ($user->isspam == 0){
+
+				//add notification in log
+				$this->addnotification("spam"  , "user" , $user );
+			}
+			$user->isspam= 1;
+
+		}else{
+			$user->isspam=0;
+
+		}
 		$user->type=Request::get('type');
 		$user->save();
 		 return redirect('/users');
->>>>>>> 3c2cc8dd03484a0b59ef8b9f2d185fe70fb54451
+		}
+
 	}
 
 	/**
@@ -165,10 +271,63 @@ class UsersController extends Controller {
 	public function destroy($id)
 	{
 		$user=User::find($id);
+
+		//add notification wher user deleted
+		$this->addnotification("delete"  , "user" , $user );
 		$user->delete();
-		//return redirect('/users');
+				
 	}
 
+
+
+	/**
+	 * Show the form for changing password.
+	 *
+	 * @return Response
+	 */
+	public function changepassword($id)
+	{
+		//authorization
+		if (!$this->userAuth($id)){
+			return view('errors.authorization');
+		}
+		return view('users.changepassword');
+	}
+
+
+	/**
+	 * Perform changing password process.
+	 * @param  string  $newPass
+	 *
+	 * @return Response
+	 */
+	public function changepassprocess()
+	{
+
+		$user_id = Auth::User()->id;
+
+		$v = Validator::make( Request::all() , [
+					'oldPassword' => "required|passmatch:$user_id",
+					'newPassword' => 'required|confirmed|min:6',
+		]);
+        
+	    if ($v->fails())
+	    {
+	        return redirect()->back()->withErrors($v->errors())
+	        						 ->withInput();
+	    }else{
+
+	    		
+
+		 	$user=User::find($user_id);
+		    $user->password = bcrypt(Request::get('newPassword'));
+			$user->save();
+			$status = "Your password has been changed successfully.";
+			return view('users.changepassword', compact('status'));
+
+		}
+
+	}
 
 
 	/**
@@ -184,17 +343,19 @@ class UsersController extends Controller {
 		$type = Request::get('type');
 		if ($type== "all"){
 			
-			$selectedUsers =User::all();
+			$users =User::all();
 
 		}elseif ($type== "disabled") {
 			
-			$selectedUsers =User::where('isspam', 1)->get();
+			$users =User::where('isspam', 1)->get();
 
 		}else{
-			$selectedUsers =User::where('type',$type )->get();	
+			$users =User::where('type',$type )->get();	
 		}
 		
-		return json_encode($selectedUsers);
+		//return json_encode($selectedUsers);
+		return view('users.indexAjax' , compact('users'));
+
 
 	}
 
@@ -228,13 +389,196 @@ class UsersController extends Controller {
 
 	public function search()
 	{
-
 	
-		echo "ok";
-		exit;
-
-
+		return view('users.search');
 
 	}
+
+
+
+	public function ajaxsearch()
+	{
+		$fname = Request::get('fname');
+		$lname = Request::get('lname');
+		$email = Request::get('email');
+		$phone = Request::get('phone');
+		$location = Request::get('location');
+		//all
+		if ($fname != null && $lname != null && $email != null && $phone != null && $location != null) {
+		
+			$users = User::whereFnameAndLnameAndEmailAndPhoneAndLocation($fname,$lname,$email,$phone,$location)->get();
+			
+	    }
+
+	    // all expect location
+
+	    if ($fname != null && $lname != null && $email != null && $phone != null && $location == null) {
+			
+			$users = User::whereFnameAndLnameAndEmailAndPhone($fname,$lname,$email,$phone)->get();
+			
+	    }
+
+
+	    // all expect location & phone
+	    if ($fname != null && $lname != null && $email != null && $phone == null && $location == null) {
+
+			$users = User::whereFnameAndLnameAndEmail($fname,$lname,$email)->get();
+			
+	    }
+
+	    // fname & lname
+
+	    if ($fname != null && $lname != null && $email == null && $phone == null && $location == null) {
+
+			$users = User::whereFnameAndLname($fname,$lname)->get();
+			
+	    }
+
+	    // fname
+	    if ($fname != null && $lname == null && $email == null && $phone == null && $location == null) {
+
+			$users = User::whereFname($fname)->get();
+			
+	    }
+
+	    // lname
+	    if ($fname == null && $lname != null && $email == null && $phone == null && $location == null) {
+
+			$users = User::whereLname($lname)->get();
+			
+	    }
+
+	    //email
+	    if ($fname == null && $lname == null && $email != null && $phone == null && $location == null) {
+
+			$users = User::whereEmail($email)->get();
+			
+	    }
+
+	    //phone
+	    if ($fname == null && $lname == null && $email == null && $phone != null && $location == null) {
+
+			$users = User::wherePhone($phone)->get();
+			
+	    }
+
+	    //location
+	    if ($fname == null && $lname == null && $email == null && $phone == null && $location != null) {
+
+			$users = User::whereLocation($location)->get();
+			
+	    }
+
+	    // all expect fname
+	    if ($fname == null && $lname != null && $email != null && $phone != null && $location != null) {
+		
+			$users = User::whereLnameAndEmailAndPhoneAndLocation($lname,$email,$phone,$location)->get();
+			
+	    }
+
+	    //email phone location 
+	    if ($fname == null && $lname == null && $email != null && $phone != null && $location != null) {
+		
+			$users = User::whereEmailAndPhoneAndLocation($email,$phone,$location)->get();
+			
+	    }
+
+	    //phone location
+	    if ($fname == null && $lname == null && $email == null && $phone != null && $location != null) {
+		
+			$users = User::wherePhoneAndLocation($phone,$location)->get();
+			
+	    }
+
+	    // all expext lname
+	    if ($fname != null && $lname == null && $email != null && $phone != null && $location != null) {
+		
+			$users = User::whereFnameAndEmailAndPhoneAndLocation($fname,$email,$phone,$location)->get();
+			
+	    }
+
+	    //fname phone location 
+	    if ($fname != null && $lname == null && $email == null && $phone != null && $location != null) {
+		
+			$users = User::whereFnameAndPhoneAndLocation($fname,$phone,$location)->get();
+			
+	    }
+
+	    //fname location
+        if ($fname != null && $lname == null && $email == null && $phone == null && $location != null) {
+		
+			$users = User::whereFnameAndLocation($fname,$location)->get();
+			
+	    }
+
+	    //all expect email
+	    if ($fname != null && $lname != null && $email == null && $phone != null && $location != null) {
+		
+			$users = User::whereFnameAndLnameAndPhoneAndLocation($fname,$lname,$phone,$location)->get();
+			
+	    }
+	    // fname lname location
+	    if ($fname != null && $lname != null && $email == null && $phone == null && $location != null) {
+		
+			$users = User::whereFnameAndLnameAndLocation($fname,$lname,$location)->get();
+			
+	    }
+
+	    //all expect phone
+	    if ($fname != null && $lname != null && $email != null && $phone == null && $location != null) {
+		
+			$users = User::whereFnameAndLnameAndEmailAndLocation($fname,$lname,$email,$location)->get();
+			
+	    }
+        //fname lname Email
+        if ($fname != null && $lname != null && $email != null && $phone == null && $location == null) {
+		
+			$users = User::whereFnameAndLnameAndEmail($fname,$lname,$email)->get();
+			
+	    }
+
+	    //fname & phone
+	    if ($fname != null && $lname == null && $email == null && $phone != null && $location == null) {
+		
+			$users = User::whereFnameAndPhone($fname,$phone)->get();
+			
+	    }
+
+	    //lname & phone 
+	    if ($fname == null && $lname != null && $email == null && $phone != null && $location == null) {
+		
+			$users = User::whereLnameAndPhone($lname,$phone)->get();
+			
+	    }
+
+	    //email & phone 
+	    if ($fname == null && $lname == null && $email != null && $phone != null && $location == null) {
+		
+			$users = User::whereEmailAndPhone($email,$phone)->get();
+			
+	    }
+
+	    //email & lname 
+	    if ($fname == null && $lname != null && $email != null && $phone == null && $location == null) {
+		
+			$users = User::whereEmailAndLname($email,$lname)->get();
+			
+	    }
+
+	    //email & fname 
+	    if ($fname != null && $lname == null && $email != null && $phone == null && $location == null) {
+		
+			$users = User::whereEmailAndFname($email,$fname)->get();
+			
+	    }
+
+		return view('users.ajaxsearch',compact('users'));
+
+	}
+
+
+
+	
+	
 
 }	

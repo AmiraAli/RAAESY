@@ -7,51 +7,7 @@ window.onload = function() {
             					  });
             				 };
 
-/**
-*function to show new subject form 
-**/
-function add_new_subject () {
-	document.getElementById("subject_select").style.visibility = "hidden";
-	document.getElementById("subject_new").style.visibility = "visible";
-}
 
-/**
-*function to get new subject value 
-**/
-function submit_subject () {
-	var newsubj= document.getElementById("new_subjvalue").value;
-	if (newsubj != ""){
-		//ajax request
-		$.ajax({
-		      url: '/tickets/addSubject',
-		      type: "post",
-		      data: {'newsubj':newsubj},
-		      success: function(data){
-		        var select= document.getElementById("subject_select");
-		        var option = document.createElement("option");
-					option.text = newsubj;
-					option.value= data;
-					option.setAttribute("selected","true");
-					select.add(option);		       
-				    select.style.visibility = "visible";
-				document.getElementById("subject_new").style.visibility = "hidden";
-		      },
-			  error: function(jqXHR, textStatus, errorThrown) {
-				alert("May be subject is already exists or something wrong!!....");
-			  }
-		    });
-	}else{
-		alert("Please Enter subject value!!...");
-	}
-}
-
-/**
-*function to cancel new subject form 
-**/
-function cancel_subject () {
-	document.getElementById("subject_select").style.visibility = "visible";
-	document.getElementById("subject_new").style.visibility = "hidden";
-}
 
 /**
 * global array of tags selected 
@@ -66,7 +22,7 @@ $(document).ready(function(){
      var parsed=[];
      //ajax request
 		$.ajax({
-		      url: '/tickets/getTags',
+		      url: '/articles/getTags',
 		      type: "post",
 		      data: {'q':name},
 		      datatype:'json',
@@ -154,50 +110,3 @@ function submit_tags () {
 /**
 * text editor jquery
 **/
-$('.jqte-test').jqte();
-	
-	// settings of status
-	var jqteStatus = true;
-	$(".status").click(function()
-	{
-		jqteStatus = jqteStatus ? false : true;
-		$('.jqte-test').jqte({"status" : jqteStatus})
-	});
-
-/**
-*function to show new tag form 
-**/
-function add_new_tag () {
-	document.getElementById("tag_new").style.visibility = "visible";
-}
-
-/**
-*function to get new tag value 
-**/
-function submit_tag () {
-
-	var newtag= document.getElementById("new_tagvalue").value;
-	if (newtag != ""){
-		//ajax request
-		$.ajax({
-		      url: '/tickets/addTag',
-		      type: "post",
-		      data: {'newtag':newtag},
-		      success: function(data){
-				document.getElementById("tag_new").style.visibility = "hidden";
-		      },
-			  error: function(jqXHR, textStatus, errorThrown) {
-				alert("May be tag is already exists or something wrong!!....");
-			  }
-		    });
-	}else{
-		alert("Please Enter tag value!!...");
-	}
-}
-
-/**
-*function to cancel new tag form 
-**/
-function cancel_tag () {
-	document.getElementById("tag_new").style.visibility = "hidden";
-}

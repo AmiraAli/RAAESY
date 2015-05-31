@@ -59,7 +59,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-     						<label class="col-md-4 control-label">Type:</label>
+     						<label class="col-md-4 control-label">Role</label>
 							<div class="col-md-6">
 						        <select  name="type">
 							        <option value="regular"
@@ -73,19 +73,26 @@
 					    </div>
 
 						 <div class="form-group">
-     						<label class="col-md-4 control-label">Disable:</label>
-							<div class="col-md-6">
-								<input type="checkbox" name="isspan" 
-								 @if($user->isspam ==="1") {{"checked=true"}} @endif>
+     						<label class="col-md-4 control-label">Disable</label>
+								<div class="col-md-6">
+							        @if ($user->isspam == 0)
+							            {!! Form::checkbox('isspam', 'value') !!}
+							        @else
+							            {!! Form::checkbox('isspam', 'value',true) !!}
+							        @endif
+
+  						        </div>
 					    </div>
-
-
+					  
+					    @if($current_user->id == $id  ) 
+					    <a class="btn btn-link" href="/users/changepassword/{{$user->id}}">Change Password</a>
+					    @endif
 
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn btn-primary">
-									Register
+									Done Editing
 								</button>
 							</div>
 						</div>
