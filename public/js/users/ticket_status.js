@@ -127,6 +127,7 @@ $.ajax({
     data: { ticket_id: ticket_id,tech_id:user_id },
 
     success: function(result) {
+	result=JSON.parse(result);
 	var currentdate = new Date(); 
 	var currentDate=currentdate.getFullYear()+"-"+currentdate.getMonth()+"-"+currentdate.getDay()+" "+currentdate.getHours()+":" + 		currentdate.getMinutes() + ":"+ currentdate.getSeconds();
 	

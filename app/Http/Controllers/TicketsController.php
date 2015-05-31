@@ -422,7 +422,10 @@ class TicketsController extends Controller {
 		$notify->ticket_id=intval($ticket_id);
 		$notify->user_id=Auth::user()->id;
 		$notify->save();
-		file_put_contents("/home/aya/teesst.html", $notify);
+		$notify->fname=Auth::user()->fname;
+		$notify->lname=Auth::user()->lname;
+		echo json_encode($notify);
+		//file_put_contents("/home/aya/teesst.html", $notify);
 
 	}
 
