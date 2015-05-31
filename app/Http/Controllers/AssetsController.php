@@ -19,7 +19,10 @@ class AssetsController extends Controller {
 
 	public function __construct()
 	{
-		$this->middleware('auth');
+		if (Auth::User()->type !="admin"){
+			exit;
+		}
+		
 	}
 
 	/**

@@ -26,7 +26,7 @@ function searchAjax(searchData){
 	    data: searchData,
 	    success: function(result) {
 			 $('#table_show').html(result);
-
+			 // tag();
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log(errorThrown);
