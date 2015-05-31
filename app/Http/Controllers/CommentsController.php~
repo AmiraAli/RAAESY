@@ -7,7 +7,8 @@ use App\Http\Controllers\Controller;
 use Request;
 use App\Ticket;
 use App\Comment;
-
+use Auth;
+use App\User;
 class CommentsController extends Controller {
 
 	/**
@@ -41,10 +42,11 @@ class CommentsController extends Controller {
 		$comment = new Comment;
 	    	$comment->body = Request::get('body');
 	    	$comment->ticket_id = $ticket_id;
-	    	$comment->user_id = 1;
+	    	$comment->user_id = Auth::user()->id;
 	    	$comment->readonly=0;
 	    	$comment->save();
-	    	$comment->username = "username of session";
+	    	$comment->fname = Auth::user()->fname;
+		$comment->lname = Auth::user()->lname;
 	    	echo json_encode($comment);
     
 	}
@@ -83,7 +85,8 @@ class CommentsController extends Controller {
 		$comment = Comment::findOrFail($comment_id);
 		$comment->body = Request::get('body');
 		$comment->save();
-		$comment->name="name";
+		$comment->fname=Auth::user()->fname;
+		$comment->fname=Auth::user()->fname;
 	echo json_encode($comment);
 	}
 

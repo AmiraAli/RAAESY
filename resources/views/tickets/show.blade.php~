@@ -2,7 +2,7 @@
 <head>
 	<link href="/css/ticketshow.css" rel="stylesheet">
         <script src="/js/ticket_status.js"></script>
-        <script src="/js/ticket_takeover.js"></script>
+
 	<script src="/js/comments.js"></script>
 	<script src="/js/add_asset_ticket.js"></script>
 </head>
@@ -15,18 +15,20 @@
 <!------------------------------------------ticketbody------------------------------------------------------------------------->
   <div class="leftposition">
 	<div class="panel panel-default ticketbody">
-	  <div class="panel-body">
+	  <div class="panel-body " id="takeoverajax">
+@if(Auth::user()->type=="admin")
 		@if($checkStatus)
 			@if($checkStatus->value=='open')
-			   <button name="close" id="{{$ticket->id}}" onclick="Status({{$ticket->id}})">closed</button>
+			   <button name="close" id="{{$ticket->id}}" onclick="Status({{$ticket->id}},{{$ticket->tech_id}})">closed</button>
 			@endif
 			@if($checkStatus->value=='close')
-			   <button name="open" id="{{$ticket->id}}" onclick="Status({{$ticket->id}})" >reopen</button>
+			   <button name="open" id="{{$ticket->id}}" onclick="Status({{$ticket->id}},{{$ticket->tech_id}})" >reopen</button>
 			@endif
 			@if(!$ticket->tech_id and $checkStatus->value=='open')
 			   <button id="{{$ticket->id}},takeover" onclick="TakeOver({{$ticket->id}}+',takeover')">takeover</button>
 			@endif
 		@endif
+@endif
 		<div id='newelement'>
 
 		</div>
@@ -44,9 +46,14 @@
 	      <div class="panel-body ">
 
 		@if($comment->readonly==0)
-		 <button name="{{$comment->id}}_{{$ticket->id}}" id="{{$comment->body}}"
+			@if(Auth::user()->id==$comment->user_id)
+		 		<button name="{{$comment->id}}_{{$ticket->id}}" id="{{$comment->body}}"
 					onclick='edit(this)' class="btn btn-primary buttonright">Edit</button>
-		 <button name="{{$comment->id}}_{{$ticket->id}}" onclick='Delete(this)' class="btn btn-primary buttonright">Delete</button>
+			@endif
+			@if(Auth::user()->type=="admin" or Auth::user()->id==$comment->user_id)
+		 		<button name="{{$comment->id}}_{{$ticket->id}}" onclick='Delete(this)' class="btn btn-primary
+				buttonright">Delete</button> 		
+			@endif		
 		@endif
 	        {{$comment->body}}<br>
 		@if($comment->created_at!=$comment->updated_at)
@@ -107,11 +114,15 @@
 			@endforeach
 
 			<div id="addnewasset">
+@if(Auth::user()->type=="admin")
 				<button id="{{$ticket->id}}:newasset" onclick="AddAssets({{$ticket->id}}+':newasset')">AddAsset</button>
+@endif
 			</div>
+
 		  </div>
 	</div>
 <!------------------------------------------relatedtags--------------------------------------------------------------------------->
+@if(Auth::user()->type=="admin")	
 	<div class="panel panel-default relatedtags">
 		<div class="panel-heading">
 			<h3 class="panel-title">Related tags</h3>
@@ -126,6 +137,7 @@
 		@endforeach
 		</div>
 	</div>
+@endif
 </div>
 <!------------------------------------------------------------------------------------------------------------------->
 </div>

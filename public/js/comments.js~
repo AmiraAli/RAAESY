@@ -55,7 +55,7 @@ $.ajax({
     success: function(result) {
 //name from session
 result=JSON.parse(result);
-		$("#"+commentid+"Comments").html("<div class='panel-heading'>"+result['name']+"</div><div class='panel-body'>"+"<button id='"+body+"'name="+commentid+"_"+ticketid+" onclick='edit(this)' class='btn btn-primary buttonright' >Edit</button>	<button name="+commentid+"_"+ticketid+" onclick='Delete(this)' class='btn btn-primary buttonright'>Delete</button>"+body+"<br>"+result['updated_at']);
+		$("#"+commentid+"Comments").html("<div class='panel-heading'>"+result['fname']+" "+result['lname']+"</div><div class='panel-body'>"+"<button id='"+body+"'name="+commentid+"_"+ticketid+" onclick='edit(this)' class='btn btn-primary buttonright' >Edit</button>	<button name="+commentid+"_"+ticketid+" onclick='Delete(this)' class='btn btn-primary buttonright'>Delete</button>"+body+"<br>"+result['updated_at']);
 			},
 	error: function(jqXHR, textStatus, errorThrown) {
                     console.log(errorThrown);

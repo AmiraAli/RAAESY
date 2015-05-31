@@ -3,6 +3,7 @@
 @section('content')
 <script type="text/javascript" src="/js/ticket_delete.js"></script>
 <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
+	<link href="/css/searchticket.css" rel="stylesheet">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" /> 
 <link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">
@@ -12,17 +13,22 @@
 
 <!------------------------------- search------------------------------------------------------------------------------------------->
 <div class="row" id="search">
-	<form action="" class="navbar-form navbar-right">
+
 	   <div class="input-group">
 
-	        <input type="Search" placeholder="Search..." id="searchticket" class="form-control" /> 
+			   		
+	        <input type="Search" placeholder="subject...." id="searchticket" class="form-control" /> 
 	       <div class="input-group-btn">
-		   <button class="btn btn-info" >
+		   <button class="btn btn-info" onclick="SearchButton()" >
 		   <span class="glyphicon glyphicon-search"></span>
 		   </button>
+
+
 	       </div>
 	   </div>
-	</form>
+
+
+	
 </div>
 <!-- table---------------------------------------------------------------------------------------------------------->
 
@@ -95,10 +101,47 @@ hiiiiiiiiiii category
 ?>
 </div>
 
+<button id="toggle" class="glyphicon glyphicon-glass"></button>
+
+	<div class="panel panel-default advancedSearchDiv">
+	  <div class='panel-heading'>AdvancedSearch</div>
+	  <div class='panel-body'>
+	   Priority: <select id='ticketPriority'>
+		<option></option>
+		<option>low</option>
+		<option>high</option>
+		<option>critical</option>
+					</select><br><br>
+	   From: <input id='ticketStartDate' type='date'><br><br> 
+	   To: <input id='ticketEndDate' type='date'><br><br>
+	   Technical Name: <select id='ticketTechnical'>
+		<option></option>
+		@foreach($technicals as $technical)
+			<option id="{{$technical->id}},technical">{{$technical->fname}} {{$technical->lname}}</option>
+		@endforeach
+			</select><br><br>
+		<button onclick='AdvancedSearch()' class="btn btn-primary advancedsearchbuttonwithall">Search</button>
+	  </div>
+	</div>
+
+
 </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="col-md-9 "  id="table_show">
-hhhhhhhhhhhh
+
 <table class="table table-condensed">
 		<tr>
 			<td>Subject</td>
@@ -131,7 +174,7 @@ hhhhhhhhhhhh
 </div>
 </div>
 </div>
-
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
  <script src="/js/jquery-2.1.3.js" type="text/javascript"> </script> 
  <script async src="//code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
  <script type="text/javascript" src="/js/jquery-te-1.4.0.min.js"></script>
@@ -139,7 +182,9 @@ hhhhhhhhhhhh
  <script type="text/javascript" src="/js/tickets_index.js"></script>
  <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
 <script type="text/javascript" src="/js/search_ticket_by_subject.js"></script>
-
+<script type="text/javascript" src="/js/ticket_search.js"></script>
+<script type="text/javascript" src="/js/ticket_advanced_search.js"></script>
+<script type="text/javascript" src="/js/toggleadvacedsearch.js"></script>
  <script >
 		
 window.onload = function() {
