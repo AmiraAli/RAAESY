@@ -83,8 +83,8 @@ class TicketsController extends Controller {
 		$spam = Ticket::where('is_spam', "1")->get();
 		// unanswered tickets tickets except spam tickets
 		// $unanswered = Ticket::where('status', "close");
-
-		return view('tickets.index',compact('tickets','allTickets','unassigned','open','closed','expired','spam','tags'));
+$technicals=User::where('type','=','tech')->get();
+		return view('tickets.index',compact('tickets','allTickets','unassigned','open','closed','expired','spam','tags','technicals'));
 
 
 	}
@@ -214,8 +214,9 @@ class TicketsController extends Controller {
 	file_put_contents("/home/aya/teesst.html", $relatedTickets);
 
 	// Get Related Assests
-	$relatedAssets = Ticket::find($id)->TicketAssets;
 
+	$relatedAssets = Ticket::find($id)->TicketAssets;
+//$relatedAssets = Ticket::join('ticket_assets', 'tickets.id', '=', 'ticket_assets.ticket_id')->where('tickets.id','=',$id)->get();
 	//get all comments
 	$comments=Ticket::find($id)->comments;
 

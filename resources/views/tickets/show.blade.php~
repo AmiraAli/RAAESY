@@ -23,7 +23,7 @@
 			@if($checkStatus->value=='close')
 			   <button name="open" id="{{$ticket->id}}" onclick="Status({{$ticket->id}},{{$ticket->tech_id}})" >reopen</button>
 			@endif
-			@if($ticket->tech_id and $checkStatus->value=='open')
+			@if(!$ticket->tech_id and $checkStatus->value=='open')
 			   <button id="{{$ticket->id}},takeover" onclick="TakeOver({{$ticket->id}}+',takeover')">takeover</button>
 			@endif
 		@endif
@@ -95,7 +95,7 @@
 		<h4 class="title">StartDate  </h4>{{ $ticket->created_at }}<br>
 		<h4 class="title">Due        </h4>{{ $ticket->deadline }}<br>
 		<h4 class="title">From       </h4> {{ $ticket->user->fname }} {{$ticket->user->lname}}<br>
-		<h4 class="title">AssignedTo </h4> {{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}<br>
+		<h4 class="title">AssignedTo </h4> @if($ticket->tech){{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}<br>
 	  </div>
 	</div>
 	<div class="panel panel-default relatedassets">
@@ -103,11 +103,12 @@
 			    <h3 class="panel-title">Related Assets</h3>
 		  </div>
 	          <div class="panel-body">
+@if($relatedAssets)
 			@foreach($relatedAssets as $relatedAsset)
 				<input type="hidden" id="{{$relatedAsset->id}}:showenassets" class="showenasset">
 				<a href="/assets/{{$relatedAsset->id}}">{{$relatedAsset->name}}</a><br>
 			@endforeach
-
+@endif
 			<div id="addnewasset">
 @if(Auth::user()->type=="admin")
 				<button id="{{$ticket->id}}:newasset" onclick="AddAssets({{$ticket->id}}+':newasset')">AddAsset</button>
