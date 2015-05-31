@@ -1,9 +1,11 @@
 
 @extends('app')
 @section('content')
+
 <script type="text/javascript" src="/js/ticket_delete.js"></script>
 <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
 	<link href="/css/searchticket.css" rel="stylesheet">
+
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" /> 
 <link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">
@@ -33,24 +35,26 @@
 <!-- table---------------------------------------------------------------------------------------------------------->
 
 <div class="row" id="icons_list">
-hiiii second
 
 	<ul class="nav nav-pills" role="tablist">
 	  <li role="presentation"><a href="#">Unanswered <span class="badge">42</span></a></li>
-	  <li role="presentation"><a href="#">Unclosed <span class="badge"></span></a></li>
 	  <li role="presentation"><a href="#">Unassigned <span class="badge">{{ count($unassignedTickets) }}</span></a></li>
+	  <li role="presentation"><a href="#">Deadline exceeded <span class="badge"></span></a></li>
+	  <li role="presentation"><a href="#">Unclosed <span class="badge"></span></a></li>	  
 	  <li role="presentation"><a href="#">Closed <span class="badge"></span></a></li>
-	  <li role="presentation"><a href="#">Assigned to you <span class="badge">{{ count($myTickets) }}</span></a></li>
 	  <li role="presentation" class="active"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
+	  <li role="presentation"><a href="#">Spam <span class="badge">42</span></a></li>	
 	</ul>
 </div>
+
+<br>
 
 <div class="row">
 
 <div class="col-md-3 ">
 
 <div class="row" id="category_list">
-hiiiiiiiiiii category
+
 
 <div class="list-group">
   <a href="#" class="list-group-item disabled">
@@ -142,34 +146,48 @@ hiiiiiiiiiii category
 
 <div class="col-md-9 "  id="table_show">
 
-<table class="table table-condensed">
-		<tr>
-			<td>Subject</td>
-			<td>Description</td>
-			<td>Category</td>
-			<td>File Attached</td>
-			<td>Periorty</td>
-			<td>Action</td>
-		</tr>
-		  @foreach($tickets as $ticket)
-			   <tr id="{{ $ticket->id }}">
-			   		<td>{{ $ticket->subject->name }}</td>
-			   		<td>{!! $ticket->description !!}</td>
-			   		<td>{{ $ticket->category->name }}</td>
-			   		<td>{{ $ticket->file }}</td>
-			   		<td>{{ $ticket->priority }}</td>
-			   		<td>
-			   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
-			   		data-content=
-			   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>
-			   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>
-			   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
-			   		></a>
-			   		</td>
-			   </tr>
-		  @endforeach
-	  
-	</table>
+	<table class="table table-condensed">
+			<tr>
+				<td>Subject</td>
+				<td>Description</td>
+				<td>Category</td>
+				<td>File Attached</td>
+				<td>Periorty</td>
+				<td>Action</td>
+			</tr>
+			  @foreach($tickets as $ticket)
+				   <tr id="{{ $ticket->id }}">
+				   		<td>{{ $ticket->subject->name }}</td>
+				   		<td>{!! $ticket->description !!}</td>
+				   		<td>{{ $ticket->category->name }}</td>
+				   		<td>{{ $ticket->file }}</td>
+				   		<td>{{ $ticket->priority }}</td>
+				   		<td>
+				   		@if($ticket->status == 'open')
+					   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+					   		data-content=
+					   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
+					   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
+					   		<a onclick='spam({{ $ticket->id }})'>Spam</a>|
+					   		<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
+					   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
+					   		></a>
+					   	@else
+					   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+					   		data-content=
+					   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
+					   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
+					   		<a onclick='spam({{ $ticket->id }})'>Spam</a>|
+					   		<a onclick='openTeckit({{ $ticket->id }})'>Open</a>|
+					   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
+					   		></a>
+					   	@endif
+				   		</td>
+				   </tr>
+			  @endforeach
+		  
+		</table>
+
 
 </div>
 </div>
@@ -181,10 +199,16 @@ hiiiiiiiiiii category
  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
  <script type="text/javascript" src="/js/tickets_index.js"></script>
  <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
+
 <script type="text/javascript" src="/js/search_ticket_by_subject.js"></script>
 <script type="text/javascript" src="/js/ticket_search.js"></script>
 <script type="text/javascript" src="/js/ticket_advanced_search.js"></script>
 <script type="text/javascript" src="/js/toggleadvacedsearch.js"></script>
+
+ <script type="text/javascript" src="/js/autocomplete_serach_tickets.js"></script>
+ <script type="text/javascript" src="/js/search_ticket_by_subject.js"></script>
+
+
  <script >
 		
 window.onload = function() {

@@ -30,7 +30,7 @@ Show:
 <label><input type="radio" name="user" value="disabled"  onclick="show(this)">  Disabled users </label>|
 
 <label for="">Quick Search: </label>
-<input type="text" class="glyphicon glyphicon-search parent" onkeyup="myAutocomplete(this.value)" name="term" id="quickSearch"  autocomplete="on">
+<input type="text" class="parent" onkeyup="myAutocomplete(this.value)" name="term" id="quickSearch"  autocomplete="on">
 
 
 

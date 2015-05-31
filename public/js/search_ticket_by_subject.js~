@@ -7,8 +7,9 @@ window.onload = function() {
             };
 
 function SearchButton(){
-//e.preventDefault();
+
 console.log("aya");
+
   var subjectOfTicket = $('#searchticket').val();
   console.log(subjectOfTicket);
                   

@@ -19,8 +19,42 @@ use App\Tag;
 use App\TicketStatus;
 use App\Asset;
 use App\TicketAsset;
+use App\Log;
+use Mail;
+
 
 class TicketsController extends Controller {
+
+
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		$this->middleware('auth');
+	}
+
+
+	/**
+	 * Notify when ticket is spam/delete (called by AJAX).
+	 *
+	 * @param  object  $model_obj , string action
+	 * @return Response
+	 */
+
+	private function addnotification($action , $type , $model_obj ){
+
+		$notification = new Log();
+		$notification->type = $type ;
+		$notification->action = $action;
+		$notification->name = $model_obj->subject->name;
+		$notification->type_id = $model_obj->id;
+		$notification->user_id = Auth::user()->id;
+		$notification->save();
+
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -31,14 +65,18 @@ class TicketsController extends Controller {
 	{
 		$tickets=Ticket::all();
 		$myTickets = Ticket::where('tech_id', Auth::user()->id)->get();
-		$unassignedTickets = Ticket::where('tech_id', "")->get();
+		$unassignedTickets = Ticket::whereNull('tech_id')->get();
 		// $closed = Ticket::where('status', "close")->get();
 		$technicals = User::where('type', 'tech')->get();
 		// $open = Ticket::where('status', "open")->get();
 		// $statuses=TicketStatus::all();
 		// $closed = TicketStatus::where('value', "close")->get();
 		// $closed = TicketStatus::where('value', "close")->get();
+
 		return view('tickets.index',compact('tickets','myTickets','unassignedTickets','technicals'));
+
+
+
 	}
 
 	/**
@@ -73,7 +111,6 @@ class TicketsController extends Controller {
 		{
 			$this->validate($request, [
 			'description' => 'required',
-			'file' => 'required',
 			'subject' =>'required',
 			'category'=>'required'
 			]);
@@ -91,6 +128,12 @@ class TicketsController extends Controller {
 			$ticket->admin_id=$request->user()->id;
 			$ticket->save();
 
+			// save ticket as open status in ticket status table
+			$ticketStatus=new TicketStatus;
+			$ticketStatus->value='open';
+			$ticketStatus->ticket_id=$ticket->id;
+			$ticketStatus->save();
+
 			//insert into table ticket_tags each tag of this ticket
 			$tags=$request->get('tagValues');
 			if( $tags != ""){
@@ -103,13 +146,38 @@ class TicketsController extends Controller {
 					$ticketTag->save();
 				}
 			}
+
+			// check if assigned to technical will send mail to him
+
+			if($request->get('tech')){
+
+				$ticket_array=json_decode(json_encode($ticket), true);
+				$ticket_array['verification_code']  = $ticket->verification_code;
+				$ticket_array['tech_fname']=$ticket->tech->fname;
+				$ticket_array['tech_lname']=$ticket->tech->lname;
+				$ticket_array['tech_email']=$ticket->tech->email;
+				$ticket_array['subj_name']=$ticket->subject->name;
+
+				Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
+            	{
+	                $message->from('yoyo80884@gmail.com', "RAAESY");
+	                $message->subject("RAAESY");
+	                $message->to($ticket_array['tech_email']);
+            	});
+			}
+			
 		}else{
-			$ticket->tech_id=1;
-			$ticket->admin_id=1;
+			$ticket->tech_id=NULL;
+			$ticket->admin_id=NULL;
 			$ticket->save();
+
+			// save ticket as open status in ticket status table
+			$ticketStatus=new TicketStatus;
+			$ticketStatus->value='open';
+			$ticketStatus->ticket_id=$ticket->id;
+			$ticketStatus->save();
 		}
-		$tickets=Ticket::all();
-		return view('tickets.index',compact('tickets'));
+		return redirect('/tickets');
 	}
 
 	/**
@@ -122,21 +190,29 @@ class TicketsController extends Controller {
 	{
 	$ticket=Ticket::find($id);
 	// Get Related Tags
+
 	$relatedTagIds = Ticket::find($id)->TicketTags;
 
-	$relatedTickets=array();
+	$relatedIds=array();
 	foreach($relatedTagIds as $relatedTagId){
-	$relatedTickets[] = Tag::find($relatedTagId->id)->tickets;
+	$relatedIds[]=$relatedTagId->id;
 	}
+
+	$relatedTickets=Ticket::join('ticket_tags', 'tickets.id', '=', 'ticket_tags.ticket_id')
+	->whereIn('ticket_tags.tag_id',$relatedIds)->groupBy('tickets.id')->get();
+
+	file_put_contents("/home/aya/teesst.html", $relatedTickets);
 
 	// Get Related Assests
 	$relatedAssets = Ticket::find($id)->TicketAssets;
 
+	//get all comments
+	$comments=Ticket::find($id)->comments;
+
 	// Check status of ticket closed or open
 	$checkStatus=TicketStatus::where('ticket_id', $id)->first();
 
-	//get all comments
-	$comments=Ticket::find($id)->comments;
+	
 
 	//get assigned to and user created it
 	//$users=Ticket::find($id)->user;
@@ -180,7 +256,6 @@ class TicketsController extends Controller {
 	{
 		$this->validate($request, [
 		'description' => 'required',
-		'file' => 'required',
 		'subject' =>'required',
 		'category'=>'required'
 		]);
@@ -197,9 +272,13 @@ class TicketsController extends Controller {
 		{
 			$ticket->priority=$request->get('priority');
 			$ticket->deadline=$request->get('deadline');
+
+			$prev_tech_id=$ticket->tech_id;
+
 			$ticket->tech_id=$request->get('tech');
 			$ticket->admin_id=Auth::user()->id;
 			$ticket->save();
+
 			// check if tags of ticket is changed or not
 			$tags=$request->get('tagValues');
 			if( $tags != ""){
@@ -216,9 +295,29 @@ class TicketsController extends Controller {
 					$ticketTag->save();
 				}
 			}
+
+			// check if assigned to another technical will send mail to him
+
+			if($request->get('tech') != $prev_tech_id){
+
+				$ticket_array=json_decode(json_encode($ticket), true);
+				$ticket_array['verification_code']  = $ticket->verification_code;
+				$ticket_array['tech_fname']=$ticket->tech->fname;
+				$ticket_array['tech_lname']=$ticket->tech->lname;
+				$ticket_array['tech_email']=$ticket->tech->email;
+				$ticket_array['subj_name']=$ticket->subject->name;
+
+				Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
+            	{
+	                $message->from('yoyo80884@gmail.com', "RAAESY");
+	                $message->subject("RAAESY");
+	                $message->to($ticket_array['tech_email']);
+            	});
+			}
+
 		}else{
-			$ticket->tech_id=1;
-			$ticket->admin_id=1;
+			$ticket->tech_id=NULL;
+			$ticket->admin_id=NULL;
 			$ticket->save();
 		}
 		return redirect("/tickets/".$id);
@@ -233,6 +332,10 @@ class TicketsController extends Controller {
 	public function destroy($id)
 	{
 		$ticket=Ticket::find($id);
+
+		// add the deleted ticket to log table
+		$this->addnotification("delete","ticket",$ticket);
+
 		$ticket->delete();
 	}
 	
@@ -283,7 +386,7 @@ class TicketsController extends Controller {
 		$ticketStatus->save();
 
 		// save notification
-		$readonly=1;
+		$readonly=0;
 		if($status=='close')
 		$body="this ticket has be closed";
 		if($status=='open')
@@ -362,7 +465,7 @@ class TicketsController extends Controller {
 	
 	$body="this ticket has been taken";
 	$user_id=Auth::user()->id;
-	$readonly=1;
+	$readonly=0;
 	$ticket_id=$request->input("ticket_id");
 	$notification=new Comment;
 	$notification->body=$body;
@@ -452,7 +555,58 @@ class TicketsController extends Controller {
 	}
 
 	
+	/**
+	* Function to spam ticket
+	**/
+	public function spamTicket(Request $request)
+	{
+		if($request->ajax()) {
+			$id=$request->input('id');
+			$ticket=Ticket::find($id);
+			//update that article is spamed
+			$ticket->is_spam=1;
+			$ticket->save();
+			// add the deleted ticket to log table
+			$this->addnotification("spam","ticket",$ticket);
+			}	
+	}
+
+	/**
+	* Function to close ticket
+	**/
+	public function closeTicket(Request $request)
+	{
+		if($request->ajax()) {
+			$id=$request->input('id');
+			$ticket=Ticket::find($id);
+			//update that article is status
+			$ticket->status="close";
+			$ticket->save();
+			// save ticket as close status in ticket status table
+			$ticketStatus=new TicketStatus;
+			$ticketStatus->value='close';
+			$ticketStatus->ticket_id=$ticket->id;
+			$ticketStatus->save();
+			}	
+	}
 
 
-
+	/**
+	* Function to open ticket
+	**/
+	public function openTicket(Request $request)
+	{
+		if($request->ajax()) {
+			$id=$request->input('id');
+			$ticket=Ticket::find($id);
+			//update that article is status
+			$ticket->status="open";
+			$ticket->save();
+			// save ticket as open status in ticket status table
+			$ticketStatus=new TicketStatus;
+			$ticketStatus->value='open';
+			$ticketStatus->ticket_id=$ticket->id;
+			$ticketStatus->save();
+			}	
+	}
 }

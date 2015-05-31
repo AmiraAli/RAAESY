@@ -12,11 +12,10 @@
 @section('content')
 <div class="container">
 
-<!------------------------------------------ticketbody------------------------------------------------------------------------->
   <div class="leftposition">
 	<div class="panel panel-default ticketbody">
 	  <div class="panel-body " id="takeoverajax">
-@if(Auth::user()->type=="admin")
+@if(Auth::user()->type=="admin" or Auth::user()->id==$ticket->tech_id)
 		@if($checkStatus)
 			@if($checkStatus->value=='open')
 			   <button name="close" id="{{$ticket->id}}" onclick="Status({{$ticket->id}},{{$ticket->tech_id}})">closed</button>
@@ -38,14 +37,13 @@
 	</div>
 
 
-<!---------------------------------------commentbody--------------------------------------------------------------->
   <div id="comments">
 	@foreach($comments as $comment)
 	  <div class="panel panel-default  commentbody" id="{{$comment->id}}Comments">
 	    <div class='panel-heading'>{{$comment->user->fname}} {{$comment->user->lname}}</div>
 	      <div class="panel-body ">
 
-		@if($comment->readonly==0)
+		@if($comment->readonly==1)
 			@if(Auth::user()->id==$comment->user_id)
 		 		<button name="{{$comment->id}}_{{$ticket->id}}" id="{{$comment->body}}"
 					onclick='edit(this)' class="btn btn-primary buttonright">Edit</button>
@@ -67,7 +65,6 @@
 
 	@endforeach
   </div>
-<!------------------------------------------AddComment------------------------------------------------------->
   <div>
      <form name="addForm" method = 'post'  class = 'form-horizontal' action="javascript:add({{$ticket->id}})">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -86,7 +83,6 @@
 	</form>
    </div>
 </div>
-<!---------------------------------------ticketdetails------------------------------------------------------------>
 <div class="rightposition">
 	<div class="panel panel-default ticketdetails">
 	  <div class="panel-heading">
@@ -102,7 +98,6 @@
 		<h4 class="title">AssignedTo </h4> {{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}<br>
 	  </div>
 	</div>
-<!-----------------------------------relatedassets-------------------------------------------------------------------------------->
 	<div class="panel panel-default relatedassets">
 		  <div class="panel-heading">
 			    <h3 class="panel-title">Related Assets</h3>
@@ -121,25 +116,27 @@
 
 		  </div>
 	</div>
+
 <!------------------------------------------relatedtags--------------------------------------------------------------------------->
+
 @if(Auth::user()->type=="admin")	
 	<div class="panel panel-default relatedtags">
 		<div class="panel-heading">
 			<h3 class="panel-title">Related tags</h3>
 		</div>
 		<div class="panel-body"> 
-		@foreach($relatedTickets as $relatedTicket)
-			@foreach($relatedTicket as $Ticket)
-				@if($Ticket->id!=$ticket->id)
-					<a href="/tickets/{{$Ticket->id}}">{{substr($Ticket->description,0,10)."....."}}</a><br>
-				@endif
-			@endforeach
-		@endforeach
+
+
+@foreach($relatedTickets as $Ticket)
+@if($ticket->id!=$Ticket->ticket_id)
+<a href="/tickets/{{$Ticket->ticket_id}}">{{substr($Ticket->description,0,10)."....."}}</a><br>
+@endif
+@endforeach
+
 		</div>
 	</div>
 @endif
 </div>
-<!------------------------------------------------------------------------------------------------------------------->
 </div>
 @endsection
 

@@ -2,7 +2,9 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Auth;
 use App\User;
+use App\Log;
 use Request;
 use Validator;
 class UsersController extends Controller {
@@ -17,6 +19,29 @@ class UsersController extends Controller {
 		$users=User::all();
 		return view('users.index',compact('users'));
 	}
+
+	/**
+	 * Notify when user is spam/delete (called by AJAX).
+	 *
+	 * @param  object  $model_obj , string action
+	 * @return Response
+	 */
+
+	private function addnotification($action , $type , $model_obj ){
+
+		$notification = new Log();
+		$notification->type = $type ;
+		$notification->action = $action;
+		$notification->name = $model_obj->fname." ".$model_obj->lname;
+		$notification->type_id = $model_obj->id;
+		$notification->user_id = Auth::user()->id;
+		$notification->save();
+
+	}
+
+
+
+
 
 	/**
 	 * Show the form for creating a new resource.
@@ -36,15 +61,13 @@ class UsersController extends Controller {
 	public function store()
 	{
 
-<<<<<<< HEAD
 		    $v = Validator::make(Request::all(), [
            			'fname' => 'required|max:255',
 					'lname' => 'required|max:255',
 					'email' => 'required|email|max:255|unique:users',
 					'password' => 'required|confirmed|min:6',
-					'phone' => 'required|max:255',
+					'phone' => 'required|max:20|numeric',
 					'location' => 'required|max:255',
-					#'captcha' => 'required|captcha',
         	]);
         $subject=Request::get('subject');
 
@@ -61,23 +84,26 @@ class UsersController extends Controller {
 			$user->password=bcrypt(Request::get('password'));
 			$user->phone=Request::get('phone');
 			$user->location=Request::get('location');
+			
+
+			if (Request::get('isspam')){
+				$user->isspam= 1;
+			
+			}else{
+				$user->isspam=0;
+
+			}
+			$user->type=Request::get('type');
+
 			$user->save();
+
+			if ($user->isspam == 1){
+
+				//add notification in log
+				$this->addnotification("spam"  , "user" , $user );
+			}
 			return redirect('/users');
 	    }
-=======
-		$user=new User();
-		$user->fname=Request::get('fname');
-		$user->lname=Request::get('lname');
-		$user->email=Request::get('email');
-		$user->password=bcrypt(Request::get('password'));
-		$user->phone=Request::get('phone');
-		$user->location=Request::get('location');
-		$user->isspam=Request::get('isspam');
-		$user->type=Request::get('type');
-
-		$user->save();
-		return redirect('/users');
->>>>>>> 3c2cc8dd03484a0b59ef8b9f2d185fe70fb54451
 	}
 
 	/**
@@ -113,15 +139,12 @@ class UsersController extends Controller {
 	 */
 	public function update($id)
 	{
-<<<<<<< HEAD
 		$v = Validator::make(Request::all(), [
            			'fname' => 'required|max:255',
 					'lname' => 'required|max:255',
 					'email' => 'required|email|max:255',
-					'password' => 'required|confirmed|min:6',
-					'phone' => 'required|max:255',
+					'phone' => 'required|max:20|numeric',
 					'location' => 'required|max:255',
-					#'captcha' => 'required|captcha',
         	]);
         $subject=Request::get('subject');
 
@@ -132,28 +155,31 @@ class UsersController extends Controller {
 	    }else{
 
 			$user=User::find($id);
-			$user->fname=Request::get('fname');
-			$user->lname=Request::get('lname');
-			$user->email=Request::get('email');
-			$user->password=bcrypt(Request::get('password'));
-			$user->phone=Request::get('phone');
-			$user->location=Request::get('location');
-			$user->save();
-			return redirect('/users');
-		}
-=======
-		$user=User::find($id);
 		$user->fname=Request::get('fname');
 		$user->lname=Request::get('lname');
 		$user->email=Request::get('email');
 		//$user->password=bcrypt(Request::get('password'));
 		$user->phone=Request::get('phone');
 		$user->location=Request::get('location');
-		$user->isspam=Request::get('isspam');
+
+		if (Request::get('isspam')){
+			
+			//check if admin soan a user
+			if ($user->isspam == 0){
+
+				//add notification in log
+				$this->addnotification("spam"  , "user" , $user );
+			}
+			$user->isspam= 1;
+
+		}else{
+			$user->isspam=0;
+
+		}
 		$user->type=Request::get('type');
 		$user->save();
 		 return redirect('/users');
->>>>>>> 3c2cc8dd03484a0b59ef8b9f2d185fe70fb54451
+		}
 	}
 
 	/**
@@ -165,10 +191,60 @@ class UsersController extends Controller {
 	public function destroy($id)
 	{
 		$user=User::find($id);
+
+		//add notification wher user deleted
+		$this->addnotification("delete"  , "user" , $user );
 		$user->delete();
-		//return redirect('/users');
+				
 	}
 
+
+
+	/**
+	 * Show the form for changing password.
+	 *
+	 * @return Response
+	 */
+	public function changepassword()
+	{
+		
+		return view('users.changepassword');
+	}
+
+
+	/**
+	 * Perform changing password process.
+	 * @param  string  $newPass
+	 *
+	 * @return Response
+	 */
+	public function changepassprocess()
+	{
+
+		$user_id = Auth::User()->id;
+
+		$v = Validator::make( Request::all() , [
+					'oldPassword' => "required|passmatch:$user_id",
+					'newPassword' => 'required|confirmed|min:6',
+		]);
+        
+	    if ($v->fails())
+	    {
+	        return redirect()->back()->withErrors($v->errors())
+	        						 ->withInput();
+	    }else{
+
+	    		
+
+		 	$user=User::find($user_id);
+		    $user->password = bcrypt(Request::get('newPassword'));
+			$user->save();
+			$status = "Your password has been changed successfully.";
+			return view('users.changepassword', compact('status'));
+
+		}
+
+	}
 
 
 	/**
@@ -228,13 +304,23 @@ class UsersController extends Controller {
 
 	public function search()
 	{
-
 	
-		echo "ok";
-		exit;
-
-
+		return view('users.search');
 
 	}
+
+
+
+	public function ajaxsearch()
+	{
+	
+		return view('users.ajaxsearch',compact('users'));
+
+	}
+
+
+
+	
+	
 
 }	

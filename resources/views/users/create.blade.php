@@ -1,5 +1,4 @@
 @extends('app')
-
 @section('content')
 <div class="container-fluid">
 
@@ -26,15 +25,14 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">First Name</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="fname" >
+								<input type="text" class="form-control" name="fname"  value="{{ old('fname') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Last Name</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="lname">
-							</div>
+ 							<input type="text" class="form-control" name="lname" value="{{ old('lname') }}"> 							</div>
 						</div>
 
 
@@ -43,8 +41,7 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">E-Mail Address</label>
 							<div class="col-md-6">
-								<input type="email" class="form-control" name="email"  >
-							</div>
+ 								<input type="email" class="form-control" name="email" value="{{ old('email') }}"> 							</div>
 						</div>
 
 						<div class="form-group">
@@ -65,16 +62,14 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label">Phone</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="phone">
-							</div>
+ 								<input type="text" class="form-control" name="phone" value="{{ old('phone') }}"> 							</div>
 						</div>
 
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Location</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="location" >
-							</div>
+ 								<input type="text" class="form-control" name="location" value="{{ old('location') }}"> 							</div>
 						</div>
 
 
@@ -82,19 +77,28 @@
      						<label class="col-md-4 control-label">Type:</label>
 							<div class="col-md-6">
 						        <select  name="type">
-							        <option value="regular">Regular user</option>
-							        <option value="tech">Technician</option>
-							        <option value="admin">Admin</option>
+							        <option value="regular"
+									@if(old('type')==="regular") {{"selected=true"}} @endif >Regular user</option>
+							        <option value="tech"
+							        @if(old('type') ==="tech") {{"selected=true"}} @endif >Technician</option>
+							        <option value="admin"
+							        @if(old('type') ==="admin") {{"selected=true"}} @endif >Admin</option>
 							    </select>
 						    </div>
 					    </div>
 
 						 <div class="form-group">
      						<label class="col-md-4 control-label">Disable:</label>
-							<div class="col-md-6">
-								<input type="checkbox" name="isspam" >
-							</div>
+								<div class="col-md-6">
+							        @if (old('isspam') == 0)
+							            {!! Form::checkbox('isspam', 'value') !!}
+							        @else
+							            {!! Form::checkbox('isspam', 'value',true) !!}
+							        @endif
+
+  						        </div>
 					    </div>
+
 			
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
