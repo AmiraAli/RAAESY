@@ -55,3 +55,40 @@ $.ajax({
 			}
    });
 }
+
+/**
+*close ticket function
+**/
+function closeTeckit(id){
+//ajax request
+$.ajax({
+		url: '/tickets/closeTicket',
+		type: "post",
+		data: {'id':id},
+		success: function(data){
+			document.getElementById(id).remove();    
+		    },
+		error: function(jqXHR, textStatus, errorThrown) {
+			alert(errorThrown);
+			}
+   });
+}
+
+/**
+*open ticket function
+**/
+function openTeckit(id){
+//ajax request
+$.ajax({
+		url: '/tickets/openTicket',
+		type: "post",
+		data: {'id':id},
+		success: function(data){
+			document.getElementById(id).remove();    
+		    },
+		error: function(jqXHR, textStatus, errorThrown) {
+			alert(errorThrown);
+			}
+   });
+}
+

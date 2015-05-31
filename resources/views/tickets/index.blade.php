@@ -115,14 +115,25 @@
 				   		<td>{{ $ticket->file }}</td>
 				   		<td>{{ $ticket->priority }}</td>
 				   		<td>
-				   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
-				   		data-content=
-				   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
-				   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
-				   		<a onclick='spam({{ $ticket->id }})'>Spam</a>|
-				   		<a onclick='close({{ $ticket->id }})'>Close</a>|
-				   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
-				   		></a>
+				   		@if($ticket->status == 'open')
+					   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+					   		data-content=
+					   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
+					   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
+					   		<a onclick='spam({{ $ticket->id }})'>Spam</a>|
+					   		<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
+					   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
+					   		></a>
+					   	@else
+					   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+					   		data-content=
+					   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
+					   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
+					   		<a onclick='spam({{ $ticket->id }})'>Spam</a>|
+					   		<a onclick='openTeckit({{ $ticket->id }})'>Open</a>|
+					   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
+					   		></a>
+					   	@endif
 				   		</td>
 				   </tr>
 			  @endforeach

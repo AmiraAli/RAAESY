@@ -20,6 +20,8 @@ use App\TicketStatus;
 use App\Asset;
 use App\TicketAsset;
 use App\Log;
+use Mail;
+
 
 class TicketsController extends Controller {
 
@@ -140,6 +142,26 @@ class TicketsController extends Controller {
 					$ticketTag->save();
 				}
 			}
+
+			// check if assigned to technical will send mail to him
+
+			if($request->get('tech')){
+
+				$ticket_array=json_decode(json_encode($ticket), true);
+				$ticket_array['verification_code']  = $ticket->verification_code;
+				$ticket_array['tech_fname']=$ticket->tech->fname;
+				$ticket_array['tech_lname']=$ticket->tech->lname;
+				$ticket_array['tech_email']=$ticket->tech->email;
+				$ticket_array['subj_name']=$ticket->subject->name;
+
+				Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
+            	{
+	                $message->from('yoyo80884@gmail.com', "RAAESY");
+	                $message->subject("RAAESY");
+	                $message->to($ticket_array['tech_email']);
+            	});
+			}
+			
 		}else{
 			$ticket->tech_id=NULL;
 			$ticket->admin_id=NULL;
@@ -237,9 +259,13 @@ class TicketsController extends Controller {
 		{
 			$ticket->priority=$request->get('priority');
 			$ticket->deadline=$request->get('deadline');
+
+			$prev_tech_id=$ticket->tech_id;
+
 			$ticket->tech_id=$request->get('tech');
 			$ticket->admin_id=Auth::user()->id;
 			$ticket->save();
+
 			// check if tags of ticket is changed or not
 			$tags=$request->get('tagValues');
 			if( $tags != ""){
@@ -256,6 +282,26 @@ class TicketsController extends Controller {
 					$ticketTag->save();
 				}
 			}
+
+			// check if assigned to another technical will send mail to him
+
+			if($request->get('tech') != $prev_tech_id){
+
+				$ticket_array=json_decode(json_encode($ticket), true);
+				$ticket_array['verification_code']  = $ticket->verification_code;
+				$ticket_array['tech_fname']=$ticket->tech->fname;
+				$ticket_array['tech_lname']=$ticket->tech->lname;
+				$ticket_array['tech_email']=$ticket->tech->email;
+				$ticket_array['subj_name']=$ticket->subject->name;
+
+				Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
+            	{
+	                $message->from('yoyo80884@gmail.com', "RAAESY");
+	                $message->subject("RAAESY");
+	                $message->to($ticket_array['tech_email']);
+            	});
+			}
+
 		}else{
 			$ticket->tech_id=NULL;
 			$ticket->admin_id=NULL;
@@ -451,11 +497,51 @@ class TicketsController extends Controller {
 	{
 		if($request->ajax()) {
 			$id=$request->input('id');
-			echo $id;
-			exit;
 			$ticket=Ticket::find($id);
-		// add the deleted ticket to log table
-		$this->addnotification("spam","ticket",$ticket);
-		}	
+			//update that article is spamed
+			$ticket->is_spam=1;
+			$ticket->save();
+			// add the deleted ticket to log table
+			$this->addnotification("spam","ticket",$ticket);
+			}	
+	}
+
+	/**
+	* Function to close ticket
+	**/
+	public function closeTicket(Request $request)
+	{
+		if($request->ajax()) {
+			$id=$request->input('id');
+			$ticket=Ticket::find($id);
+			//update that article is status
+			$ticket->status="close";
+			$ticket->save();
+			// save ticket as close status in ticket status table
+			$ticketStatus=new TicketStatus;
+			$ticketStatus->value='close';
+			$ticketStatus->ticket_id=$ticket->id;
+			$ticketStatus->save();
+			}	
+	}
+
+
+	/**
+	* Function to open ticket
+	**/
+	public function openTicket(Request $request)
+	{
+		if($request->ajax()) {
+			$id=$request->input('id');
+			$ticket=Ticket::find($id);
+			//update that article is status
+			$ticket->status="open";
+			$ticket->save();
+			// save ticket as open status in ticket status table
+			$ticketStatus=new TicketStatus;
+			$ticketStatus->value='open';
+			$ticketStatus->ticket_id=$ticket->id;
+			$ticketStatus->save();
+			}	
 	}
 }
