@@ -1,4 +1,4 @@
-1<html>
+<html>
 <head>
 	<link href="/css/ticketshow.css" rel="stylesheet">
         <script src="/js/ticket_status.js"></script>
@@ -88,7 +88,7 @@
 		<h4 class="title">StartDate  </h4>{{ $ticket->created_at }}<br>
 		<h4 class="title">Due        </h4>{{ $ticket->deadline }}<br>
 		<h4 class="title">From       </h4> {{ $ticket->user->fname }} {{$ticket->user->lname}}<br>
-		<h4 class="title">AssignedTo </h4> {{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}<br>
+		<h4 class="title">AssignedTo </h4> @if($ticket->tech){{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}@endif<br>
 	  </div>
 	</div>
 	<div class="panel panel-default relatedassets">
@@ -96,11 +96,12 @@
 			    <h3 class="panel-title">Related Assets</h3>
 		  </div>
 	          <div class="panel-body">
+@if($relatedAssets)
 			@foreach($relatedAssets as $relatedAsset)
 				<input type="hidden" id="{{$relatedAsset->id}}:showenassets" class="showenasset">
 				<a href="/assets/{{$relatedAsset->id}}">{{$relatedAsset->name}}</a><br>
 			@endforeach
-
+@endif
 			<div id="addnewasset">
 				<button id="{{$ticket->id}}:newasset" onclick="AddAssets({{$ticket->id}}+':newasset')">AddAsset</button>
 			</div>

@@ -32,6 +32,7 @@
 <div class="row" id="icons_list">
 
 	<ul class="nav nav-pills" role="tablist">
+
 	  <li role="presentation" id="unanswered"><a href="#" onclick="searchTicket('unanswered')">Unanswered <span class="badge">{{ count($unanswered) }}</span></a></li>
 	  <li role="presentation" id="unassigned"><a href="#" onclick="searchTicket('unassigned')">Unassigned <span class="badge">{{ count($unassigned) }}</span></a></li>
 	  <li role="presentation" id="expired"><a href="#" onclick="searchTicket('expired')">Deadline exceeded <span class="badge">{{ count($expired) }}</span></a></li>
@@ -39,6 +40,7 @@
 	  <li role="presentation" id="closed"><a href="#" onclick="searchTicket('closed')">Closed <span class="badge">{{ count($closed) }}</span></a></li>
 	  <li role="presentation" id="all" class="active" onclick="searchTicket('all')"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
 	  <li role="presentation" id="spam"><a href="#" onclick="searchTicket('spam')">Spam <span class="badge">{{ count($spam) }}</span></a></li>	
+
 	</ul>
 </div>
 
@@ -126,6 +128,7 @@
 		</div>
 	</div>
 
+
 <button id="toggle" class="glyphicon glyphicon-glass"></button>
 
 	<div class="panel panel-default advancedSearchDiv">
@@ -151,6 +154,7 @@
 
 
 </div>
+
 <div class="col-md-9 "  id="table_show">
 	<table class="table table-condensed">
 			<tr>
@@ -237,7 +241,16 @@
  <script type="text/javascript" src="/js/toggleadvacedsearch.js"></script>
 
 
-<script>
+ <script >
+		
+window.onload = function() {
+                    $.ajaxSetup({
+                headers: {
+                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
+                }
+            });
+            };
+
 $( "#selectFields" ).click(function() {
   $( '#check' ).slideToggle( "fast" );
 });
@@ -253,18 +266,6 @@ $( "#selectFields" ).click(function() {
         	$('.'+$(this).val()).show();
         }
     });
-</script>
-
-
- <script >
-		
-window.onload = function() {
-                    $.ajaxSetup({
-                headers: {
-                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
-                }
-            });
-            };
             
 $( "#sortBy" ).change(function() 
 {

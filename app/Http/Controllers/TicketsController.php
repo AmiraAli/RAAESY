@@ -66,12 +66,13 @@ class TicketsController extends Controller {
 	 */
 	public function index()
 	{
+
 		$sections = Section::all();
-		$tickets=Ticket::all();
+
 		$tags=Tag::all();
 
 		//all tickets except spam tickets
-		$allTickets = Ticket::where('is_spam', "0")->get();
+		$tickets = Ticket::where('is_spam', "0")->get();
 		// unassigned tickets except spam tickets
 		$unassigned = Ticket::whereNull('tech_id')->where('is_spam', "0")->get();
 		// closed tickets except spam tickets
@@ -83,6 +84,7 @@ class TicketsController extends Controller {
 		// spam tickets except spam tickets
 		$spam = Ticket::where('is_spam', "1")->get();
 		// unanswered tickets tickets except spam tickets
+
 		$unanswered = Ticket::leftJoin('comments','tickets.id','=','comments.ticket_id')
             ->selectRaw('tickets.*, sum(comments.readonly) as c')->where('is_spam', "0")
                     ->groupBy('tickets.id')
@@ -90,9 +92,9 @@ class TicketsController extends Controller {
                      ->get();
 
 		$technicals=User::where('type','=','tech')->get();
-		return view('tickets.index',compact('unanswered','tickets','unassigned','open','closed','expired','spam','tags','technicals','sections'));
 
 
+		return view('tickets.index',compact('tickets','unassigned','open','closed','expired','spam','tags','technicals','unanswered','sections'));
 
 	}
 
@@ -221,8 +223,9 @@ class TicketsController extends Controller {
 	file_put_contents("/home/aya/teesst.html", $relatedTickets);
 
 	// Get Related Assests
-	$relatedAssets = Ticket::find($id)->TicketAssets;
 
+	$relatedAssets = Ticket::find($id)->TicketAssets;
+//$relatedAssets = Ticket::join('ticket_assets', 'tickets.id', '=', 'ticket_assets.ticket_id')->where('tickets.id','=',$id)->get();
 	//get all comments
 	$comments=Ticket::find($id)->comments;
 
@@ -478,7 +481,7 @@ class TicketsController extends Controller {
 			}
 
 			//convert array to object
-			$tickets = json_decode(json_encode($tickets), FALSE);
+			$tickets  = json_decode(json_encode($tickets), FALSE);
 
 			return view("tickets.sortTicket",compact('tickets')); 
 
@@ -526,11 +529,11 @@ class TicketsController extends Controller {
 			}
 
 			//convert array to object
-			$tickets = json_decode(json_encode($relatTickets), FALSE);
+			$tickets  = json_decode(json_encode($relatTickets), FALSE);
 			return view("tickets.sortTicket",compact('tickets')); 
 
 		 }
-		 //return view("tickets.sortTicket",compact('ticket'));
+		 
 	}
 	
 	/**
