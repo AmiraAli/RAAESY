@@ -253,8 +253,8 @@ class AssetsController extends Controller {
 	public function AddAssets()
 	{	
 			$assets=Asset::all();
-			// file_put_contents("/home/aya/teesst.html", $assets);
-		
+
+			//file_put_contents("/home/aya/teesst.html", $assets);
 
 			echo json_encode($assets);	
 

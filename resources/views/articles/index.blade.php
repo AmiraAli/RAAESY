@@ -135,7 +135,6 @@
 
 @endsection
 <script type="text/javascript" src="/js/deleteArticle.js"></script>
-
 </body>
 </html>
 @endif

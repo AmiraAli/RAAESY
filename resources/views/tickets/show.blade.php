@@ -117,11 +117,11 @@
 				<a href="/assets/{{$relatedAsset->id}}">{{$relatedAsset->name}}</a><br>
 			@endforeach
 
-			<div id="addnewasset">
-
+			
+<div id="addnewasset">
 				<button id="{{$ticket->id}}:newasset" onclick="AddAssets({{$ticket->id}}+':newasset')">AddAsset</button>
 
-			</div>
+			</div><div id="asseterrormessage"></div>
 
 		  </div>
 	</div>

@@ -58,6 +58,8 @@ Route::post('/tickets/all/subjects', 'TicketsController@TicketAllSubject');
 Route::post('/tickets/advancedsearch', 'TicketsController@AdvancedSearch');
 
 Route::post('/tickets/spamTicket', 'TicketsController@spamTicket');
+Route::post('/tickets/unSpamTicket', 'TicketsController@unSpamTicket');
+
 Route::post('/tickets/closeTicket', 'TicketsController@closeTicket');
 Route::post('/tickets/openTicket', 'TicketsController@openTicket');
 Route::post('tickets/addTag', 'TicketsController@addTag');
@@ -86,3 +88,6 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+
+
+

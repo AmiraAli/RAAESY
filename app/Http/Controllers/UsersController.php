@@ -354,7 +354,7 @@ class UsersController extends Controller {
 		}
 		
 		//return json_encode($selectedUsers);
-		return view('users.indexAjax' , compact('users'));
+		return view('users.ajaxsearch' , compact('users'));
 
 
 	}
@@ -404,173 +404,195 @@ class UsersController extends Controller {
 		$phone = Request::get('phone');
 		$location = Request::get('location');
 		//all
-		if ($fname != null && $lname != null && $email != null && $phone != null && $location != null) {
+		// if ($fname != null && $lname != null && $email != null && $phone != null && $location != null) {
 		
-			$users = User::whereFnameAndLnameAndEmailAndPhoneAndLocation($fname,$lname,$email,$phone,$location)->get();
+		// 	$users = User::whereFnameAndLnameAndEmailAndPhoneAndLocation($fname,$lname,$email,$phone,$location)->get();
 			
-	    }
+	 //    }
 
-	    // all expect location
+	 //    // all expect location
 
-	    if ($fname != null && $lname != null && $email != null && $phone != null && $location == null) {
+	 //    if ($fname != null && $lname != null && $email != null && $phone != null && $location == null) {
 			
-			$users = User::whereFnameAndLnameAndEmailAndPhone($fname,$lname,$email,$phone)->get();
+		// 	$users = User::whereFnameAndLnameAndEmailAndPhone($fname,$lname,$email,$phone)->get();
 			
-	    }
+	 //    }
 
 
-	    // all expect location & phone
-	    if ($fname != null && $lname != null && $email != null && $phone == null && $location == null) {
+	 //    // all expect location & phone
+	 //    if ($fname != null && $lname != null && $email != null && $phone == null && $location == null) {
 
-			$users = User::whereFnameAndLnameAndEmail($fname,$lname,$email)->get();
+		// 	$users = User::whereFnameAndLnameAndEmail($fname,$lname,$email)->get();
 			
-	    }
+	 //    }
 
-	    // fname & lname
+	 //    // fname & lname
 
-	    if ($fname != null && $lname != null && $email == null && $phone == null && $location == null) {
+	 //    if ($fname != null && $lname != null && $email == null && $phone == null && $location == null) {
 
-			$users = User::whereFnameAndLname($fname,$lname)->get();
+		// 	$users = User::whereFnameAndLname($fname,$lname)->get();
 			
-	    }
+	 //    }
 
-	    // fname
-	    if ($fname != null && $lname == null && $email == null && $phone == null && $location == null) {
+	 //    // fname
+	 //    if ($fname != null && $lname == null && $email == null && $phone == null && $location == null) {
 
+		// 	$users = User::whereFname($fname)->get();
+			
+	 //    }
+
+	 //    // lname
+	 //    if ($fname == null && $lname != null && $email == null && $phone == null && $location == null) {
+
+		// 	$users = User::whereLname($lname)->get();
+			
+	 //    }
+
+	 //    //email
+	 //    if ($fname == null && $lname == null && $email != null && $phone == null && $location == null) {
+
+		// 	$users = User::whereEmail($email)->get();
+			
+	 //    }
+
+	 //    //phone
+	 //    if ($fname == null && $lname == null && $email == null && $phone != null && $location == null) {
+
+		// 	$users = User::wherePhone($phone)->get();
+			
+	 //    }
+
+	 //    //location
+	 //    if ($fname == null && $lname == null && $email == null && $phone == null && $location != null) {
+
+		// 	$users = User::whereLocation($location)->get();
+			
+	 //    }
+
+	 //    // all expect fname
+	 //    if ($fname == null && $lname != null && $email != null && $phone != null && $location != null) {
+		
+		// 	$users = User::whereLnameAndEmailAndPhoneAndLocation($lname,$email,$phone,$location)->get();
+			
+	 //    }
+
+	 //    //email phone location 
+	 //    if ($fname == null && $lname == null && $email != null && $phone != null && $location != null) {
+		
+		// 	$users = User::whereEmailAndPhoneAndLocation($email,$phone,$location)->get();
+			
+	 //    }
+
+	 //    //phone location
+	 //    if ($fname == null && $lname == null && $email == null && $phone != null && $location != null) {
+		
+		// 	$users = User::wherePhoneAndLocation($phone,$location)->get();
+			
+	 //    }
+
+	 //    // all expext lname
+	 //    if ($fname != null && $lname == null && $email != null && $phone != null && $location != null) {
+		
+		// 	$users = User::whereFnameAndEmailAndPhoneAndLocation($fname,$email,$phone,$location)->get();
+			
+	 //    }
+
+	 //    //fname phone location 
+	 //    if ($fname != null && $lname == null && $email == null && $phone != null && $location != null) {
+		
+		// 	$users = User::whereFnameAndPhoneAndLocation($fname,$phone,$location)->get();
+			
+	 //    }
+
+	 //    //fname location
+  //       if ($fname != null && $lname == null && $email == null && $phone == null && $location != null) {
+		
+		// 	$users = User::whereFnameAndLocation($fname,$location)->get();
+			
+	 //    }
+
+	 //    //all expect email
+	 //    if ($fname != null && $lname != null && $email == null && $phone != null && $location != null) {
+		
+		// 	$users = User::whereFnameAndLnameAndPhoneAndLocation($fname,$lname,$phone,$location)->get();
+			
+	 //    }
+	 //    // fname lname location
+	 //    if ($fname != null && $lname != null && $email == null && $phone == null && $location != null) {
+		
+		// 	$users = User::whereFnameAndLnameAndLocation($fname,$lname,$location)->get();
+			
+	 //    }
+
+	 //    //all expect phone
+	 //    if ($fname != null && $lname != null && $email != null && $phone == null && $location != null) {
+		
+		// 	$users = User::whereFnameAndLnameAndEmailAndLocation($fname,$lname,$email,$location)->get();
+			
+	 //    }
+  //       //fname lname Email
+  //       if ($fname != null && $lname != null && $email != null && $phone == null && $location == null) {
+		
+		// 	$users = User::whereFnameAndLnameAndEmail($fname,$lname,$email)->get();
+			
+	 //    }
+
+	 //    //fname & phone
+	 //    if ($fname != null && $lname == null && $email == null && $phone != null && $location == null) {
+		
+		// 	$users = User::whereFnameAndPhone($fname,$phone)->get();
+			
+	 //    }
+
+	 //    //lname & phone 
+	 //    if ($fname == null && $lname != null && $email == null && $phone != null && $location == null) {
+		
+		// 	$users = User::whereLnameAndPhone($lname,$phone)->get();
+			
+	 //    }
+
+	 //    //email & phone 
+	 //    if ($fname == null && $lname == null && $email != null && $phone != null && $location == null) {
+		
+		// 	$users = User::whereEmailAndPhone($email,$phone)->get();
+			
+	 //    }
+
+	 //    //email & lname 
+	 //    if ($fname == null && $lname != null && $email != null && $phone == null && $location == null) {
+		
+		// 	$users = User::whereEmailAndLname($email,$lname)->get();
+			
+	 //    }
+
+	 //    //email & fname 
+	 //    if ($fname != null && $lname == null && $email != null && $phone == null && $location == null) {
+		
+		// 	$users = User::whereEmailAndFname($email,$fname)->get();
+			
+	 //    }
+
+		$users = User::all();
+		if ($fname != null) {
+			# code...
 			$users = User::whereFname($fname)->get();
-			
-	    }
-
-	    // lname
-	    if ($fname == null && $lname != null && $email == null && $phone == null && $location == null) {
-
-			$users = User::whereLname($lname)->get();
-			
-	    }
-
-	    //email
-	    if ($fname == null && $lname == null && $email != null && $phone == null && $location == null) {
-
+		}
+		if ($lname != null) {
+			# code...
+			$users = User::whereFLname($lname)->get();
+		}
+		if ($email != null) {
+			# code...
 			$users = User::whereEmail($email)->get();
-			
-	    }
-
-	    //phone
-	    if ($fname == null && $lname == null && $email == null && $phone != null && $location == null) {
-
+		}
+		if ($phone != null) {
+			# code...
 			$users = User::wherePhone($phone)->get();
-			
-	    }
-
-	    //location
-	    if ($fname == null && $lname == null && $email == null && $phone == null && $location != null) {
-
+		}
+		if ($location != null) {
+			# code...
 			$users = User::whereLocation($location)->get();
-			
-	    }
-
-	    // all expect fname
-	    if ($fname == null && $lname != null && $email != null && $phone != null && $location != null) {
-		
-			$users = User::whereLnameAndEmailAndPhoneAndLocation($lname,$email,$phone,$location)->get();
-			
-	    }
-
-	    //email phone location 
-	    if ($fname == null && $lname == null && $email != null && $phone != null && $location != null) {
-		
-			$users = User::whereEmailAndPhoneAndLocation($email,$phone,$location)->get();
-			
-	    }
-
-	    //phone location
-	    if ($fname == null && $lname == null && $email == null && $phone != null && $location != null) {
-		
-			$users = User::wherePhoneAndLocation($phone,$location)->get();
-			
-	    }
-
-	    // all expext lname
-	    if ($fname != null && $lname == null && $email != null && $phone != null && $location != null) {
-		
-			$users = User::whereFnameAndEmailAndPhoneAndLocation($fname,$email,$phone,$location)->get();
-			
-	    }
-
-	    //fname phone location 
-	    if ($fname != null && $lname == null && $email == null && $phone != null && $location != null) {
-		
-			$users = User::whereFnameAndPhoneAndLocation($fname,$phone,$location)->get();
-			
-	    }
-
-	    //fname location
-        if ($fname != null && $lname == null && $email == null && $phone == null && $location != null) {
-		
-			$users = User::whereFnameAndLocation($fname,$location)->get();
-			
-	    }
-
-	    //all expect email
-	    if ($fname != null && $lname != null && $email == null && $phone != null && $location != null) {
-		
-			$users = User::whereFnameAndLnameAndPhoneAndLocation($fname,$lname,$phone,$location)->get();
-			
-	    }
-	    // fname lname location
-	    if ($fname != null && $lname != null && $email == null && $phone == null && $location != null) {
-		
-			$users = User::whereFnameAndLnameAndLocation($fname,$lname,$location)->get();
-			
-	    }
-
-	    //all expect phone
-	    if ($fname != null && $lname != null && $email != null && $phone == null && $location != null) {
-		
-			$users = User::whereFnameAndLnameAndEmailAndLocation($fname,$lname,$email,$location)->get();
-			
-	    }
-        //fname lname Email
-        if ($fname != null && $lname != null && $email != null && $phone == null && $location == null) {
-		
-			$users = User::whereFnameAndLnameAndEmail($fname,$lname,$email)->get();
-			
-	    }
-
-	    //fname & phone
-	    if ($fname != null && $lname == null && $email == null && $phone != null && $location == null) {
-		
-			$users = User::whereFnameAndPhone($fname,$phone)->get();
-			
-	    }
-
-	    //lname & phone 
-	    if ($fname == null && $lname != null && $email == null && $phone != null && $location == null) {
-		
-			$users = User::whereLnameAndPhone($lname,$phone)->get();
-			
-	    }
-
-	    //email & phone 
-	    if ($fname == null && $lname == null && $email != null && $phone != null && $location == null) {
-		
-			$users = User::whereEmailAndPhone($email,$phone)->get();
-			
-	    }
-
-	    //email & lname 
-	    if ($fname == null && $lname != null && $email != null && $phone == null && $location == null) {
-		
-			$users = User::whereEmailAndLname($email,$lname)->get();
-			
-	    }
-
-	    //email & fname 
-	    if ($fname != null && $lname == null && $email != null && $phone == null && $location == null) {
-		
-			$users = User::whereEmailAndFname($email,$fname)->get();
-			
-	    }
+		}
 
 		return view('users.ajaxsearch',compact('users'));
 

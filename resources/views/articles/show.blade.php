@@ -119,7 +119,7 @@
                               $distinct[$z]=$art[$i];
                               $z=$z+1;
                               echo "<a href=/articles/".$art[$i].">".$artSub[$art[$i]]."</a>"."<br/>";
-                               $f=0;
+                              $f=0;
                             }
                          }
                        }

@@ -15,7 +15,13 @@
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" /> 
 
 
- <div class="container"> 
+<div class="container-fluid">
+  <div class="row">
+   <div class="col-md-8 col-md-offset-2">
+    <div class="panel panel-danger">
+      <div class="panel-heading"> <strong>New Article</strong> </div>
+      <div class="panel-body">
+  
 	{!! Form::open(array('class' => 'form-inline', 'method' => 'POST', 'route' => array('articles.store'))) !!}
 	
      @if (count($errors) > 0)
@@ -32,25 +38,24 @@
    <br/>
 
     <div class="form-group">
-        {!! Form::label('SUBJECT', 'SUBJECT:') !!}
+        {!! Form::label('SUBJECT', 'Subject', ['class'=> 'col-md-4 control-label']) !!}
 
         {!! Form::text('subject',old('subject'),['class'=>'form-control']) !!}
     </div>
     <br/>
-    <div class="form-group">
-        {!! Form::label('BODY', 'BODY:') !!}
+    <div class="row">
+        <div class="form-group col-md-12">
         {!! Form::textarea('body',old('body'),['class'=>'jqte-test']) !!}
+        </div>
     </div>
-    <br/>
+    <br><br>
 
 
     <div class="form-group">
     	{!! Form::label('IS SHOW', 'IS SHOW:') !!}
-    	{!! Form::checkbox('isshow', 'value', old('isshow')) !!}
+    	{!! Form::checkbox('isshow', 'value', old('isshow'),['class'=>'form-control']) !!}
     <div class="form-group">
-    <br/>
-    <br/>
-    
+    <br><br><br><br>
 
     <div class="form-group">
 		{!! Form::label('Category', 'Category:') !!}
@@ -70,9 +75,10 @@
 		@endforeach
 		</select>
 	</div>
+  <br><br><br><br>
   <br/>
 
-
+  
 
   <div class="form-group  col-md-6" id="tags_selected">
        <label class="col-md-4 control-label">Tags</label>
@@ -80,11 +86,16 @@
   </div>
   <input type="hidden" name="tagValues" id="tagValues">
 
+<br><br>
 
-    <div class="form-group">
-        {!! Form::submit('Save', ['class' => 'btn btn-primary form-control']) !!}
+<div class="row">
+    <div class="col-md-6 col-md-offset-4">
+        {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
     </div>
+</div>
 
+
+</div></div></div></div></div>
 
     <script>
          $('.jqte-test').jqte();

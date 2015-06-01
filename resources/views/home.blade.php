@@ -4,7 +4,9 @@
 
 <div  class="container">
 <div class="row">
+@if(Auth::user()->type=="admin" or Auth::user()->type=="regular")
 <a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Ticket</a>
+@endif
 </div>
 	@foreach($categories as $category)
 		<div class="col-md-4" >	
