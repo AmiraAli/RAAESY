@@ -29,6 +29,23 @@ class ArticlesController extends Controller {
 		$this->middleware('auth');
 	}
 
+
+
+	/**
+	 * Authorize admin
+	 * @param  integer $user_id
+	 * @return Response
+	 */
+	private function adminAuth()
+	{		
+		if (Auth::User()->type !="admin"){
+			return false;
+		}
+		return true;
+	}
+
+	
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -37,6 +54,10 @@ class ArticlesController extends Controller {
 	public function index()
 	{
 		//
+		//authenticate admin
+		if (!$this->adminAuth()){
+			return view('errors.authorization');
+		}
 		$categories=Category::all();
 		$sections=Section::all();
 		$articles=Article::all();
@@ -53,7 +74,7 @@ class ArticlesController extends Controller {
 	 */
 
 
-	public function addnotification($action , $type , $model_obj ){
+	private function addnotification($action , $type , $model_obj ){
 
 		$notification = new Log();
 		$notification->type = $type ;
@@ -74,6 +95,10 @@ class ArticlesController extends Controller {
 	public function create()
 	{
 		//
+		//authenticate admin
+		if (!$this->adminAuth()){
+			return view('errors.authorization');
+		}
 		$categories=Category::all();
 		$sections=Section::all();
 		return view('articles.x',compact('categories','sections'));
@@ -91,8 +116,6 @@ class ArticlesController extends Controller {
 		$v = Validator::make(Request::all(), [
         'subject' => 'required|max:255|unique:articles',
         'body' => 'required',
-        #'isshow' => 'required',
-        #'category' => 'required',
         ]);
         $subject=Request::get('subject');
 
@@ -166,6 +189,10 @@ class ArticlesController extends Controller {
 	public function edit($id)
 	{
 		//
+		//authenticate admin
+		if (!$this->adminAuth()){
+			return view('errors.authorization');
+		}
 		$sections=Section::all();
 		$categories=Category::all();
 		$article=Article::find($id);
