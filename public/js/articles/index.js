@@ -1,14 +1,21 @@
 window.onload = function() {
 
+
+
 $.ajaxSetup({
                 headers: {
                     'X-XSRF-Token': $('meta[name="_token"]').attr('content')
                 }
             });
 
-    
-var flag=false;
 
+    
+    
+
+ };
+
+
+function init(){
 var input = $("#quickSearch");
 var pos = input.position();
 var width = input.outerWidth();
@@ -21,7 +28,9 @@ $("#autocompletemenu").css({
         width: width,
    });
 
-    
+var flag=true;
+
+
 $("#autocompletemenu").mouseover(function(){
     flag = true;
 });
@@ -33,7 +42,6 @@ $("#autocompletemenu").mouseout(function(){
 
 
 
-
     $("#quickSearch").focusout(function() {
 
     	if (flag==false){
@@ -42,12 +50,11 @@ $("#autocompletemenu").mouseout(function(){
     		});
 		}
 	});
-   
-
- };
-
+   }
 
  function myAutocomplete(data) {
+
+ 	init();
 
 	if (data==''){ 
 

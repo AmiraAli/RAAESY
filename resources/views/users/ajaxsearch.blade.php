@@ -1,6 +1,4 @@
-
-<div class="container">
-<table class="table table-bordered">
+<table class="table table-hover ">
 <th>First Name</th>
 <th>Last Name</th>
 <th>Email</th>
@@ -10,7 +8,7 @@
 <tbody id="tbody">
 @foreach($users as $user)
 <tr id="{{$user->id}}"><td>
-{{$user->fname}}	
+<a href="/users/{{$user->id}}">{{$user->fname}}	</a>
 </td>
 <td>
 	{{$user->lname}}	
@@ -41,18 +39,14 @@
 
 
 
-<td>
+<td class="text-center">
 
-<a class="btn btn-primary" href="/users/{{$user->id}}">show</a>
-<a class="btn btn-primary" href="/users/{{$user->id}}/edit">edit</a>
-<a class="btn btn-primary delete" href="#"  id="{{$user->id}}" onclick="Delete({{$user->id}})">delete</a>
+
+<a class="btn btn-success" href="/users/{{$user->id}}/edit">edit</a>
+<a class="btn btn-danger delete" href="#"  id="{{$user->id}}" onclick="Delete({{$user->id}})">delete</a>
 </td>
 
 </tr>
 @endforeach
 </tbody>
 </table>
-
-
-
-</div>

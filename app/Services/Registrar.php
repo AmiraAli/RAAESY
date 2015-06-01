@@ -47,13 +47,14 @@ class Registrar implements RegistrarContract {
 		]);
 		$data['verification_code']  = $user->verification_code;
 
-		//Session::put('email', $data['email']);
+
 		// Mail::send('emails.welcome', $data, function($message) use ($data)
   //           {
   //               $message->from('yoyo80884@gmail.com', "Site name");
   //               $message->subject("Welcome to site name");
   //               $message->to($data['email']);
   //           });
+
 		return $user;
 	}
 

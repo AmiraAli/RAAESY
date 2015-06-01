@@ -43,11 +43,13 @@ class CommentsController extends Controller {
 	    	$comment->body = Request::get('body');
 	    	$comment->ticket_id = $ticket_id;
 	    	$comment->user_id = Auth::user()->id;
-	    	$comment->readonly=0;
+	    	$comment->readonly=1;
 	    	$comment->save();
 	    	$comment->fname = Auth::user()->fname;
 		$comment->lname = Auth::user()->lname;
-	    	echo json_encode($comment);
+	    	
+		
+	echo json_encode($comment);
     
 	}
 

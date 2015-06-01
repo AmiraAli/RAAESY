@@ -19,10 +19,12 @@ class AssetsController extends Controller {
 
 	public function __construct()
 	{
-		if (Auth::User()->type !="admin"){
-			exit;
+		$this->middleware('auth');
+		if (Auth::check()){
+			if (Auth::User()->type !="admin"){								
+				exit;
+			}
 		}
-		
 	}
 
 	/**
@@ -251,7 +253,7 @@ class AssetsController extends Controller {
 	public function AddAssets()
 	{	
 			$assets=Asset::all();
-			file_put_contents("/home/aya/teesst.html", $assets);
+			//file_put_contents("/home/aya/teesst.html", $assets);
 		
 
 			echo json_encode($assets);	

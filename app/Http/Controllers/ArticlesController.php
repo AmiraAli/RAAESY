@@ -29,6 +29,23 @@ class ArticlesController extends Controller {
 		$this->middleware('auth');
 	}
 
+
+
+	/**
+	 * Authorize admin
+	 * @param  integer $user_id
+	 * @return Response
+	 */
+	private function adminAuth()
+	{		
+		if (Auth::User()->type !="admin"){
+			return false;
+		}
+		return true;
+	}
+
+	
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -37,6 +54,10 @@ class ArticlesController extends Controller {
 	public function index()
 	{
 		//
+		//authenticate admin
+		if (!$this->adminAuth()){
+			return view('errors.authorization');
+		}
 		$categories=Category::all();
 		$sections=Section::all();
 		$articles=Article::all();
@@ -53,7 +74,7 @@ class ArticlesController extends Controller {
 	 */
 
 
-	public function addnotification($action , $type , $model_obj ){
+	private function addnotification($action , $type , $model_obj ){
 
 		$notification = new Log();
 		$notification->type = $type ;
@@ -74,6 +95,10 @@ class ArticlesController extends Controller {
 	public function create()
 	{
 		//
+		//authenticate admin
+		if (!$this->adminAuth()){
+			return view('errors.authorization');
+		}
 		$categories=Category::all();
 		$sections=Section::all();
 		return view('articles.x',compact('categories','sections'));
@@ -91,8 +116,6 @@ class ArticlesController extends Controller {
 		$v = Validator::make(Request::all(), [
         'subject' => 'required|max:255|unique:articles',
         'body' => 'required',
-        #'isshow' => 'required',
-        #'category' => 'required',
         ]);
         $subject=Request::get('subject');
 
@@ -104,7 +127,6 @@ class ArticlesController extends Controller {
 		
 	    $article = new Article;
 	    $article->subject=Request::get('subject');
-	    #$article->category_id=1;
 	    $userId=Auth::user()->id;
 	    $article->user_id=$userId;
 	    $isshow=Request::get('isshow');
@@ -166,6 +188,10 @@ class ArticlesController extends Controller {
 	public function edit($id)
 	{
 		//
+		//authenticate admin
+		if (!$this->adminAuth()){
+			return view('errors.authorization');
+		}
 		$sections=Section::all();
 		$categories=Category::all();
 		$article=Article::find($id);
@@ -184,8 +210,6 @@ class ArticlesController extends Controller {
 	    $v = Validator::make(Request::all(), [
         'subject' => 'required|max:255',
         'body' => 'required',
-        #'isshow' => 'required',
-        #'category' => 'required',
         ]);
         $subject=Request::get('subject');
 
@@ -210,7 +234,21 @@ class ArticlesController extends Controller {
 
 		    $catId=Request::get('category');
 		    $article->category_id=$catId;
+		    
 		    $article->save();
+
+		    $tags=Request::get('tagValues');
+			if( $tags != ""){
+				$tags_array=explode(",",$tags);
+				for($i=0;$i<count($tags_array);$i++){
+					$tag=Tag::where('name',$tags_array[$i])->first();
+					$articleTag=new ArticleTag;
+					$articleTag->tag_id=$tag->id;
+					$articleTag->article_id=$article->id;
+					$articleTag->save();
+				}
+			}
+		    
 		    return redirect('articles');
     	}
 	}

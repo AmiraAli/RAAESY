@@ -114,7 +114,7 @@ var parentElm=document.getElementById("newelement");
 var divError=document.createElement("div");
 divError.setAttribute("class","text-danger");
 var text=document.createTextNode("No techinical available now  ");
-divError.appendChild(text);
+divError.appenChild(text);
 if(parentElm.innerHTML.trim()==""){
 parentElm.appendChild(divError);}
 }
