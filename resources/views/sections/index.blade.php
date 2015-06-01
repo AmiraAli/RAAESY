@@ -1,5 +1,21 @@
 @extends('app')
 @section('content')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="container">
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 
@@ -34,6 +50,8 @@
 	</table>
 </div>
 
+
+
 @endsection
 
 <script>
@@ -44,7 +62,7 @@
                     'X-XSRF-Token': $('meta[name="_token"]').attr('content')
                 }
             });
-            };
+            
 
 		function deleteSection(id){ 
 			//ajax request
@@ -60,5 +78,8 @@
 			});
 
 		}
+	}
 
 	</script>
+
+
