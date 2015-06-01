@@ -28,11 +28,11 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="{{ url('/') }}"><h4 >RAAESY</h4></a>
+				<a class="navbar-brand" href="{{ url('/articles/home') }}"><h4 >RAAESY</h4></a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/') }}">Home</a></li>
+					<li><a href="{{ url('/articles/home') }}">Home</a></li>
 					@if (Auth::check())
 						@if(Auth::user()->type == "admin")
 							<li><a href="{{ url('/tickets') }}">Tickets</a></li>
