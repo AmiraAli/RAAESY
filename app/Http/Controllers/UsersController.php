@@ -354,7 +354,7 @@ class UsersController extends Controller {
 		}
 		
 		//return json_encode($selectedUsers);
-		return view('users.indexAjax' , compact('users'));
+		return view('users.ajaxsearch' , compact('users'));
 
 
 	}
