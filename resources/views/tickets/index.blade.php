@@ -249,7 +249,7 @@ window.onload = function() {
                     'X-XSRF-Token': $('meta[name="_token"]').attr('content')
                 }
             });
-                    sortBy();
+                    
             };
 
 $( "#selectFields" ).click(function() {
@@ -268,121 +268,117 @@ $( "#selectFields" ).click(function() {
         }
     });
             
-//$( "#sortBy" ).change(
-	function sortBy() 
-{
+// //$( "#sortBy" ).change(
+// 	function sortBy() 
+// {
 
-var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
+//     $.ajax({
+// 	    url: '/tickets/searchTicket',
+// 	    type: 'post',
+// 	    data: { sortBy: $('#sortBy ').val() , sortType : "DESC"},
+// 	    success: function(result) {
+// 			 $('#table_show').html(result);
+// 			 $("#sortType").html("ASC");
 
-    $.ajax({
-	    url: '/tickets/sortTicket',
-	    type: 'post',
-	    data: { data : tickets , sortBy: $('#sortBy ').val() , sortType : "DESC"},
-	    success: function(result) {
-			 $('#table_show').html(result);
-			 $("#sortType").html("ASC");
-
-			$('.checkbox1').each(function () {
-				 if(!$(this).is(":checked")) 
-			        {
+// 			$('.checkbox1').each(function () {
+// 				 if(!$(this).is(":checked")) 
+// 			        {
 			        	
-			            $('.'+$(this).val()).hide();
+// 			            $('.'+$(this).val()).hide();
 
-			        }
-			        else
-			        {
+// 			        }
+// 			        else
+// 			        {
 			        
-			        	$('.'+$(this).val()).show();
-			        }
+// 			        	$('.'+$(this).val()).show();
+// 			        }
 			    
-			});
-			tag();
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log(errorThrown);
-	    }
-	});
+// 			});
+// 			tag();
+// 		},
+// 		error: function(jqXHR, textStatus, errorThrown) {
+// 			console.log(errorThrown);
+// 	    }
+// 	});
 
 		
-}//);
+// }//);
 
 //$("#sortType").click(
 
-	function sortType(){
+// 	function sortType(){
 
-	var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
+//    $.ajax({
+// 	    url: '/tickets/searchTicket',
+// 	    type: 'post',
+// 	    data: { sortBy: $('#sortBy ').val() , sortType : $("#sortType").text()},
+// 	    success: function(result) {
+// 			 $('#table_show').html(result);
 
-   $.ajax({
-	    url: '/tickets/sortTicket',
-	    type: 'post',
-	    data: { data : tickets , sortBy: $('#sortBy ').val() , sortType : $("#sortType").text()},
-	    success: function(result) {
-			 $('#table_show').html(result);
-
-			 if ($("#sortType").text() == "ASC")
-			 {
-			 	$("#sortType").html("DESC");
-			 } 
-			 else
-			 {
-			 	$("#sortType").html("ASC")
-			 };
-			 $('.checkbox1').each(function () {
-			 if(!$(this).is(":checked")) 
-		     {
+// 			 if ($("#sortType").text() == "ASC")
+// 			 {
+// 			 	$("#sortType").html("DESC");
+// 			 } 
+// 			 else
+// 			 {
+// 			 	$("#sortType").html("ASC")
+// 			 };
+// 			 $('.checkbox1').each(function () {
+// 			 if(!$(this).is(":checked")) 
+// 		     {
 		        	
-		       $('.'+$(this).val()).hide();
+// 		       $('.'+$(this).val()).hide();
 
-		     }
-		     else
-		     {
+// 		     }
+// 		     else
+// 		     {
 		        
-		        $('.'+$(this).val()).show();
-		     }
+// 		        $('.'+$(this).val()).show();
+// 		     }
     
-});
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log(errorThrown);
-	    }
-	});
+// });
+// 		},
+// 		error: function(jqXHR, textStatus, errorThrown) {
+// 			console.log(errorThrown);
+// 	    }
+// 	});
     
-}//);
+// }//);
 
 //$( "#tag" ).change(
-	function tag() 
-{
-	if($('#tag').val()){
-var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
+// 	function tag() 
+// {
+// 	if($('#tag').val()){
+// var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
 
-    $.ajax({
-	    url: '/tickets/relatedTag',
-	    type: 'post',
-	    data: { data : tickets , tagId : $('#tag').val() },
-	    success: function(result) {
-			 $('#table_show').html(result);
-			 $('.checkbox1').each(function () {
-				 if(!$(this).is(":checked")) 
-			        {
+//     $.ajax({
+// 	    url: '/tickets/relatedTag',
+// 	    type: 'post',
+// 	    data: { data : tickets , tagId : $('#tag').val() },
+// 	    success: function(result) {
+// 			 $('#table_show').html(result);
+// 			 $('.checkbox1').each(function () {
+// 				 if(!$(this).is(":checked")) 
+// 			        {
 			        	
-			            $('.'+$(this).val()).hide();
+// 			            $('.'+$(this).val()).hide();
 
-			        }
-			        else
-			        {
+// 			        }
+// 			        else
+// 			        {
 			        
-			        	$('.'+$(this).val()).show();
-			        }
+// 			        	$('.'+$(this).val()).show();
+// 			        }
 			    
-			});
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log(errorThrown);
-	    }
-	});
+// 			});
+// 		},
+// 		error: function(jqXHR, textStatus, errorThrown) {
+// 			console.log(errorThrown);
+// 	    }
+// 	});
 
 
-}		
-}//);
+// }		
+// }//);
 </script>
 @endsection
