@@ -16,9 +16,8 @@
 					@if($category->id == $article->category_id)
 
 					  <div class="panel-body">
-					    <a href="/articles/{{$article->id}}">{{$article->subject}}</a> <br/>
-		
-					    {{substr($article->body,0,10)."....."}}
+					    <a href="/articles/{{$article->id}}">{{$article->subject}}</a> <br/>		
+					    {{substr(strip_tags($article->body),0,10)."....."}}
 					  </div>
 
 					@endif

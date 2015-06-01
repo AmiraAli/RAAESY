@@ -28,17 +28,18 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#"><h4 >RAAESY</h4></a>
+				<a class="navbar-brand" href="{{ url('/articles/home') }}"><h4 >RAAESY</h4></a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/') }}">Home</a></li>
+					<li><a href="{{ url('/articles/home') }}">Home</a></li>
 					@if (Auth::check())
 						@if(Auth::user()->type == "admin")
 							<li><a href="{{ url('/tickets') }}">Tickets</a></li>
 							<li><a href="{{ url('/assets') }}">Assets</a></li>
 							<li><a href="{{ url('/users') }}">Users</a></li>
-							<li><a href="{{ url('/categories') }}">Categories&Sections</a></li>
+							<li><a href="{{ url('/categories') }}">Categories&Sections</a></li>							
+							<li><a href="{{ url('/articles') }}">Articles</a></li>
 							<li><a href="#">Reports</a></li>
 						@endif
 					@endif
@@ -53,7 +54,8 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="{{ url('/auth/logout') }}">Logout</a></li>
+								
+							<li><a href="{{ url('/auth/logout') }}">Logout</a></li>
 							</ul>
 						</li>
 					@endif
