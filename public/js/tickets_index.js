@@ -72,7 +72,7 @@ $.ajax({
 		data: {'id':id},
 		success: function(data){
 			console.log("success");
-			//document.getElementById(id).remove();    
+			document.getElementById(id).remove();    
 		    },
 		error: function(jqXHR, textStatus, errorThrown) {
 			alert(errorThrown);

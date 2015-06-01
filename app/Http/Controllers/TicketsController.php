@@ -260,6 +260,7 @@ class TicketsController extends Controller {
 		$categories=Category::all();
 		$sections=Section::all();
 		// render all technical users who has tickets < 5
+		$assign_tech=User::where('id',$ticket->tech_id)->first();
 		$users=array();
 		$users_tech=User::where('type','tech')->get();
 		for($i=0;$i<count($users_tech);$i++){
@@ -268,7 +269,7 @@ class TicketsController extends Controller {
 				array_push($users,$users_tech[$i]);
 			}
 		}
-		return view('tickets.edit',compact('ticket','subjects','categories','sections','users'));
+		return view('tickets.edit',compact('ticket','subjects','categories','sections','users','assign_tech'));
 	}
 
 	
@@ -301,7 +302,14 @@ class TicketsController extends Controller {
 
 			$prev_tech_id=$ticket->tech_id;
 
-			$ticket->tech_id=$request->get('tech');
+			if($request->get('tech') == ""){
+				$ticket->tech_id = null;
+			}else{
+				$ticket->tech_id=$request->get('tech');
+			}
+
+
+			//$ticket->tech_id=$request->get('tech');
 			$ticket->admin_id=Auth::user()->id;
 			$ticket->save();
 
@@ -577,7 +585,7 @@ class TicketsController extends Controller {
 	if($request->ajax()) {
 		$users=array();
 		$users_tech=User::where('type','tech')->get();
-			file_put_contents("/home/aya/teesst.html", $users_tech);
+			//file_put_contents("/home/aya/teesst.html", $users_tech);
 		for($i=0;$i<count($users_tech);$i++){
 		$count=Ticket::where('tech_id',$users_tech[$i]->id)->count();
 		if($count<5){
