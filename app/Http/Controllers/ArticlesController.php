@@ -127,7 +127,6 @@ class ArticlesController extends Controller {
 		
 	    $article = new Article;
 	    $article->subject=Request::get('subject');
-	    #$article->category_id=1;
 	    $userId=Auth::user()->id;
 	    $article->user_id=$userId;
 	    $isshow=Request::get('isshow');
@@ -211,8 +210,6 @@ class ArticlesController extends Controller {
 	    $v = Validator::make(Request::all(), [
         'subject' => 'required|max:255',
         'body' => 'required',
-        #'isshow' => 'required',
-        #'category' => 'required',
         ]);
         $subject=Request::get('subject');
 
@@ -237,7 +234,21 @@ class ArticlesController extends Controller {
 
 		    $catId=Request::get('category');
 		    $article->category_id=$catId;
+		    
 		    $article->save();
+
+		    $tags=Request::get('tagValues');
+			if( $tags != ""){
+				$tags_array=explode(",",$tags);
+				for($i=0;$i<count($tags_array);$i++){
+					$tag=Tag::where('name',$tags_array[$i])->first();
+					$articleTag=new ArticleTag;
+					$articleTag->tag_id=$tag->id;
+					$articleTag->article_id=$article->id;
+					$articleTag->save();
+				}
+			}
+		    
 		    return redirect('articles');
     	}
 	}
