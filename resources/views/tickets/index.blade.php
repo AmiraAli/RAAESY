@@ -1,4 +1,5 @@
 
+
 @extends('app')
 @section('content')
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -273,6 +274,8 @@ $( "#selectFields" ).click(function() {
 {
 
 var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
+
+console.log('<?php echo $tickets[0] ?>');
 
     $.ajax({
 	    url: '/tickets/sortTicket',

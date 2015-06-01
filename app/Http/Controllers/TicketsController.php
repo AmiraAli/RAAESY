@@ -73,6 +73,8 @@ class TicketsController extends Controller {
 
 		//all tickets except spam tickets
 		$tickets = Ticket::where('is_spam', "0")->get();
+		$json_of_users = Ticket::all()->toJson();
+		// var_dump($json_of_users);
 		// unassigned tickets except spam tickets
 		$unassigned = Ticket::whereNull('tech_id')->where('is_spam', "0")->get();
 		// closed tickets except spam tickets
@@ -85,13 +87,11 @@ class TicketsController extends Controller {
 		$spam = Ticket::where('is_spam', "1")->get();
 		// unanswered tickets tickets except spam tickets
 
-		// $unanswered = Ticket::leftJoin('comments','tickets.id','=','comments.ticket_id')
-  //           ->selectRaw('tickets.*, sum(comments.readonly) as c')
-  //                   ->groupBy('tickets.id')
-  //                   // ->HAVINGNULL("c")
-  //                   //->orHAVING("c" , '='  , '0')
-  //                    ->get();
-		$unanswered = DB::select('select tickets.*, sum(comments.readonly)  from tickets left join comments on tickets.id = comments.ticket_id where tickets.is_spam = 0 group by tickets.id having sum(comments.readonly) = 0 or sum(comments.readonly) is null');
+		$unanswered = Ticket::where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
+            ->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null )  THEN 0  ELSE 1 END as c')
+                    ->groupBy('tickets.id')
+                    ->HAVING("c", "=" , '0' )
+                     ->get();
 
 		$technicals=User::where('type','=','tech')->get();
 
@@ -451,7 +451,7 @@ class TicketsController extends Controller {
 	{
 		$data=$request->input();
 		$tickt= json_decode(json_encode($data['data']),TRUE);
-		var_dump($tickt);
+		// var_dump($tickt);
 		$sortBy=$data['sortBy'];
 		$sortType=$data['sortType'];
 		// Getting post data
@@ -577,7 +577,7 @@ class TicketsController extends Controller {
 	if($request->ajax()) {
 		$users=array();
 		$users_tech=User::where('type','tech')->get();
-			file_put_contents("/home/aya/teesst.html", $users_tech);
+			// file_put_contents("/home/aya/teesst.html", $users_tech);
 		for($i=0;$i<count($users_tech);$i++){
 		$count=Ticket::where('tech_id',$users_tech[$i]->id)->count();
 		if($count<5){
@@ -709,10 +709,11 @@ class TicketsController extends Controller {
 				$tickets = Ticket::where('is_spam', "1");
 			}
 			else if($request->input('name') == "unanswered"){
-				$tickets = Ticket::leftJoin('comments','tickets.id','=','comments.ticket_id')
-            		->selectRaw('tickets.*, sum(comments.readonly) as c')->where('is_spam', "0")
+
+				$tickets = Ticket::where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
+            		->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null  )  THEN 0  ELSE 1 END as c')
                     ->groupBy('tickets.id')
-                    ->HAVING("c" , '<'  , "1");
+                    ->HAVING("c", "=" , '0' );
 			}
 			if($request->input('cat')){
 				if($request->input('cat') != "all"){
@@ -721,7 +722,7 @@ class TicketsController extends Controller {
 			}
 			else if($request->input('sec')){
 
-				$categories = Category::select("id")->where("section_id", 1)->get();
+				$categories = Category::select("id")->where("section_id", $request->input('sec'))->get();
 				// $categories = json_decode(json_encode($categories), TRUE);
 				// file_put_contents("/home/samah/text.html", $categories[0]);
 				$i = 0;
