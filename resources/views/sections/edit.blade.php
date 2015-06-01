@@ -1,5 +1,10 @@
 @extends('app')
 @section('content')
+<script src="/js/DeleteUser.js"></script>
+ 	<script src="/js/users/index.js"></script>
+ 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+	<script src="/js/users/toggleSearch.js"></script>
 <div class="container">
 {!! Form::open(['route' => ['sections.update' , $section->id] ,'method' => 'put']) !!}
   <div class="form-group">

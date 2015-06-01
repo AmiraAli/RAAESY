@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 //use Illuminate\Http\Request;
 use App\Section;
 use Request;
+use App\Category;
 
 class SectionsController extends Controller {
 
@@ -17,8 +18,8 @@ class SectionsController extends Controller {
 	public function index()
 	{
 		$sections = Section:: all();
-
-		return view('sections.index',compact('sections'));
+		$categories= Category::all();
+		return view('sections.index',compact('sections','categories'));
 	}
 
 	/**
