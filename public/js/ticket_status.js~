@@ -156,7 +156,7 @@ $.ajax({
 	commentDiv.appendChild(headDiv);
 	commentDiv.appendChild(commentDiv1);
 	leftDiv.appendChild(commentDiv);
-	$('.assigned').append(result['techname']);
+			$('.assigned').append(result['techname']);
 
 	$("#select").remove();
 	$("#saveButton").remove();
