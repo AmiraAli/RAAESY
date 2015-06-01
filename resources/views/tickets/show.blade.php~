@@ -18,7 +18,7 @@
 	  <div class="panel-body " id="takeoverajax">
 @if(Auth::user()->type=="admin" or Auth::user()->id==$ticket->user_id )
 <input type="hidden" id="techid" value="tech,{{$ticket->tech_id}}">
-		@if($checkStatus)
+		@if($ticket)
 			@if($ticket->status=='open')
 			   <button name="close" id="{{$ticket->id}}"  onclick="Status({{$ticket->id}})">closed</button>
 			@endif
@@ -117,10 +117,10 @@
 				<a href="/assets/{{$relatedAsset->id}}">{{$relatedAsset->name}}</a><br>
 			@endforeach
 
-			<div id="addnewasset">
-
+			
+<div id="addnewasset">
 				<button id="{{$ticket->id}}:newasset" onclick="AddAssets({{$ticket->id}}+':newasset')">AddAsset</button>
-
+<div id="asseterrormessage"></div>
 			</div>
 
 		  </div>

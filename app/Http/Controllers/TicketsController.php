@@ -260,6 +260,7 @@ class TicketsController extends Controller {
 		$categories=Category::all();
 		$sections=Section::all();
 		// render all technical users who has tickets < 5
+		$assign_tech=User::where('id',$ticket->tech_id)->first();
 		$users=array();
 		$users_tech=User::where('type','tech')->get();
 		for($i=0;$i<count($users_tech);$i++){
@@ -268,7 +269,7 @@ class TicketsController extends Controller {
 				array_push($users,$users_tech[$i]);
 			}
 		}
-		return view('tickets.edit',compact('ticket','subjects','categories','sections','users'));
+		return view('tickets.edit',compact('ticket','subjects','categories','sections','users','assign_tech'));
 	}
 
 	
@@ -301,7 +302,14 @@ class TicketsController extends Controller {
 
 			$prev_tech_id=$ticket->tech_id;
 
-			$ticket->tech_id=$request->get('tech');
+			if($request->get('tech') == ""){
+				$ticket->tech_id = null;
+			}else{
+				$ticket->tech_id=$request->get('tech');
+			}
+
+
+			//$ticket->tech_id=$request->get('tech');
 			$ticket->admin_id=Auth::user()->id;
 			$ticket->save();
 
@@ -577,7 +585,7 @@ class TicketsController extends Controller {
 	if($request->ajax()) {
 		$users=array();
 		$users_tech=User::where('type','tech')->get();
-			file_put_contents("/home/aya/teesst.html", $users_tech);
+			//file_put_contents("/home/aya/teesst.html", $users_tech);
 		for($i=0;$i<count($users_tech);$i++){
 		$count=Ticket::where('tech_id',$users_tech[$i]->id)->count();
 		if($count<5){
@@ -637,7 +645,16 @@ class TicketsController extends Controller {
 		$subjectName=$request->input("name");
 		$targetSubject=Subject::where('name',$subjectName)->first();
 		$subjectId=$targetSubject->id;
+
+		$userType=Auth::user()->type;
+		$userId=Auth::user()->id;
+	
+		if($userType=="regular"){
+		$targetTickets=Ticket::whereSubject_idAndIs_spam($subjectId,0);
+		$targetTickets=$targetTickets->where('user_id',$userId)->get();
+		}else{
 		$targetTickets=Ticket::whereSubject_idAndIs_spam($subjectId,0)->get();
+		}
 		}
 
 	//echo json_encode($targetTickets);
@@ -658,15 +675,33 @@ class TicketsController extends Controller {
 		$deadLine=$deadLine+" "+"23:59:59";
 		}
 
+
+		$userType=Auth::user()->type;
+		$userId=Auth::user()->id;
 	if ( !$priority && !$techId && !$deadLine && !$startDate  ) 
-            {
+            {   
+		if($userType=="regular"){
+		$Tickets = Ticket::all()->where('user_id', $userId);
+		$Tickets = $Tickets->where('is_spam', "0");
+		}else{
             	$Tickets = Ticket::all()->where('is_spam', "0"); 
+			}
 		return (string) view('tickets.adavcedticketsearch',compact('Tickets'));
             }
 
             else
             {
+
+		if($userType=="regular"){
+		$Tickets = Ticket::select('*')->where('user_id', $userId);
+		$Tickets = $Tickets->where('is_spam', "0");
+		}else{
+
+
+
 	            $Tickets =Ticket::select('*')->where('is_spam', "0");
+		}
+
 
 	            if ($priority) {
 	            	$Tickets=$Tickets->where('priority',$priority);
@@ -751,6 +786,23 @@ class TicketsController extends Controller {
 			$ticket->save();
 			// add the deleted ticket to log table
 			$this->addnotification("spam","ticket",$ticket);
+			}	
+	}
+
+
+	/**
+	* Function to un spam ticket
+	**/
+	public function unSpamTicket(Request $request)
+	{
+		if($request->ajax()) {
+			$id=$request->input('id');
+			$ticket=Ticket::find($id);
+			//update that article is spamed
+			$ticket->is_spam=0;
+			$ticket->save();
+			// add the deleted ticket to log table
+			$this->addnotification("unspam","ticket",$ticket);
 			}	
 	}
 
