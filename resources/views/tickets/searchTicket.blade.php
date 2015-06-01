@@ -1,4 +1,4 @@
-<table class="table table-condensed">
+	<table class="table table-condensed">
 			<tr>
 				<td> ID </td>
 				<td>Subject</td>
@@ -54,14 +54,13 @@
 								@if($ticket->status == 'open')
 						   			<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
 								@else
-						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>|
+						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>"></a>
 								@endif
 						@endif
 
 				   		</td>
 				   </tr>
 			  @endforeach
-
 		  
 		</table>
 		 <script type="text/javascript" src="/js/tickets_index.js"></script>

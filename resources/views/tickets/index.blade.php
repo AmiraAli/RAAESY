@@ -213,7 +213,7 @@
 								@if($ticket->status == 'open')
 						   			<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
 								@else
-						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>|
+						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>"></a>
 								@endif
 						@endif
 
@@ -222,7 +222,6 @@
 			  @endforeach
 		  
 		</table>
-
 
 </div>
 </div>

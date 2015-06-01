@@ -1,8 +1,5 @@
 function tag() 
 {
-	if($('#tag').val())
-	{
-
 		var name = $("#icons_list").find(".active").attr('id');
 		var searchData = {
             'name'  : name
@@ -52,8 +49,7 @@ function tag()
 			error: function(jqXHR, textStatus, errorThrown) {
 				console.log(errorThrown);
 		    }
-		});
-	}		
+		});	
 }
 
 function sortBy() 
