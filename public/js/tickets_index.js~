@@ -64,7 +64,6 @@ $.ajax({
 **/
 
 function unspam(id){
-console.log(id);
 //ajax request
 $.ajax({
 		url: '/tickets/unSpamTicket',
