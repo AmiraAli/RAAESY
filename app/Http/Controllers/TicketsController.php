@@ -85,12 +85,13 @@ class TicketsController extends Controller {
 		$spam = Ticket::where('is_spam', "1")->get();
 		// unanswered tickets tickets except spam tickets
 
-		$unanswered = Ticket::leftJoin('comments','tickets.id','=','comments.ticket_id')
-            ->selectRaw('tickets.*, sum(comments.readonly) as c')
-                    ->groupBy('tickets.id')
-                    // ->HAVINGNULL("c")
-                    //->orHAVING("c" , '='  , '0')
-                     ->get();
+		// $unanswered = Ticket::leftJoin('comments','tickets.id','=','comments.ticket_id')
+  //           ->selectRaw('tickets.*, sum(comments.readonly) as c')
+  //                   ->groupBy('tickets.id')
+  //                   // ->HAVINGNULL("c")
+  //                   //->orHAVING("c" , '='  , '0')
+  //                    ->get();
+		$unanswered = DB::select('select tickets.*, sum(comments.readonly)  from tickets left join comments on tickets.id = comments.ticket_id where tickets.is_spam = 0 group by tickets.id having sum(comments.readonly) = 0 or sum(comments.readonly) is null');
 
 		$technicals=User::where('type','=','tech')->get();
 
@@ -235,14 +236,14 @@ class TicketsController extends Controller {
 	$comments=Ticket::find($id)->comments;
 
 	// Check status of ticket closed or open
-	$checkStatus=TicketStatus::where('ticket_id', $id)->first();
+	//$checkStatus=TicketStatus::where('ticket_id', $id)->first();
 
 	
 
 	//get assigned to and user created it
 	//$users=Ticket::find($id)->user;
 
-	return view('tickets.show',compact('ticket','relatedTickets','relatedAssets','checkStatus','comments'));
+	return view('tickets.show',compact('ticket','relatedTickets','relatedAssets','comments'));
 
 	}
 
@@ -405,10 +406,24 @@ class TicketsController extends Controller {
 		if($request->ajax()) {
 		$ticket_id = $request->input("ticket_id");
 		$status = $request->input("status");
-							}	
-		$ticketStatus=TicketStatus::where('ticket_id', $ticket_id)->first();
-		$ticketStatus->value=$status;
+							}
+
+
+
+
+		$ticketStatus=Ticket::find($ticket_id);
+		$ticketStatus->status=$status;
 		$ticketStatus->save();
+
+
+		$ticketStatuses=new TicketStatus;
+		$ticketStatuses->value=$status;
+		$ticketStatuses->ticket_id=$ticket_id;
+		$ticketStatuses->save();
+	
+		//$ticketStatus=TicketStatus::where('ticket_id', $ticket_id)->first();
+		//$ticketStatus->value=$status;
+		//$ticketStatus->save();
 
 		// save notification
 		$readonly=0;
@@ -596,6 +611,7 @@ class TicketsController extends Controller {
 	$ticket->save();
 	$ticket->fname=Auth::user()->fname;
 	$ticket->lname=Auth::user()->lname;
+	$ticket->techname=$ticket->tech->fname." ".$ticket->tech->lname;
 	$ticket->body="this ticket has been taken";
 	}
 	echo json_encode($ticket);
@@ -621,7 +637,7 @@ class TicketsController extends Controller {
 		$subjectName=$request->input("name");
 		$targetSubject=Subject::where('name',$subjectName)->first();
 		$subjectId=$targetSubject->id;
-		$targetTickets=Ticket::where('subject_id',$subjectId)->get();
+		$targetTickets=Ticket::whereSubject_idAndIs_spam($subjectId,0)->get();
 		}
 
 	//echo json_encode($targetTickets);
@@ -644,13 +660,13 @@ class TicketsController extends Controller {
 
 	if ( !$priority && !$techId && !$deadLine && !$startDate  ) 
             {
-            	$Tickets = Ticket::all(); 
+            	$Tickets = Ticket::all()->where('is_spam', "0"); 
 		return (string) view('tickets.adavcedticketsearch',compact('Tickets'));
             }
 
             else
             {
-	            $Tickets =Ticket::select('*');
+	            $Tickets =Ticket::select('*')->where('is_spam', "0");
 
 	            if ($priority) {
 	            	$Tickets=$Tickets->where('priority',$priority);
@@ -696,7 +712,7 @@ class TicketsController extends Controller {
 				$tickets = Ticket::leftJoin('comments','tickets.id','=','comments.ticket_id')
             		->selectRaw('tickets.*, sum(comments.readonly) as c')->where('is_spam', "0")
                     ->groupBy('tickets.id')
-                    ->HAVING("c" , '='  , "0");
+                    ->HAVING("c" , '<'  , "1");
 			}
 			if($request->input('cat')){
 				if($request->input('cat') != "all"){

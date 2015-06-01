@@ -1,1 +1,1 @@
-New comment {{$comment}}
+New comment 

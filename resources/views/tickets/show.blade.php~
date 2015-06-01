@@ -16,16 +16,18 @@
   <div class="leftposition">
 	<div class="panel panel-default ticketbody">
 	  <div class="panel-body " id="takeoverajax">
-@if(Auth::user()->type=="admin")
+@if(Auth::user()->type=="admin" or Auth::user()->id==$ticket->user_id )
 <input type="hidden" id="techid" value="tech,{{$ticket->tech_id}}">
 		@if($checkStatus)
-			@if($checkStatus->value=='open')
+			@if($ticket->status=='open')
 			   <button name="close" id="{{$ticket->id}}"  onclick="Status({{$ticket->id}})">closed</button>
 			@endif
-			@if($checkStatus->value=='close')
+			@if($ticket->status=='close')
 			   <button name="open" id="{{$ticket->id}}"  onclick="Status({{$ticket->id}})" >reopen</button>
 			@endif
-			@if(!$ticket->tech_id and $checkStatus->value=='open')
+			@endif
+@if(Auth::user()->type=="admin")
+			@if(!$ticket->tech_id and $ticket->status=='open')
 			   <button id="{{$ticket->id}},takeover" onclick="TakeOver({{$ticket->id}}+',takeover')">takeover</button>
 			@endif
 		@endif
@@ -46,7 +48,7 @@
 	    <div class='panel-heading'>{{$comment->user->fname}} {{$comment->user->lname}}</div>
 	      <div class="panel-body ">
 
-		@if($comment->readonly==0)
+		@if($comment->readonly==1)
 			@if(Auth::user()->id==$comment->user_id)
 		 		<button name="{{$comment->id}}_{{$ticket->id}}" id="{{$comment->body}}"
 					onclick='edit(this)' class="btn btn-primary buttonright">Edit</button>
@@ -93,17 +95,18 @@
 	  <div class="panel-heading">
 		<h3 class="panel-title">Ticket Details</h3>
 	  </div>
-	  <div class="panel-body"> 
+	  <div class="panel-body assigned"> 
 		<h4 class="title">Section    </h4>{{ $ticket->category->section->name }}<br>
 		<h4 class="title">Category   </h4>{{ $ticket->category->name }}<br>
 		<h4 class="title">Periorty   </h4>{{ $ticket->priority }}<br>
 		<h4 class="title">StartDate  </h4>{{ $ticket->created_at }}<br>
 		<h4 class="title">Due        </h4>{{ $ticket->deadline }}<br>
 		<h4 class="title">From       </h4> {{ $ticket->user->fname }} {{$ticket->user->lname}}<br>
-		<h4 class="title">AssignedTo </h4> @if($ticket->tech){{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}@endif<br>
+		<h4 class="title">AssignedTo </h4> @if($ticket->tech){{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}@endif
 	  </div>
 	</div>
 <!-----------------------------------relatedassets-------------------------------------------------------------------------------->
+@if(Auth::user()->type=="admin")	
 	<div class="panel panel-default relatedassets">
 		  <div class="panel-heading">
 			    <h3 class="panel-title">Related Assets</h3>
@@ -115,21 +118,21 @@
 			@endforeach
 
 			<div id="addnewasset">
-@if(Auth::user()->type=="admin")
+
 				<button id="{{$ticket->id}}:newasset" onclick="AddAssets({{$ticket->id}}+':newasset')">AddAsset</button>
-@endif
+
 			</div>
 
 		  </div>
 	</div>
 <!------------------------------------------relatedtags--------------------------------------------------------------------------->
-@if(Auth::user()->type=="admin")	
+
 	<div class="panel panel-default relatedtags">
 		<div class="panel-heading">
 			<h3 class="panel-title">Related tags</h3>
 		</div>
 		<div class="panel-body"> 
-<<<<<<< HEAD
+
 
 			@foreach($relatedTickets as $Ticket)
 				@if($Ticket->ticket_id!=$ticket->id)
@@ -137,15 +140,7 @@
 				@endif
 			@endforeach
 
-=======
-		@foreach($relatedTickets as $Ticket)
-		
-				@if($Ticket->id!=$ticket->id)
-					<a href="/tickets/{{$Ticket->ticket_id}}">{{substr($Ticket->description,0,10)."....."}}</a><br>
-				@endif
 
-		@endforeach
->>>>>>> 9b75bdc724a3aee6d0cfd17feb8fdfe6e50a94c1
 		</div>
 	</div>
 @endif
