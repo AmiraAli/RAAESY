@@ -77,8 +77,8 @@ Route::post('assets/addType', 'AssetsController@addType');
 
 Route::get('/reports/logs', 'ReportsController@logs');
 Route::get('/reports/disthour', 'ReportsController@distHour');
-
-
+Route::get('/reports/ticketsPerTime', 'ReportsController@ticketsPerTime');
+Route::post('/reports/prepareTickets', 'ReportsController@prepareTickets');
 
 
 Route::get('/', 'WelcomeController@index');

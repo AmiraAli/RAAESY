@@ -3,6 +3,8 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Log;
+use App\Ticket;
+use DB;
 
 use Illuminate\Http\Request;
 
@@ -35,59 +37,35 @@ class ReportsController extends Controller {
 		return view('reports.perhour');
 	}
 
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
+	public function ticketsPerTime()
 	{
-		//
+		$from = date('Y-m-d', strtotime('-2 day'));
+		$to = date('Y-m-d', strtotime('+0 day'));
+		$tickets = Ticket::select(DB::raw('count(*) as ticketCount,created_at'))->whereBetween('created_at', [$from, $to])->groupBy(DB::raw('DATE(created_at)'))->get();	
+// // 		$datetime1 = date_create(date('Y-m-d', strtotime('-2 day')));
+// // $datetime2 = date_create(date('Y-m-d', strtotime('+0 day')));
+// 		$datetime1 = date_create('2009-10-11');
+// $datetime2 = date_create('2009-10-13');
+// 		$interval = date_diff($datetime1, $datetime2);
+// 			$interval->format('%R%a days');
+		// for ($i=0; $i < count($tickt); $i++){
+
+		// }
+			
+		return view('reports.ticketsPerTime', compact('tickets'));
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
+	public function prepareTickets()
 	{
-		//
-	}
+		file_put_contents("/home/samah/teesst.html", "aaaaaaaaaaa");
+		// if( $request->ajax() ) {
+			// $unit = $request->input("unit");
+			// $from = $request->input("from");
+			// $to = $request->input("to");
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
+			// $tickets = Ticket::select('count(created_at)','created_at')->whereBetween('created_at', [$from, $to])->groupBy('date(created_at)')->get();
+			echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+			// echo json_encode($tickets);
+		// }
 	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-
 }
