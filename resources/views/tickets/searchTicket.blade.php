@@ -1,22 +1,22 @@
-	<table class="table table-condensed">
+<table class="table table-condensed">
 			<tr>
 				
-				<td class="text-center">Subject</td>
-				<td class="text-center">Status</td>
+				<td class="subject text-center">Subject</td>
+				<td class="status text-center">Status</td>
 				<td class="category text-center">Category</td>
-				<td class="text-center">Creation date</td>
-				<td class="text-center">Dead line</td>
+				<td class="created_at text-center">Creation date</td>
+				<td class="deadline text-center">Dead line</td>
 				<td class="priority text-center">Periorty</td>
 				<td class="text-center">Settings</td>
 			</tr>
 			  @foreach($tickets as $ticket)
 				   <tr id="{{ $ticket->id }}">
 				   		
-				   		<td class="text-center">{{ $ticket->subject->name }}</td>
-				   		<td class="text-center"> {{ $ticket->status }}</td>
+				   		<td class="subject text-center">{{ $ticket->subject->name }}</td>
+				   		<td class="status text-center"> {{ $ticket->status }}</td>
 				   		<td class="category text-center">{{ $ticket->category->name }}</td>
-				   		<td class="text-center">{{ $ticket->created_at }} </td>
-				   		<td class="text-center">{{ $ticket->deadline }} </td>
+				   		<td class="created_at text-center">{{ $ticket->created_at }} </td>
+				   		<td class="deadline text-center">{{ $ticket->deadline }} </td>
 				   		@if($ticket->priority == "low")
 				   			<td class="priority text-center"><b class="alert-success ">{{ $ticket->priority }}</b></td>
 				   		@elseif($ticket->priority == "high")
@@ -58,8 +58,8 @@
 								@if($ticket->status == 'open')
 						   			<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
 								@else
-						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>"></a>
-								@endif
+						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>@endif"></a>
+								
 						@endif
 
 				   		</td>

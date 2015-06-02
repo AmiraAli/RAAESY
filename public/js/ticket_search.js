@@ -1,3 +1,28 @@
+window.onload = function() {
+                    $.ajaxSetup({
+                headers: {
+                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
+                }
+            });
+                    
+            };
+            
+$( "#selectFields" ).click(function() {
+  $( '#check' ).slideToggle( "fast" );
+});
+
+
+  $('.checkbox1').change(function() {
+        if(!$(this).is(":checked")) 
+        {
+            $('.'+$(this).val()).hide();
+        }
+        else
+        {
+        	$('.'+$(this).val()).show();
+        }
+    });
+
 function tag() 
 {
 		var name = $("#icons_list").find(".active").attr('id');

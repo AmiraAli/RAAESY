@@ -39,11 +39,19 @@ class SectionsController extends Controller {
 	 */
 	public function store()
 	{
-		$section = new Section;
-		$section->name = Request::get('name');
-		$section->save();
 
-		return redirect('/sections');
+		
+		if(Section::where('name', '=', Request::get('name'))->exists()){	
+				return "not done";
+		}else{
+			$section = new Section;
+			$section->name = Request::get('name');
+			$section->save();
+			return $section->id;
+	
+		}
+
+		
 	}
 
 	/**
