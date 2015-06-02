@@ -201,19 +201,12 @@ class ReportsController extends Controller {
 	}
 
 
-	public function technicianStatisticsSearch(Request $request)
+	public function technicianStatisticsSearch()
 	{
 		
-		// Getting post data
-		if( $request->ajax() ) {
+			$startDate = Request::get('from');
+			$endDate = Request::get('to');
 
-			// $startDate = $request->input('from');
-			// $endDate = $request->input('to');
-
-
-
-			}
-	
 	}
 
 
