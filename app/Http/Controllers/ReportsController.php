@@ -193,5 +193,28 @@ class ReportsController extends Controller {
 		}
 	}
 
+	public function technicianStatistics()
+	{
+
+		return view('reports.technicianStatistics',compact('technicians'));
+
+	}
+
+
+	public function technicianStatisticsSearch(Request $request)
+	{
+		
+		// Getting post data
+		if( $request->ajax() ) {
+
+			// $startDate = $request->input('from');
+			// $endDate = $request->input('to');
+
+
+
+			}
+	
+	}
+
 
 }
