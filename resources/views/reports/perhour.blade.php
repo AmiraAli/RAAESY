@@ -1,29 +1,37 @@
 @extends('app')
 
-<!DOCTYPE html>
-<html>
-<head>
-	<script sync src="http://code.jquery.com/jquery-1.9.0.js"></script>
-<script sync src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
 
-<script sync src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
-
-<script sync src="http://code.highcharts.com/highcharts.js"></script>
-<script sync src="http://code.highcharts.com/modules/exporting.js"></script>
-</head>
-<body>
 @section('content')
+
+<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
+
+
+
 
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-@stop
+<input type="hidden" id="defaultOpen" value ="{{ $defaultOpen }}">
+<input type="hidden" id="defaultClose" value ="{{ $defaultClose }}">
 
-<script sync src="/js/reports/dist_per_hour.js"></script>
+
+From : <input type="date" id="date1" >
+To : <input type="date" id="date2" >
+<button onclick="getReport()" >Get Report</button> 
 
 
-</body>
-</html>
+
+
+<script   src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script  src="http://code.highcharts.com/highcharts.js"></script>
+<script  src="http://code.highcharts.com/modules/exporting.js"></script>
+<script  src="/js/reports/dist_per_hour.js"></script>
+
+
+
+
+
+@endsection
+
 
 
 

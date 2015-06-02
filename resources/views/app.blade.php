@@ -66,7 +66,7 @@
 	@yield('content')
 
 	<!-- Scripts -->
-
+	
 	<script src="/bootstrab/js/bootstrap.min.js"></script>
 
 </body>
