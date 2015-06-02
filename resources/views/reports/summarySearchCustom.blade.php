@@ -1,19 +1,16 @@
-@extends('app')
-@section('content')
-<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
-<div class="container" id="container">
-	<div class="row">
+<div class="row">
 		<div class="col-md-3">
 			<select class="form-control" id="date" onchange="custom()">
-				<option value="month">Last month</option>
+				<option value="month" selected="true">Last month</option>
 		  		<option value="week">Last week</option>
-		  		<option value="custom">Custom</option>
+                <option value="custom" selected="true">Custom</option>
+
 			</select>
 		</div>
-		<div class="col-md-5" style="display:none;" id="customedate">
-			From:<input type="date" id="startdate">
-			To:<input type="date" id="enddate">
-		</div>
+        <div class="col-md-5" style="display:none;" style="visibility:hidden;" id="customedate">
+            From:<input type="date" id="startdate" value="{{ $startdate }}">
+            To:<input type="date" id="enddate" value="{{ $enddate }}">
+        </div>
 		<div style="float:left;">
 			<button class="btn btn-primary" onclick="search()"><span class="glyphicon glyphicon-search"></span></button>
 		</div>
@@ -30,14 +27,9 @@
 			<div id="status" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 		</div>
 	</div>
-</div>
- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
- <script src="http://code.highcharts.com/highcharts.js"></script>
- <script src="http://code.highcharts.com/modules/exporting.js"></script>
- <script type="text/javascript" src="/js/reports/summarycategory.js"></script>
- <script type="text/javascript" src="/js/reports/summarysearch.js"></script>
+ <script type="text/javascript" src="/js/reports/summarycategory.js"></script>	
 <script type="text/javascript" >
-	var Globals = <?php echo json_encode(array(
+var Globals = <?php echo json_encode(array(
 											    'inprogressCount' => $inprogressCount,
 											    'newCount'=>$newCount,
 											    'resolvedCount'=>$resolvedCount
@@ -82,4 +74,5 @@ $(function () {
 
 
 </script>
-@endsection
+ <script type="text/javascript" src="/js/reports/summarysearch.js"></script>
+
