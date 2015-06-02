@@ -1,4 +1,5 @@
 
+
 @extends('app')
 @section('content')
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -159,27 +160,31 @@
 <div class="col-md-9 "  id="table_show">
 	<table class="table table-condensed">
 			<tr>
-				<td> ID </td>
-				<td>Subject</td>
-				<td>Status</td>
-				<td class="category">Category</td>
-				<td class="priority">Periorty</td>
-				<td>Settings</td>
+				
+				<td class="text-center">Subject</td>
+				<td class="text-center">Status</td>
+				<td class="category text-center">Category</td>
+				<td class="text-center">Creation date</td>
+				<td class="text-center">Dead line</td>
+				<td class="priority text-center">Periorty</td>
+				<td class="text-center">Settings</td>
 			</tr>
 			  @foreach($tickets as $ticket)
 				   <tr id="{{ $ticket->id }}">
-				   		<td>#{{ $ticket->id }} </td>
-				   		<td>{{ $ticket->subject->name }}</td>
-				   		<td> {{ $ticket->status }}</td>
-				   		<td class="category">{{ $ticket->category->name }}</td>
+				   		
+				   		<td class="text-center">{{ $ticket->subject->name }}</td>
+				   		<td class="text-center"> {{ $ticket->status }}</td>
+				   		<td class="category text-center">{{ $ticket->category->name }}</td>
+				   		<td class="text-center">{{ $ticket->created_at }} </td>
+				   		<td class="text-center">{{ $ticket->deadline }} </td>
 				   		@if($ticket->priority == "low")
-				   			<td class="priority"><b class="alert-success ">{{ $ticket->priority }}</b></td>
+				   			<td class="priority text-center"><b class="alert-success ">{{ $ticket->priority }}</b></td>
 				   		@elseif($ticket->priority == "high")
-				   			<td class="priority"><b class="alert-warning">{{ $ticket->priority }}</b></td>
+				   			<td class="priority text-center"><b class="alert-warning">{{ $ticket->priority }}</b></td>
 				   		@else
-				   			<td class="priority"><b class="alert-danger">{{ $ticket->priority }}</b></td>
+				   			<td class="priority text-center"><b class="alert-danger">{{ $ticket->priority }}</b></td>
 				   		@endif
-				   		<td>
+				   		<td class="text-center">
 				   		@if (Auth::user()->type == "admin")
 
 						   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
@@ -266,7 +271,6 @@ $( "#selectFields" ).click(function() {
         	$('.'+$(this).val()).show();
         }
     });
-            
 
 </script>
 @endsection
