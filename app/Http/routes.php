@@ -79,7 +79,7 @@ Route::get('/reports/logs', 'ReportsController@logs');
 Route::get('/reports/disthour', 'ReportsController@distHour');
 Route::get('/reports/summary', 'ReportsController@SummaryCategories');
 
-
+Route::post('/reports/disthourajax', 'ReportsController@ajaxdistHour');
 
 Route::get('/', 'WelcomeController@index');
 
