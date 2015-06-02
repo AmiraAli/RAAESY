@@ -7,11 +7,10 @@
 
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 	<div class="container" style="width:1300px;" >
-<div>
+
 @if(Auth::user()->type=="admin" or Auth::user()->type=="regular" )
 <a class="btn btn-primary" href="{{ url('/assets/create') }}"> New Asset</a>
 @endif
-</div>
 <div id="search_result" class="col-md-8 ">
 	<table class="table table-hover">
 		<thead>

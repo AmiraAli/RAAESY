@@ -29,7 +29,7 @@
 <!-- table---------------------------------------------------------------------------------------------------------->
 @if(Auth::user()->type=="admin" or Auth::user()->type=="regular" )
 <a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Ticket</a>
-
+@endif
 <div class="row" id="icons_list">
 
 	<ul class="nav nav-pills" role="tablist">

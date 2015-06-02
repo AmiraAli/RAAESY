@@ -17,6 +17,7 @@
 
 
 Route::resource('/categories','CategoriesController');
+
 Route::resource('/sections','SectionsController');
 
 
