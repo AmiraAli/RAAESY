@@ -3,21 +3,12 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Log;
-
+use App\Ticket;
 use Illuminate\Http\Request;
 
 class ReportsController extends Controller {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		
-	}
-
+	
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -35,59 +26,25 @@ class ReportsController extends Controller {
 		return view('reports.perhour');
 	}
 
-
 	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
+	* function to count the tickets in all status 
+	**/
+	public function summaryStatus(){
+
+		$inprogressCount=Ticket::whereNull('tech_id')
+								->where('status','open')
+								->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
+								->count();
+		$newCount=Ticket::whereNotNull('tech_id')
+								->where('status','open')
+								->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
+								->count();
+		$resolvedCount=Ticket::where('status','close')
+								->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
+								->count();						
+		return view('reports.summary',compact('inprogressCount','newCount','resolvedCount'));
+
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
 
 }
