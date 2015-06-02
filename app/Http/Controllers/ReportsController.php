@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Log;
 
 use Illuminate\Http\Request;
 
@@ -14,8 +15,7 @@ class ReportsController extends Controller {
 	 */
 	public function index()
 	{
-		$logs =Log::all();
-		return view('reports.logs',compact('logs'));
+		
 	}
 
 	/**
@@ -23,10 +23,18 @@ class ReportsController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function logs()
 	{
-		//
+		$logs =Log::all();
+		return view('reports.logs',compact('logs'));
 	}
+
+
+	public function distHour()
+	{
+		return view('reports.perhour');
+	}
+
 
 	/**
 	 * Store a newly created resource in storage.
