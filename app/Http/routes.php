@@ -77,7 +77,9 @@ Route::post('assets/addType', 'AssetsController@addType');
 
 Route::get('/reports/logs', 'ReportsController@logs');
 Route::get('/reports/disthour', 'ReportsController@distHour');
-Route::get('/reports/summary', 'ReportsController@SummaryCategories');
+
+Route::get('/reports/summary', 'ReportsController@summary');
+Route::post('/reports/summarySearchDate', 'ReportsController@summarySearchDate');
 
 Route::post('/reports/disthourajax', 'ReportsController@ajaxdistHour');
 
