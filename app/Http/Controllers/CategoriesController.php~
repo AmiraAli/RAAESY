@@ -70,8 +70,8 @@ class CategoriesController extends Controller {
 	public function edit($id)
 	{
 		$category = Category::find($id);
-		$sections = Section:: all();
-		return view('categories.edit',compact('category' ,'sections'));
+		
+		return (string)view('categories.edit',compact('category'));
 	}
 
 	/**
@@ -82,12 +82,14 @@ class CategoriesController extends Controller {
 	 */
 	public function update($id)
 	{
+		if(Category::where('name','=',Request::get('name'))->exists()){
+			return "NOT DONE"
+		}
 		$category = Category::find($id);
 		$category->name = Request::get('name');
-		$category->section_id= Request::get('section_id');
 		$category->save();
 
-		return redirect('categories/'.$id."/edit");
+		return (string)view('categories.editcat',compact('category'));
 	}
 
 	/**

@@ -38,7 +38,7 @@
 							<li><a href="{{ url('/tickets') }}">Tickets</a></li>
 							<li><a href="{{ url('/assets') }}">Assets</a></li>
 							<li><a href="{{ url('/users') }}">Users</a></li>
-							<li><a href="{{ url('/categories') }}">Categories&Sections</a></li>							
+							<li><a href="{{ url('/sections') }}">Categories&Sections</a></li>							
 							<li><a href="{{ url('/articles') }}">Articles</a></li>
 							<li><a href="#">Reports</a></li>
 						@endif

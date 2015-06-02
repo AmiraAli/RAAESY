@@ -1,4 +1,5 @@
 
+
 @extends('app')
 @section('content')
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -159,27 +160,31 @@
 <div class="col-md-9 "  id="table_show">
 	<table class="table table-condensed">
 			<tr>
-				<td> ID </td>
-				<td>Subject</td>
-				<td>Status</td>
-				<td class="category">Category</td>
-				<td class="priority">Periorty</td>
-				<td>Settings</td>
+				
+				<td class="text-center">Subject</td>
+				<td class="text-center">Status</td>
+				<td class="category text-center">Category</td>
+				<td class="text-center">Creation date</td>
+				<td class="text-center">Dead line</td>
+				<td class="priority text-center">Periorty</td>
+				<td class="text-center">Settings</td>
 			</tr>
 			  @foreach($tickets as $ticket)
 				   <tr id="{{ $ticket->id }}">
-				   		<td>#{{ $ticket->id }} </td>
-				   		<td>{{ $ticket->subject->name }}</td>
-				   		<td> {{ $ticket->status }}</td>
-				   		<td class="category">{{ $ticket->category->name }}</td>
+				   		
+				   		<td class="text-center">{{ $ticket->subject->name }}</td>
+				   		<td class="text-center"> {{ $ticket->status }}</td>
+				   		<td class="category text-center">{{ $ticket->category->name }}</td>
+				   		<td class="text-center">{{ $ticket->created_at }} </td>
+				   		<td class="text-center">{{ $ticket->deadline }} </td>
 				   		@if($ticket->priority == "low")
-				   			<td class="priority"><b class="alert-success ">{{ $ticket->priority }}</b></td>
+				   			<td class="priority text-center"><b class="alert-success ">{{ $ticket->priority }}</b></td>
 				   		@elseif($ticket->priority == "high")
-				   			<td class="priority"><b class="alert-warning">{{ $ticket->priority }}</b></td>
+				   			<td class="priority text-center"><b class="alert-warning">{{ $ticket->priority }}</b></td>
 				   		@else
-				   			<td class="priority"><b class="alert-danger">{{ $ticket->priority }}</b></td>
+				   			<td class="priority text-center"><b class="alert-danger">{{ $ticket->priority }}</b></td>
 				   		@endif
-				   		<td>
+				   		<td class="text-center">
 				   		@if (Auth::user()->type == "admin")
 
 						   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
@@ -213,7 +218,7 @@
 								@if($ticket->status == 'open')
 						   			<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
 								@else
-						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>|
+						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>"></a>
 								@endif
 						@endif
 
@@ -222,7 +227,6 @@
 			  @endforeach
 		  
 		</table>
-
 
 </div>
 </div>
@@ -249,7 +253,7 @@ window.onload = function() {
                     'X-XSRF-Token': $('meta[name="_token"]').attr('content')
                 }
             });
-                    sortBy();
+                    
             };
 
 $( "#selectFields" ).click(function() {
@@ -267,122 +271,6 @@ $( "#selectFields" ).click(function() {
         	$('.'+$(this).val()).show();
         }
     });
-            
-//$( "#sortBy" ).change(
-	function sortBy() 
-{
 
-var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
-
-    $.ajax({
-	    url: '/tickets/sortTicket',
-	    type: 'post',
-	    data: { data : tickets , sortBy: $('#sortBy ').val() , sortType : "DESC"},
-	    success: function(result) {
-			 $('#table_show').html(result);
-			 $("#sortType").html("ASC");
-
-			$('.checkbox1').each(function () {
-				 if(!$(this).is(":checked")) 
-			        {
-			        	
-			            $('.'+$(this).val()).hide();
-
-			        }
-			        else
-			        {
-			        
-			        	$('.'+$(this).val()).show();
-			        }
-			    
-			});
-			tag();
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log(errorThrown);
-	    }
-	});
-
-		
-}//);
-
-//$("#sortType").click(
-
-	function sortType(){
-
-	var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
-
-   $.ajax({
-	    url: '/tickets/sortTicket',
-	    type: 'post',
-	    data: { data : tickets , sortBy: $('#sortBy ').val() , sortType : $("#sortType").text()},
-	    success: function(result) {
-			 $('#table_show').html(result);
-
-			 if ($("#sortType").text() == "ASC")
-			 {
-			 	$("#sortType").html("DESC");
-			 } 
-			 else
-			 {
-			 	$("#sortType").html("ASC")
-			 };
-			 $('.checkbox1').each(function () {
-			 if(!$(this).is(":checked")) 
-		     {
-		        	
-		       $('.'+$(this).val()).hide();
-
-		     }
-		     else
-		     {
-		        
-		        $('.'+$(this).val()).show();
-		     }
-    
-});
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log(errorThrown);
-	    }
-	});
-    
-}//);
-
-//$( "#tag" ).change(
-	function tag() 
-{
-	if($('#tag').val()){
-var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
-
-    $.ajax({
-	    url: '/tickets/relatedTag',
-	    type: 'post',
-	    data: { data : tickets , tagId : $('#tag').val() },
-	    success: function(result) {
-			 $('#table_show').html(result);
-			 $('.checkbox1').each(function () {
-				 if(!$(this).is(":checked")) 
-			        {
-			        	
-			            $('.'+$(this).val()).hide();
-
-			        }
-			        else
-			        {
-			        
-			        	$('.'+$(this).val()).show();
-			        }
-			    
-			});
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log(errorThrown);
-	    }
-	});
-
-
-}		
-}//);
 </script>
 @endsection
