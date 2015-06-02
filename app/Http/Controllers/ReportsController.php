@@ -34,39 +34,6 @@ class ReportsController extends Controller {
 		$openedTickets = DB::select("select id ,hour(created_at) as hour , status , count(*) as count from  tickets where created_at between '$date2' and '$date1' and status = 'open' group by hour(created_at)");
 		$defaultOpen = '';
 
-<<<<<<< HEAD
-	public function ticketsPerTime()
-	{
-		$from = date('Y-m-d', strtotime('-2 day'));
-		$to = date('Y-m-d', strtotime('+0 day'));
-		$tickets = Ticket::select(DB::raw('count(*) as ticketCount,created_at'))->whereBetween('created_at', [$from, $to])->groupBy(DB::raw('DATE(created_at)'))->get();	
-// // 		$datetime1 = date_create(date('Y-m-d', strtotime('-2 day')));
-// // $datetime2 = date_create(date('Y-m-d', strtotime('+0 day')));
-// 		$datetime1 = date_create('2009-10-11');
-// $datetime2 = date_create('2009-10-13');
-// 		$interval = date_diff($datetime1, $datetime2);
-// 			$interval->format('%R%a days');
-		// for ($i=0; $i < count($tickt); $i++){
-
-		// }
-			
-		return view('reports.ticketsPerTime', compact('tickets'));
-	}
-
-	public function prepareTickets()
-	{
-		file_put_contents("/home/samah/teesst.html", "aaaaaaaaaaa");
-		// if( $request->ajax() ) {
-			// $unit = $request->input("unit");
-			// $from = $request->input("from");
-			// $to = $request->input("to");
-
-			// $tickets = Ticket::select('count(created_at)','created_at')->whereBetween('created_at', [$from, $to])->groupBy('date(created_at)')->get();
-			echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-			// echo json_encode($tickets);
-		// }
-	}
-=======
 		foreach ($openedTickets as $ticket){
 			$defaultOpen.=$ticket->hour."_".$ticket->count.":";
 		}
@@ -227,6 +194,35 @@ class ReportsController extends Controller {
 		}
 	}
 
+	public function ticketsPerTime()
+	{
+		$from = date('Y-m-d', strtotime('-2 day'));
+		$to = date('Y-m-d', strtotime('+0 day'));
+		$tickets = Ticket::select(DB::raw('count(*) as ticketCount,created_at'))->whereBetween('created_at', [$from, $to])->groupBy(DB::raw('DATE(created_at)'))->get();	
+// // 		$datetime1 = date_create(date('Y-m-d', strtotime('-2 day')));
+// // $datetime2 = date_create(date('Y-m-d', strtotime('+0 day')));
+// 		$datetime1 = date_create('2009-10-11');
+// $datetime2 = date_create('2009-10-13');
+// 		$interval = date_diff($datetime1, $datetime2);
+// 			$interval->format('%R%a days');
+		// for ($i=0; $i < count($tickt); $i++){
 
->>>>>>> 1edc79ea4bee7eac273020de3e246d556c5bef96
+		// }
+			
+		return view('reports.ticketsPerTime', compact('tickets'));
+	}
+
+	public function prepareTickets()
+	{
+		file_put_contents("/home/samah/teesst.html", "aaaaaaaaaaa");
+		// if( $request->ajax() ) {
+			// $unit = $request->input("unit");
+			// $from = $request->input("from");
+			// $to = $request->input("to");
+
+			// $tickets = Ticket::select('count(created_at)','created_at')->whereBetween('created_at', [$from, $to])->groupBy('date(created_at)')->get();
+			echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+			// echo json_encode($tickets);
+		// }
+	}
 }
