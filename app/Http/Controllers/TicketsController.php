@@ -694,60 +694,60 @@ class TicketsController extends Controller {
 	**/
 
 	public function AdvancedSearch(Request $request){
-	if($request->ajax()) {
-		$priority=$request->input("priority");
-		$deadLine=$request->input("enddate");
-		$startDate=$request->input("created_at");
-		$techId=$request->input("tech_id");
-		$startDate=$startDate+" "+"00:00:00";
-		$deadLine=$deadLine+" "+"23:59:59";
-		}
-
-
-		$userType=Auth::user()->type;
-		$userId=Auth::user()->id;
-	if ( !$priority && !$techId && !$deadLine && !$startDate  ) 
-            {   
-		if($userType=="regular"){
-		$Tickets = Ticket::all()->where('user_id', $userId);
-		$Tickets = $Tickets->where('is_spam', "0");
-		}else{
-            	$Tickets = Ticket::all()->where('is_spam', "0"); 
+		if($request->ajax()) {
+			$priority=$request->input("priority");
+			$deadLine=$request->input("enddate");
+			$startDate=$request->input("created_at");
+			$techId=$request->input("tech_id");
+			$startDate=$startDate+" "+"00:00:00";
+			$deadLine=$deadLine+" "+"23:59:59";
 			}
+
+				var_dump("sdfg");
+			$userType=Auth::user()->type;
+			$userId=Auth::user()->id;
+		if ( !$priority && !$techId && !$deadLine && !$startDate  ) 
+	            {   
+			if($userType=="regular"){
+			$Tickets = Ticket::all()->where('user_id', $userId);
+			$Tickets = $Tickets->where('is_spam', "0");
+			}else{
+	            	$Tickets = Ticket::all()->where('is_spam', "0"); 
+				}
+			return (string) view('tickets.adavcedticketsearch',compact('Tickets'));
+	            }
+
+	            else
+	            {
+
+			if($userType=="regular"){
+			$Tickets = Ticket::select('*')->where('user_id', $userId);
+			$Tickets = $Tickets->where('is_spam', "0");
+			}else{
+
+
+
+		            $Tickets =Ticket::select('*')->where('is_spam', "0");
+			}
+
+
+		            if ($priority) {
+		            	$Tickets=$Tickets->where('priority',$priority);
+		            }
+
+		            if ($techId) {
+		            	$Tickets=$Tickets->where('tech_id',$techId);
+		            }
+			    if($deadLine and $startDate){
+		            	$Tickets=$Tickets->where('updated_at','>=',$startDate);
+				$Tickets=$Tickets->where('deadline','<=',$deadLine);
+				}
+
+		            $Tickets=$Tickets->get();
+		            
 		return (string) view('tickets.adavcedticketsearch',compact('Tickets'));
-            }
-
-            else
-            {
-
-		if($userType=="regular"){
-		$Tickets = Ticket::select('*')->where('user_id', $userId);
-		$Tickets = $Tickets->where('is_spam', "0");
-		}else{
-
-
-
-	            $Tickets =Ticket::select('*')->where('is_spam', "0");
-		}
-
-
-	            if ($priority) {
-	            	$Tickets=$Tickets->where('priority',$priority);
-	            }
-
-	            if ($techId) {
-	            	$Tickets=$Tickets->where('tech_id',$techId);
-	            }
-		    if($deadLine and $startDate){
-	            	$Tickets=$Tickets->where('updated_at','>=',$startDate);
-			$Tickets=$Tickets->where('deadline','<=',$deadLine);
-			}
-
-	            $Tickets=$Tickets->get();
-	            
-	return (string) view('tickets.adavcedticketsearch',compact('Tickets'));
-	        }  
-	
+		        }  
+		
 	}
 
 
@@ -803,6 +803,7 @@ class TicketsController extends Controller {
 				$tickets = $tickets->whereIn('category_id', $arr);
 			}
 			$tickets = $tickets->get();
+
 			$tickets= $this->relatedTag ( $tickets , $tag);
 			$tickets= $this->sortTicket ( $tickets , $sortBy , $sortType);
 			return view("tickets.searchTicket",compact('tickets')); 

@@ -38,10 +38,6 @@ Route::post('articles/getTags', 'ArticlesController@getTags');
 Route::post('articles/search', 'ArticlesController@search');
 Route::get('articles/home', 'ArticlesController@home');
 
-
-
-
-
 Route::post('tickets/searchTicket', 'TicketsController@searchTicket');
 Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
 Route::post('tickets/relatedTag', 'TicketsController@relatedTag');
