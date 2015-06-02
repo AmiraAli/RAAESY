@@ -23,7 +23,7 @@
 			{{ $asset->location }}
 			<br><br>
 	
-	<h2>related articles</h2>
+	<h2>Related Tickets</h2>
 
 		<table class="table table-condensed">
 			<tr>

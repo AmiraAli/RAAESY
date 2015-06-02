@@ -58,8 +58,8 @@
 								@if($ticket->status == 'open')
 						   			<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
 								@else
-						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>"></a>
-								@endif
+						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>@endif"></a>
+								
 						@endif
 
 				   		</td>
