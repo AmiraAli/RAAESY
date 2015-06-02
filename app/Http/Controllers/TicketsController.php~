@@ -66,13 +66,14 @@ class TicketsController extends Controller {
 	 */
 	public function index()
 	{
-
 		$sections = Section::all();
 
 		$tags=Tag::all();
 
 		//all tickets except spam tickets
 		$tickets = Ticket::where('is_spam', "0")->get();
+		$tickets= $this->sortTicket ( $tickets ,"subject" ,"DESC");
+
 		// unassigned tickets except spam tickets
 		$unassigned = Ticket::whereNull('tech_id')->where('is_spam', "0")->get();
 		// closed tickets except spam tickets
@@ -85,13 +86,11 @@ class TicketsController extends Controller {
 		$spam = Ticket::where('is_spam', "1")->get();
 		// unanswered tickets tickets except spam tickets
 
-		// $unanswered = Ticket::leftJoin('comments','tickets.id','=','comments.ticket_id')
-  //           ->selectRaw('tickets.*, sum(comments.readonly) as c')
-  //                   ->groupBy('tickets.id')
-  //                   // ->HAVINGNULL("c")
-  //                   //->orHAVING("c" , '='  , '0')
-  //                    ->get();
-		$unanswered = DB::select('select tickets.*, sum(comments.readonly)  from tickets left join comments on tickets.id = comments.ticket_id where tickets.is_spam = 0 group by tickets.id having sum(comments.readonly) = 0 or sum(comments.readonly) is null');
+		$unanswered = Ticket::where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
+            ->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null )  THEN 0  ELSE 1 END as c')
+                    ->groupBy('tickets.id')
+                    ->HAVING("c", "=" , '0' )
+                     ->get();
 
 		$technicals=User::where('type','=','tech')->get();
 
@@ -455,28 +454,18 @@ class TicketsController extends Controller {
 	/**
 	* Function to sort tickets
 	**/
-	public function sortTicket(Request $request)
+	public function sortTicket( $tickt , $sortBy ,$sortType )
 	{
-		$data=$request->input();
-		$tickt= json_decode(json_encode($data['data']),TRUE);
-		var_dump($tickt);
-		$sortBy=$data['sortBy'];
-		$sortType=$data['sortType'];
-		// Getting post data
-	   if($request->ajax())
-	    {
-	    	//convert object to array
-	    	$tickets = array();
-
-	    	for ($i=0; $i < count($tickt) ; $i++)
-	        { 		    			    	
-		        foreach ($tickt[$i] as $key => $value)
-		        {
-		            $tickets[$i][$key] = $value;
-		        }
-			}
-			
-			foreach ($tickets as $key => $row)
+		if(is_object($tickt) &&  ! $tickt->isEmpty())
+		{		
+    		$tickets = array();
+	    			    	
+	        foreach ($tickt as $key => $value)
+	        {	        
+	            $tickets[$key] = $value;
+            
+	        }
+	        foreach ($tickets as $key => $row)
 			{
 				if ($sortBy == "subject") 
 				{		
@@ -487,6 +476,7 @@ class TicketsController extends Controller {
 					$sort[$key] = $row[$sortBy];
 				}			    				    
 			}
+
 
 			//sorting function
 			if ($sortType == "DESC") 
@@ -511,44 +501,81 @@ class TicketsController extends Controller {
 					array_multisort($sort, SORT_DESC, $tickets);
 				}
 			}
+			return $tickets; 
+		}	
+	   
+	    elseif ( is_array($tickt) && !empty($tickt)) 
+		{
+			foreach ($tickt as $key => $row)
+			{
+				if ($sortBy == "subject") 
+				{		
+					$sort[$key] = $row['subject']['name'];
+				}
+				else 
+				{
+					$sort[$key] = $row[$sortBy];
+				}			    				    
+			}
 
-			//convert array to object
-			$tickets  = json_decode(json_encode($tickets), FALSE);
 
-			return view("tickets.sortTicket",compact('tickets')); 
-
-		 }
+			//sorting function
+			if ($sortType == "DESC") 
+			{	
+				if($sortBy == "priority")
+				{
+					array_multisort($sort, SORT_DESC, $tickt);
+				}
+				else
+				{	
+					array_multisort($sort, SORT_ASC, $tickt);
+				}
+			}
+			elseif ($sortType == "ASC")
+			{
+				if($sortBy == "priority")
+				{
+					array_multisort($sort, SORT_ASC, $tickt);
+				}
+				else
+				{	
+					array_multisort($sort, SORT_DESC, $tickt);
+				}
+			}
+			return $tickt; 
+		}
+		return $tickt;		
 	}
 
 	/**
 	* Function to get related tickets by tags
 	**/
-	public function relatedTag(Request $request)
+	public function relatedTag($tickt,$tag)
 	{
-		$data=$request->input();
-		$tickt= json_decode(json_encode($data['data']),TRUE);
-		$tag=$data['tagId'];
+
+		//$tag=$data['tagId'];
 		$flag=1;
 		// Getting post data
-	   if($request->ajax() && $tag)
+	   if( $tag)
 	    {
 	    	//convert object to array
 	    	$tickets = array();
-	    	
-	    	for ($i=0; $i < count($tickt) ; $i++)
-	        { 		    			    	
-		        foreach ($tickt[$i] as $key => $value)
+	    	$i = 0;
+	    	 foreach ($tickt as $key => $value)
 		        {
-		            $tickets[$i][$key] = $value;
+		            $tickets[$i] = $value;
+		            $i++;
 		        }
-			}
+			
 			
 			for ($i=0; $i < count($tickt); $i++) 
 			{ 	
 	  			$ticket=Ticket::findOrFail((int)$tickets[$i]['id']);
+
 				// Get Related Tags
 				$relatTagIds[] = Ticket::find((int)$tickets[$i]['id'])->TicketTags;
-
+				// var_dump($relatTagIds);
+	  	// 		exit();
 				for ($j=0; $j < count($relatTagIds[$i]); $j++) 
 				{
 				  
@@ -556,10 +583,9 @@ class TicketsController extends Controller {
 					{
 					 	$relatTickets[]=$tickets[$i];
 					 	$flag=0;
+
 					}
-
-
-				 }				 
+				}				 
 			}
 			if( $flag == 1 )
 				{
@@ -568,12 +594,14 @@ class TicketsController extends Controller {
 				}
 
 			//convert array to object
-			$tickets  = json_decode(json_encode($relatTickets), FALSE);
-			return view("tickets.sortTicket",compact('tickets')); 
+			
+			
+			return $relatTickets;
+
 
 		 }
-		 $tickets=[];
-		 return view("tickets.sortTicket",compact('tickets')); 
+		
+		 return $tickt;
 		 
 	}
 	
@@ -671,8 +699,8 @@ class TicketsController extends Controller {
 		$deadLine=$request->input("enddate");
 		$startDate=$request->input("created_at");
 		$techId=$request->input("tech_id");
-		$startDate=$startDate+" "+"00:00:00";
-		$deadLine=$deadLine+" "+"23:59:59";
+		//$startDate=$startDate+" "+"00:00:00";
+		//$deadLine=$deadLine+" "+"23:59:59";
 		}
 
 
@@ -724,7 +752,10 @@ class TicketsController extends Controller {
 
 
 	public function searchTicket(Request $request){
-		if($request->ajax()){  
+		if($request->ajax()){ 
+			$sortType=$request->input('sortType') ;
+			$sortBy=$request->input('sortBy');
+			$tag=$request->input('tagId');
 			if($request->input('name') == "unassigned"){
 				$tickets = Ticket::whereNull('tech_id')->where('is_spam', "0");				
 			}
@@ -744,10 +775,11 @@ class TicketsController extends Controller {
 				$tickets = Ticket::where('is_spam', "1");
 			}
 			else if($request->input('name') == "unanswered"){
-				$tickets = Ticket::leftJoin('comments','tickets.id','=','comments.ticket_id')
-            		->selectRaw('tickets.*, sum(comments.readonly) as c')->where('is_spam', "0")
+
+				$tickets = Ticket::where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
+            		->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null  )  THEN 0  ELSE 1 END as c')
                     ->groupBy('tickets.id')
-                    ->HAVING("c" , '<'  , "1");
+                    ->HAVING("c", "=" , '0' );
 			}
 			if($request->input('cat')){
 				if($request->input('cat') != "all"){
@@ -756,7 +788,9 @@ class TicketsController extends Controller {
 			}
 			else if($request->input('sec')){
 
-				$categories = Category::select("id")->where("section_id", 1)->get();
+
+				$categories = Category::select("id")->where("section_id", $request->input('sec'))->get();
+
 				// $categories = json_decode(json_encode($categories), TRUE);
 				// file_put_contents("/home/samah/text.html", $categories[0]);
 				$i = 0;
@@ -769,6 +803,8 @@ class TicketsController extends Controller {
 				$tickets = $tickets->whereIn('category_id', $arr);
 			}
 			$tickets = $tickets->get();
+			$tickets= $this->relatedTag ( $tickets , $tag);
+			$tickets= $this->sortTicket ( $tickets , $sortBy , $sortType);
 			return view("tickets.searchTicket",compact('tickets')); 
 		}
 	}

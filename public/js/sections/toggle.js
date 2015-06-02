@@ -19,10 +19,11 @@ $(document).ready(function(){
      
 	       $("#"+elm2).toggleClass('glyphicon glyphicon-menu-right');
 
-	        $("."+elm).toggle();
+	        $("."+elm+"category").toggle();
 	   
 
 	}
+
 
 
 	function createSection(){
@@ -84,5 +85,6 @@ $(document).ready(function(){
 });
 }
     
+
 
 

@@ -4,11 +4,11 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 //use Illuminate\Http\Request;
-use App\Category;
 use App\Section;
 use Request;
+use App\Category;
 
-class CategoriesController extends Controller {
+class SectionsController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -17,9 +17,9 @@ class CategoriesController extends Controller {
 	 */
 	public function index()
 	{
-		$categories = Category:: all();
-
-		return view('categories.index',compact('categories'));
+		$sections = Section:: all();
+		$categories= Category::all();
+		return view('sections.index',compact('sections','categories'));
 	}
 
 	/**
@@ -29,8 +29,7 @@ class CategoriesController extends Controller {
 	 */
 	public function create()
 	{
-		$sections = Section:: all();
-		return view('categories.create',compact('sections'));
+		return view('sections.create');
 	}
 
 	/**
@@ -40,12 +39,11 @@ class CategoriesController extends Controller {
 	 */
 	public function store()
 	{
-		$category = new Category;
-		$category->name= Request::get('name');
-		$category->section_id= Request::get('section_id');
-		$category->save();
+		$section = new Section;
+		$section->name = Request::get('name');
+		$section->save();
 
-		return redirect('/categories');
+		return redirect('/sections');
 	}
 
 	/**
@@ -56,9 +54,9 @@ class CategoriesController extends Controller {
 	 */
 	public function show($id)
 	{
-		$category = Category:: findOrFail($id);
+		$section = Section:: findOrFail($id);
 
-		return view('categories.show',compact('category'));
+		return view('sections.show',compact('section'));
 	}
 
 	/**
@@ -69,9 +67,9 @@ class CategoriesController extends Controller {
 	 */
 	public function edit($id)
 	{
-		$category = Category::find($id);
-		
-		return (string)view('categories.edit',compact('category'));
+		$section = Section:: find($id);
+
+		return (string)view('sections.edit',compact('section'));
 	}
 
 	/**
@@ -82,14 +80,11 @@ class CategoriesController extends Controller {
 	 */
 	public function update($id)
 	{
-		if(Category::where('name','=',Request::get('name'))->exists()){
-			return "NOT DONE";
-		}
-		$category = Category::find($id);
-		$category->name = Request::get('name');
-		$category->save();
+		$section = Section:: find($id);
+		$section->name = Request::get('name');
+		$section->save();
 
-		return (string)view('categories.editcat',compact('category'));
+		return (string)view('sections.editsave',compact('section'));
 	}
 
 	/**
@@ -100,8 +95,8 @@ class CategoriesController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		$category = Category::find($id);
-		$category->delete();
+		$section = Section:: find($id);
+		$section->delete();
 	}
 
 }

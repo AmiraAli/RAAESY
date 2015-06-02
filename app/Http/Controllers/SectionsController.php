@@ -77,7 +77,7 @@ class SectionsController extends Controller {
 	{
 		$section = Section:: find($id);
 
-		return view('sections.edit',compact('section'));
+		return (string)view('sections.edit',compact('section'));
 	}
 
 	/**
@@ -88,11 +88,14 @@ class SectionsController extends Controller {
 	 */
 	public function update($id)
 	{
+		if(Section::where('name','=',Request::get('name'))->exists()){
+			return "NOT DONE";
+		}
 		$section = Section:: find($id);
 		$section->name = Request::get('name');
 		$section->save();
 
-		return redirect('sections/'.$id."/edit");
+		return (string)view('sections.editsave',compact('section'));
 	}
 
 	/**

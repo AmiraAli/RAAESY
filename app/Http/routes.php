@@ -17,6 +17,7 @@
 
 
 Route::resource('/categories','CategoriesController');
+
 Route::resource('/sections','SectionsController');
 
 
@@ -37,10 +38,6 @@ Route::post('articles/autocomplete','ArticlesController@autocomplete');
 Route::post('articles/getTags', 'ArticlesController@getTags');
 Route::post('articles/search', 'ArticlesController@search');
 Route::get('articles/home', 'ArticlesController@home');
-
-
-
-
 
 Route::post('tickets/searchTicket', 'TicketsController@searchTicket');
 Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
