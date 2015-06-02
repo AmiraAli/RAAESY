@@ -1,4 +1,17 @@
 window.onload = function () {
+
+var hours = [];
+var data = [];
+for (var i = 0 ; i<24 ; i++){
+     hours.push(i+":00");
+     data.push(i);
+}
+
+console.log (document.getElementById("defaultdata").value);
+console.log();
+
+
+
     $('#container').highcharts({
         chart: {
             type: 'area'
@@ -7,21 +20,20 @@ window.onload = function () {
             text: 'Area chart with negative values'
         },
         xAxis: {
-            categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+            categories: hours
         },
         credits: {
             enabled: false
         },
         series: [{
-            name: 'John',
-            data: [5, 3, 4, 7, 2]
+            name: '12:00',
+            data: [1 , 2 ]
         }, {
-            name: 'Jane',
-            data: [2, -2, -3, 2, 1]
-        }, {
-            name: 'Joe',
-            data: [3, 4, 4, -2, 5]
-        }]
+            name: '1:00',
+            data: data
+        }
+
+        ]
     });
 };
 
