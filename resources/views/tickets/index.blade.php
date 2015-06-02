@@ -27,8 +27,9 @@
 	
 </div>
 <!-- table---------------------------------------------------------------------------------------------------------->
+@if(Auth::user()->type=="admin" or Auth::user()->type=="regular" )
 <a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Ticket</a>
-
+@endif
 <div class="row" id="icons_list">
 
 	<ul class="nav nav-pills" role="tablist">
@@ -180,41 +181,40 @@
 				   		@endif
 				   		<td>
 				   		@if (Auth::user()->type == "admin")
-					   		@if($ticket->status == 'open')
+
 						   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
 						   		data-content=
 						   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
 						   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
-						   		<a onclick='spam({{ $ticket->id }})'>Spam</a>|
-						   		<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
+								@if($ticket->is_spam == 0)
+						   			<a onclick='spam({{ $ticket->id }})'>Spam</a>|
+								@else
+						   			<a onclick='unspam({{ $ticket->id }})'>unSpam</a>|
+								@endif
+
+
+
+								@if($ticket->status == 'open')
+						   			<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
+								@else
+						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>|
+								@endif
 						   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
 						   		></a>
-						   	@else
-						   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
-						   		data-content=
-						   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
-						   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
-						   		<a onclick='spam({{ $ticket->id }})'>Spam</a>|
-						   		<a onclick='openTeckit({{ $ticket->id }})'>Open</a>|
-						   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
-						   		></a>
-						   	@endif
+
+						   	
 						@else
-							@if($ticket->status == 'open')
+
 						   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
 						   		data-content=
 						   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
 						   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
-						   		<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>"
-						   		></a>
-						   	@else
-						   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
-						   		data-content=
-						   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
-						   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
-						   		<a onclick='openTeckit({{ $ticket->id }})'>Open</a>"
-						   		></a>
-						   	@endif
+						  
+								@if($ticket->status == 'open')
+						   			<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
+								@else
+						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>"></a>
+								@endif
 						@endif
 
 				   		</td>
@@ -222,7 +222,6 @@
 			  @endforeach
 		  
 		</table>
-
 
 </div>
 </div>
@@ -249,7 +248,7 @@ window.onload = function() {
                     'X-XSRF-Token': $('meta[name="_token"]').attr('content')
                 }
             });
-                    sortBy();
+                    
             };
 
 $( "#selectFields" ).click(function() {
@@ -268,121 +267,6 @@ $( "#selectFields" ).click(function() {
         }
     });
             
-//$( "#sortBy" ).change(
-	function sortBy() 
-{
 
-var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
-
-    $.ajax({
-	    url: '/tickets/sortTicket',
-	    type: 'post',
-	    data: { data : tickets , sortBy: $('#sortBy ').val() , sortType : "DESC"},
-	    success: function(result) {
-			 $('#table_show').html(result);
-			 $("#sortType").html("ASC");
-
-			$('.checkbox1').each(function () {
-				 if(!$(this).is(":checked")) 
-			        {
-			        	
-			            $('.'+$(this).val()).hide();
-
-			        }
-			        else
-			        {
-			        
-			        	$('.'+$(this).val()).show();
-			        }
-			    
-			});
-			tag();
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log(errorThrown);
-	    }
-	});
-
-		
-}//);
-
-//$("#sortType").click(
-
-	function sortType(){
-
-	var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
-
-   $.ajax({
-	    url: '/tickets/sortTicket',
-	    type: 'post',
-	    data: { data : tickets , sortBy: $('#sortBy ').val() , sortType : $("#sortType").text()},
-	    success: function(result) {
-			 $('#table_show').html(result);
-
-			 if ($("#sortType").text() == "ASC")
-			 {
-			 	$("#sortType").html("DESC");
-			 } 
-			 else
-			 {
-			 	$("#sortType").html("ASC")
-			 };
-			 $('.checkbox1').each(function () {
-			 if(!$(this).is(":checked")) 
-		     {
-		        	
-		       $('.'+$(this).val()).hide();
-
-		     }
-		     else
-		     {
-		        
-		        $('.'+$(this).val()).show();
-		     }
-    
-});
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log(errorThrown);
-	    }
-	});
-    
-}//);
-
-//$( "#tag" ).change(
-	function tag() 
-{
-	if($('#tag').val()){
-var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
-
-    $.ajax({
-	    url: '/tickets/relatedTag',
-	    type: 'post',
-	    data: { data : tickets , tagId : $('#tag').val() },
-	    success: function(result) {
-			 $('#table_show').html(result);
-			 $('.checkbox1').each(function () {
-				 if(!$(this).is(":checked")) 
-			        {
-			        	
-			            $('.'+$(this).val()).hide();
-
-			        }
-			        else
-			        {
-			        
-			        	$('.'+$(this).val()).show();
-			        }
-			    
-			});
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log(errorThrown);
-	    }
-	});
-
-
-}		
-}//);
 </script>
 @endsection

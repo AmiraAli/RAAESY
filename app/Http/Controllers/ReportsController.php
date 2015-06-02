@@ -3,12 +3,9 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-//use Illuminate\Http\Request;
-use App\Section;
-use Request;
-use App\Category;
+use Illuminate\Http\Request;
 
-class SectionsController extends Controller {
+class ReportsController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -17,9 +14,8 @@ class SectionsController extends Controller {
 	 */
 	public function index()
 	{
-		$sections = Section:: all();
-		$categories= Category::all();
-		return view('sections.index',compact('sections','categories'));
+		$logs =Log::all();
+		return view('reports.logs',compact('logs'));
 	}
 
 	/**
@@ -29,7 +25,7 @@ class SectionsController extends Controller {
 	 */
 	public function create()
 	{
-		return view('sections.create');
+		//
 	}
 
 	/**
@@ -39,19 +35,7 @@ class SectionsController extends Controller {
 	 */
 	public function store()
 	{
-
-		
-		if(Section::where('name', '=', Request::get('name'))->exists()){	
-				return "not done";
-		}else{
-			$section = new Section;
-			$section->name = Request::get('name');
-			$section->save();
-			return $section->id;
-	
-		}
-
-		
+		//
 	}
 
 	/**
@@ -62,9 +46,7 @@ class SectionsController extends Controller {
 	 */
 	public function show($id)
 	{
-		$section = Section:: findOrFail($id);
-
-		return view('sections.show',compact('section'));
+		//
 	}
 
 	/**
@@ -75,9 +57,7 @@ class SectionsController extends Controller {
 	 */
 	public function edit($id)
 	{
-		$section = Section:: find($id);
-
-		return view('sections.edit',compact('section'));
+		//
 	}
 
 	/**
@@ -88,11 +68,7 @@ class SectionsController extends Controller {
 	 */
 	public function update($id)
 	{
-		$section = Section:: find($id);
-		$section->name = Request::get('name');
-		$section->save();
-
-		return redirect('sections/'.$id."/edit");
+		//
 	}
 
 	/**
@@ -103,8 +79,7 @@ class SectionsController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		$section = Section:: find($id);
-		$section->delete();
+		//
 	}
 
 }

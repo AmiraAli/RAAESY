@@ -53,10 +53,17 @@ $.ajax({
 		var errorDiv=document.createElement("div");
 		errorDiv.setAttribute('class','text-danger');
 		var noAssets=document.createTextNode('No New Assets');
-		var parentElm=document.getElementById("addnewasset");
+		var parentElm=document.getElementById("asseterrormessage");
+console.log(parentElm.innerHTML+"aya");
+if(parentElm.innerHTML.trim()==""){
+
 		errorDiv.appendChild(noAssets);
+	
 		parentElm.appendChild(errorDiv);
+		}
+
 	}
+	
 	},
 	error: function(jqXHR, textStatus, errorThrown) {
                     // alert('HTTP Error: '+errorThrown+' | Error Message: '+textStatus);
@@ -64,6 +71,8 @@ $.ajax({
     }
 });
    
+
+
 
 }
 

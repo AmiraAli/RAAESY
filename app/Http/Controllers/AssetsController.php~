@@ -17,6 +17,16 @@ use Validator;
 
 class AssetsController extends Controller {
 
+	public function __construct()
+	{
+		$this->middleware('auth');
+		if (Auth::check()){
+			if (Auth::User()->type !="admin"){								
+				exit;
+			}
+		}
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -25,7 +35,27 @@ class AssetsController extends Controller {
 	public function index()
 	{
 		$assets = Asset::all();
-		return view("assets.index",compact('assets'));
+		$types = AssetType::all();
+		return view("assets.index",compact('assets','types'));
+	}
+
+	/**
+	 * Notify when user is spam/delete (called by AJAX).
+	 *
+	 * @param  object  $model_obj , string action
+	 * @return Response
+	 */
+
+	private function addnotification($action , $type , $model_obj ){
+
+		$notification = new Log();
+		$notification->type = $type ;
+		$notification->action = $action;
+		$notification->name = $model_obj->manufacturer." ".$model_obj->name;
+		$notification->type_id = $model_obj->id;
+		$notification->user_id = Auth::user()->id;
+		$notification->save();
+
 	}
 
 	/**
@@ -50,7 +80,7 @@ class AssetsController extends Controller {
 		$this->validate($request, [
 	        'name' => 'required',
 	        'manufacturer' => 'required',
-	        'serialno' => 'required',
+	        'serialno' => 'required|unique:assets',
 	        'location' => 'required'
     	]);
 
@@ -134,16 +164,10 @@ class AssetsController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		$log = new Log;
-		$log->type_id = $id;
-		$log->action = 'delete';
-		$log->type = 'asset';
-		$log->user_id = Auth::user()->id;
-
 		$asset = Asset::find($id);
 
 		if($asset->delete()){
-			$log->save();
+			$this->addnotification("delete"  , "asset" , $asset );
 		}
 	}
 
@@ -164,16 +188,6 @@ class AssetsController extends Controller {
 	}
 
 
-	/**
-	 * Show the form for searching for assets.
-	 *
-	 * @return Response
-	 */
-	public function search(Request $request)
-	{
-		$types = AssetType::all();
-		return view("assets.search",compact('types'));
-	}
 
 	/**
 	 * Search database for assets.
@@ -190,7 +204,7 @@ class AssetsController extends Controller {
             $manufacturer= $request->input('manufacturer');
             $assettype_id= $request->input('type');
 
-            //file_put_contents("/home/eman/" . "www.html", $name." ".$serialno." ".$location." ". $manufacturer." ".$assettype_id);
+            //file_put_contents("/home/eman/"."www.html", $assettype_id);
 
             if ( !$name && !$serialno && !$location && !$manufacturer && !$assettype_id ) 
             {
@@ -198,21 +212,34 @@ class AssetsController extends Controller {
             	return view("assets.searchAssets",compact('assets'));           	
             }
 
-            // $assets =Asset::where('name', 'like', '%'.$name.'%')
-            //    				->where('serialno', 'like', '%'.$serialno.'%')
-            //           		->where('location', 'like', '%'.$location.'%')
-            //           		->where('manufacturer', 'like', '%'.$manufacturer.'%')
-            //           		->where('assettype_id', $assettype_id)
-           	// 				->get();
+            else
+            {
+	            $assets =Asset::select('*');
 
-            $assets =Asset::where('name', 'like', '%'.$name.'%');
-            $assets=$assets->get();
-            
+	            if ($name) {
+	            	$assets=$assets->where('name', 'like', '%'.$name.'%');
+	            }
 
-                			
+	            if ($location) {
+	            	$assets=$assets->where('location', 'like', '%'.$location.'%');
+	            }
 
+	            if ($manufacturer) {
+	            	$assets=$assets->where('manufacturer', 'like', '%'.$manufacturer.'%');
+	            }
 
-           	return view("assets.searchAssets",compact('assets'));  
+	            if ($assettype_id) {
+	            	$assets=$assets->where('assettype_id', $assettype_id);
+	            }
+
+	            if ($serialno) {
+	            	$assets=$assets->where('serialno', 'like', '%'.$serialno.'%');
+	            }
+
+	            $assets=$assets->get();
+	            
+	           	return view("assets.searchAssets",compact('assets'));
+	        }  
             
          }
 
@@ -226,7 +253,7 @@ class AssetsController extends Controller {
 	public function AddAssets()
 	{	
 			$assets=Asset::all();
-			file_put_contents("/home/aya/teesst.html", $assets);
+			//file_put_contents("/home/aya/teesst.html", $assets);
 		
 
 			echo json_encode($assets);	
@@ -252,4 +279,5 @@ class AssetsController extends Controller {
 	}
 		
 }
+
 
