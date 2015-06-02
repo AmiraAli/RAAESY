@@ -78,16 +78,23 @@ setChart();
 
 function getReport(){
 
-    //alert ("ya rab-");
     var date1 = document.getElementById('date1').value;
     var date2 = document.getElementById('date2').value;
+    
+    if (date1.trim() == "" && date2.trim() == "") {
+        return ;
+    };
+
+    st = new Date(date1);
+    end = new Date(date2);
+    if (st > end){
+         return ;
+    }
 
 
     date1=date1+" 00:00:00";
     date2 =date2+" 23:59:59";
-    alert(date1+" "+ date2);
-    //console.log(date1+" "+ date2)
-
+    
     //ajax:
 
     $.ajax({
