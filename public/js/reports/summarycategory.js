@@ -35,7 +35,7 @@ console.log(classes);
         },
         series: [{
             type: 'pie',
-            name: 'Browser share',
+            name: 'Tickets section/category',
             data: array
 
                  

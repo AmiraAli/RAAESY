@@ -26,6 +26,53 @@
 			<div id="status" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 		</div>
 	</div>
+    <div class="row">
+        <table class="table table-condensed">
+            <tr>
+            <td > Ticket ID</td>
+            <td> Ticket Subject</td>
+            <td> Ticket Category</td>
+            <td> Assigned To</td>
+            <td> Start Date</td>
+            <td> Close Date</td>
+            <td> Deadline </td>
+            <td> Status </td>
+            <td> Priority</td>
+            </tr>
+            @foreach($tickets as $ticket)
+            <tr>
+                <td>#{{ $ticket->id }}</td>
+                <td> {{ $ticket->subject->name }} </td>
+                <td> {{ $ticket->category->section->name }}/{{ $ticket->category->name }}</td>
+
+                @if($ticket->tech_id != NULL)
+                    <td> {{ $ticket->tech->fname }}</td>
+                @else
+                    <td></td>
+                @endif
+
+                <td> {{ $ticket->created_at }} </td>
+
+                @if($ticket->status == "close")
+                    <td> {{ $ticket->updated_at }} </td>
+                @else
+                    <td></td>
+                @endif
+
+                <td>{{ $ticket->deadline }} </td>
+                <td> {{ $ticket->status }} </td>
+
+                @if($ticket->priority == "low")
+                    <td><b class="alert-success ">{{ $ticket->priority }}</b></td>
+                @elseif($ticket->priority == "high")
+                    <td><b class="alert-warning">{{ $ticket->priority }}</b></td>
+                @else
+                    <td><b class="alert-danger">{{ $ticket->priority }}</b></td>
+                @endif
+            </tr>
+            @endforeach
+        </table>
+ </div>
  <script type="text/javascript" src="/js/reports/summarycategory.js"></script>	
 <script type="text/javascript" >
 var Globals = <?php echo json_encode(array(

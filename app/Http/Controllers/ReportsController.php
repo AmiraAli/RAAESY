@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class ReportsController extends Controller {
 
+	/**
+	* function to render to view of all reports
+	**/
+	public function index()
+	{
+		return view('reports.index');
+	}
 	
 	/**
 	 * Show the form for creating a new resource.
@@ -79,9 +86,13 @@ class ReportsController extends Controller {
 		$ticketsPerCategories=Ticket::selectRaw('count(*) as count , category_id ')
 									->groupBy('category_id')
 									->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
-									->get();						
+									->get();
+
+		$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
+						
 		return view('reports.summary',compact('inprogressCount','newCount'
-												,'resolvedCount','ticketsPerCategories'));
+												,'resolvedCount','ticketsPerCategories'
+												,'tickets'));
 
 	}
 
@@ -110,8 +121,11 @@ class ReportsController extends Controller {
 											->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
 											->get();
 
+				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
+
 				return view('reports.summarySearchMonth',compact('inprogressCount','newCount'
-												,'resolvedCount','ticketsPerCategories'));
+												,'resolvedCount','ticketsPerCategories'
+												,'tickets'));
 			}
 			
 			if($data == "week"){
@@ -132,8 +146,11 @@ class ReportsController extends Controller {
 											->where('updated_at','>',date('Y-m-d', strtotime('-1 week')))
 											->get();
 
+				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 week')))->get();
+
 				return view('reports.summarySearchWeek',compact('inprogressCount','newCount'
-												,'resolvedCount','ticketsPerCategories'));
+												,'resolvedCount','ticketsPerCategories'
+												,'tickets'));
 			}
 
 			if($data == "custom"){
@@ -161,8 +178,13 @@ class ReportsController extends Controller {
 											->where('deadline','<=',$enddate)
 											->get();
 
+				$tickets=Ticket::where('updated_at','>=',$startdate)
+								->where('deadline','<=',$enddate)
+								->get();
+
 				return view('reports.summarySearchCustom',compact('inprogressCount','newCount'
-												,'resolvedCount','ticketsPerCategories','startdate','enddate'));
+																,'resolvedCount','ticketsPerCategories'
+																,'startdate','enddate','tickets'));
 
 
 			}
