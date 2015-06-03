@@ -20,15 +20,64 @@
 	</div>
 	<div class="row">
 		<div class="col-md-6">
+		@if($ticketsPerCategories)
 			@foreach($ticketsPerCategories as $ticketsPerCategorie)
 				<input type="hidden" class="category" value="{{$ticketsPerCategorie->category->section->name}}/{{$ticketsPerCategorie->category->name}}">
 				<input type="hidden" class="count" value="{{ $ticketsPerCategorie->count }}">
 			@endforeach
+		@endif
 			<div id="summarycategory" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 		</div>
 		<div class="col-md-6">
 			<div id="status" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 		</div>
+	</div>
+	<div class="row">
+		<table class="table table-condensed">
+			<tr>
+			<td > Ticket ID</td>
+			<td> Ticket Subject</td>
+			<td> Ticket Category</td>
+			<td> Assigned To</td>
+			<td> Start Date</td>
+			<td> Close Date</td>
+			<td> Deadline </td>
+			<td> Status </td>
+			<td> Priority</td>
+			</tr>
+			@foreach($tickets as $ticket)
+			<tr>
+				<td>#{{ $ticket->id }}</td>
+				<td> {{ $ticket->subject->name }} </td>
+				<td> {{ $ticket->category->section->name }}/{{ $ticket->category->name }}</td>
+
+				@if($ticket->tech_id != NULL)
+					<td> {{ $ticket->tech->fname }}</td>
+				@else
+					<td></td>
+				@endif
+
+				<td> {{ $ticket->created_at }} </td>
+
+				@if($ticket->status == "close")
+					<td> {{ $ticket->updated_at }} </td>
+				@else
+					<td></td>
+				@endif
+
+				<td>{{ $ticket->deadline }} </td>
+				<td> {{ $ticket->status }} </td>
+
+				@if($ticket->priority == "low")
+				   	<td><b class="alert-success ">{{ $ticket->priority }}</b></td>
+				@elseif($ticket->priority == "high")
+				   	<td><b class="alert-warning">{{ $ticket->priority }}</b></td>
+				@else
+				   	<td><b class="alert-danger">{{ $ticket->priority }}</b></td>
+				@endif
+			</tr>
+			@endforeach
+		</table>
 	</div>
 </div>
  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

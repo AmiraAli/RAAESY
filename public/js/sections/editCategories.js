@@ -6,7 +6,7 @@
             });
             };
 function EditCat(elm,id){
-	alert("test");
+	//alert("test");
 
 	console.log(document.getElementById(elm).innerHTML);
 

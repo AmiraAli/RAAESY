@@ -6,6 +6,10 @@
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 
 
+<div class="container">
+From : <input type="date" id="date1" >
+To : <input type="date" id="date2" >
+<button onclick="getReport()" >Get Report</button>
 
 
 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
@@ -13,10 +17,7 @@
 <input type="hidden" id="defaultOpen" value ="{{ $defaultOpen }}">
 <input type="hidden" id="defaultClose" value ="{{ $defaultClose }}">
 
-
-From : <input type="date" id="date1" >
-To : <input type="date" id="date2" >
-<button onclick="getReport()" >Get Report</button> 
+ </div>
 
 
 

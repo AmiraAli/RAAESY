@@ -1,5 +1,5 @@
 <?php namespace App\Http\Controllers;
-
+use Response;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -38,6 +38,7 @@ class AssetsController extends Controller {
 		$types = AssetType::all();
 		return view("assets.index",compact('assets','types'));
 	}
+
 
 	/**
 	 * Notify when user is spam/delete (called by AJAX).
@@ -277,6 +278,53 @@ class AssetsController extends Controller {
 			}
 		echo json_encode($asset);
 	}
+
+
+	/**
+	 *This function is to import Asset to csv
+	 *
+	 * 
+	 * @return jsonobject
+	 */
+
+
+
+	public function importToCsv()
+	{
+
+
+	$assests = Asset::all();
+
+	    // the csv file with the first row
+	    $output = implode(",", array('id', 'Model', 'Manufacturer', 'Type', 'Serial Number','Belongs To','Location'))."\n";
+
+	    foreach ($assests as $row) {
+		// iterate over each tweet and add it to the csv
+		$output .=  implode(",", array($row['id'], $row['name'], $row['manufacturer'], 
+				$row['assettype']['name'],$row['serialno'],$row['user']['fname']." ".$row['user']['lname'],$row		   						['location']))."\n"; // append each row
+	    }
+
+	    // headers used to make the file "downloadable", we set them manually
+	    // since we can't use Laravel's Response::download() function
+	    $headers = array(
+		'Content-Type' => 'text/csv',
+		'Content-Disposition' => 'attachment; filename="assets.csv"',
+		);
+
+	    // our response, this will be equivalent to your download() but
+	    // without using a local file
+	    return Response::make(rtrim($output, "\n"), 200, $headers);
+	}
+
+
+
+
+
+
+
+
+
+
 		
 }
 
