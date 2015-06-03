@@ -373,13 +373,9 @@ class ReportsController extends Controller {
 		
 			$startDate = Request::get('from');
 			$endDate = Request::get('to');
-<<<<<<< HEAD
+
 			$technicians = DB::select("select count(IF(tickets.status = 'close', 1, null)) as closed, count(IF(tickets.status = 'open', 1, null)) as open, users.fname, users.lname, users.id from users left join tickets on users.id = tickets.tech_id where users.type = 'tech' group by tickets.tech_id");
 		
-=======
-
-
->>>>>>> da7412630bc25503e00fd7b9046c670da6e0f70f
 	}
 
 	public function ticketsPerTime()
@@ -415,7 +411,7 @@ class ReportsController extends Controller {
 		return view('reports.ticketsPerTime', compact('points','createdTickets'));
 	}
 
-<<<<<<< HEAD
+
 	public function prepareTickets()
 	{
 		if( Request::ajax() ) {
@@ -461,7 +457,7 @@ $data["x"] = $d["month"];
 			 echo json_encode($tickets);
 		}
 	}
-=======
+
 
 	public function reportTicketStatus(){
 
@@ -474,5 +470,4 @@ $data["x"] = $d["month"];
 
 
 
->>>>>>> da7412630bc25503e00fd7b9046c670da6e0f70f
 }
