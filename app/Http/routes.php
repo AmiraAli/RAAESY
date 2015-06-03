@@ -1,5 +1,5 @@
 <?php
-
+use App\Ticket;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -13,6 +13,28 @@
 
 #Route::get('search/autocomplete', 'ArticlesController@autocomplete');
 
+Route::get('/all-tweets-csv', function() {
+    $tweets = Ticket::all();
+
+    // the csv file with the first row
+    $output = implode(",", array('id', 'description', 'priority', 'deadline'))."\n";
+
+    foreach ($tweets as $row) {
+        // iterate over each tweet and add it to the csv
+        $output .=  implode(",", array($row['id'], $row['description'], $row['priority'], $row['deadline']))."\n"; // append each row
+    }
+
+    // headers used to make the file "downloadable", we set them manually
+    // since we can't use Laravel's Response::download() function
+    $headers = array(
+        'Content-Type' => 'text/csv',
+        'Content-Disposition' => 'attachment; filename="tweets.csv"',
+        );
+
+    // our response, this will be equivalent to your download() but
+    // without using a local file
+    return Response::make(rtrim($output, "\n"), 200, $headers);
+});
 
 
 
