@@ -40,12 +40,8 @@ class CategoriesController extends Controller {
 	 */
 	public function store()
 	{
-		$category = new Category;
-		$category->name= Request::get('name');
-		$category->section_id= Request::get('section_id');
-		$category->save();
-
-		return redirect('/categories');
+		
+	
 	}
 
 	/**
@@ -102,6 +98,25 @@ class CategoriesController extends Controller {
 	{
 		$category = Category::find($id);
 		$category->delete();
+	}
+
+
+	public function createajax()
+	{
+		$sectionid=Request::input('sectionid');
+		return view('categories.new',compact('sectionid'));
+	}
+	public function saveCategory()
+	{
+		if(Category::where('name', '=', Request::input('categoryname'))->exists()){	
+				return "not done";
+		}else{
+			$category = new Category;
+			$category->name = Request::input('categoryname');
+			$category->section_id= Request::input('sectionid');
+			$category->save();
+			return view('categories.ajaxcreate',compact('category'));
+		}
 	}
 
 }

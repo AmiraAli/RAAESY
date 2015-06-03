@@ -47,7 +47,7 @@ class SectionsController extends Controller {
 			$section = new Section;
 			$section->name = Request::get('name');
 			$section->save();
-			return $section->id;
+			return view('sections.ajaxcreate',compact('section'));
 	
 		}
 
