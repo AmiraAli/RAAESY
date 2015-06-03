@@ -47,7 +47,6 @@
 			        			@if($category->section_id == $section->id){
 
 			        					<td>{{$category->name}}</td>
-
 			        			
 			        			@endif
 
@@ -75,7 +74,65 @@
 
 
 
+ <script type="text/javascript" src="/js/sections/editSection.js"></script>
+ <script type="text/javascript" src="/js/sections/editCategories.js"></script>
+<script>
+
+		window.onload = function() {
+                    $.ajaxSetup({
+                headers: {
+                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
+                }
+            });
+            };
+
+		function deleteSection(id){ 
+			   var ids = id.split(',')[0];
+			console.log(id);
+		   $.ajax({
+			    url: '/sections/'+ids,
+			    type: 'DELETE',
+			    success: function(result) {
+
+				var x="text-center "+ids+"category";
+				var allChild=document.getElementsByClassName(x);
+				console.log(allChild);
+				for(i=0;i<allChild.length;i++){
+
+					allChild[i].innerHTML="";
+				}
+					
+				 document.getElementById(id).remove(); 
+
+
  
+
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					console.log(errorThrown);
+			    }
+			});
+
+		}
+
+
+
+function deleteCategory(id){ 
+		console.log(id);
+		   $.ajax({
+			    url: '/categories/'+id,
+			    type: 'DELETE',
+			    success: function(result) {
+					 $('#'+id).remove();    
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					console.log(errorThrown);
+			    }
+			});
+
+		}
+
+	</script>
 
 
 
@@ -148,62 +205,4 @@
 
 	</script-->
 
-<script type="text/javascript" src="/js/sections/editSection.js"></script>
- <script type="text/javascript" src="/js/sections/editCategories.js"></script>
-<script>
 
-		window.onload = function() {
-                    $.ajaxSetup({
-                headers: {
-                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
-                }
-            });
-            };
-
-		function deleteSection(id){ 
-			   var ids = id.split(',')[0];
-			console.log(id);
-		   $.ajax({
-			    url: '/sections/'+ids,
-			    type: 'DELETE',
-			    success: function(result) {
-
-				var x="text-center "+ids+"category";
-				var allChild=document.getElementsByClassName(x);
-				console.log(allChild);
-				for(i=0;i<allChild.length;i++){
-
-					allChild[i].innerHTML="";
-				}
-					
-				 document.getElementById(id).remove(); 
-
-
- 
-
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					console.log(errorThrown);
-			    }
-			});
-
-		}
-
-
-
-function deleteCategory(id){ 
-		console.log(id);
-		   $.ajax({
-			    url: '/categories/'+id,
-			    type: 'DELETE',
-			    success: function(result) {
-					 $('#'+id).remove();    
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					console.log(errorThrown);
-			    }
-			});
-
-		}
-
-	</script>

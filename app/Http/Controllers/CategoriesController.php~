@@ -83,7 +83,7 @@ class CategoriesController extends Controller {
 	public function update($id)
 	{
 		if(Category::where('name','=',Request::get('name'))->exists()){
-			return "NOT DONE";
+			return "NOT DONE"
 		}
 		$category = Category::find($id);
 		$category->name = Request::get('name');

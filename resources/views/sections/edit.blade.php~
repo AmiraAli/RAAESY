@@ -4,7 +4,7 @@
     <input type="text" class="form-control" id="exampleInputEmail1"  name="name" value="{{$section->name}}">
   </div>
  
-  <button type="submit" class="btn btn-primary" onclick="SaveEdit({{$section->id}}+',sectionstest','{{$section->name}}')">Save</button>
+  <button type="submit" class="btn btn-primary" onclick="SaveEdit({{$section->id}}+',sectionstest',{{$section->name}})">Save</button>
 
 
  <script type="text/javascript" src="/js/sections/editSection.js"></script>

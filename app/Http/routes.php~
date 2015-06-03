@@ -17,6 +17,7 @@
 
 
 Route::resource('/categories','CategoriesController');
+
 Route::resource('/sections','SectionsController');
 
 
@@ -38,10 +39,6 @@ Route::post('articles/getTags', 'ArticlesController@getTags');
 Route::post('articles/search', 'ArticlesController@search');
 Route::get('articles/home', 'ArticlesController@home');
 
-
-
-
-
 Route::post('tickets/searchTicket', 'TicketsController@searchTicket');
 Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
 Route::post('tickets/relatedTag', 'TicketsController@relatedTag');
@@ -58,7 +55,7 @@ Route::post('/tickets/all/subjects', 'TicketsController@TicketAllSubject');
 Route::post('/tickets/advancedsearch', 'TicketsController@AdvancedSearch');
 
 Route::post('/tickets/spamTicket', 'TicketsController@spamTicket');
-Route::post('/tickets/unSpamTicket', 'TicketsController@nSpamTicket');
+Route::post('/tickets/unSpamTicket', 'TicketsController@unSpamTicket');
 
 Route::post('/tickets/closeTicket', 'TicketsController@closeTicket');
 Route::post('/tickets/openTicket', 'TicketsController@openTicket');
@@ -78,6 +75,10 @@ Route::post('/assets/addasset', 'AssetsController@AddAssets');
 Route::post('/assets/saveassets/', 'AssetsController@SaveAssets');
 Route::post('assets/addType', 'AssetsController@addType');
 
+Route::get('/reports/logs', 'ReportsController@logs');
+Route::get('/reports/disthour', 'ReportsController@distHour');
+Route::get('/reports/summary', 'ReportsController@SummaryCategories');
+
 
 
 Route::get('/', 'WelcomeController@index');
@@ -88,3 +89,6 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+
+
+

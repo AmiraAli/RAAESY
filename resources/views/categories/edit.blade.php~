@@ -4,6 +4,6 @@
     <input type="text" class="form-control" id="exampleInputEmail2"  name="name" value="{{$category->name}}">
   </div>
 
-  <button  class="btn btn-primary" onclick="SaveCatEdit({{$category->id}}+'category','{{$category->id}}','{{$category->name}}')">Submit</button>
+  <button  class="btn btn-primary" onclick="SaveCatEdit({{$category->id}}+'category','{{$category->id}}')">Submit</button>
 
 

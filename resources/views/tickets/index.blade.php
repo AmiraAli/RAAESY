@@ -1,4 +1,5 @@
 
+
 @extends('app')
 @section('content')
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -33,15 +34,17 @@
 <div class="row" id="icons_list">
 
 	<ul class="nav nav-pills" role="tablist">
-
-	  <li role="presentation" id="unanswered"><a href="#" onclick="searchTicket('unanswered')">Unanswered <span class="badge">{{ count($unanswered) }}</span></a></li>
-	  <li role="presentation" id="unassigned"><a href="#" onclick="searchTicket('unassigned')">Unassigned <span class="badge">{{ count($unassigned) }}</span></a></li>
-	  <li role="presentation" id="expired"><a href="#" onclick="searchTicket('expired')">Deadline exceeded <span class="badge">{{ count($expired) }}</span></a></li>
-	  <li role="presentation" id="open"><a href="#" onclick="searchTicket('open')">Unclosed <span class="badge">{{ count($open) }}</span></a></li>	  
-	  <li role="presentation" id="closed"><a href="#" onclick="searchTicket('closed')">Closed <span class="badge">{{ count($closed) }}</span></a></li>
-	  <li role="presentation" id="all" class="active" onclick="searchTicket('all')"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
-	  <li role="presentation" id="spam"><a href="#" onclick="searchTicket('spam')">Spam <span class="badge">{{ count($spam) }}</span></a></li>	
-
+		@if(Auth::user()->type === "admin")
+		  <li role="presentation" id="unanswered"><a href="#" onclick="searchTicket('unanswered')">Unanswered <span class="badge">{{ count($unanswered) }}</span></a></li>
+		  <li role="presentation" id="unassigned"><a href="#" onclick="searchTicket('unassigned')">Unassigned <span class="badge">{{ count($unassigned) }}</span></a></li>
+		  <li role="presentation" id="expired"><a href="#" onclick="searchTicket('expired')">Deadline exceeded <span class="badge">{{ count($expired) }}</span></a></li>
+		@endif
+		  <li role="presentation" id="open"><a href="#" onclick="searchTicket('open')">Unclosed <span class="badge">{{ count($open) }}</span></a></li>	  
+		  <li role="presentation" id="closed"><a href="#" onclick="searchTicket('closed')">Closed <span class="badge">{{ count($closed) }}</span></a></li>
+		  <li role="presentation" id="all" class="active" onclick="searchTicket('all')"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
+		@if(Auth::user()->type === "admin")
+		  <li role="presentation" id="spam"><a href="#" onclick="searchTicket('spam')">Spam <span class="badge">{{ count($spam) }}</span></a></li>	
+		@endif
 	</ul>
 </div>
 
@@ -95,14 +98,38 @@
 
 			<div class="checkbox">
 			<label>
+				<input type="checkbox"  class="checkbox1" value="subject" checked >
+				Subject
+			</label>
+			</div>
+			<div class="checkbox">
+			<label>
+				<input type="checkbox"  class="checkbox1" value="status" checked >
+				Status
+			</label>
+			</div>
+			<div class="checkbox">
+			<label>
 				<input type="checkbox"  class="checkbox1" value="category" checked >
-				category
+				Category
+			</label>
+			</div>
+			<div class="checkbox">
+			<label>
+				<input type="checkbox"  class="checkbox1" value="created_at" checked >
+				Created Date
+			</label>
+			</div>
+			<div class="checkbox">
+			<label>
+				<input type="checkbox"  class="checkbox1" value="deadline" checked >
+				Deadline
 			</label>
 			</div>
 			<div class="checkbox">
 			<label>
 				<input type="checkbox"  class="checkbox1" value="priority" checked >
-				priority
+				Priority
 			</label>
 			</div>
 			</div>
@@ -135,6 +162,7 @@
 	<div class="panel panel-default advancedSearchDiv">
 	  <div class='panel-heading'>AdvancedSearch</div>
 	  <div class='panel-body'>
+	  @if(Auth::user()->type === "admin")
 	   Priority: <select id='ticketPriority'>
 		<option></option>
 		<option>low</option>
@@ -150,36 +178,40 @@
 		@endforeach
 			</select><br><br>
 		<button onclick='AdvancedSearch()' class="btn btn-primary advancedsearchbuttonwithall">Search</button>
+	 	@endif
 	  </div>
 	</div>
-
-
 </div>
+
 
 <div class="col-md-9 "  id="table_show">
 	<table class="table table-condensed">
 			<tr>
-				<td> ID </td>
-				<td>Subject</td>
-				<td>Status</td>
-				<td class="category">Category</td>
-				<td class="priority">Periorty</td>
-				<td>Settings</td>
+				
+				<td class="subject text-center">Subject</td>
+				<td class="status text-center">Status</td>
+				<td class="category text-center">Category</td>
+				<td class="created_at text-center">Creation date</td>
+				<td class="deadline text-center">Dead line</td>
+				<td class="priority text-center">Periorty</td>
+				<td class="text-center">Settings</td>
 			</tr>
 			  @foreach($tickets as $ticket)
 				   <tr id="{{ $ticket->id }}">
-				   		<td>#{{ $ticket->id }} </td>
-				   		<td>{{ $ticket->subject->name }}</td>
-				   		<td> {{ $ticket->status }}</td>
-				   		<td class="category">{{ $ticket->category->name }}</td>
+				   		
+				   		<td class="subject text-center">{{ $ticket->subject->name }}</td>
+				   		<td class="status text-center"> {{ $ticket->status }}</td>
+				   		<td class="category text-center">{{ $ticket->category->name }}</td>
+				   		<td class="created_at text-center">{{ $ticket->created_at }} </td>
+				   		<td class="deadline text-center">{{ $ticket->deadline }} </td>
 				   		@if($ticket->priority == "low")
-				   			<td class="priority"><b class="alert-success ">{{ $ticket->priority }}</b></td>
+				   			<td class="priority text-center"><b class="alert-success ">{{ $ticket->priority }}</b></td>
 				   		@elseif($ticket->priority == "high")
-				   			<td class="priority"><b class="alert-warning">{{ $ticket->priority }}</b></td>
+				   			<td class="priority text-center"><b class="alert-warning">{{ $ticket->priority }}</b></td>
 				   		@else
-				   			<td class="priority"><b class="alert-danger">{{ $ticket->priority }}</b></td>
+				   			<td class="priority text-center"><b class="alert-danger">{{ $ticket->priority }}</b></td>
 				   		@endif
-				   		<td>
+				   		<td class="text-center">
 				   		@if (Auth::user()->type == "admin")
 
 						   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
@@ -213,8 +245,8 @@
 								@if($ticket->status == 'open')
 						   			<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
 								@else
-						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>|
-								@endif
+						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>@endif"></a>
+								
 						@endif
 
 				   		</td>
@@ -222,7 +254,6 @@
 			  @endforeach
 		  
 		</table>
-
 
 </div>
 </div>
@@ -240,149 +271,4 @@
  <script type="text/javascript" src="/js/ticket_advanced_search.js"></script>
  <script type="text/javascript" src="/js/toggleadvacedsearch.js"></script>
 
-
- <script >
-		
-window.onload = function() {
-                    $.ajaxSetup({
-                headers: {
-                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
-                }
-            });
-                    sortBy();
-            };
-
-$( "#selectFields" ).click(function() {
-  $( '#check' ).slideToggle( "fast" );
-});
-
-
-  $('.checkbox1').change(function() {
-        if(!$(this).is(":checked")) 
-        {
-            $('.'+$(this).val()).hide();
-        }
-        else
-        {
-        	$('.'+$(this).val()).show();
-        }
-    });
-            
-//$( "#sortBy" ).change(
-	function sortBy() 
-{
-
-var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
-
-    $.ajax({
-	    url: '/tickets/sortTicket',
-	    type: 'post',
-	    data: { data : tickets , sortBy: $('#sortBy ').val() , sortType : "DESC"},
-	    success: function(result) {
-			 $('#table_show').html(result);
-			 $("#sortType").html("ASC");
-
-			$('.checkbox1').each(function () {
-				 if(!$(this).is(":checked")) 
-			        {
-			        	
-			            $('.'+$(this).val()).hide();
-
-			        }
-			        else
-			        {
-			        
-			        	$('.'+$(this).val()).show();
-			        }
-			    
-			});
-			tag();
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log(errorThrown);
-	    }
-	});
-
-		
-}//);
-
-//$("#sortType").click(
-
-	function sortType(){
-
-	var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
-
-   $.ajax({
-	    url: '/tickets/sortTicket',
-	    type: 'post',
-	    data: { data : tickets , sortBy: $('#sortBy ').val() , sortType : $("#sortType").text()},
-	    success: function(result) {
-			 $('#table_show').html(result);
-
-			 if ($("#sortType").text() == "ASC")
-			 {
-			 	$("#sortType").html("DESC");
-			 } 
-			 else
-			 {
-			 	$("#sortType").html("ASC")
-			 };
-			 $('.checkbox1').each(function () {
-			 if(!$(this).is(":checked")) 
-		     {
-		        	
-		       $('.'+$(this).val()).hide();
-
-		     }
-		     else
-		     {
-		        
-		        $('.'+$(this).val()).show();
-		     }
-    
-});
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log(errorThrown);
-	    }
-	});
-    
-}//);
-
-//$( "#tag" ).change(
-	function tag() 
-{
-	if($('#tag').val()){
-var tickets = JSON.parse('<?php echo json_encode($tickets) ?>');
-
-    $.ajax({
-	    url: '/tickets/relatedTag',
-	    type: 'post',
-	    data: { data : tickets , tagId : $('#tag').val() },
-	    success: function(result) {
-			 $('#table_show').html(result);
-			 $('.checkbox1').each(function () {
-				 if(!$(this).is(":checked")) 
-			        {
-			        	
-			            $('.'+$(this).val()).hide();
-
-			        }
-			        else
-			        {
-			        
-			        	$('.'+$(this).val()).show();
-			        }
-			    
-			});
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log(errorThrown);
-	    }
-	});
-
-
-}		
-}//);
-</script>
 @endsection
