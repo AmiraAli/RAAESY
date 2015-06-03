@@ -17,6 +17,9 @@
 
 
 Route::resource('/categories','CategoriesController');
+Route::post('categories/createajax', 'CategoriesController@createajax');
+Route::post('categories/saveCategory', 'CategoriesController@saveCategory');
+
 
 Route::resource('/sections','SectionsController');
 
