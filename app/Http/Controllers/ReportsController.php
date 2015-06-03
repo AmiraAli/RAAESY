@@ -8,12 +8,67 @@ use DB;
 use Illuminate\Http\Request;
 
 class ReportsController extends Controller {
+	/**
+	* Function to sort tickets
+	**/
+	public function sortTicket( $tickt , $sortBy ,$sortType )
+	{
+		if(is_object($tickt) && ! $tickt->isEmpty() )
+		{		
+    		$tickets = array();
+	    			    	
+	        foreach ($tickt as $key => $value)
+	        {	        
+	            $tickets[$key] = $value;
+            
+	        }
+	        foreach ($tickets as $key => $row)
+			{
+				if ($sortBy == "subject") 
+				{		
+					$sort[$key] = $row['subject']['name'];
+				}
+				else 
+				{
+					$sort[$key] = $row[$sortBy];
+				}			    				    
+			}
 
-	
+
+			//sorting function
+			if ($sortType == "DESC") 
+			{	
+				if($sortBy == "percentage")
+				{
+					array_multisort($sort, SORT_DESC, $tickets);
+				}
+				else
+				{	
+					array_multisort($sort, SORT_ASC, $tickets);
+				}
+			}
+			elseif ($sortType == "ASC")
+			{
+				if($sortBy == "percentage")
+				{
+					array_multisort($sort, SORT_ASC, $tickets);
+				}
+				else
+				{	
+					array_multisort($sort, SORT_DESC, $tickets);
+				}
+			}
+			return $tickets; 
+		}	
+	   
+	    
+		return $tickt;		
+	}
+
 	/**
 	 * Show the form for creating a new resource.
 	 *
-	 * @return Response
+	 * 
 	 */
 	public function logs()
 	{
@@ -170,6 +225,83 @@ class ReportsController extends Controller {
 		
 		}
 	}
+
+	/**
+	 * function to get  the problem mangement.
+	 *
+	 * @return Response
+	 */
+	public function problemMangement()
+	{
+
+	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->groupBy('subject_id')->get();
+	$all=Ticket::all();
+
+	foreach($allTickets as $allTicket){
+	$count=0;
+	$idsPerSubject=array();
+	$sectionCategoryPerSubject=array();
+		foreach($all as $ticket){
+			if($ticket->subject->name==$allTicket->subject->name  ){
+				if($ticket->status=='close'){
+					$count=$count+1;
+				}
+				$idsPerSubject[]=$ticket->id;
+				$sectionCategoryPerSubject[]=$ticket->category->section->name.'/'.$ticket->category->name;
+				}
+		}
+		$percentage=($count/$allTicket->allticket)*100;
+		$allTicket->closedcount=$count;
+		$allTicket->percentage=$percentage;
+		$allTicket->ids=$idsPerSubject;
+		$allTicket->sectionCategory=$sectionCategoryPerSubject;
+	}
+	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
+	return view('reports.ticketStatistics',compact('allTickets'));
+	}
+
+
+	/**
+	 * function to get  the problem mangement by date.
+	 *
+	 * @return Response
+	 */
+	public function problemMangementDate(Request $request){
+	
+	$startdate=$request->input('startdate');
+	$enddate=$request->input('enddate');
+
+	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->whereBetween('updated_at', [$startdate, $enddate])
+									   ->groupBy('subject_id')->get();
+	$all=Ticket::all();
+
+	foreach($allTickets as $allTicket){
+	$count=0;
+	$idsPerSubject=array();
+	$sectionCategoryPerSubject=array();
+		foreach($all as $ticket){
+			if($ticket->subject->name==$allTicket->subject->name  ){
+				if($ticket->status=='close'){
+					$count=$count+1;
+				}
+				$idsPerSubject[]=$ticket->id;
+				$sectionCategoryPerSubject[]=$ticket->category->section->name.'/'.$ticket->category->name;
+				}
+		}
+		$percentage=($count/$allTicket->allticket)*100;
+		$allTicket->closedcount=$count;
+		$allTicket->percentage=$percentage;
+		$allTicket->ids=$idsPerSubject;
+		$allTicket->sectionCategory=$sectionCategoryPerSubject;
+	}
+
+	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
+	return view('reports.ticketStatisticsDate',compact('allTickets','startdate','enddate'));
+
+	}
+
+
+
 
 
 }

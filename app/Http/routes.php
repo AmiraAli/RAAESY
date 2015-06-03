@@ -81,7 +81,8 @@ Route::get('/reports/disthour', 'ReportsController@distHour');
 Route::get('/reports/summary', 'ReportsController@summary');
 Route::post('/reports/summarySearchDate', 'ReportsController@summarySearchDate');
 
-
+Route::get('/reports/problemMangement', 'ReportsController@problemMangement');
+Route::post('/reports/problemMangementDate', 'ReportsController@problemMangementDate');
 
 Route::get('/', 'WelcomeController@index');
 
