@@ -5,8 +5,8 @@ use App\Http\Controllers\Controller;
 use App\Log;
 use App\Ticket;
 use DB;
-use Illuminate\Http\Request;
-//use Request;
+//use Illuminate\Http\Request;
+use Request;
 
 class ReportsController extends Controller {
 
@@ -41,11 +41,11 @@ class ReportsController extends Controller {
 	public function distHour()
 	{
 		
-		$date1 = date('Y-m-d h:i:s', time());
+		$date1 = date('Y-m-d H:i:s', time());
 		$date2 = date_create($date1);
 		date_sub($date2, date_interval_create_from_date_string('10 days'));
-		$date2 =  date_format($date2, 'Y-m-d h:i:s');		
-		$openedTickets = DB::select("select id ,hour(created_at) as hour , status , count(*) as count from  tickets where created_at between ? and ? and status = 'open' group by hour(created_at)",array ( $date2 , $date1) );
+		$date2 =  date_format($date2, 'Y-m-d H:i:s');		
+		$openedTickets = DB::select("select id ,hour(created_at) as hour ,  count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'open' group by hour(created_at)",array ( $date2 , $date1) );
 		$defaultOpen = '';
 
 		foreach ($openedTickets as $ticket){
@@ -53,7 +53,7 @@ class ReportsController extends Controller {
 		}
 
 
-		$closedTickets = DB::select("select id ,hour(created_at) as hour , status , count(*) as count from  tickets where created_at between ? and ? and status = 'close' group by hour(created_at)",array ( $date2 , $date1) );
+		$closedTickets = DB::select("select id ,hour(created_at) as hour  , count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'close' group by hour(created_at)",array ( $date2 , $date1) );
 		$defaultClose = '';
 
 		
@@ -76,18 +76,18 @@ class ReportsController extends Controller {
 	 * @return Response
 	 */
 
-	public function ajaxdistHour(Request $request){
+	public function ajaxdistHour(){
         
 
-		if(! $request->ajax()) {
+		if(!Request::ajax()) {
 			return;
 		}
 
-        $date1= $request->input('date1');
-        $date2= $request->input('date2');
+        $date1= Request::input('date1');
+        $date2= Request::input('date2');
 
-		$openedTickets = DB::select("select id ,hour(created_at) as hour , status , count(*) as count from  tickets where created_at between ? and ? and status = 'open' group by hour(created_at)",array ( $date1 , $date2) );
-		$closedTickets = DB::select("select id ,hour(created_at) as hour , status , count(*) as count from  tickets where created_at between ? and ? and status = 'close' group by hour(created_at)",array ( $date1 , $date2) );
+		$openedTickets = DB::select("select id ,hour(created_at) as hour ,  count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'open' group by hour(created_at)",array ( $date1 , $date2) );
+		$closedTickets = DB::select("select id ,hour(created_at) as hour ,  count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'close' group by hour(created_at)",array ( $date1 , $date2) );
 		
 
 

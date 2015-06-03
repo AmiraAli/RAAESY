@@ -44,7 +44,7 @@ function setChart (){
             type: 'area'
         },
         title: {
-            text: 'Area chart with negative values'
+            text: 'Distribution of tickets/hour'
         },
         xAxis: {
             categories: hours
@@ -53,11 +53,10 @@ function setChart (){
             enabled: false
         },
         series: [ {
-           name: 'open',
+           name: 'opened',
            data: dataOpen
-        },{
-            
-             name: 'close',
+        },{    
+            name: 'closed',
             data: dataClose
         }
 
