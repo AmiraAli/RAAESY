@@ -63,4 +63,64 @@
     <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
     <script src="/js/reports/ticketsPerTime.js"></script>
+
+    <script>
+        var createdTickets = <?php echo '[' . implode(', ', $createdTickets) . ']' ?>;
+        var points = <?php echo '["' . implode('", "', $points) . '"]' ?>;
+
+        ticketsStatistics(createdTickets, points);
+
+        var unit = $("#groupby").val();
+
+
+        function ticketsStatistics(createdTickets, points){
+            $(function () {
+                $('#container').highcharts({
+                    chart: {
+                        type: 'area'
+                    },
+                    title: {
+                        text: 'Tickets per '+unit
+                    },
+                    xAxis: {
+                        categories: points,
+                        tickmarkPlacement: 'on',
+                        title: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Billions'
+                        },
+                        labels: {
+                            formatter: function () {
+                                return this.value;
+                            }
+                        }
+                    },
+                    tooltip: {
+                        shared: true,
+                        valueSuffix: ' millions'
+                    },
+                    plotOptions: {
+                        area: {
+                            stacking: 'normal',
+                            lineColor: '#666666',
+                            lineWidth: 1,
+                            marker: {
+                                lineWidth: 1,
+                                lineColor: '#666666'
+                            }
+                        }
+                    },
+                    series: [{
+                        name: 'Tickets created',
+                        data: createdTickets
+                    }]
+                });
+            });
+        }
+
+    </script>
 @endsection

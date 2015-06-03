@@ -1,6 +1,7 @@
 @if(Auth::user()->type === "admin")
 	@extends('app')
 	@section('content')
+
 	<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 	<div class="container-fluid">
 	<div class="row">
@@ -40,14 +41,14 @@
 				<td class="text-center">Closed Tickets</td>
 				<td class="text-center">Active Tickets</td>
 			</tr>
-			 {{--  @foreach($technicians as $technician)
-				   <tr id="{{ $technicia->id }}">				   		
-				   		<td class="subject text-center"><a  href="{{ url('/tickets/create') }}"> {{ $technicia->name }}</a></td>
-				   		<td class="status text-center"> {{ $technicia->open }}</td>
-				   		<td class="category text-center">{{ $technicia->closed }}</td>
+			 @foreach($technicians as $technician)
+				   <tr id="{{ $technician->id }}">				   		
+				   		<td class="subject text-center"><a  href="{{ url('/users/'.$technician->id) }}"> {{ $technician->fname }} {{ $technician->lname }}</a></td>
+				   		<td class="status text-center"> {{ $technician->open }}</td>
+				   		<td class="category text-center">{{ $technician->closed }}</td>
 				   		
 				   </tr>
-			  @endforeach --}}
+			  @endforeach
 		  
 		</table>
 

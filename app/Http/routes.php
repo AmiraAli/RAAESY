@@ -84,6 +84,9 @@ Route::post('/reports/disthourajax', 'ReportsController@ajaxdistHour');
 Route::get('/reports/technicianStatistics', 'ReportsController@technicianStatistics');
 Route::post('/reports/technicianStatisticsSearch', 'ReportsController@technicianStatisticsSearch');
 
+Route::get('/reports/ticketsPerTime', 'ReportsController@ticketsPerTime');
+Route::post('/reports/prepareTickets', 'ReportsController@prepareTickets');
+
 
 Route::get('/', 'WelcomeController@index');
 
