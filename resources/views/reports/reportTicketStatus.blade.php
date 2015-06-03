@@ -1,6 +1,8 @@
 @extends('app')
 
 @section('content')
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="/js/reports/reportTicketStatus.js"></script>
 <?php $open= array(); $close= array(); ?>
 	@foreach($tickets as $ticket)
 		<?php $countOpen=0; $countClose=0; ?>
@@ -37,6 +39,8 @@
 		<tbody id="tbody">
 			@foreach($tickets as $ticket)
 		  <tr>
+         <td>
+<a href="#" class='glyphicon glyphicon-triangle-right' onclick='toggle({{$ticket->id}})'></a>	</td>	  
 					<td>#{{$ticket->id}}</td>
 					<td>{{$ticket->subject->name}}</td>
 					<td>{{ $ticket->status }}</td>
@@ -52,7 +56,8 @@
 					@endif
 		  </tr>			
 					@foreach($ticketStatuses as $ticketStatus)
-		  <tr class="text-center">			
+		  <tr class="text-center {{$ticket->id}}" >	
+
 						@if($ticketStatus->ticket_id==$ticket->id)
 							<td class="text-center">{{$ticketStatus->value}}</td>
 							<td class="text-center">{{$ticketStatus->created_at}}</td>
