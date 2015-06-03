@@ -40,7 +40,7 @@
 							<li><a href="{{ url('/users') }}">Users</a></li>
 							<li><a href="{{ url('/sections') }}">Categories&Sections</a></li>							
 							<li><a href="{{ url('/articles') }}">Articles</a></li>
-							<li><a href="#">Reports</a></li>
+							<li><a href="{{ url('/reports') }}">Reports</a></li>
 						@endif
 					@endif
 				</ul>

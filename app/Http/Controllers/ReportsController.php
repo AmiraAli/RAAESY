@@ -10,6 +10,13 @@ use Illuminate\Http\Request;
 
 class ReportsController extends Controller {
 
+	/**
+	* function to render to view of all reports
+	**/
+	public function index()
+	{
+		return view('reports.index');
+	}
 	
 	/**
 	 * Show the delection/spamming log of tickets, users, assets ,
@@ -112,19 +119,23 @@ class ReportsController extends Controller {
 		$ticketsPerCategories=Ticket::selectRaw('count(*) as count , category_id ')
 									->groupBy('category_id')
 									->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
-									->get();						
+									->get();
+
+		$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
+						
 		return view('reports.summary',compact('inprogressCount','newCount'
-												,'resolvedCount','ticketsPerCategories'));
+												,'resolvedCount','ticketsPerCategories'
+												,'tickets'));
 
 	}
 
-	public function summarySearchDate(Request $request)
+	public function summarySearchDate()
 	{
 
 		// Getting post data
-		if($request->ajax()) {
+		if(Request::ajax()) {
 			// $data = Input::all();
-			$data = $request->input('date');
+			$data = Request::input('date');
 			if($data == "month"){
 
 				$inprogressCount=Ticket::whereNull('tech_id')
@@ -144,8 +155,11 @@ class ReportsController extends Controller {
 											->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
 											->get();
 
+				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
+
 				return view('reports.summarySearchMonth',compact('inprogressCount','newCount'
-												,'resolvedCount','ticketsPerCategories'));
+												,'resolvedCount','ticketsPerCategories'
+												,'tickets'));
 			}
 			
 			if($data == "week"){
@@ -166,13 +180,16 @@ class ReportsController extends Controller {
 											->where('updated_at','>',date('Y-m-d', strtotime('-1 week')))
 											->get();
 
+				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 week')))->get();
+
 				return view('reports.summarySearchWeek',compact('inprogressCount','newCount'
-												,'resolvedCount','ticketsPerCategories'));
+												,'resolvedCount','ticketsPerCategories'
+												,'tickets'));
 			}
 
 			if($data == "custom"){
-				$startdate=$request->input('startdate');
-				$enddate=$request->input('enddate');
+				$startdate=Request::input('startdate');
+				$enddate=Request::input('enddate');
 
 				$inprogressCount=Ticket::whereNull('tech_id')
 								->where('status','open')
@@ -195,14 +212,35 @@ class ReportsController extends Controller {
 											->where('deadline','<=',$enddate)
 											->get();
 
+				$tickets=Ticket::where('updated_at','>=',$startdate)
+								->where('deadline','<=',$enddate)
+								->get();
+
 				return view('reports.summarySearchCustom',compact('inprogressCount','newCount'
-												,'resolvedCount','ticketsPerCategories','startdate','enddate'));
+																,'resolvedCount','ticketsPerCategories'
+																,'startdate','enddate','tickets'));
 
 
 			}
 
 		
 		}
+	}
+
+	public function technicianStatistics()
+	{
+
+		return view('reports.technicianStatistics',compact('technicians'));
+
+	}
+
+
+	public function technicianStatisticsSearch()
+	{
+		
+			$startDate = Request::get('from');
+			$endDate = Request::get('to');
+
 	}
 
 
