@@ -47,6 +47,7 @@
 			        			@if($category->section_id == $section->id){
 
 			        					<td>{{$category->name}}</td>
+
 			        			
 			        			@endif
 

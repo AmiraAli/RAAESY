@@ -9,7 +9,7 @@ window.onload = function() {
 * function to get search by date
 **/
 function searchDate () {
-	
+
 		var startdate=document.getElementById("startdate").value;
 		var enddate=document.getElementById("enddate").value;
 		if( startdate != "" && enddate != ""){

@@ -1,8 +1,8 @@
 <html>
 <head>
 	<link href="/css/ticketshow.css" rel="stylesheet">
-        <script src="/js/ticket_status.js"></script>
-
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="/js/ticket_status.js"></script>
 	<script src="/js/comments.js"></script>
 	<script src="/js/add_asset_ticket.js"></script>
 </head>

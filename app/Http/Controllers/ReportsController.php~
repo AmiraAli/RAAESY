@@ -5,7 +5,9 @@ use App\Http\Controllers\Controller;
 use App\Log;
 use App\Ticket;
 use DB;
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
+use Request;
+use App\TicketStatus;
 
 class ReportsController extends Controller {
 	/**
@@ -65,8 +67,19 @@ class ReportsController extends Controller {
 		return $tickt;		
 	}
 
+
 	/**
-	 * Show the form for creating a new resource.
+	* function to render to view of all reports
+	**/
+	public function index()
+	{
+		return view('reports.index');
+	}
+	
+
+	/**
+	 * Show the delection/spamming log of tickets, users, assets ,
+	 * articles and categories
 	 *
 	 * 
 	 */
@@ -77,41 +90,72 @@ class ReportsController extends Controller {
 	}
 
 
+	/**
+	 * Show the distribution/hour of the opened/closed tickets
+	 * within the last 10 days
+	 *
+	 * @return Response
+	 */
+
 	public function distHour()
 	{
 		
-		//echo $date."<br/>";
-		//$date =  time();
-		//$date2 = date('Y-m-d h:i:s', time());
-		$date1 = date('Y-m-d h:i:s', time());
+		$date1 = date('Y-m-d H:i:s', time());
 		$date2 = date_create($date1);
 		date_sub($date2, date_interval_create_from_date_string('10 days'));
-		echo $date1;
-		echo "<br/>";
-		$date2 =  date_format($date2, 'Y-m-d h:i:s');
-		echo $date2;
-		
+		$date2 =  date_format($date2, 'Y-m-d H:i:s');		
+		$openedTickets = DB::select("select id ,hour(created_at) as hour ,  count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'open' group by hour(created_at)",array ( $date2 , $date1) );
+		$defaultOpen = '';
 
-			
-		
-//		$tickets=Ticket::selectRaw('hour(created_at), count(*)')->where('status','=','open')->whereBetween('created_at', ["$date2", "$date1 group by hour(created_at) "])->get();
-													// ->groupBy('created_at')->get();
+		foreach ($openedTickets as $ticket){
+			$defaultOpen.=$ticket->hour."_".$ticket->count.":";
+		}
 
-	
-	$tickets = DB::select("select id ,hour(created_at) , status , count(*) as c from  tickets where created_at between '2015-05-20' and '2015-06-3' group by hour(created_at)");
-	$yy = "ya raab";
-		/*foreach ($results as $res){
-			echo $res->c;
-		}*/
+
+		$closedTickets = DB::select("select id ,hour(created_at) as hour  , count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'close' group by hour(created_at)",array ( $date2 , $date1) );
+		$defaultClose = '';
+
 		
-		return view('reports.perhour',compact('tickets', 'yy'));
+		foreach ($closedTickets as $ticket){
+			$defaultClose.=$ticket->hour."_".$ticket->count.":";
+		}
+
+
+
+
+		
+		return view('reports.perhour',compact('tickets', 'defaultOpen' ,'defaultClose' ));
 	}
 
 
-	// public function ajaxdistHour(){
+	/**
+	 * Show the distribution/hour of the opened/closed tickets
+	 * within a specific range of dates ( called by AJAX )
+	 *
+	 * @return Response
+	 */
 
-	// 	$tickets=Ticket::where
-	// }
+	public function ajaxdistHour(){
+        
+
+		if(!Request::ajax()) {
+			return;
+		}
+
+        $date1= Request::input('date1');
+        $date2= Request::input('date2');
+
+		$openedTickets = DB::select("select id ,hour(created_at) as hour ,  count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'open' group by hour(created_at)",array ( $date1 , $date2) );
+		$closedTickets = DB::select("select id ,hour(created_at) as hour ,  count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'close' group by hour(created_at)",array ( $date1 , $date2) );
+		
+
+
+		return json_encode(array(
+		    'open'  => $openedTickets,
+    		'close' => $closedTickets
+    	));
+   
+	}
 
 	/**
 	* function to count the tickets in all status
@@ -134,18 +178,23 @@ class ReportsController extends Controller {
 		$ticketsPerCategories=Ticket::selectRaw('count(*) as count , category_id ')
 									->groupBy('category_id')
 									->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
-									->get();						
+									->get();
+
+		$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
+						
 		return view('reports.summary',compact('inprogressCount','newCount'
-												,'resolvedCount','ticketsPerCategories'));
+												,'resolvedCount','ticketsPerCategories'
+												,'tickets'));
 
 	}
 
-	public function summarySearchDate(Request $request)
+	public function summarySearchDate()
 	{
+
 		// Getting post data
-		if($request->ajax()) {
+		if(Request::ajax()) {
 			// $data = Input::all();
-			$data = $request->input('date');
+			$data = Request::input('date');
 			if($data == "month"){
 
 				$inprogressCount=Ticket::whereNull('tech_id')
@@ -165,8 +214,11 @@ class ReportsController extends Controller {
 											->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
 											->get();
 
+				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
+
 				return view('reports.summarySearchMonth',compact('inprogressCount','newCount'
-												,'resolvedCount','ticketsPerCategories'));
+												,'resolvedCount','ticketsPerCategories'
+												,'tickets'));
 			}
 			
 			if($data == "week"){
@@ -187,13 +239,16 @@ class ReportsController extends Controller {
 											->where('updated_at','>',date('Y-m-d', strtotime('-1 week')))
 											->get();
 
+				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 week')))->get();
+
 				return view('reports.summarySearchWeek',compact('inprogressCount','newCount'
-												,'resolvedCount','ticketsPerCategories'));
+												,'resolvedCount','ticketsPerCategories'
+												,'tickets'));
 			}
 
 			if($data == "custom"){
-				$startdate=$request->input('startdate');
-				$enddate=$request->input('enddate');
+				$startdate=Request::input('startdate');
+				$enddate=Request::input('enddate');
 
 				$inprogressCount=Ticket::whereNull('tech_id')
 								->where('status','open')
@@ -216,8 +271,13 @@ class ReportsController extends Controller {
 											->where('deadline','<=',$enddate)
 											->get();
 
+				$tickets=Ticket::where('updated_at','>=',$startdate)
+								->where('deadline','<=',$enddate)
+								->get();
+
 				return view('reports.summarySearchCustom',compact('inprogressCount','newCount'
-												,'resolvedCount','ticketsPerCategories','startdate','enddate'));
+																,'resolvedCount','ticketsPerCategories'
+																,'startdate','enddate','tickets'));
 
 
 			}
@@ -225,6 +285,7 @@ class ReportsController extends Controller {
 		
 		}
 	}
+
 
 	/**
 	 * function to get  the problem mangement.
@@ -268,8 +329,8 @@ class ReportsController extends Controller {
 	 */
 	public function problemMangementDate(Request $request){
 	
-	$startdate=$request->input('startdate');
-	$enddate=$request->input('enddate');
+	$startdate=Request::input('startdate');
+	$enddate=Request::input('enddate');
 
 	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->whereBetween('updated_at', [$startdate, $enddate])
 									   ->groupBy('subject_id')->get();
@@ -297,10 +358,34 @@ class ReportsController extends Controller {
 
 	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
 	return view('reports.ticketStatisticsDate',compact('allTickets','startdate','enddate'));
+}
+	public function technicianStatistics()
+	{
+
+		return view('reports.technicianStatistics',compact('technicians'));
 
 	}
 
 
+	public function technicianStatisticsSearch()
+	{
+		
+			$startDate = Request::get('from');
+			$endDate = Request::get('to');
+
+
+	}
+
+
+
+	public function reportTicketStatus(){
+
+		$tickets=Ticket::all();
+		$ticketStatuses= TicketStatus::all();
+		$opens=TicketStatus::where('value','open')->count();
+		$closes=TicketStatus::where('value','close')->count();
+		return view('reports.reportTicketStatus',compact('tickets','ticketStatuses','opens','closes'));
+	}
 
 
 
