@@ -7,8 +7,66 @@ use App\Ticket;
 use DB;
 //use Illuminate\Http\Request;
 use Request;
+use App\TicketStatus;
 
 class ReportsController extends Controller {
+	/**
+	* Function to sort tickets
+	**/
+	public function sortTicket( $tickt , $sortBy ,$sortType )
+	{
+		if(is_object($tickt) && ! $tickt->isEmpty() )
+		{		
+    		$tickets = array();
+	    			    	
+	        foreach ($tickt as $key => $value)
+	        {	        
+	            $tickets[$key] = $value;
+            
+	        }
+	        foreach ($tickets as $key => $row)
+			{
+				if ($sortBy == "subject") 
+				{		
+					$sort[$key] = $row['subject']['name'];
+				}
+				else 
+				{
+					$sort[$key] = $row[$sortBy];
+				}			    				    
+			}
+
+
+			//sorting function
+			if ($sortType == "DESC") 
+			{	
+				if($sortBy == "percentage")
+				{
+					array_multisort($sort, SORT_DESC, $tickets);
+				}
+				else
+				{	
+					array_multisort($sort, SORT_ASC, $tickets);
+				}
+			}
+			elseif ($sortType == "ASC")
+			{
+				if($sortBy == "percentage")
+				{
+					array_multisort($sort, SORT_ASC, $tickets);
+				}
+				else
+				{	
+					array_multisort($sort, SORT_DESC, $tickets);
+				}
+			}
+			return $tickets; 
+		}	
+	   
+	    
+		return $tickt;		
+	}
+
 
 	/**
 	* function to render to view of all reports
@@ -18,10 +76,12 @@ class ReportsController extends Controller {
 		return view('reports.index');
 	}
 	
+
 	/**
-	 * Show the form for creating a new resource.
+	 * Show the delection/spamming log of tickets, users, assets ,
+	 * articles and categories
 	 *
-	 * @return Response
+	 * 
 	 */
 	public function logs()
 	{
@@ -30,14 +90,21 @@ class ReportsController extends Controller {
 	}
 
 
+	/**
+	 * Show the distribution/hour of the opened/closed tickets
+	 * within the last 10 days
+	 *
+	 * @return Response
+	 */
+
 	public function distHour()
 	{
 		
-		$date1 = date('Y-m-d h:i:s', time());
+		$date1 = date('Y-m-d H:i:s', time());
 		$date2 = date_create($date1);
 		date_sub($date2, date_interval_create_from_date_string('10 days'));
-		$date2 =  date_format($date2, 'Y-m-d h:i:s');		
-		$openedTickets = DB::select("select id ,hour(created_at) as hour , status , count(*) as count from  tickets where created_at between '$date2' and '$date1' and status = 'open' group by hour(created_at)");
+		$date2 =  date_format($date2, 'Y-m-d H:i:s');		
+		$openedTickets = DB::select("select id ,hour(created_at) as hour ,  count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'open' group by hour(created_at)",array ( $date2 , $date1) );
 		$defaultOpen = '';
 
 		foreach ($openedTickets as $ticket){
@@ -45,7 +112,7 @@ class ReportsController extends Controller {
 		}
 
 
-		$closedTickets = DB::select("select id ,hour(created_at) as hour , status , count(*) as count from  tickets where created_at between '$date2' and '$date1' and status = 'close' group by hour(created_at)");
+		$closedTickets = DB::select("select id ,hour(created_at) as hour  , count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'close' group by hour(created_at)",array ( $date2 , $date1) );
 		$defaultClose = '';
 
 		
@@ -61,21 +128,25 @@ class ReportsController extends Controller {
 	}
 
 
+	/**
+	 * Show the distribution/hour of the opened/closed tickets
+	 * within a specific range of dates ( called by AJAX )
+	 *
+	 * @return Response
+	 */
+
 	public function ajaxdistHour(){
         
 
-        $date1=Request::get('date1');
-        $date2=Request::get('date2');
+		if(!Request::ajax()) {
+			return;
+		}
 
-        //echo $date1;
-        //echo $date2;
-        //exit();1
-/*
-        $date1 = '2015-06-01 00:00:00';
-        $date2= '2015-06-02 23:59:59';*/
+        $date1= Request::input('date1');
+        $date2= Request::input('date2');
 
-		$openedTickets = DB::select("select id ,hour(created_at) as hour , status , count(*) as count from  tickets where created_at between '$date1' and '$date2' and status = 'open' group by hour(created_at)");
-		$closedTickets = DB::select("select id ,hour(created_at) as hour , status , count(*) as count from  tickets where created_at between '$date1' and '$date2' and status = 'close' group by hour(created_at)");
+		$openedTickets = DB::select("select id ,hour(created_at) as hour ,  count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'open' group by hour(created_at)",array ( $date1 , $date2) );
+		$closedTickets = DB::select("select id ,hour(created_at) as hour ,  count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'close' group by hour(created_at)",array ( $date1 , $date2) );
 		
 
 
@@ -215,6 +286,79 @@ class ReportsController extends Controller {
 		}
 	}
 
+
+	/**
+	 * function to get  the problem mangement.
+	 *
+	 * @return Response
+	 */
+	public function problemMangement()
+	{
+
+	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->groupBy('subject_id')->get();
+	$all=Ticket::all();
+
+	foreach($allTickets as $allTicket){
+	$count=0;
+	$idsPerSubject=array();
+	$sectionCategoryPerSubject=array();
+		foreach($all as $ticket){
+			if($ticket->subject->name==$allTicket->subject->name  ){
+				if($ticket->status=='close'){
+					$count=$count+1;
+				}
+				$idsPerSubject[]=$ticket->id;
+				$sectionCategoryPerSubject[]=$ticket->category->section->name.'/'.$ticket->category->name;
+				}
+		}
+		$percentage=($count/$allTicket->allticket)*100;
+		$allTicket->closedcount=$count;
+		$allTicket->percentage=$percentage;
+		$allTicket->ids=$idsPerSubject;
+		$allTicket->sectionCategory=$sectionCategoryPerSubject;
+	}
+	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
+	return view('reports.ticketStatistics',compact('allTickets'));
+	}
+
+
+	/**
+	 * function to get  the problem mangement by date.
+	 *
+	 * @return Response
+	 */
+	public function problemMangementDate(){
+	
+	$startdate=Request::input('startdate');
+	$enddate=Request::input('enddate');
+
+	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->whereBetween('updated_at', [$startdate, $enddate])
+									   ->groupBy('subject_id')->get();
+	$all=Ticket::all();
+
+	foreach($allTickets as $allTicket){
+	$count=0;
+	$idsPerSubject=array();
+	$sectionCategoryPerSubject=array();
+		foreach($all as $ticket){
+			if($ticket->subject->name==$allTicket->subject->name  ){
+				if($ticket->status=='close'){
+					$count=$count+1;
+				}
+				$idsPerSubject[]=$ticket->id;
+				$sectionCategoryPerSubject[]=$ticket->category->section->name.'/'.$ticket->category->name;
+				}
+		}
+		$percentage=($count/$allTicket->allticket)*100;
+		$allTicket->closedcount=$count;
+		$allTicket->percentage=$percentage;
+		$allTicket->ids=$idsPerSubject;
+		$allTicket->sectionCategory=$sectionCategoryPerSubject;
+	}
+
+	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
+	return view('reports.ticketStatisticsDate',compact('allTickets','startdate','enddate'));
+}
 	public function technicianStatistics()
 	{
 
@@ -229,7 +373,20 @@ class ReportsController extends Controller {
 			$startDate = Request::get('from');
 			$endDate = Request::get('to');
 
+
 	}
+
+
+
+	public function reportTicketStatus(){
+
+		$tickets=Ticket::all();
+		$ticketStatuses= TicketStatus::all();
+		$opens=TicketStatus::where('value','open')->count();
+		$closes=TicketStatus::where('value','close')->count();
+		return view('reports.reportTicketStatus',compact('tickets','ticketStatuses','opens','closes'));
+	}
+
 
 
 }

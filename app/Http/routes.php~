@@ -61,9 +61,6 @@ Route::post('/tickets/closeTicket', 'TicketsController@closeTicket');
 Route::post('/tickets/openTicket', 'TicketsController@openTicket');
 Route::post('tickets/addTag', 'TicketsController@addTag');
 
-
-
-
 Route::resource('tickets.comments', 'CommentsController');
 
 Route::resource('/articles','ArticlesController');
@@ -77,8 +74,21 @@ Route::post('assets/addType', 'AssetsController@addType');
 
 Route::get('/reports/logs', 'ReportsController@logs');
 Route::get('/reports/disthour', 'ReportsController@distHour');
-Route::get('/reports/summary', 'ReportsController@SummaryCategories');
 
+Route::get('/reports/summary', 'ReportsController@summary');
+Route::post('/reports/summarySearchDate', 'ReportsController@summarySearchDate');
+Route::get('/reports', 'ReportsController@index');
+
+Route::post('/reports/disthourajax', 'ReportsController@ajaxdistHour');
+
+Route::get('/reports/technicianStatistics', 'ReportsController@technicianStatistics');
+Route::post('/reports/technicianStatisticsSearch', 'ReportsController@technicianStatisticsSearch');
+
+Route::get('/reports/problemMangement', 'ReportsController@problemMangement');
+Route::post('/reports/problemMangementDate', 'ReportsController@problemMangementDate');
+
+
+Route::get('/reports/reportTicketStatus','ReportsController@reportTicketStatus');
 
 
 Route::get('/', 'WelcomeController@index');
