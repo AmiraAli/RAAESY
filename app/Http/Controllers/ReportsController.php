@@ -5,7 +5,8 @@ use App\Http\Controllers\Controller;
 use App\Log;
 use App\Ticket;
 use DB;
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
+use Request;
 
 class ReportsController extends Controller {
 
@@ -32,38 +33,58 @@ class ReportsController extends Controller {
 	public function distHour()
 	{
 		
-		//echo $date."<br/>";
-		//$date =  time();
-		//$date2 = date('Y-m-d h:i:s', time());
 		$date1 = date('Y-m-d h:i:s', time());
 		$date2 = date_create($date1);
 		date_sub($date2, date_interval_create_from_date_string('10 days'));
-		echo $date1;
-		echo "<br/>";
-		$date2 =  date_format($date2, 'Y-m-d h:i:s');
-		echo $date2;
-		
+		$date2 =  date_format($date2, 'Y-m-d h:i:s');		
+		$openedTickets = DB::select("select id ,hour(created_at) as hour , status , count(*) as count from  tickets where created_at between '$date2' and '$date1' and status = 'open' group by hour(created_at)");
+		$defaultOpen = '';
 
-			
-		
-//		$tickets=Ticket::selectRaw('hour(created_at), count(*)')->where('status','=','open')->whereBetween('created_at', ["$date2", "$date1 group by hour(created_at) "])->get();
-													// ->groupBy('created_at')->get();
+		foreach ($openedTickets as $ticket){
+			$defaultOpen.=$ticket->hour."_".$ticket->count.":";
+		}
 
-	
-	$tickets = DB::select("select id ,hour(created_at) , status , count(*) as c from  tickets where created_at between '2015-05-20' and '2015-06-3' group by hour(created_at)");
-	$yy = "ya raab";
-		/*foreach ($results as $res){
-			echo $res->c;
-		}*/
+
+		$closedTickets = DB::select("select id ,hour(created_at) as hour , status , count(*) as count from  tickets where created_at between '$date2' and '$date1' and status = 'close' group by hour(created_at)");
+		$defaultClose = '';
+
 		
-		return view('reports.perhour',compact('tickets', 'yy'));
+		foreach ($closedTickets as $ticket){
+			$defaultClose.=$ticket->hour."_".$ticket->count.":";
+		}
+
+
+
+
+		
+		return view('reports.perhour',compact('tickets', 'defaultOpen' ,'defaultClose' ));
 	}
 
 
-	// public function ajaxdistHour(){
+	public function ajaxdistHour(){
+        
 
-	// 	$tickets=Ticket::where
-	// }
+        $date1=Request::get('date1');
+        $date2=Request::get('date2');
+
+        //echo $date1;
+        //echo $date2;
+        //exit();1
+/*
+        $date1 = '2015-06-01 00:00:00';
+        $date2= '2015-06-02 23:59:59';*/
+
+		$openedTickets = DB::select("select id ,hour(created_at) as hour , status , count(*) as count from  tickets where created_at between '$date1' and '$date2' and status = 'open' group by hour(created_at)");
+		$closedTickets = DB::select("select id ,hour(created_at) as hour , status , count(*) as count from  tickets where created_at between '$date1' and '$date2' and status = 'close' group by hour(created_at)");
+		
+
+
+		return json_encode(array(
+		    'open'  => $openedTickets,
+    		'close' => $closedTickets
+    	));
+   
+	}
 
 	/**
 	* function to count the tickets in all status
@@ -98,6 +119,7 @@ class ReportsController extends Controller {
 
 	public function summarySearchDate(Request $request)
 	{
+
 		// Getting post data
 		if($request->ajax()) {
 			// $data = Input::all();
@@ -191,6 +213,22 @@ class ReportsController extends Controller {
 
 		
 		}
+	}
+
+	public function technicianStatistics()
+	{
+
+		return view('reports.technicianStatistics',compact('technicians'));
+
+	}
+
+
+	public function technicianStatisticsSearch()
+	{
+		
+			$startDate = Request::get('from');
+			$endDate = Request::get('to');
+
 	}
 
 
