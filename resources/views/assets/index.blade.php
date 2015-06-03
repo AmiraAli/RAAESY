@@ -12,6 +12,14 @@
 <a class="btn btn-primary" href="{{ url('/assets/create') }}"> New Asset</a>
 @endif
 </div>
+
+<div>
+@if(Auth::user()->type=="admin" )
+<a class="btn btn-primary" href="{{ url('/assets/csvimport') }}"> Export To Csv</a>
+@endif
+</div>
+
+
 <div id="search_result" class="col-md-8 ">
 	<table class="table table-hover">
 		<thead>

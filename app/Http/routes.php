@@ -1,5 +1,5 @@
 <?php
-
+use App\Ticket;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -13,10 +13,14 @@
 
 #Route::get('search/autocomplete', 'ArticlesController@autocomplete');
 
+Route::get('/assets/csvimport', 'AssetsController@importToCsv');
 
 
 
 Route::resource('/categories','CategoriesController');
+Route::post('categories/createajax', 'CategoriesController@createajax');
+Route::post('categories/saveCategory', 'CategoriesController@saveCategory');
+
 
 Route::resource('/sections','SectionsController');
 
@@ -82,8 +86,20 @@ Route::get('/reports', 'ReportsController@index');
 
 Route::post('/reports/disthourajax', 'ReportsController@ajaxdistHour');
 
+
 Route::get('/reports/technicianStatistics', 'ReportsController@technicianStatistics');
 Route::post('/reports/technicianStatisticsSearch', 'ReportsController@technicianStatisticsSearch');
+
+Route::get('/reports/ticketsPerTime', 'ReportsController@ticketsPerTime');
+Route::post('/reports/prepareTickets', 'ReportsController@prepareTickets');
+
+Route::get('/reports/problemMangement', 'ReportsController@problemMangement');
+Route::post('/reports/problemMangementDate', 'ReportsController@problemMangementDate');
+
+
+Route::get('/reports/reportTicketStatus','ReportsController@reportTicketStatus');
+
+
 
 Route::get('/', 'WelcomeController@index');
 
