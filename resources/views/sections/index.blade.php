@@ -23,10 +23,11 @@
 			        		@foreach ($categories as $category)
 			        			@if($category->section_id == $section->id){
 			        					<td>{{$category->name}}</td>
+			        					<td><button onclick="edit()">Edit</button></td>
 			        			}
 			        			@endif
 			        		@endforeach
-			          </tr>
+			        </tr>
      		@endforeach
 
      	</tbody>

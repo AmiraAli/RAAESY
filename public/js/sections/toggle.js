@@ -19,3 +19,12 @@ $(document).ready(function(){
 	   
 
 	}
+
+	 function edit(elm,elm2){
+     
+	       $("#"+elm2).toggleClass('glyphicon glyphicon-menu-right');
+
+	        $("."+elm).toggle();
+	   
+
+	}
