@@ -96,7 +96,7 @@ $.ajax({
 	
 	result=JSON.parse(result);
 
-	$("#addnewasset").html("<a href='/assets/'"+result['id']+">"+result['name']+"</a><br>");
+	$("#addnewasset").append("<a href='/assets/'"+result['id']+">"+result['name']+"</a><br>");
 	var addasset=document.createElement("button");
 	var addassettext=document.createTextNode("AddAssets");
 	addasset.setAttribute('id',parseInt(result['ticket_id'])+":newasset");
