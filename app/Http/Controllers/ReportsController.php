@@ -117,13 +117,13 @@ class ReportsController extends Controller {
 
 	}
 
-	public function summarySearchDate(Request $request)
+	public function summarySearchDate()
 	{
 
 		// Getting post data
-		if($request->ajax()) {
+		if(Request::ajax()) {
 			// $data = Input::all();
-			$data = $request->input('date');
+			$data = Request::input('date');
 			if($data == "month"){
 
 				$inprogressCount=Ticket::whereNull('tech_id')
@@ -176,8 +176,8 @@ class ReportsController extends Controller {
 			}
 
 			if($data == "custom"){
-				$startdate=$request->input('startdate');
-				$enddate=$request->input('enddate');
+				$startdate=Request::input('startdate');
+				$enddate=Request::input('enddate');
 
 				$inprogressCount=Ticket::whereNull('tech_id')
 								->where('status','open')
