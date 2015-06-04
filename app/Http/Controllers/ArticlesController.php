@@ -350,7 +350,7 @@ class ArticlesController extends Controller {
             }else{
                     $show="Technicals and Users"; 
             } 	
-		    $output .= implode(",", array($article->subject , $article->category->name , $show , $article->user->fname , $article->isshow , $article->created_at ,$article->updated_at)); // append each row
+		    $output .= implode(",", array($article->subject , $article->category->name , $show , $article->user->fname ,  $article->created_at ,$article->updated_at)); // append each row
 			$output .="\n";
 
 		}

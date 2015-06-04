@@ -474,4 +474,33 @@ class UsersController extends Controller {
 	}
 	
 
+
+	public function downloadPDF()
+	{
+		
+		$users=User::all();
+
+	    $filename = "users.pdf";
+	    $handle = fopen($filename, 'w+');
+
+	    
+
+	    //put all fields except password
+	    foreach($users as $row) {
+	        fputs($handle, array($row['id'], $row['fname'], $row['lname'], $row['email'] , $row['phone'] , $row['location'] , $row['isspam'] , $row['type'] , $row['remember_token'] ,$row['created_at']  , $row['updated_at']));
+	    }
+
+	    fclose($handle);
+
+    	$headers = array(
+        'Content-Type: application/pdf',
+        'Content-Disposition:attachment; filename="cv.pdf"',
+        'Content-Transfer-Encoding:binary',
+        'Content-Length:'.filesize($filename),
+ 	   );
+
+	   
+		return response()->download($filename, "CV.pdf");		
+	}
+
 }	
