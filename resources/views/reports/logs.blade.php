@@ -21,6 +21,12 @@
 
 <div class="container">
 
+<a id="csv" href="/reports/logsCSV" >
+
+    <img src="/images/CSV.png" style="width:40px"></img>
+
+</a>
+
 <div  id="con" class="col-md-12" >
 @foreach ($logs as $log  )
  <div class="row" >

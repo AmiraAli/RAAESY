@@ -7,11 +7,8 @@ use App\Ticket;
 use DB;
 use App\TicketStatus;
 use App\User;
-use Auth;
-
-
-//use Illuminate\Http\Request;
 use Request;
+use Auth;
 use Response;
 
 
@@ -103,6 +100,47 @@ class ReportsController extends Controller {
 	{
 		$logs =Log::all();
 		return view('reports.logs',compact('logs'));
+	}
+
+	public function logsCSV(){
+		$logs =Log::all();
+		//var_dump($logs); exit();
+		$output="";
+		foreach ($logs as $log ) {
+			# code...
+		
+			$output .= implode(",", array('Done By : '.ucfirst ($log->user->fname) , 'at : '.$log->created_at))."\n";
+			
+			if ( $log->type == 'user'){
+	             $name='name';                   
+	  	    }elseif ( $log->type == 'article'){
+				 $name = 'title'; 
+	  	    }else{
+				 $name = 'subject'; 
+	  	    
+		    }
+
+
+		 	$output .= implode(",", array($log->user->fname));
+
+			if ( $log->action == 'spam'){
+				$output .= implode(",", array(" marked the ".$log->type."#".$log->id." with ".$name." ".$log->name." as spam "))."\n";
+			}else{
+				$output .= implode(",", array($log->action."d the ".$log->type."#".$log->id." with ".$name." ".$log->name))."\n" ;
+			}
+			
+		}
+	// headers used to make the file "downloadable", we set them manually
+	// since we can't use Laravel's Response::download() function
+	$headers = array(
+	'Content-Type' => 'text/csv',
+	'Content-Disposition' => 'attachment; filename="DelegationLogReport.csv"',
+	);
+
+	// our response, this will be equivalent to your download() but
+	// without using a local file
+	return Response::make(rtrim($output, "\n"), 200, $headers);
+		
 	}
 
 
@@ -201,6 +239,46 @@ class ReportsController extends Controller {
 		return view('reports.summary',compact('inprogressCount','newCount'
 												,'resolvedCount','ticketsPerCategories'
 												,'tickets'));
+
+	}
+
+	public function summaryCSV(){
+
+
+		$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
+		
+		$output = implode(",", array(' Ticket ID', ' Ticket Subject',' Ticket Category',' Assigned To',' Close Date','Deadline','Status',' Priority'))."\n";
+		foreach($tickets as $ticket){
+			
+				if($ticket->tech_id != NULL){
+					$fname=$ticket->tech->fname;
+				}else{
+					$fname= " ";
+				}
+
+				if($ticket->status == "close"){
+					$updated_at=$ticket->updated_at;
+				}else{
+					$updated_at=" ";
+				}
+
+
+				
+				$output .= implode(",", array($ticket->id , $ticket->subject->name , $ticket->category->section->name , $fname , $updated_at , $ticket->deadline ,$ticket->status ,$ticket->priority)); // append each row
+				$output .="\n";
+			
+		}
+
+        // headers used to make the file "downloadable", we set them manually
+		// since we can't use Laravel's Response::download() function
+		$headers = array(
+		'Content-Type' => 'text/csv',
+		'Content-Disposition' => 'attachment; filename="summaryCSV.csv"',
+		);
+
+		// our response, this will be equivalent to your download() but
+		// without using a local file
+		return Response::make(rtrim($output, "\n"), 200, $headers);
 
 	}
 
@@ -338,6 +416,66 @@ class ReportsController extends Controller {
 	}
 
 
+	function problemMangementCSV(){
+
+		$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->groupBy('subject_id')->get();
+		$all=Ticket::all();
+
+		foreach($allTickets as $allTicket){
+		$count=0;
+		$idsPerSubject=array();
+		$sectionCategoryPerSubject=array();
+			foreach($all as $ticket){
+				if($ticket->subject->name==$allTicket->subject->name  ){
+					if($ticket->status=='close'){
+						$count=$count+1;
+					}
+					$idsPerSubject[]=$ticket->id;
+					$sectionCategoryPerSubject[]=$ticket->category->section->name.'/'.$ticket->category->name;
+				}
+			}
+			$percentage=($count/$allTicket->allticket)*100;
+			$allTicket->closedcount=$count;
+			$allTicket->percentage=$percentage;
+			$allTicket->ids=$idsPerSubject;
+			$allTicket->sectionCategory=$sectionCategoryPerSubject;
+		}
+		$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
+
+        $output = implode(",", array('Subject', 'Total Ticket Count ','Total Ticket Solved ','Percentages'))."\n";
+        foreach($allTickets as $allTicket){
+        	
+			$output .= implode(",", array($allTicket->subject->name ,  $allTicket->allticket , $allTicket->closedcount , $allTicket->percentage )); // append each row
+			$output .="\n";
+            
+            $output .= implode(",", array('Tickets Id', 'Tickets Section/category'))."\n";
+
+            for($i=0;$i<sizeof($allTicket->ids); $i++){
+					$id=$allTicket->ids[$i];
+					$section=$allTicket->sectionCategory[$i];
+					$output .= implode(",", array($id,$section))."\n";
+			}
+
+		}
+			
+				// headers used to make the file "downloadable", we set them manually
+			// since we can't use Laravel's Response::download() function
+			$headers = array(
+			'Content-Type' => 'text/csv',
+			'Content-Disposition' => 'attachment; filename="ProblemManagmentReport.csv"',
+			);
+
+			// our response, this will be equivalent to your download() but
+			// without using a local file
+			return Response::make(rtrim($output, "\n"), 200, $headers);
+
+       
+
+
+
+	}
+
+
 	/**
 	 * function to get  the problem mangement by date.
 	 *
@@ -377,19 +515,58 @@ class ReportsController extends Controller {
 }
 	public function technicianStatistics()
 	{
-		 $technicians = DB::select("select count(IF(t2.value = 'close', 1, null)) as closed, count(IF(t2.value = 'open', 1, null)) as open, tickets.tech_id from tickets left join (SELECT ts.ticket_id,created_at,value  FROM ticket_statuses ts  join (SELECT ticket_id,Max(created_at) as ma FROM ticket_statuses GROUP BY ticket_id ) t on t.ma=ts.created_at and t.ticket_id=ts.ticket_id) t2 on t2.ticket_id = tickets.id group by(tickets.tech_id)");
-		//$technicians = DB::select("select count(IF(tickets.status = 'close', 1, null)) as closed, count(IF(tickets.status = 'open', 1, null)) as open, users.fname, users.lname, users.id from users left join tickets on users.id = tickets.tech_id where users.type = 'tech' group by tickets.tech_id");
-		return view('reports.technicianStatistics',compact('technicians'));
+
+		$from = date('Y-m-d', strtotime('-1 month'));
+		$to = date('Y-m-d', strtotime('+1 day'));
+
+		// $technicians = DB::select("select count(IF(tickets.status = 'close', 1, null)) as closed, count(IF(tickets.status = 'open', 1, null)) as open, users.fname, users.lname, users.id from users left join tickets on users.id = tickets.tech_id where users.type = 'tech' group by tickets.tech_id");
+		$technicians_close = DB::select("select users.fname, users.lname, state.tech_id, state.closed from users left join(select count(IF(t2.value = 'close', 1, null)) as closed, tickets.tech_id from tickets left join (SELECT ts.ticket_id,created_at,value  FROM ticket_statuses ts  join (SELECT ticket_id,Max(created_at) as ma FROM ticket_statuses where created_at between '$from' and '$to' GROUP BY ticket_id ) t on t.ma=ts.created_at and t.ticket_id=ts.ticket_id) t2 on t2.ticket_id = tickets.id group by(tickets.tech_id)) state on users.id = state.tech_id where users.type='tech'");
+		$technicians_open = DB::select("select users.fname, users.lname, state.tech_id, state.open from users left join(select count(IF(t2.value = 'open', 1, null)) as open, tickets.tech_id from tickets left join (SELECT ts.ticket_id,created_at,value  FROM ticket_statuses ts  join (SELECT ticket_id,Max(created_at) as ma FROM ticket_statuses where created_at <= '$to' GROUP BY ticket_id ) t on t.ma=ts.created_at and t.ticket_id=ts.ticket_id) t2 on t2.ticket_id = tickets.id group by(tickets.tech_id)) state on users.id = state.tech_id where users.type='tech'");
+		
+		$technicians = array();
+	    $i = 0;			    	
+        foreach ($technicians_close as $tech_close){	        
+            $technicians[$i]["closed"] = $tech_close->closed;
+            $technicians[$i]["tech_id"] = $tech_close->tech_id;
+            $technicians[$i]["fname"] = $tech_close->fname;
+            $technicians[$i]["lname"] = $tech_close->lname;
+            $i++;
+        }
+        $i = 0;	
+        foreach ($technicians_open as $tech_open){	        
+            $technicians[$i]["open"] = $tech_open->open;
+            $i++;
+        }
+
+		return view('reports.technicianStatistics',compact("technicians"));
+
 	}
 	public function technicianStatisticsSearch()
 	{
 		
-			$startDate = Request::get('from');
-			$endDate = Request::get('to');
-		 $technicians = DB::select("select count(IF(t2.value = 'close', 1, null)) as closed, count(IF(t2.value = 'open', 1, null)) as open, tickets.tech_id from tickets left join (SELECT ts.ticket_id,created_at,value  FROM ticket_statuses ts  join (SELECT ticket_id,Max(created_at) as ma FROM ticket_statuses where created_at between $startDate and $endDate GROUP BY ticket_id ) t on t.ma=ts.created_at and t.ticket_id=ts.ticket_id) t2   on t2.ticket_id = tickets.id group by(tickets.tech_id)");
-		 echo json_encode($technicians);
-			//$technicians = DB::select("select count(IF(tickets.status = 'close', 1, null)) as closed, count(IF(tickets.status = 'open', 1, null)) as open, users.fname, users.lname, users.id from users left join tickets on users.id = tickets.tech_id where users.type = 'tech' group by tickets.tech_id");
-		
+
+			$from = Request::get('from');
+			$to = Request::get('to');
+			$tomorrow = date('Y-m-d',strtotime($to . "+1 days"));
+
+			$technicians_close = DB::select("select users.fname, users.lname, state.tech_id, state.closed from users left join(select count(IF(t2.value = 'close', 1, null)) as closed, tickets.tech_id from tickets left join (SELECT ts.ticket_id,created_at,value  FROM ticket_statuses ts  join (SELECT ticket_id,Max(created_at) as ma FROM ticket_statuses where created_at between '$from' and '$tomorrow' GROUP BY ticket_id ) t on t.ma=ts.created_at and t.ticket_id=ts.ticket_id) t2 on t2.ticket_id = tickets.id group by(tickets.tech_id)) state on users.id = state.tech_id where users.type='tech'");
+			$technicians_open = DB::select("select users.fname, users.lname, state.tech_id, state.open from users left join(select count(IF(t2.value = 'open', 1, null)) as open, tickets.tech_id from tickets left join (SELECT ts.ticket_id,created_at,value  FROM ticket_statuses ts  join (SELECT ticket_id,Max(created_at) as ma FROM ticket_statuses where created_at <= '$tomorrow' GROUP BY ticket_id ) t on t.ma=ts.created_at and t.ticket_id=ts.ticket_id) t2 on t2.ticket_id = tickets.id group by(tickets.tech_id)) state on users.id = state.tech_id where users.type='tech'");
+			
+			$technicians = array();
+		    $i = 0;			    	
+	        foreach ($technicians_close as $tech_close){	        
+	            $technicians[$i]["closed"] = $tech_close->closed;
+	            $technicians[$i]["tech_id"] = $tech_close->tech_id;
+	            $technicians[$i]["fname"] = $tech_close->fname;
+	            $technicians[$i]["lname"] = $tech_close->lname;
+	            $i++;
+	        }
+	        $i = 0;	
+	        foreach ($technicians_open as $tech_open){	        
+	            $technicians[$i]["open"] = $tech_open->open;
+	            $i++;
+	        }
+	        return view('reports.technicianSearch',compact("technicians"));
 	}
 
 	public function ticketsPerTime()
@@ -398,30 +575,23 @@ class ReportsController extends Controller {
 		$to = date('Y-m-d', strtotime('+1 day'));
 		$tickets = Ticket::select(DB::raw('count(*) as ticketCount,DATE(created_at) as date'))->whereBetween('created_at', [$from, $to])->groupBy(DB::raw('DATE(created_at)'))->get();	
 		// $closed = TicketStatus::select(DB::raw('count(IF(ticket_stauses.value = 'close', 1, null)) as ticketCount,DATE(created_at) as date'))->whereBetween('created_at', [$from, $to])->groupBy(DB::raw('DATE(created_at)'))->get();	
-
-// // 		$datetime1 = date_create(date('Y-m-d', strtotime('-2 day')));
-// // $datetime2 = date_create(date('Y-m-d', strtotime('+0 day')));
-// 		$datetime1 = date_create('2009-10-11');
-// $datetime2 = date_create('2009-10-13');
-// 		$interval = date_diff($datetime1, $datetime2);
-// 			$interval->format('%R%a days');
 		
-			$points[0] = date('Y-m-d', strtotime('-2 day'));
-			$points[1] = date('Y-m-d', strtotime('-1 day'));
-			$points[2] = date('Y-m-d', strtotime('+0 day'));
+		$points[0] = date('Y-m-d', strtotime('-2 day'));
+		$points[1] = date('Y-m-d', strtotime('-1 day'));
+		$points[2] = date('Y-m-d', strtotime('+0 day'));
+		$f = 0;
+		foreach ($points as $point) {
+			foreach ($tickets as $ticket) {					
+				if(strtotime($ticket->date) == strtotime($point)){
+					$createdTickets[] = $ticket->ticketCount;
+					$f = 1;
+				}
+			}
+			if($f == 0){
+				$createdTickets[] = 0;
+			}
 			$f = 0;
-			foreach ($points as $point) {
-				foreach ($tickets as $ticket) {					
-					if(strtotime($ticket->date) == strtotime($point)){
-						$createdTickets[] = $ticket->ticketCount;
-						$f = 1;
-					}
-				}
-				if($f == 0){
-					$createdTickets[] = 0;
-				}
-				$f = 0;
-			}			
+		}			
 		return view('reports.ticketsPerTime', compact('points','createdTickets'));
 	}
 
@@ -433,15 +603,17 @@ class ReportsController extends Controller {
 			$from = Request::input("from");
 			$to = Request::input("to");
 			$tomorrow = date('Y-m-d',strtotime($to . "+1 days"));
+			$dateFrom = date_parse_from_format("Y-m-d", $from);
+			$dateTo = date_parse_from_format("Y-m-d", $to);
 
 			if($unit == "day"){
 				
 				$tickets = Ticket::select(DB::raw('count(*) as ticketCount,DATE(created_at) as date'))->whereBetween('created_at', [$from, $tomorrow])->groupBy(DB::raw('DATE(created_at)'))->get();	
 
 			     $datediff = strtotime($to) - strtotime($from);
-			     $timeDiff = floor($datediff/(60*60*24)) + 1;
+			     $timeDiff = floor($datediff/(60*60*24));
 			     $f = 0;
-			     for($i = 0; $i < $timeDiff; $i++){
+			     for($i = 0; $i <= $timeDiff; $i++){
 			     	$points[$i] = date('Y-m-d',strtotime($from . "+".$i ."days"));
 				     	foreach ($tickets as $ticket) {			
 							if(strtotime($ticket->date) == strtotime($points[$i])){
@@ -457,18 +629,53 @@ class ReportsController extends Controller {
 			 }
 			 else if($unit == "month"){
 			 	$tickets = Ticket::select(DB::raw('count(*) as ticketCount,month(created_at) as date'))->whereBetween('created_at', [$from, $tomorrow])->groupBy(DB::raw('month(created_at)'))->get();		
-			 }
-			 	// $year = date("Y",$to);
-$d = date_parse_from_format("Y-m-d", $to);
-// echo $d["month"];
-		 //     $data["points"] = $points;
+			 	
+			 	$f = 0;
+			 	for($i = 0; $i <= ($dateTo["month"] - $dateFrom["month"]); $i++){
+			     	$points[$i] = $dateFrom["month"] + $i;
+				     	foreach ($tickets as $ticket) {			
+							if($ticket->date == $points[$i]){
+								$createdTickets[] = $ticket->ticketCount;
+								$f = 1;
+							}
+						}
+						if($f == 0){
+							$createdTickets[] = 0;
+						}
+						$f = 0;
+			     }
 
-			// for($i = 0; $i < count($createdTickets); $i++){
-			//     $createdTickets[$i] = (int)$createdTickets[$i];
-			// } 
-		     // $data["createdTickets"] = $createdTickets;
-$data["x"] = $d["month"];
-			 echo json_encode($tickets);
+			 }
+			 else if($unit == "week"){
+			 	$tickets = Ticket::select(DB::raw('count(*) as ticketCount,week(created_at) as date'))->whereBetween('created_at', [$from, $tomorrow])->groupBy(DB::raw('week(created_at)'))->get();		
+			 	$fromDate  = mktime(0, 0, 0, $dateFrom["month"],$dateFrom["day"],$dateFrom["year"]);
+				$weekFrom  = (int)date('W', $fromDate);
+				$toDate  = mktime(0, 0, 0, $dateTo["month"],$dateTo["day"],$dateTo["year"]);
+				$weekTo  = (int)date('W', $toDate);
+			 	$f = 0;
+			 	for($i = 0; $i <= ($weekTo - $weekFrom); $i++){
+			     	$points[$i] = $weekFrom + $i;
+				     	foreach ($tickets as $ticket) {			
+							if($ticket->date == $points[$i] - 1){
+								$createdTickets[] = $ticket->ticketCount;
+								$f = 1;
+							}
+						}
+						if($f == 0){
+							$createdTickets[] = 0;
+						}
+						$f = 0;
+			     }
+
+			 }
+		     $data["points"] = $points;
+
+			for($i = 0; $i < count($createdTickets); $i++){
+			    $createdTickets[$i] = (int)$createdTickets[$i];
+			} 
+		     $data["createdTickets"] = $createdTickets;
+
+			 echo json_encode($data);
 		}
 	}
 

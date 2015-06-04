@@ -32,6 +32,12 @@
 			<div id="status" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 		</div>
 	</div>
+	<!--csv report-->
+ <a id="csv" href="/reports/summaryCSV">
+
+    <img src="/images/CSV.png" style="width:40px"></img>
+
+</a>
 	<div class="row">
 		<table class="table table-condensed">
 			<tr>
