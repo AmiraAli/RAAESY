@@ -7,11 +7,8 @@ use App\Ticket;
 use DB;
 use App\TicketStatus;
 use App\User;
-
-
 //use Illuminate\Http\Request;
 use Request;
-use App\TicketStatus;
 
 class ReportsController extends Controller {
 	/**

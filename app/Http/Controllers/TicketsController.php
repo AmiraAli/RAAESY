@@ -88,7 +88,7 @@ class TicketsController extends Controller {
 			// unanswered tickets tickets except spam tickets
 
 			$unanswered = Ticket::where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
-	            ->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null )  THEN 0  ELSE 1 END as c')
+	            ->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null or sum(comments.readonly) = 0)  THEN 0  ELSE 1 END as c')
 	                    ->groupBy('tickets.id')
 	                    ->HAVING("c", "=" , '0' )
 	                     ->get();
@@ -806,7 +806,7 @@ class TicketsController extends Controller {
 			else if($request->input('name') == "unanswered"){
 
 				$tickets = $tickets->where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
-            		->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null  )  THEN 0  ELSE 1 END as c')
+            		->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null or sum(comments.readonly) = 0 )  THEN 0  ELSE 1 END as c')
                     ->groupBy('tickets.id')
                     ->HAVING("c", "=" , '0' );
 			}
