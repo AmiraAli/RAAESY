@@ -24,7 +24,6 @@ for (var i = 0 ; i<defaultOpen.length ; i++){
 
 //closed tickets
 var defaultClose = document.getElementById("defaultClose").value ;
-console.log(defaultClose) ;
 var defaultClose = defaultClose.split(":");
 
 for (var i = 0 ; i<defaultClose.length ; i++){
@@ -32,7 +31,6 @@ for (var i = 0 ; i<defaultClose.length ; i++){
     rowData = rowData.split("_");
     dataClose[  rowData[0] ]  = Number (rowData[1]);
 }
-//console.log(data);
 
 
 
@@ -119,8 +117,6 @@ function getReport(){
                 rowData = result['close'][i];
                 dataClose[  rowData['hour'] ]  = Number (rowData['count']);
             }
-
-            console.log(dataClose +" "+dataOpen);
             setChart();
                  
         },
