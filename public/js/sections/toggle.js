@@ -68,7 +68,7 @@ $(document).ready(function(){
 			document.getElementById('secName').value ='';
 			$(".panel-body").prepend("<div class='alert alert-success'>Section created successfully!</div>");
 
-			$(tbody).append(result);
+			$("#con").append(result);
 		}
 					},
 	error: function(jqXHR, textStatus, errorThrown) {

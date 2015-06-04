@@ -22,7 +22,7 @@ $.ajax({
 result=JSON.parse(result);
 	var currentdate = new Date(); 
 	var currentDate=currentdate.getFullYear()+"-"+currentdate.getMonth()+"-"+currentdate.getDay()+" "+currentdate.getHours()+":" + 		currentdate.getMinutes() + ":"+ currentdate.getSeconds();
-	if($('#'+ticket_id).text()=='closed'){
+	if($('#'+ticket_id).text()=='close'){
 		$('#'+ticket_id).text('reopen');
 		$('#'+ticket_id).attr('name','open');
 		var text=document.createTextNode('this ticket has been closed');
@@ -30,14 +30,19 @@ result=JSON.parse(result);
 		}else{
 		   if(!techid){
 			takeOverButton=document.createElement("button");
-			takeOverButtonText=document.createTextNode("takeover");
+			takeOverButtonText=document.createTextNode("Assign To");
 			takeOverButton.setAttribute('id',ticket_id+",takeover");
 			takeOverButton.setAttribute('onclick','TakeOver('+'"'+ticket_id+',takeover'+'"'+')');
 			takeOverButton.appendChild(takeOverButtonText);
 			document.getElementById("takeoverajax").insertBefore(takeOverButton,document.getElementById("newelement"));
 
 			}
-		   $('#'+ticket_id).text('closed');
+var csrf=$("#hidden").val();
+console.log(csrf);
+		  $("#addcomments").html(
+"     <form name='addForm' method = 'post'  class = 'form-horizontal' action='javascript:add("+ticket_id+")'><div class='form-group'><input type='hidden' name='_token' value="+csrf+"><div class='col-md-6'><textarea type='text' class='form-control' name='body' ></textarea></div></div><div class='form-group'><div class='col-md-6 col-md-offset-4'><button    type='submit'  class='btn btn-primary' >Add comment</button></div></div></form>"
+);
+		   $('#'+ticket_id).text('close');
 		   $('#'+ticket_id).attr('name','close');
 		   var text=document.createTextNode('this ticket has been re-opened');
 			}
@@ -114,7 +119,7 @@ var parentElm=document.getElementById("newelement");
 var divError=document.createElement("div");
 divError.setAttribute("class","text-danger");
 var text=document.createTextNode("No techinical available now  ");
-divError.appenChild(text);
+divError.appendChild(text);
 if(parentElm.innerHTML.trim()==""){
 parentElm.appendChild(divError);}
 }
