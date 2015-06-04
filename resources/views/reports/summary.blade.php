@@ -11,8 +11,8 @@
 			</select>
 		</div>
 		<div class="col-md-5" style="display:none;" id="customedate">
-			From:<input type="date" id="startdate">
-			To:<input type="date" id="enddate">
+			From:<input type="text" id="startdate">
+			To:<input type="text" id="enddate">
 		</div>
 		<div style="float:left;">
 			<button class="btn btn-primary" onclick="search()"><span class="glyphicon glyphicon-search"></span></button>
@@ -85,12 +85,28 @@
  <script src="http://code.highcharts.com/modules/exporting.js"></script>
  <script type="text/javascript" src="/js/reports/summarycategory.js"></script>
  <script type="text/javascript" src="/js/reports/summarysearch.js"></script>
+
+
+ <script type="text/javascript" src="/Zebra_Datepicker/javascript/zebra_datepicker.js"></script>
+ <link rel="stylesheet" href="/Zebra_Datepicker/css/default.css" type="text/css">
+
 <script type="text/javascript" >
 	var Globals = <?php echo json_encode(array(
 											    'inprogressCount' => $inprogressCount,
 											    'newCount'=>$newCount,
 											    'resolvedCount'=>$resolvedCount
 											)); ?>;
+
+
+	$(document).ready(function() {
+
+    // assuming the controls you want to attach the plugin to 
+    // have the "datepicker" class set
+    $('#startdate').Zebra_DatePicker();
+    $('#enddate').Zebra_DatePicker();
+
+ });
+
 $(function () {
     $('#status').highcharts({
         chart: {
