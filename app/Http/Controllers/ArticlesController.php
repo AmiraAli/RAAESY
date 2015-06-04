@@ -21,6 +21,9 @@ use Editor;
 use Validator;
 use App\Tag;
 
+//for csv
+use Response;
+
 class ArticlesController extends Controller {
 
 
@@ -334,7 +337,35 @@ class ArticlesController extends Controller {
 
 		return view('articles.home',compact('categories','sections','articles'));
 	}
+    
+    public function csvArticleReport(){
 
+
+    	$articles=Article::all();
+    	$output = implode(",", array('Subject', 'Category','How can See It!?','Owner','Created_at','Updated_at'))."\n";
+    	foreach ($articles as $article) {
+		// iterate over each tweet and add it to the csv
+			if ($article->isshow==1){
+                    $show="Technicals only";
+            }else{
+                    $show="Technicals and Users"; 
+            } 	
+		    $output .= implode(",", array($article->subject , $article->category->name , $show , $article->user->fname , $article->isshow , $article->created_at ,$article->updated_at)); // append each row
+			$output .="\n";
+
+		}
+
+    	// headers used to make the file "downloadable", we set them manually
+		// since we can't use Laravel's Response::download() function
+		$headers = array(
+		'Content-Type' => 'text/csv',
+		'Content-Disposition' => 'attachment; filename="ArticleReport.csv"',
+		);
+
+		// our response, this will be equivalent to your download() but
+		// without using a local file
+		return Response::make(rtrim($output, "\n"), 200, $headers);
+    }
 
 
 }

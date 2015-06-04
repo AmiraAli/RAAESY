@@ -44,6 +44,10 @@ Route::post('articles/autocomplete','ArticlesController@autocomplete');
 Route::post('articles/getTags', 'ArticlesController@getTags');
 Route::post('articles/search', 'ArticlesController@search');
 Route::get('articles/home', 'ArticlesController@home');
+Route::get('articles/csvArticleReport', 'ArticlesController@csvArticleReport');
+
+
+
 
 Route::post('tickets/searchTicket', 'TicketsController@searchTicket');
 Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
