@@ -7,12 +7,23 @@ use App\Ticket;
 use DB;
 use App\TicketStatus;
 use App\User;
+use Auth;
 
 
 //use Illuminate\Http\Request;
 use Request;
 
 class ReportsController extends Controller {
+
+	public function __construct()
+	{
+		$this->middleware('auth');
+		if (Auth::check()){
+			if (Auth::User()->type !="admin"){								
+				exit;
+			}
+		}
+	}
 	/**
 	* Function to sort tickets
 	**/
@@ -256,7 +267,7 @@ class ReportsController extends Controller {
 				$inprogressCount=Ticket::whereNull('tech_id')
 								->where('status','open')
 								->where('updated_at','>=',$startdate)
-								->where('deadline','<=',$enddate)
+								->where('updated_at','<=',$enddate)
 								->count();
 				$newCount=Ticket::whereNotNull('tech_id')
 										->where('status','open')
@@ -265,17 +276,17 @@ class ReportsController extends Controller {
 										->count();
 				$resolvedCount=Ticket::where('status','close')
 										->where('updated_at','>=',$startdate)
-										->where('deadline','<=',$enddate)
+										->where('updated_at','<=',$enddate)
 										->count();
 
 				$ticketsPerCategories=Ticket::selectRaw('count(*) as count , category_id ')
 											->groupBy('category_id')
 											->where('updated_at','>=',$startdate)
-											->where('deadline','<=',$enddate)
+											->where('updated_at','<=',$enddate)
 											->get();
 
 				$tickets=Ticket::where('updated_at','>=',$startdate)
-								->where('deadline','<=',$enddate)
+								->where('updated_at','<=',$enddate)
 								->get();
 
 				return view('reports.summarySearchCustom',compact('inprogressCount','newCount'

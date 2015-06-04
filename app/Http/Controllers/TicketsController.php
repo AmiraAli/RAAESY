@@ -24,7 +24,7 @@ use Carbon\Carbon;
 
 use App\Log;
 use Mail;
-
+use Response;
 
 class TicketsController extends Controller {
 
@@ -927,5 +927,33 @@ class TicketsController extends Controller {
 			$tag->save();
 			print_r($tag->id);
 		}
+	}
+
+	/**
+	* Function to Export csv file
+	**/
+	public function exportCSV()
+	{
+		$tickets = Ticket::all();
+
+	    // the csv file with the first row
+	    $output = implode(",", array('Subject', 'Status', 'Category', 'Creation Date', 'Deadline','Assigned To','Priority'))."\n";
+
+	    foreach ($tickets as $row) {
+		// iterate over each tweet and add it to the csv
+		$output .=  implode(",", array($row['subject']['name'], $row['status'], $row['category']['name'], 
+				$row['created_at'],$row['deadline'],$row['user']['fname']." ".$row['user']['lname'],$row['priority']))."\n"; // append each row
+	    }
+
+	    // headers used to make the file "downloadable", we set them manually
+	    // since we can't use Laravel's Response::download() function
+	    $headers = array(
+		'Content-Type' => 'text/csv',
+		'Content-Disposition' => 'attachment; filename="tickets.csv"',
+		);
+
+	    // our response, this will be equivalent to your download() but
+	    // without using a local file
+	    return Response::make(rtrim($output, "\n"), 200, $headers);
 	}
 }

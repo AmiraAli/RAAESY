@@ -14,6 +14,7 @@ use App\Ticket;
 #Route::get('search/autocomplete', 'ArticlesController@autocomplete');
 
 Route::get('/assets/csvimport', 'AssetsController@importToCsv');
+Route::get('/tickets/exportCSV', 'TicketsController@exportCSV');
 
 
 
@@ -56,6 +57,7 @@ Route::post('tickets/addSubject', 'TicketsController@addSubject');
 Route::post('tickets/getTags', 'TicketsController@getTags');
 Route::post('/subjects/all/', 'TicketsController@SearchAllSubject');
 Route::post('/tickets/all/subjects', 'TicketsController@TicketAllSubject');
+
 
 Route::post('/tickets/advancedsearch', 'TicketsController@AdvancedSearch');
 
