@@ -23,7 +23,7 @@ function prepareTickets(){
             data: formData,
             success: function(result) {
                 console.log(result);
-                // ticketsStatistics(result["createdTickets"], result["points"]);
+                ticketsStatistics(result["createdTickets"], result["points"]);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);

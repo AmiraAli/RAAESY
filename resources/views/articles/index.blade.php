@@ -18,13 +18,18 @@
 @extends('app')
 
 @section('content')
-<h1>Articles ^_^ :))</h1>
+<h1>All Articles </h1>
  <a href="{{url('/articles/create')}}" class="btn btn-success">Create Article</a>
+
+ <!--csv report-->
+ <a id="csv" href="articles/csvArticleReport">
+
+    <img src="/images/CSV.png" style="width:40px"></img>
+
+</a>
 
 <!-- Advance Search --> 
 <label for="">Category: </label>
-<!-- <input type="text" id="cat"> -->
-
 <select  name="category" id="cat">
      <option value="0" selected="true"> Select Category</option>
         @foreach ($sections as $section)
@@ -82,49 +87,37 @@
 
 
  <hr>
- <table class="table table-striped table-bordered table-hover" id="con">
-     <thead>
-     <tr class="bg-info">
-         <th>Id</th>
-         <th>Subject</th>
-         <th>Body</th>
-         <th>Is Show !?</th>
-         <th>category_id</th>
-         <th>user_id</th>
-         <th>created_at </th>
-         <th>updated_at </th>
-         <th colspan="3">Actions</th>
-     </tr>
-     </thead>
+ <table class="table table-hover " id="con">
+     
+         <th class="text-center">Subject</th>
+         <th class="text-center">category</th>
+         <th class="text-center">How can See It!?</th>
+         
+         <th class="text-center">Owner</th>
+         <th class="text-center">created_at</th>
+         <th class="text-center">updated_at</th>
+         <th class="text-center" colspan="3">Actions</th>
+    
      <tbody>
      @foreach ($articles as $article)
          <tr id="{{ $article->id }}">
-             <td>{{ $article->id }}</td>
-             <td>{{ $article->subject }}</td>
-
-             <td>{!!  stripcslashes ($article->body);  !!}</td>
-             <td>
+             <td class="text-center">{{ $article->subject }}</td>
+             <td class="text-center">{{ $article->category->name }}</td>
+             <td class="text-center">
                 @if ($article->isshow==1)
                     Technicals only
                 @else
                     Technicals and Users 
                 @endif 
-             </td>
-
-             <td>{!!  $article->body  !!}</td>
-             <td>{{ $article->isshow }}</td>
-
-             <td>{{ $article->category->name }}</td>
-             <td>{{ $article->user->fname }}</td>
-             <td>{{ $article->created_at }}</td>
-             <td>{{ $article->updated_at }}</td>
-             <td><a href="{{url('articles',$article->id)}}" class="btn btn-primary">Read</a></td>
-             <td><a href="{{route('articles.edit',$article->id)}}" class="btn btn-warning">Update</a></td>
-             <td>
+             </td>            
+             <td class="text-center"> <a href="/users/{{ $article->user_id}}"> {{ $article->user->fname }} {{ $article->user->lname}} </a></td>
+             <td class="text-center">{{ $article->created_at }}</td>
+             <td class="text-center">{{ $article->updated_at }}</td>
+             <td class="text-center"><a href="{{url('articles',$article->id)}}" class="btn btn-primary">Read</a></td>
+             <td class="text-center"><a href="{{route('articles.edit',$article->id)}}" class="btn btn-warning">Update</a></td>
+             <td class="text-center">
              <button onclick="Delete({{ $article->id }});" class="btn btn-danger"> Delete </button>
              </td>
-             
-             
          </tr>
      @endforeach
 

@@ -49,6 +49,7 @@ function submit_subject () {
 *function to cancel new subject form 
 **/
 function cancel_subject () {
+	document.getElementById("new_subjvalue").value="";
 	document.getElementById("subject_select").style.visibility = "visible";
 	document.getElementById("subject_new").style.visibility = "hidden";
 }

@@ -13,7 +13,8 @@
 		"doctrine/dbal": "^2.5",
 
 		"mews/captcha": "~2.0",
-		"vinelab/laravel-editor": "*"
+		"vinelab/laravel-editor": "*",
+		"mpdf/mpdf": "dev-master"
 
 	},
 	"require-dev": {

@@ -19,7 +19,6 @@ function technicianStatisticsSearch()
 	    url: '/reports/technicianStatisticsSearch',
     	type: 'post',
     	data: searchData,
-    	dataType: "json",
 	    success: function(result) {
 			 $('#table_show').html(result);
 			 
