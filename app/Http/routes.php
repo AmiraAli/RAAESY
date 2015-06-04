@@ -98,7 +98,7 @@ Route::post('/reports/problemMangementDate', 'ReportsController@problemMangement
 
 
 Route::get('/reports/reportTicketStatus','ReportsController@reportTicketStatus');
-
+Route::get('/reports/exportTicketStatusReport','ReportsController@exportTicketStatusReport');
 
 
 Route::get('/', 'WelcomeController@index');
