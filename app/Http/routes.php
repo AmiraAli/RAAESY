@@ -107,6 +107,12 @@ Route::get('/reports/reportTicketStatus','ReportsController@reportTicketStatus')
 Route::get('/reports/exportTicketStatusReport','ReportsController@exportTicketStatusReport');
 
 
+
+Route::get('reports/problemMangementCSV','ReportsController@problemMangementCSV');
+Route::get('reports/summaryCSV','ReportsController@summaryCSV');
+Route::get('reports/logsCSV','ReportsController@logsCSV');
+
+
 Route::get('/', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');

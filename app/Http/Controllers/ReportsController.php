@@ -105,6 +105,47 @@ class ReportsController extends Controller {
 		return view('reports.logs',compact('logs'));
 	}
 
+	public function logsCSV(){
+		$logs =Log::all();
+		//var_dump($logs); exit();
+		$output="";
+		foreach ($logs as $log ) {
+			# code...
+		
+			$output .= implode(",", array('Done By : '.ucfirst ($log->user->fname) , 'at : '.$log->created_at))."\n";
+			
+			if ( $log->type == 'user'){
+	             $name='name';                   
+	  	    }elseif ( $log->type == 'article'){
+				 $name = 'title'; 
+	  	    }else{
+				 $name = 'subject'; 
+	  	    
+		    }
+
+
+		 	$output .= implode(",", array($log->user->fname));
+
+			if ( $log->action == 'spam'){
+				$output .= implode(",", array(" marked the ".$log->type."#".$log->id." with ".$name." ".$log->name." as spam "))."\n";
+			}else{
+				$output .= implode(",", array($log->action."d the ".$log->type."#".$log->id." with ".$name." ".$log->name))."\n" ;
+			}
+			
+		}
+	// headers used to make the file "downloadable", we set them manually
+	// since we can't use Laravel's Response::download() function
+	$headers = array(
+	'Content-Type' => 'text/csv',
+	'Content-Disposition' => 'attachment; filename="DelegationLogReport.csv"',
+	);
+
+	// our response, this will be equivalent to your download() but
+	// without using a local file
+	return Response::make(rtrim($output, "\n"), 200, $headers);
+		
+	}
+
 
 	/**
 	 * Show the distribution/hour of the opened/closed tickets
@@ -201,6 +242,46 @@ class ReportsController extends Controller {
 		return view('reports.summary',compact('inprogressCount','newCount'
 												,'resolvedCount','ticketsPerCategories'
 												,'tickets'));
+
+	}
+
+	public function summaryCSV(){
+
+
+		$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
+		
+		$output = implode(",", array(' Ticket ID', ' Ticket Subject',' Ticket Category',' Assigned To',' Close Date','Deadline','Status',' Priority'))."\n";
+		foreach($tickets as $ticket){
+			
+				if($ticket->tech_id != NULL){
+					$fname=$ticket->tech->fname;
+				}else{
+					$fname= " ";
+				}
+
+				if($ticket->status == "close"){
+					$updated_at=$ticket->updated_at;
+				}else{
+					$updated_at=" ";
+				}
+
+
+				
+				$output .= implode(",", array($ticket->id , $ticket->subject->name , $ticket->category->section->name , $fname , $updated_at , $ticket->deadline ,$ticket->status ,$ticket->priority)); // append each row
+				$output .="\n";
+			
+		}
+
+        // headers used to make the file "downloadable", we set them manually
+		// since we can't use Laravel's Response::download() function
+		$headers = array(
+		'Content-Type' => 'text/csv',
+		'Content-Disposition' => 'attachment; filename="summaryCSV.csv"',
+		);
+
+		// our response, this will be equivalent to your download() but
+		// without using a local file
+		return Response::make(rtrim($output, "\n"), 200, $headers);
 
 	}
 
@@ -335,6 +416,66 @@ class ReportsController extends Controller {
 	}
 	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
 	return view('reports.ticketStatistics',compact('allTickets'));
+	}
+
+
+	function problemMangementCSV(){
+
+		$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->groupBy('subject_id')->get();
+		$all=Ticket::all();
+
+		foreach($allTickets as $allTicket){
+		$count=0;
+		$idsPerSubject=array();
+		$sectionCategoryPerSubject=array();
+			foreach($all as $ticket){
+				if($ticket->subject->name==$allTicket->subject->name  ){
+					if($ticket->status=='close'){
+						$count=$count+1;
+					}
+					$idsPerSubject[]=$ticket->id;
+					$sectionCategoryPerSubject[]=$ticket->category->section->name.'/'.$ticket->category->name;
+				}
+			}
+			$percentage=($count/$allTicket->allticket)*100;
+			$allTicket->closedcount=$count;
+			$allTicket->percentage=$percentage;
+			$allTicket->ids=$idsPerSubject;
+			$allTicket->sectionCategory=$sectionCategoryPerSubject;
+		}
+		$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
+
+        $output = implode(",", array('Subject', 'Total Ticket Count ','Total Ticket Solved ','Percentages'))."\n";
+        foreach($allTickets as $allTicket){
+        	
+			$output .= implode(",", array($allTicket->subject->name ,  $allTicket->allticket , $allTicket->closedcount , $allTicket->percentage )); // append each row
+			$output .="\n";
+            
+            $output .= implode(",", array('Tickets Id', 'Tickets Section/category'))."\n";
+
+            for($i=0;$i<sizeof($allTicket->ids); $i++){
+					$id=$allTicket->ids[$i];
+					$section=$allTicket->sectionCategory[$i];
+					$output .= implode(",", array($id,$section))."\n";
+			}
+
+		}
+			
+				// headers used to make the file "downloadable", we set them manually
+			// since we can't use Laravel's Response::download() function
+			$headers = array(
+			'Content-Type' => 'text/csv',
+			'Content-Disposition' => 'attachment; filename="ProblemManagmentReport.csv"',
+			);
+
+			// our response, this will be equivalent to your download() but
+			// without using a local file
+			return Response::make(rtrim($output, "\n"), 200, $headers);
+
+       
+
+
+
 	}
 
 

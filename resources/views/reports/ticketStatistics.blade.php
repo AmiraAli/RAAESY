@@ -11,6 +11,12 @@
 			<button class="btn btn-primary" onclick="searchDate()"><span class="glyphicon glyphicon-search"></span></button>
 		</div>
 	</div>
+	 <!--csv report-->
+ <a id="csv" href="/reports/problemMangementCSV">
+
+    <img src="/images/CSV.png" style="width:40px"></img>
+
+</a>
 		@foreach($allTickets as $allTicket)
 	<table class="table ">
 		<tr>
