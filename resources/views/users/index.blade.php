@@ -32,6 +32,7 @@ Show:
 <button id="toggle" class="btn btn-primary" > <span class="glyphicon glyphicon-search"></span></button>
 
 <a id="csv" href="users/downloadCSV" ><img src="/images/CSV.png"></a>
+<a id="pdf" href="users/downloadPDF" ><img src="/images/CSV.png"></a>
 
 <div id="autocompletemenu" style="display: none;">
    <ul id="autocompleteul"></ul>

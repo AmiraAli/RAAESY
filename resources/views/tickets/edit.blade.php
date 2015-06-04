@@ -97,7 +97,7 @@
 					</div>
 					<div class="form-group col-md-6">
 						<label class="col-md-4 control-label">Due</label>
-						<input type="date" name="deadline" class="form-control"
+						<input type="text" name="deadline" id="deadline" class="form-control"
 
   value="{{explode(' ',$ticket->deadline)[0]}}"/>
 					</div>
@@ -149,6 +149,21 @@
  <script async src="//code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
  <script type="text/javascript" src="/js/jquery-te-1.4.0.min.js"></script>
  <script type="text/javascript" src="/js/ticket_form.js"></script>
+
+ <script type="text/javascript" src="/Zebra_Datepicker/javascript/zebra_datepicker.js"></script>
+ <link rel="stylesheet" href="/Zebra_Datepicker/css/default.css" type="text/css">
+
+
+ <script >
+	$(document).ready(function() {
+
+    // assuming the controls you want to attach the plugin to 
+    // have the "datepicker" class set
+    $('#deadline').Zebra_DatePicker();
+
+ 	});
+ </script>
+
 	@endsection
 @endif
 
