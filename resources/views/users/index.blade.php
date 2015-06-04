@@ -9,7 +9,6 @@
 	<script src="/js/users/toggleSearch.js"></script>
  	<link rel="stylesheet" type="text/css" href="/css/users/index.css">
 
-
         
 </head>
 <body>
@@ -28,10 +27,11 @@ Show:
 <label><input type="radio" name="user" value="disabled"  onclick="show(this)">  Disabled users </label>|
 
 <label for="">Quick Search: </label>
-<input type="text" class="parent" onkeyup="myAutocomplete(this.value)" name="term" id="quickSearch"  autocomplete="on">
+<input type="text" class="parent" placeholder="Fname/Lname/Email" onkeyup="myAutocomplete(this.value)" name="term" id="quickSearch"  autocomplete="on">
 <a class="btn btn-primary" href="/users/create" >Create New User</a>
-<button id="toggle" class="btn btn-primary"> Advanced Search</button>
+<button id="toggle" class="btn btn-primary" > <span class="glyphicon glyphicon-search"></span></button>
 
+<a id="csv" href="users/downloadCSV" ><img src="/images/CSV.png"></a>
 
 <div id="autocompletemenu" style="display: none;">
    <ul id="autocompleteul"></ul>

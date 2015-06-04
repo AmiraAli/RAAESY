@@ -25,6 +25,7 @@ Route::post('categories/saveCategory', 'CategoriesController@saveCategory');
 Route::resource('/sections','SectionsController');
 
 
+Route::get('users/downloadCSV','UsersController@downloadCSV');
 Route::get('users/search','UsersController@search');
 Route::post('users/ajaxsearch','UsersController@ajaxsearch');
 Route::get('users/changepassword/{id}','UsersController@changepassword');
