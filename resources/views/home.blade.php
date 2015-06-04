@@ -3,11 +3,13 @@
 @section('content')
 
 <div  class="container">
-<div class="row">
-@if(Auth::user()->type=="admin" or Auth::user()->type=="regular")
-<a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Ticket</a>
+@if(Auth::user()->type == "admin")
+	<div class="row">
+	<a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Article</a>
+	</div>
+	<br>
 @endif
-</div>
+<div class="row">
 	@foreach($categories as $category)
 		<div class="col-md-4" >	
 		<div class="panel panel-default">
@@ -18,9 +20,8 @@
 					@if($category->id == $article->category_id)
 
 					  <div class="panel-body">
-					    <a href="/articles/{{$article->id}}">{{$article->subject}}</a> <br/>
-		
-					    {{substr($article->body,0,10)."....."}}
+					    <a href="/articles/{{$article->id}}">{{$article->subject}}</a> <br/>		
+					    {{substr(strip_tags($article->body),0,10)."....."}}
 					  </div>
 
 					@endif
@@ -28,6 +29,7 @@
 		    </div>
 		</div>    
 	@endforeach
+</div>
 		
 </div>
 
