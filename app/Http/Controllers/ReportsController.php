@@ -7,13 +7,27 @@ use App\Ticket;
 use DB;
 use App\TicketStatus;
 use App\User;
+use Auth;
 
 
 //use Illuminate\Http\Request;
 use Request;
 
+use Response;
+
+
 
 class ReportsController extends Controller {
+
+	public function __construct()
+	{
+		$this->middleware('auth');
+		if (Auth::check()){
+			if (Auth::User()->type !="admin"){								
+				exit;
+			}
+		}
+	}
 	/**
 	* Function to sort tickets
 	**/
@@ -257,7 +271,7 @@ class ReportsController extends Controller {
 				$inprogressCount=Ticket::whereNull('tech_id')
 								->where('status','open')
 								->where('updated_at','>=',$startdate)
-								->where('deadline','<=',$enddate)
+								->where('updated_at','<=',$enddate)
 								->count();
 				$newCount=Ticket::whereNotNull('tech_id')
 										->where('status','open')
@@ -266,17 +280,17 @@ class ReportsController extends Controller {
 										->count();
 				$resolvedCount=Ticket::where('status','close')
 										->where('updated_at','>=',$startdate)
-										->where('deadline','<=',$enddate)
+										->where('updated_at','<=',$enddate)
 										->count();
 
 				$ticketsPerCategories=Ticket::selectRaw('count(*) as count , category_id ')
 											->groupBy('category_id')
 											->where('updated_at','>=',$startdate)
-											->where('deadline','<=',$enddate)
+											->where('updated_at','<=',$enddate)
 											->get();
 
 				$tickets=Ticket::where('updated_at','>=',$startdate)
-								->where('deadline','<=',$enddate)
+								->where('updated_at','<=',$enddate)
 								->get();
 
 				return view('reports.summarySearchCustom',compact('inprogressCount','newCount'
@@ -365,6 +379,7 @@ class ReportsController extends Controller {
 }
 	public function technicianStatistics()
 	{
+
 		$from = date('Y-m-d', strtotime('-1 month'));
 		$to = date('Y-m-d', strtotime('+1 day'));
 
@@ -388,10 +403,12 @@ class ReportsController extends Controller {
         }
 
 		return view('reports.technicianStatistics',compact("technicians"));
+
 	}
 	public function technicianStatisticsSearch()
 	{
 		
+
 			$from = Request::get('from');
 			$to = Request::get('to');
 			$tomorrow = date('Y-m-d',strtotime($to . "+1 days"));
@@ -534,6 +551,86 @@ class ReportsController extends Controller {
 		$opens=TicketStatus::where('value','open')->count();
 		$closes=TicketStatus::where('value','close')->count();
 		return view('reports.reportTicketStatus',compact('tickets','ticketStatuses','opens','closes'));
+	}
+
+
+	public function exportTicketStatusReport(){
+
+		$tickets=Ticket::all();
+		$ticketStatuses= TicketStatus::all();
+
+	    $open= array(); $close= array(); 
+	    foreach($tickets as $ticket){
+			$countOpen=0; $countClose=0; 
+		    foreach($ticketStatuses as $ticketStatus){
+				  			
+				if($ticketStatus->ticket_id==$ticket->id){
+					if($ticketStatus->value=='open'){
+						
+							$countOpen=$countOpen+1;
+							$open[$ticket->id]=$countOpen; 
+					
+					
+					}
+					if($ticketStatus->value=='close'){
+						
+							$countClose=$countClose+1;
+							$close[$ticket->id]=$countClose; 
+						 
+					}
+				
+				}
+			}
+		}		
+			
+
+
+
+        $output = implode(",", array('id', 'subject','Current Status','No of Open','No of Close'))."\n";
+
+		foreach ($tickets as $row) {
+		// iterate over each tweet and add it to the csv
+			if(!empty($open[$row->id])){
+							$noOpen = $open[$row->id] ;
+			}else{
+							$noOpen = 0;
+						
+			}			
+			if(!empty( $close[$ticket->id] )){
+							$noClose = $close[$row->id];
+			}else{
+							$noClose = 0;
+			}			
+		    $output .= implode(",", array($row['id'], $row->subject->name ,$row['status'],$noOpen,$noClose)); // append each row
+			$output .="\n";
+
+		    foreach($ticketStatuses as $ticketStatus){
+
+						if($ticketStatus->ticket_id==$row->id){
+							$value=$ticketStatus->value ;
+							$created_at=$ticketStatus->created_at ;
+							$output .= implode(",", array($value,$created_at)); // append each row
+							$output .="\n";
+							
+						}
+
+
+			}
+			
+		}
+
+		// headers used to make the file "downloadable", we set them manually
+		// since we can't use Laravel's Response::download() function
+		$headers = array(
+		'Content-Type' => 'text/csv',
+		'Content-Disposition' => 'attachment; filename="TicketStatusReport.csv"',
+		);
+
+		// our response, this will be equivalent to your download() but
+		// without using a local file
+		return Response::make(rtrim($output, "\n"), 200, $headers);
+	
+
 	}
 
 

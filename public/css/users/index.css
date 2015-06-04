@@ -1,4 +1,4 @@
-	label{
+			label{
         		margin : 10px;
         	}
 
@@ -22,3 +22,12 @@
 
 			
 			}
+
+			img{
+				width: 30px;
+				height: 30px;
+			}
+			
+			#autocompletemenu{
+				z-index: 10;
+			}		

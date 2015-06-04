@@ -14,7 +14,6 @@ use App\TicketAsset;
 use App\Log;
 use Validator;
 
-
 class AssetsController extends Controller {
 
 	public function __construct()

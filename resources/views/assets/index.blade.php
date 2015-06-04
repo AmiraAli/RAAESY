@@ -2,20 +2,18 @@
 @extends('app')
 
 @section('content')
-<script type="text/javascript" src="/js/deleteAsset.js"></script>
-<script type="text/javascript" src="/js/searchAsset.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/deleteAsset.js"></script>
+	<script type="text/javascript" src="/js/searchAsset.js"></script>
 
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
-	<div class="container" style="width:1300px;" >
+	<div class="container"  >
 <div>
 @if(Auth::user()->type=="admin" or Auth::user()->type=="regular" )
 <a class="btn btn-primary" href="{{ url('/assets/create') }}"> New Asset</a>
-@endif
-</div>
-
-<div>
-@if(Auth::user()->type=="admin" )
-<a class="btn btn-primary" href="{{ url('/assets/csvimport') }}"> Export To Csv</a>
+	@if(Auth::user()->type=="admin" )
+		<a  href="{{ url('/assets/csvimport') }}"><span class="glyphicon glyphicon-export"></span>Export To Csv</a>
+	@endif
 @endif
 </div>
 

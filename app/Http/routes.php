@@ -14,6 +14,7 @@ use App\Ticket;
 #Route::get('search/autocomplete', 'ArticlesController@autocomplete');
 
 Route::get('/assets/csvimport', 'AssetsController@importToCsv');
+Route::get('/tickets/exportCSV', 'TicketsController@exportCSV');
 
 
 
@@ -25,6 +26,7 @@ Route::post('categories/saveCategory', 'CategoriesController@saveCategory');
 Route::resource('/sections','SectionsController');
 
 
+Route::get('users/downloadCSV','UsersController@downloadCSV');
 Route::get('users/search','UsersController@search');
 Route::post('users/ajaxsearch','UsersController@ajaxsearch');
 Route::get('users/changepassword/{id}','UsersController@changepassword');
@@ -42,6 +44,10 @@ Route::post('articles/autocomplete','ArticlesController@autocomplete');
 Route::post('articles/getTags', 'ArticlesController@getTags');
 Route::post('articles/search', 'ArticlesController@search');
 Route::get('articles/home', 'ArticlesController@home');
+Route::get('articles/csvArticleReport', 'ArticlesController@csvArticleReport');
+
+
+
 
 Route::post('tickets/searchTicket', 'TicketsController@searchTicket');
 Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
@@ -55,6 +61,7 @@ Route::post('tickets/addSubject', 'TicketsController@addSubject');
 Route::post('tickets/getTags', 'TicketsController@getTags');
 Route::post('/subjects/all/', 'TicketsController@SearchAllSubject');
 Route::post('/tickets/all/subjects', 'TicketsController@TicketAllSubject');
+
 
 Route::post('/tickets/advancedsearch', 'TicketsController@AdvancedSearch');
 
@@ -97,7 +104,7 @@ Route::post('/reports/problemMangementDate', 'ReportsController@problemMangement
 
 
 Route::get('/reports/reportTicketStatus','ReportsController@reportTicketStatus');
-
+Route::get('/reports/exportTicketStatusReport','ReportsController@exportTicketStatusReport');
 
 
 Route::get('/', 'WelcomeController@index');

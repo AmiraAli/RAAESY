@@ -8,6 +8,8 @@ use App\Log;
 use Request;
 use Validator;
 use Mail;
+use Response;
+
 class UsersController extends Controller {
 
 
@@ -395,6 +397,12 @@ class UsersController extends Controller {
 	}
 
 
+	/**
+	 * Advanced search for users (called by AJAX).
+	 *
+	 * @param  string  $fname , $lname , ... (optional fields)
+	 * @return Response
+	 */
 
 	public function ajaxsearch()
 	{
@@ -403,174 +411,7 @@ class UsersController extends Controller {
 		$email = Request::get('email');
 		$phone = Request::get('phone');
 		$location = Request::get('location');
-		//all
-		// if ($fname != null && $lname != null && $email != null && $phone != null && $location != null) {
 		
-		// 	$users = User::whereFnameAndLnameAndEmailAndPhoneAndLocation($fname,$lname,$email,$phone,$location)->get();
-			
-	 //    }
-
-	 //    // all expect location
-
-	 //    if ($fname != null && $lname != null && $email != null && $phone != null && $location == null) {
-			
-		// 	$users = User::whereFnameAndLnameAndEmailAndPhone($fname,$lname,$email,$phone)->get();
-			
-	 //    }
-
-
-	 //    // all expect location & phone
-	 //    if ($fname != null && $lname != null && $email != null && $phone == null && $location == null) {
-
-		// 	$users = User::whereFnameAndLnameAndEmail($fname,$lname,$email)->get();
-			
-	 //    }
-
-	 //    // fname & lname
-
-	 //    if ($fname != null && $lname != null && $email == null && $phone == null && $location == null) {
-
-		// 	$users = User::whereFnameAndLname($fname,$lname)->get();
-			
-	 //    }
-
-	 //    // fname
-	 //    if ($fname != null && $lname == null && $email == null && $phone == null && $location == null) {
-
-		// 	$users = User::whereFname($fname)->get();
-			
-	 //    }
-
-	 //    // lname
-	 //    if ($fname == null && $lname != null && $email == null && $phone == null && $location == null) {
-
-		// 	$users = User::whereLname($lname)->get();
-			
-	 //    }
-
-	 //    //email
-	 //    if ($fname == null && $lname == null && $email != null && $phone == null && $location == null) {
-
-		// 	$users = User::whereEmail($email)->get();
-			
-	 //    }
-
-	 //    //phone
-	 //    if ($fname == null && $lname == null && $email == null && $phone != null && $location == null) {
-
-		// 	$users = User::wherePhone($phone)->get();
-			
-	 //    }
-
-	 //    //location
-	 //    if ($fname == null && $lname == null && $email == null && $phone == null && $location != null) {
-
-		// 	$users = User::whereLocation($location)->get();
-			
-	 //    }
-
-	 //    // all expect fname
-	 //    if ($fname == null && $lname != null && $email != null && $phone != null && $location != null) {
-		
-		// 	$users = User::whereLnameAndEmailAndPhoneAndLocation($lname,$email,$phone,$location)->get();
-			
-	 //    }
-
-	 //    //email phone location 
-	 //    if ($fname == null && $lname == null && $email != null && $phone != null && $location != null) {
-		
-		// 	$users = User::whereEmailAndPhoneAndLocation($email,$phone,$location)->get();
-			
-	 //    }
-
-	 //    //phone location
-	 //    if ($fname == null && $lname == null && $email == null && $phone != null && $location != null) {
-		
-		// 	$users = User::wherePhoneAndLocation($phone,$location)->get();
-			
-	 //    }
-
-	 //    // all expext lname
-	 //    if ($fname != null && $lname == null && $email != null && $phone != null && $location != null) {
-		
-		// 	$users = User::whereFnameAndEmailAndPhoneAndLocation($fname,$email,$phone,$location)->get();
-			
-	 //    }
-
-	 //    //fname phone location 
-	 //    if ($fname != null && $lname == null && $email == null && $phone != null && $location != null) {
-		
-		// 	$users = User::whereFnameAndPhoneAndLocation($fname,$phone,$location)->get();
-			
-	 //    }
-
-	 //    //fname location
-  //       if ($fname != null && $lname == null && $email == null && $phone == null && $location != null) {
-		
-		// 	$users = User::whereFnameAndLocation($fname,$location)->get();
-			
-	 //    }
-
-	 //    //all expect email
-	 //    if ($fname != null && $lname != null && $email == null && $phone != null && $location != null) {
-		
-		// 	$users = User::whereFnameAndLnameAndPhoneAndLocation($fname,$lname,$phone,$location)->get();
-			
-	 //    }
-	 //    // fname lname location
-	 //    if ($fname != null && $lname != null && $email == null && $phone == null && $location != null) {
-		
-		// 	$users = User::whereFnameAndLnameAndLocation($fname,$lname,$location)->get();
-			
-	 //    }
-
-	 //    //all expect phone
-	 //    if ($fname != null && $lname != null && $email != null && $phone == null && $location != null) {
-		
-		// 	$users = User::whereFnameAndLnameAndEmailAndLocation($fname,$lname,$email,$location)->get();
-			
-	 //    }
-  //       //fname lname Email
-  //       if ($fname != null && $lname != null && $email != null && $phone == null && $location == null) {
-		
-		// 	$users = User::whereFnameAndLnameAndEmail($fname,$lname,$email)->get();
-			
-	 //    }
-
-	 //    //fname & phone
-	 //    if ($fname != null && $lname == null && $email == null && $phone != null && $location == null) {
-		
-		// 	$users = User::whereFnameAndPhone($fname,$phone)->get();
-			
-	 //    }
-
-	 //    //lname & phone 
-	 //    if ($fname == null && $lname != null && $email == null && $phone != null && $location == null) {
-		
-		// 	$users = User::whereLnameAndPhone($lname,$phone)->get();
-			
-	 //    }
-
-	 //    //email & phone 
-	 //    if ($fname == null && $lname == null && $email != null && $phone != null && $location == null) {
-		
-		// 	$users = User::whereEmailAndPhone($email,$phone)->get();
-			
-	 //    }
-
-	 //    //email & lname 
-	 //    if ($fname == null && $lname != null && $email != null && $phone == null && $location == null) {
-		
-		// 	$users = User::whereEmailAndLname($email,$lname)->get();
-			
-	 //    }
-
-	 //    //email & fname 
-	 //    if ($fname != null && $lname == null && $email != null && $phone == null && $location == null) {
-		
-		// 	$users = User::whereEmailAndFname($email,$fname)->get();
-			
-	 //    }
 
 		$users = User::all();
 		if ($fname != null) {
@@ -599,8 +440,38 @@ class UsersController extends Controller {
 	}
 
 
+	/**
+	 * Download users list as CSV file
+	 *
+	 * @return Response
+	 */
 
-	
+	public function downloadCSV()
+	{
+		
+		$users=User::all();
+
+	    $filename = "users.csv";
+	    $handle = fopen($filename, 'w+');
+
+	    
+	    fputcsv($handle, array('id', 'First name', 'Last name', 'Email' ,'Phone' ,'Location' , 'Disabled' , 'Type' , 'Remember token' , 'Created at' , 'Updated at'));
+
+
+	    //put all fields except password
+	    foreach($users as $row) {
+	        fputcsv($handle, array($row['id'], $row['fname'], $row['lname'], $row['email'] , $row['phone'] , $row['location'] , $row['isspam'] , $row['type'] , $row['remember_token'] ,$row['created_at']  , $row['updated_at']));
+	    }
+
+	    fclose($handle);
+
+	    $headers = array(
+	        'Content-Type' => 'text/csv',
+	    );
+
+	    return Response::download($filename, 'users.csv', $headers);
+		
+	}
 	
 
 }	

@@ -31,21 +31,23 @@
 					          <button class="btn btn-danger" onclick="deleteSection( {{ $section->id }}+',sectionstest' )">Delete</button>
 				            </td>
 				      </tr>
-						@foreach ($categories as $category)
-					     <tr class="text-center {{$section->id}}category" id="{{ $category->id }}category">  
-					        		
-					        @if($category->section_id == $section->id)
+				      <tr id="{{$section->id}}categories" >
+							@foreach ($categories as $category)
+							     <tr class="text-center {{$section->id}}category" id="{{ $category->id }}category">  
+							        		
+							        @if($category->section_id == $section->id)
 
-					        	<td>{{$category->name}}</td>
-					        	<td class="text-center">
-						       	 	<a href="#" onclick="EditCat({{ $category->id }}+'category','{{$category->id}}')" class="btn btn-warning btn" >Edit</a>
-						    	</td>
-						    	<td class="text-center">			            	
-							  		<button class="btn btn-danger" onclick="deleteCategory( {{ $category->id }}+'category' )">Delete</button>
-							 	</td>			
-					        @endif
-					  </tr>
-				@endforeach
+							        	<td>{{$category->name}}</td>
+							        	<td class="text-center">
+								       	 	<a href="#" onclick="EditCat({{ $category->id }}+'category','{{$category->id}}')" class="btn btn-warning btn" >Edit</a>
+								    	</td>
+								    	<td class="text-center">			            	
+									  		<button class="btn btn-danger" onclick="deleteCategory( {{ $category->id }}+'category' )">Delete</button>
+									 	</td>			
+							        @endif
+							 	 </tr>
+							@endforeach
+					</tr>
 	     	@endforeach
 
 	     	</tbody>
@@ -136,6 +138,7 @@ function deleteCategory(id){
 		// alert(secid);
 		var categoryname=document.getElementById(secid+",categoryname").value;
 		var sectionid=document.getElementById(secid+",sectionid").value.split(",sectionstest")[0];
+		//console.log($('#'+sectionid+'categories'));
 		// alert(categoryname);
 		// alert(sectionid);
 		$.ajax({
@@ -143,7 +146,8 @@ function deleteCategory(id){
 			    type: 'POST',
 			    data:{"sectionid":sectionid, "categoryname":categoryname},
 			    success: function(result) {
-					 $('#'+secid).append(result);  
+			    	console.log($('#'+sectionid+'categories'));
+					 $('#'+sectionid+'categories').append(result);  
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
 					console.log(errorThrown);
