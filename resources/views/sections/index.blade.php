@@ -31,7 +31,7 @@
 					          <button class="btn btn-danger" onclick="deleteSection( {{ $section->id }}+',sectionstest' )">Delete</button>
 				            </td>
 				      </tr>
-				      <tr id="categories,{{$section->id}}">
+				      <tr id="{{$section->id}}categories" >
 							@foreach ($categories as $category)
 							     <tr class="text-center {{$section->id}}category" id="{{ $category->id }}category">  
 							        		
@@ -138,20 +138,21 @@ function deleteCategory(id){
 		// alert(secid);
 		var categoryname=document.getElementById(secid+",categoryname").value;
 		var sectionid=document.getElementById(secid+",sectionid").value.split(",sectionstest")[0];
-		console.log($('#categories,'+sectionid));
-		// // alert(categoryname);
-		// // alert(sectionid);
-		// $.ajax({
-		// 	    url: '/categories/saveCategory',
-		// 	    type: 'POST',
-		// 	    data:{"sectionid":sectionid, "categoryname":categoryname},
-		// 	    success: function(result) {
-		// 			 $('#'+secid+",category").append(result);  
-		// 		},
-		// 		error: function(jqXHR, textStatus, errorThrown) {
-		// 			console.log(errorThrown);
-		// 	    }
-		// 	});
+		//console.log($('#'+sectionid+'categories'));
+		// alert(categoryname);
+		// alert(sectionid);
+		$.ajax({
+			    url: '/categories/saveCategory',
+			    type: 'POST',
+			    data:{"sectionid":sectionid, "categoryname":categoryname},
+			    success: function(result) {
+			    	console.log($('#'+sectionid+'categories'));
+					 $('#'+sectionid+'categories').append(result);  
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					console.log(errorThrown);
+			    }
+			});
 	}
 
 	</script>

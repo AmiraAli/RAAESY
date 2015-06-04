@@ -3,9 +3,13 @@
 @section('content')
 
 <div  class="container">
+@if(Auth::user()->type == "admin")
+	<div class="row">
+	<a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Article</a>
+	</div>
+	<br>
+@endif
 <div class="row">
-<a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Ticket</a>
-</div>
 	@foreach($categories as $category)
 		<div class="col-md-4" >	
 		<div class="panel panel-default">
@@ -25,6 +29,7 @@
 		    </div>
 		</div>    
 	@endforeach
+</div>
 		
 </div>
 

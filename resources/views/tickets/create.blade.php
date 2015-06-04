@@ -1,4 +1,3 @@
-
 @if (Auth::check())
 	@extends('app')
 	@section('content')
