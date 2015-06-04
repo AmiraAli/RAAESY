@@ -41,9 +41,10 @@
 				<td class="text-center">Closed Tickets</td>
 				<td class="text-center">Active Tickets</td>
 			</tr>
+
 			 @foreach($technicians as $technician)
-				   <tr id="{{ $technician->id }}">				   		
-				   		<td class="subject text-center"><a  href="{{ url('/users/'.$technician->id) }}"> {{ $technician->fname }} {{ $technician->lname }}</a></td>
+				   <tr id="{{ $technician->tech_id }}">				   		
+				   		{{-- <td class="subject text-center"><a  href="{{ url('/users/'.$technician->tech_id) }}"> {{ $technician->user->fname }} {{ $technician->user->lname }}</a></td> --}}
 				   		<td class="status text-center"> {{ $technician->open }}</td>
 				   		<td class="category text-center">{{ $technician->closed }}</td>
 				   		

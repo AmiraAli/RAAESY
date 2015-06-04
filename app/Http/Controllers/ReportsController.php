@@ -7,13 +7,25 @@ use App\Ticket;
 use DB;
 use App\TicketStatus;
 use App\User;
+use Auth;
 
 
 //use Illuminate\Http\Request;
 use Request;
 use Response;
 
+
 class ReportsController extends Controller {
+
+	public function __construct()
+	{
+		$this->middleware('auth');
+		if (Auth::check()){
+			if (Auth::User()->type !="admin"){								
+				exit;
+			}
+		}
+	}
 	/**
 	* Function to sort tickets
 	**/
@@ -257,7 +269,7 @@ class ReportsController extends Controller {
 				$inprogressCount=Ticket::whereNull('tech_id')
 								->where('status','open')
 								->where('updated_at','>=',$startdate)
-								->where('deadline','<=',$enddate)
+								->where('updated_at','<=',$enddate)
 								->count();
 				$newCount=Ticket::whereNotNull('tech_id')
 										->where('status','open')
@@ -266,17 +278,17 @@ class ReportsController extends Controller {
 										->count();
 				$resolvedCount=Ticket::where('status','close')
 										->where('updated_at','>=',$startdate)
-										->where('deadline','<=',$enddate)
+										->where('updated_at','<=',$enddate)
 										->count();
 
 				$ticketsPerCategories=Ticket::selectRaw('count(*) as count , category_id ')
 											->groupBy('category_id')
 											->where('updated_at','>=',$startdate)
-											->where('deadline','<=',$enddate)
+											->where('updated_at','<=',$enddate)
 											->get();
 
 				$tickets=Ticket::where('updated_at','>=',$startdate)
-								->where('deadline','<=',$enddate)
+								->where('updated_at','<=',$enddate)
 								->get();
 
 				return view('reports.summarySearchCustom',compact('inprogressCount','newCount'
@@ -365,7 +377,8 @@ class ReportsController extends Controller {
 }
 	public function technicianStatistics()
 	{
-		$technicians = DB::select("select count(IF(tickets.status = 'close', 1, null)) as closed, count(IF(tickets.status = 'open', 1, null)) as open, users.fname, users.lname, users.id from users left join tickets on users.id = tickets.tech_id where users.type = 'tech' group by tickets.tech_id");
+		 $technicians = DB::select("select count(IF(t2.value = 'close', 1, null)) as closed, count(IF(t2.value = 'open', 1, null)) as open, tickets.tech_id from tickets left join (SELECT ts.ticket_id,created_at,value  FROM ticket_statuses ts  join (SELECT ticket_id,Max(created_at) as ma FROM ticket_statuses GROUP BY ticket_id ) t on t.ma=ts.created_at and t.ticket_id=ts.ticket_id) t2 on t2.ticket_id = tickets.id group by(tickets.tech_id)");
+		//$technicians = DB::select("select count(IF(tickets.status = 'close', 1, null)) as closed, count(IF(tickets.status = 'open', 1, null)) as open, users.fname, users.lname, users.id from users left join tickets on users.id = tickets.tech_id where users.type = 'tech' group by tickets.tech_id");
 		return view('reports.technicianStatistics',compact('technicians'));
 	}
 	public function technicianStatisticsSearch()
@@ -373,8 +386,9 @@ class ReportsController extends Controller {
 		
 			$startDate = Request::get('from');
 			$endDate = Request::get('to');
-
-			$technicians = DB::select("select count(IF(tickets.status = 'close', 1, null)) as closed, count(IF(tickets.status = 'open', 1, null)) as open, users.fname, users.lname, users.id from users left join tickets on users.id = tickets.tech_id where users.type = 'tech' group by tickets.tech_id");
+		 $technicians = DB::select("select count(IF(t2.value = 'close', 1, null)) as closed, count(IF(t2.value = 'open', 1, null)) as open, tickets.tech_id from tickets left join (SELECT ts.ticket_id,created_at,value  FROM ticket_statuses ts  join (SELECT ticket_id,Max(created_at) as ma FROM ticket_statuses where created_at between $startDate and $endDate GROUP BY ticket_id ) t on t.ma=ts.created_at and t.ticket_id=ts.ticket_id) t2   on t2.ticket_id = tickets.id group by(tickets.tech_id)");
+		 echo json_encode($technicians);
+			//$technicians = DB::select("select count(IF(tickets.status = 'close', 1, null)) as closed, count(IF(tickets.status = 'open', 1, null)) as open, users.fname, users.lname, users.id from users left join tickets on users.id = tickets.tech_id where users.type = 'tech' group by tickets.tech_id");
 		
 	}
 

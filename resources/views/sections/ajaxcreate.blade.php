@@ -10,4 +10,6 @@
 					          <button class="btn btn-danger" onclick="deleteSection( {{ $section->id }}+',sectionstest' )">Delete</button>
 				            </td>
 				      </tr>
+<tr id="{{$section->id}},sectionstest,category">
+</tr>
 				      

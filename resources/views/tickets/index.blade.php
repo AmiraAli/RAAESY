@@ -29,7 +29,12 @@
 </div>
 <!-- table---------------------------------------------------------------------------------------------------------->
 @if(Auth::user()->type=="admin" or Auth::user()->type=="regular" )
-<a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Ticket</a>
+	<div class="row">
+	<a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Ticket</a>
+	@if(Auth::user()->type=="admin" )
+		<a  href="{{ url('/tickets/exportCSV') }}" > <span class="glyphicon glyphicon-export"></span>Export To Csv</a>
+	@endif
+	</div>
 @endif
 <div class="row" id="icons_list">
 

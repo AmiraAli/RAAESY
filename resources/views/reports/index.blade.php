@@ -34,6 +34,10 @@
 						 		<a href="{{ url('/reports/technicianStatistics') }}">Technician Statistics</a><br>
 						 		<small style="color: #777;font-size: 11px !important;">Tickets handled by a user within a date range</small>
 						 	</li></h3>
+						 	<h3><li class="glyphicon glyphicon-warning-sign">
+						 		<a href="{{ url('/reports/problemMangement') }}">problem Mangement</a><br>
+						 		<small style="color: #777;font-size: 11px !important;">Analysis no of tickets solved in each subject and which subject has problem </small>
+						 	</li></h3>
 							</ul>
 					</div>
 				</div>
