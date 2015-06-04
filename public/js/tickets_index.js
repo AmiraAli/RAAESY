@@ -20,6 +20,13 @@ window.onload = function() {
             					});
             				};
 
+
+// $('#all').live('click', function() {
+
+//     // alert($(this).index());
+//     alert("done");
+
+// });
  /**
  * delete function
  **/
@@ -85,14 +92,26 @@ $.ajax({
 /**
 *close ticket function
 **/
-function closeTeckit(id){
+function closeTeckit(id,checkspam){
+
+	var popupelem=document.getElementById(id+'popup');
+
 //ajax request
 $.ajax({
 		url: '/tickets/closeTicket',
 		type: "post",
 		data: {'id':id},
 		success: function(data){
-			document.getElementById(id).remove();    
+					if($('#all').attr('class') != "active"){
+						document.getElementById(id).remove();
+					}else{
+							if(checkspam == 0){
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='spam("+id+")'>Spam</a>|<a onclick='openTeckit("+id+","+checkspam+")'>Open</a>|<a onclick='Delete("+id+")'>Delete</a>");
+							}else{
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='unspam("+id+")'>unSpam</a>|<a onclick='openTeckit("+id+","+checkspam+")'>Open</a>|<a onclick='Delete("+id+")'>Delete</a>");
+							}
+							document.getElementById(id+"status").innerHTML="Close";
+					}
 		    },
 		error: function(jqXHR, textStatus, errorThrown) {
 			alert(errorThrown);
@@ -103,14 +122,26 @@ $.ajax({
 /**
 *open ticket function
 **/
-function openTeckit(id){
+function openTeckit(id,checkspam){
+	var popupelem=document.getElementById(id+'popup');
 //ajax request
 $.ajax({
 		url: '/tickets/openTicket',
 		type: "post",
 		data: {'id':id},
 		success: function(data){
-			document.getElementById(id).remove();    
+
+				if($('#all').attr('class') != "active"){
+						document.getElementById(id).remove();
+					}else{
+							if(checkspam == 0){
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='spam("+id+")'>Spam</a>|<a onclick='closeTeckit("+id+","+checkspam+")'>Close</a>|<a onclick='Delete("+id+")'>Delete</a>");
+							}else{
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='unspam("+id+")'>unSpam</a>|<a onclick='closeTeckit("+id+","+checkspam+")'>Close</a>|<a onclick='Delete("+id+")'>Delete</a>");
+							}
+							document.getElementById(id+"status").innerHTML="Open";
+					}
+
 		    },
 		error: function(jqXHR, textStatus, errorThrown) {
 			alert(errorThrown);

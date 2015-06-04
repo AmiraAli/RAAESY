@@ -13,7 +13,7 @@
 				   <tr id="{{ $ticket->id }}">
 				   		
 				   		<td class="subject text-center">{{ $ticket->subject->name }}</td>
-				   		<td class="status text-center"> {{ $ticket->status }}</td>
+				   		<td id="{{ $ticket->id }}status" class="status text-center"> {{ $ticket->status }}</td>
 				   		<td class="category text-center">{{ $ticket->category->name }}</td>
 				   		<td class="created_at text-center">{{ $ticket->created_at }} </td>
 				   		<td class="deadline text-center">{{ $ticket->deadline }} </td>
@@ -27,7 +27,7 @@
 				   		<td class="text-center">
 				   		@if (Auth::user()->type == "admin")
 
-						   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+						   		<a id="{{ $ticket->id }}popup" href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
 						   		data-content=
 						   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
 						   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
@@ -40,9 +40,9 @@
 
 
 								@if($ticket->status == 'open')
-						   			<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
+						   			<a onclick='closeTeckit({{ $ticket->id }},{{ $ticket->is_spam }})'>Close</a>|
 								@else
-						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>|
+						   			<a onclick='openTeckit({{ $ticket->id }},{{ $ticket->is_spam }})'>Open</a>|
 								@endif
 						   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
 						   		></a>
