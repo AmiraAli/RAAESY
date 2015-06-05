@@ -9,8 +9,8 @@
 
 
 <div class="container">
-From : <input type="text" id="date1" >
-To : <input type="text" id="date2" >
+From : <input type="text" id="date1" value="<?php echo date('Y-m-d H:i:s', strtotime('-10day')) ?>">
+To : <input type="text" id="date2" value="<?php echo date('Y-m-d H:i:s', time()) ?>">
 <button onclick="getReport()" >Get Report</button>
 
 

@@ -154,19 +154,21 @@ class ReportsController extends Controller {
 	public function distHour()
 	{
 		
-		$date1 = date('Y-m-d H:i:s', time());
-		$date2 = date_create($date1);
-		date_sub($date2, date_interval_create_from_date_string('10 days'));
-		$date2 =  date_format($date2, 'Y-m-d H:i:s');		
-		$openedTickets = DB::select("select id ,hour(created_at) as hour ,  count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'open' group by hour(created_at)",array ( $date2 , $date1) );
+		$date1 = date('Y-m-d H:i:s', strtotime('-10day'));
+		$date2 = date('Y-m-d H:i:s', time());
+
+		$openedTickets = DB::select("select id ,hour(created_at) as hour ,  count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'open' group by hour(created_at)",array ( $date1 , $date2) );
 		$defaultOpen = '';
+
+		
+		
 
 		foreach ($openedTickets as $ticket){
 			$defaultOpen.=$ticket->hour."_".$ticket->count.":";
 		}
 
 
-		$closedTickets = DB::select("select id ,hour(created_at) as hour  , count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'close' group by hour(created_at)",array ( $date2 , $date1) );
+		$closedTickets = DB::select("select id ,hour(created_at) as hour  , count(*) as count from  ticket_statuses where created_at between ? and ? and value = 'close' group by hour(created_at)",array ( $date1 , $date2) );
 		$defaultClose = '';
 
 		
