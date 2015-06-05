@@ -12,7 +12,7 @@
 @section('content')
 <div class="container">
 
-<!------------------------------------------ticketbody------------------------------------------------------------------------->
+<!-- ticketbody-->
   <div class="leftposition">
 	<div class="panel panel-default ticketbody">
 	  <div class="panel-body " id="takeoverajax">
@@ -35,13 +35,23 @@
 		<div id='newelement'>
 
 		</div>
-		<h4>  {{ $ticket->subject->name }}</h4>
+		<div class="row">
+		<h4 class="col-md-6">  {{ $ticket->subject->name }}</h4> 
+		@if($ticket->file)
+			<div class="col-md-6">
+			<h4>More details upladed:</h4>
+			<p><a href="{{ URL::to( '/files/'. $ticket->file)  }}" target="_blank">{{ $ticket->file }}</a></p>
+			</div>
+		@endif
+		</div>
+		<div class="row">
 		<p>  {!! $ticket->description !!}</p>
+		</div>
 	  </div>
 	</div>
 
 
-<!---------------------------------------commentbody--------------------------------------------------------------->
+<!--commentbody-->
   <div id="comments">
 	@foreach($comments as $comment)
 	  <div class="panel panel-default  commentbody" id="{{$comment->id}}Comments">
@@ -70,7 +80,7 @@
 
 	@endforeach
   </div>
-<!------------------------------------------AddComment------------------------------------------------------->
+<!--AddComment-->
 <input type="hidden" id="hidden" value="{{ csrf_token() }}" >
 <div id="addcomments">
  @if($ticket->status=='open')
@@ -94,7 +104,7 @@
 
 </div>
 
-<!---------------------------------------ticketdetails------------------------------------------------------------>
+<!--ticketdetails-->
 <div class="rightposition">
 	<div class="panel panel-default ticketdetails">
 	  <div class="panel-heading">
@@ -110,7 +120,7 @@
 		<h4 class="title">AssignedTo </h4> @if($ticket->tech){{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}@endif
 	  </div>
 	</div>
-<!-----------------------------------relatedassets-------------------------------------------------------------------------------->
+<!--relatedassets-->
 @if(Auth::user()->type=="admin")	
 	<div class="panel panel-default relatedassets">
 		  <div class="panel-heading">
@@ -130,7 +140,7 @@
 
 		  </div>
 	</div>
-<!------------------------------------------relatedtags--------------------------------------------------------------------------->
+<!--relatedtags-->
 
 	<div class="panel panel-default relatedtags">
 		<div class="panel-heading">
@@ -150,7 +160,7 @@
 	</div>
 @endif
 </div>
-<!------------------------------------------------------------------------------------------------------------------->
+<!---->
 </div>
 @endsection
 

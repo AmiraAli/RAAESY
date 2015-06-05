@@ -7,7 +7,7 @@
 				<td class="created_at text-center">Creation date</td>
 				<td class="deadline text-center">Dead line</td>
 				<td class="priority text-center">Periorty</td>
-				<td class="text-center">Settings</td>
+				<td class="setting text-center">Settings</td>
 			</tr>
 			  @foreach($Tickets as $ticket)
 				   <tr id="{{ $ticket->id }}">
@@ -24,7 +24,7 @@
 				   		@else
 				   			<td class="priority text-center"><b class="alert-danger">{{ $ticket->priority }}</b></td>
 				   		@endif
-				   		<td class="text-center">
+				   		<td class="setting text-center">
 				   		@if (Auth::user()->type == "admin")
 
 						   		<a id="{{ $ticket->id }}popup" href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
