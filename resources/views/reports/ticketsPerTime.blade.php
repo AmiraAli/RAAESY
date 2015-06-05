@@ -112,17 +112,20 @@
 
     </script>
 
-    <script type="text/javascript" src="/Zebra_Datepicker/javascript/zebra_datepicker.js"></script>
-    <link rel="stylesheet" href="/Zebra_Datepicker/css/default.css" type="text/css">
 
+ <link rel="stylesheet" type="text/css" href="/datetimepicker/jquery.datetimepicker.css"/ >
+ <script src="/datetimepicker/jquery.datetimepicker.js"></script>
 
-    <script>
+ <script >
     $(document).ready(function() {
 
-        // assuming the controls you want to attach the plugin to 
-        // have the "datepicker" class set
-        $('#from').Zebra_DatePicker();
-        $('#to').Zebra_DatePicker();
-    });
-    </script>
+        $('#from').datetimepicker({
+            format:'Y-m-d H:00:00',
+              });
+        $('#to').datetimepicker({
+            format:'Y-m-d H:00:00',
+              });
+
+ });
+ </script>
 @endsection
