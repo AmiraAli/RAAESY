@@ -7,7 +7,6 @@
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
     <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
-
         <div class="container-fluid">
         <div class="row">
          <div class="col-md-10 col-md-offset-1">
@@ -51,14 +50,15 @@
 
     <script>
         var createdTickets = <?php echo '[' . implode(', ', $createdTickets) . ']' ?>;
+        var closedTickets = <?php echo '[' . implode(', ', $closedTickets) . ']' ?>;
         var points = <?php echo '["' . implode('", "', $points) . '"]' ?>;
-
-        ticketsStatistics(createdTickets, points);
+        console.log(closedTickets);
+        ticketsStatistics(createdTickets, closedTickets, points);
 
         var unit = $("#groupby").val();
 
 
-        function ticketsStatistics(createdTickets, points){
+        function ticketsStatistics(createdTickets,closedTickets, points){
             $(function () {
                 $('#container').highcharts({
                     chart: {
@@ -76,7 +76,7 @@
                     },
                     yAxis: {
                         title: {
-                            text: 'Billions'
+                            text: 'Tickets'
                         },
                         labels: {
                             formatter: function () {
@@ -86,7 +86,7 @@
                     },
                     tooltip: {
                         shared: true,
-                        valueSuffix: ' millions'
+                        valueSuffix: ' Tickets'
                     },
                     plotOptions: {
                         area: {
@@ -102,6 +102,9 @@
                     series: [{
                         name: 'Tickets created',
                         data: createdTickets
+                    },{
+                        name: 'Tickets closed',
+                        data: closedTickets
                     }]
                 });
             });
