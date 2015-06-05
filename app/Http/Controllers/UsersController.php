@@ -436,12 +436,12 @@ class UsersController extends Controller {
 	    $handle = fopen($filename, 'w+');
 
 	    
-	    fputcsv($handle, array('id', 'First name', 'Last name', 'Email' ,'Phone' ,'Location' , 'Disabled' , 'Type' , 'Remember token' , 'Created at' , 'Updated at'));
+	    fputcsv($handle, array('id', 'First name', 'Last name', 'Email' ,'Phone' ,'Location' , 'Disabled' , 'Type'  , 'Created at' , 'Updated at'));
 
 
 	    //put all fields except password
 	    foreach($users as $row) {
-	        fputcsv($handle, array($row['id'], $row['fname'], $row['lname'], $row['email'] , $row['phone'] , $row['location'] , $row['isspam'] , $row['type'] , $row['remember_token'] ,$row['created_at']  , $row['updated_at']));
+	        fputcsv($handle, array($row['id'], $row['fname'], $row['lname'], $row['email'] , $row['phone'] , $row['location'] , $row['isspam'] , $row['type'] ,$row['created_at']  , $row['updated_at']));
 	    }
 
 	    fclose($handle);
