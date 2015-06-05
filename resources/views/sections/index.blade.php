@@ -39,7 +39,7 @@
 				          	</a>{{ $section->name }}<input type="hidden" id="idSection" value="{{ $section->id }}"> 
 				          </td>
 				          <td class="text-center">
-				          	<a href="#" onclick="New({{$section->id}}+',sectionstest')" class="btn btn-primary btn" >New Category</a>
+				          	<a href="#" onclick="createCategory({{$section->id}},'{{$section->name}}')" class="btn btn-primary btn" >New Category</a>
 				          </td>
 						<td class="text-center">
 				            <a href="#" onclick="Edit({{$section->id}}+',sectionstest')" class="btn btn-warning btn" >Edit</a>
@@ -73,6 +73,8 @@
 
 		
 	</div>
+	<!-- _____________________________________________________________________ -->
+
 	<div class="col-md-4" id="createSectionDiv">
 		<div class="panel panel-success">
 
@@ -82,7 +84,7 @@
 					<div class="form-group">
 						<label class="col-md-6 control-label">Section Name</label>
 						<div class="col-md-6">
-	    					<input type="text" class="form-control" id="secName" placeholder="Enter Section Name" name="name">
+	    					<input type="text" class="form-control" id="secName" placeholder="Section Name" name="name">
 						</div>
 					</div>
 					<div class="form-group">
@@ -93,15 +95,47 @@
 				</div>
 			</div>
 		</div>
-	
-</div>
+<!-- ___________________________________________________________________________________-->
+
+		<div class="col-md-4" id="createCategoryDiv">
+			<div class="panel panel-success">
+
+			<div class="panel-heading">New Category</div>
+				<div class="panel-body">
+					<div class="form-group">
+						<label class="col-md-6 control-label">Category Name</label>
+						<div class="col-md-6">
+	    					<input type="text" class="form-control" id="catName" placeholder="Category Name">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-6 control-label">Section Name</label>
+						<div class="col-md-6">
+	    					<input type="text" class="form-control" id="cat_secName"  disabled="true">
+	    					<input type="hidden" class="form-control" id="cat_secId"  disabled="true">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-md-6 col-md-offset-4">
+							<button type="submit" onclick="saveCategory()" class="btn btn-primary">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		
+		</div>
+<!-- ___________________________________________________________________________________-->
+
 @endsection
 
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="/js/sections/toggle.js"></script>
 	<script type="text/javascript" src="/js/sections/editSection.js"></script>
     <script type="text/javascript" src="/js/sections/editCategories.js"></script>
-    <script type="text/javascript" src="/js/sections/newcategory.js"></script>
+  <!-- <script type="text/javascript" src="/js/sections/newcategory.js"></script> -->
 <script>
 
 		window.onload = function() {
@@ -154,26 +188,6 @@ function deleteCategory(id){
 
 		}
 
-	function saveCategory(secid) {
-		// alert(secid);
-		var categoryname=document.getElementById(secid+",categoryname").value;
-		var sectionid=document.getElementById(secid+",sectionid").value.split(",sectionstest")[0];
-		//console.log($('#'+sectionid+'categories'));
-		// alert(categoryname);
-		// alert(sectionid);
-		$.ajax({
-			    url: '/categories/saveCategory',
-			    type: 'POST',
-			    data:{"sectionid":sectionid, "categoryname":categoryname},
-			    success: function(result) {
-			    	console.log($('#'+sectionid+'categories'));
-					 $('#'+sectionid+'categories').append(result);  
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					console.log(errorThrown);
-			    }
-			});
-	}
 
 	</script>
 </body>
