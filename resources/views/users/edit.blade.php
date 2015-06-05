@@ -1,3 +1,9 @@
+<head>
+ 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+</head>
+<body>
+
 @extends('app')
 
 @section('content')
@@ -114,4 +120,6 @@
 		</div>
 	</div>
 </div>
-@stop
+@endsection
+
+</body>
