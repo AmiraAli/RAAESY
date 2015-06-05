@@ -34,6 +34,9 @@
 
                         <div class="form-group col-md-2">
                             <button type="submit" class="btn btn-primary " onclick="prepareTickets ()">Go</button>
+
+                            <a  href="{{ url('/assets/csvimport') }}"><img src="/images/CSV.png" style="width:40px"></a>
+
                         </div>
                 </div>
                 </div>
@@ -90,7 +93,7 @@
                     },
                     plotOptions: {
                         area: {
-                            stacking: 'normal',
+                            //stacking: 'normal',
                             lineColor: '#666666',
                             lineWidth: 1,
                             marker: {
