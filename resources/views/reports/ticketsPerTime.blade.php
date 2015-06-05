@@ -93,7 +93,7 @@
                     },
                     plotOptions: {
                         area: {
-                            stacking: 'normal',
+                            //stacking: 'normal',
                             lineColor: '#666666',
                             lineWidth: 1,
                             marker: {
