@@ -9,7 +9,7 @@
 				<td class="priority text-center">Periorty</td>
 				<td class="text-center">Settings</td>
 			</tr>
-			  @foreach($tickets as $ticket)
+			  @foreach($Tickets as $ticket)
 				   <tr id="{{ $ticket->id }}">
 				   		
 				   		<td class="subject text-center">{{ $ticket->subject->name }}</td>
@@ -67,4 +67,5 @@
 			  @endforeach
 		  
 		</table>
+
 		 <script type="text/javascript" src="/js/tickets_index.js"></script>
