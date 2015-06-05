@@ -6,7 +6,7 @@
 				          	</a>{{ $section->name }}<input type="hidden" id="idSection" value="{{ $section->id }}"> 
 				          </td>
 				          <td class="text-center">
-				          	<a href="#" onclick="createCategory({{$section->id}},'{{$section->name}}')" class="btn btn-primary btn" >New Category</a>
+				          	<a href="#" onclick="createCategory({{$section->id}},'{{$section->name}}')" id="_{{$section->id}}" class="btn btn-primary btn" >New Category</a>
 				          </td>
 						<td class="text-center">
 				            <a href="#" onclick="Edit({{$section->id}}+',sectionstest')" class="btn btn-warning btn" >Edit</a>

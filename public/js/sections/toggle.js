@@ -49,8 +49,14 @@ $(document).ready(function(){
 	}
 
   //-------------------------------------------------------------------------------------------------------------
-function createCategory(secId , secName){
+function createCategory(secId , secName ){
 
+      var pos = $("#_"+secId).position();
+
+      $("#createCategoryDiv").css({
+        top: (pos.top ) + "px",
+        
+    });
 
       //check if same button is pressed or another one of another section
       var oldSecName = document.getElementById('cat_secName').value;
