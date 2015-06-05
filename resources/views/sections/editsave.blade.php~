@@ -5,6 +5,10 @@
  						<input type="hidden" id="idSection" value="{{ $section->id }}">
 
 <td class="text-center">
+				          	<a href="#" onclick="New({{$section->id}}+',sectionstest')" class="btn btn-primary btn" >New Category</a>
+				          </td>
+
+<td class="text-center">
 			            	 <a href="#" onclick="Edit({{$section->id}}+',sectionstest')" class="btn btn-warning btn" >Edit</a>
 			            </td>
 			            <td class="text-center">

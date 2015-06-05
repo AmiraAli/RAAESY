@@ -104,11 +104,14 @@
 					<div class="form-group col-md-6">
 						<label class="col-md-4 control-label">Assign</label>
 					    <select class="form-control" name="tech">
-						    @foreach ($users as $user)
-						@if($ticket->tech_id==NULL)
+					@if($ticket->tech_id==NULL)
 					    	<option value="" selected>Not assigned</option>
+					@else
+						<option value="" selected>Not assigned</option>
 						
-						@endif
+					@endif
+						    @foreach ($users as $user)
+						
 						    	@if ($assign_tech && $assign_tech->id == $user->id)
 						    		<option value="{{ $user->id }}" selected="true"> {{ $user->fname }}</option>
 						    	@else

@@ -27,6 +27,9 @@ Route::resource('/sections','SectionsController');
 
 
 Route::get('users/downloadCSV','UsersController@downloadCSV');
+Route::get('users/downloadPDF','UsersController@downloadPDF');
+
+
 Route::get('users/search','UsersController@search');
 Route::post('users/ajaxsearch','UsersController@ajaxsearch');
 Route::get('users/changepassword/{id}','UsersController@changepassword');
@@ -105,6 +108,12 @@ Route::post('/reports/problemMangementDate', 'ReportsController@problemMangement
 
 Route::get('/reports/reportTicketStatus','ReportsController@reportTicketStatus');
 Route::get('/reports/exportTicketStatusReport','ReportsController@exportTicketStatusReport');
+
+
+
+Route::get('reports/problemMangementCSV','ReportsController@problemMangementCSV');
+Route::get('reports/summaryCSV','ReportsController@summaryCSV');
+Route::get('reports/logsCSV','ReportsController@logsCSV');
 
 
 Route::get('/', 'WelcomeController@index');

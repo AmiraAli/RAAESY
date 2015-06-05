@@ -1,3 +1,22 @@
+<html>
+<head>
+<style>
+.formed
+{
+    width:90%;
+    table-layout:fixed;
+    padding:0;
+    margin:0;
+}
+.form{
+    width:90%;
+    table-layout:fixed;
+    padding:0;
+    margin:0;
+}
+</style>
+</head>
+<body>
 @extends('app')
 @section('content')
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
@@ -5,23 +24,21 @@
 <div class="row">
 	<button class="btn btn-primary" onclick="createSection()" >Create New Section</button>
 </div>
-<div class="row">
-	<div  id="con" class="col-md-12 " >
 
-		<table class="table table-hover">
-			<thead>
-				 <tr>
-					<th class="text-center">Name</th>
-				</tr>
-			</thead>
-		<tbody id="tbody">
+	
+<div  id="con" class="col-md-12 " >
+		
+			
+
 	     		@foreach ($sections as $section)
+	<table class="table table-hover formed">	
+
 				     <tr id="{{$section->id}},sectionstest">
 				          <td class="text-center" id="{{ $section->id }}"> 
 				          	<a href="#" id="{{ $section->name }}" class="glyphicon glyphicon-triangle-right" onclick="tog({{ $section->id }},'{{$section->name}}');">
 				          	</a>{{ $section->name }}<input type="hidden" id="idSection" value="{{ $section->id }}"> 
 				          </td>
-				          <td>
+				          <td class="text-center">
 				          	<a href="#" onclick="New({{$section->id}}+',sectionstest')" class="btn btn-primary btn" >New Category</a>
 				          </td>
 						<td class="text-center">
@@ -31,8 +48,11 @@
 					          <button class="btn btn-danger" onclick="deleteSection( {{ $section->id }}+',sectionstest' )">Delete</button>
 				            </td>
 				      </tr>
-				      <tr id="{{$section->id}}categories" >
+</table>
+
+				      <table id="{{$section->id}}categories" class="table table-hover form" >
 							@foreach ($categories as $category)
+
 							     <tr class="text-center {{$section->id}}category" id="{{ $category->id }}category">  
 							        		
 							        @if($category->section_id == $section->id)
@@ -47,11 +67,11 @@
 							        @endif
 							 	 </tr>
 							@endforeach
-					</tr>
+					</table>
+
 	     	@endforeach
 
-	     	</tbody>
-		</table>
+		
 	</div>
 	<div class="col-md-4" id="createSectionDiv">
 		<div class="panel panel-success">
@@ -73,7 +93,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	
 </div>
 @endsection
 
@@ -156,3 +176,5 @@ function deleteCategory(id){
 	}
 
 	</script>
+</body>
+</html>
