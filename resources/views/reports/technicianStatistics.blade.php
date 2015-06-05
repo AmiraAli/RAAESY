@@ -10,7 +10,7 @@
 			<div class="panel-body">
 					<div class="form-group col-md-5">
 						<label class="col-md-4 control-label">From</label>
-						<input type="text" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('-31 day')) ?>" id="from" />
+						<input type="text" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('-1 month')) ?>" id="from" />
 					</div>
 
 					<div class="form-group col-md-5">

@@ -22,7 +22,6 @@ function prepareTickets(){
             type: 'post',
             data: formData,
             success: function(result) {
-                console.log(result);
                 ticketsStatistics(result["createdTickets"],result["closedTickets"], result["points"]);
             },
             error: function(jqXHR, textStatus, errorThrown) {
