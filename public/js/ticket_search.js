@@ -21,6 +21,13 @@ $( "#selectFields" ).click(function() {
         {
         	$('.'+$(this).val()).show();
         }
+
+        if(    !$(".subject").is(":visible") && !$(".status").is(":visible") && !$(".category").is(":visible")
+        	&& !$(".created_at").is(":visible") && !$(".deadline").is(":visible") && !$(".priority").is(":visible") ){
+        	$(".setting").hide();
+        }else{
+        	$(".setting").show();
+        }
     });
 
 function tag() 
