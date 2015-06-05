@@ -73,7 +73,7 @@
  <script type="text/javascript" src="/js/reports/technicianStatistics.js"></script>
  
 
-  <link rel="stylesheet" type="text/css" href="/datetimepicker/jquery.datetimepicker.css"/ >
+ <link rel="stylesheet" type="text/css" href="/datetimepicker/jquery.datetimepicker.css"/ >
  <script src="/datetimepicker/jquery.datetimepicker.js"></script>
 
  <script >
