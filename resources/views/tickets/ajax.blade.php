@@ -9,7 +9,7 @@
 				<td class="priority text-center">Periorty</td>
 				<td class="text-center">Settings</td>
 			</tr>
-			  @foreach($tickets as $ticket)
+			  @foreach($targetTickets as $ticket)
 				   <tr id="{{ $ticket->id }}">
 				   		
 				   		<td class="subject text-center">{{ $ticket->subject->name }}</td>

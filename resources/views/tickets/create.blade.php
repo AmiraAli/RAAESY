@@ -21,7 +21,7 @@
 					</ul>
 				</div>
 			@endif
-			 {!! Form::open(['route'=>'tickets.store','method'=>'post']) !!}
+			 {!! Form::open(['route'=>'tickets.store','method'=>'post','files' => true]) !!}
 			  <div class="row">
 				<div class="form-group col-md-6">
 					<label class="col-md-4 control-label">Subject</label>
