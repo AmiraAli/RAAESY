@@ -156,9 +156,6 @@ class UsersController extends Controller {
 			}
 
 
-			//$data['verification_code']  = $user->verification_code;
-
-		//Session::put('email', $data['email']);
 			$data = array('fname' => $user->fname,
 						  'lname' => $user->lname, 
 						  'email' => $user->email,
@@ -211,6 +208,11 @@ class UsersController extends Controller {
 			return view('errors.authorization');
 		}
 
+		//no one can edit the super admin profile ( having id = 1 )		
+		if ( $id=="1" && Auth::User()->id != "1" ) {
+			return view('errors.authorization');
+		}		
+
 		$user = User::find($id);
 
 		return view('users.edit',compact('user', 'id'));
@@ -240,30 +242,35 @@ class UsersController extends Controller {
 	    }else{
 
 			$user=User::find($id);
-		$user->fname=Request::get('fname');
-		$user->lname=Request::get('lname');
-		$user->email=Request::get('email');
-		$user->phone=Request::get('phone');
-		$user->location=Request::get('location');
+			$user->fname=Request::get('fname');
+			$user->lname=Request::get('lname');
+			$user->email=Request::get('email');
+			$user->phone=Request::get('phone');
+			$user->location=Request::get('location');
 
-		if (Request::get('isspam')){
-			
-			//check if admin soan a user
-			if ($user->isspam == 0){
+			if (Request::get('isspam')){
+				
+				//check if admin soan a user
+				if ($user->isspam == 0){
 
-				//add notification in log
-				$this->addnotification("spam"  , "user" , $user );
+					//add notification in log
+					$this->addnotification("spam"  , "user" , $user );
+				}
+				$user->isspam= 1;
+
+			}else{
+				$user->isspam=0;
+
 			}
-			$user->isspam= 1;
 
-		}else{
-			$user->isspam=0;
+			if (Request::get('type')){
+				$user->type=Request::get('type');
+			}
+							
 
-		}
-		$user->type=Request::get('type');
-		$user->save();
-		 return redirect('/users');
-		}
+			$user->save();
+			 return redirect('/users/'.$user->id.'/');
+			}
 
 	}
 
@@ -335,35 +342,6 @@ class UsersController extends Controller {
 	}
 
 
-	/**
-	 * Select specific users from storage ( called by AJAX).
-	 *
-	 * @param  string  $type
-	 * @return Response
-	 */
-
-	public function get_user_types()
-	{
-
-		$type = Request::get('type');
-		if ($type== "all"){
-			
-			$users =User::all();
-
-		}elseif ($type== "disabled") {
-			
-			$users =User::where('isspam', 1)->get();
-
-		}else{
-			$users =User::where('type',$type )->get();	
-		}
-		
-		//return json_encode($selectedUsers);
-		return view('users.ajaxsearch' , compact('users'));
-
-
-	}
-
 
 	/**
 	 * Select users from storage for autocomplete (called by AJAX).
@@ -388,7 +366,7 @@ class UsersController extends Controller {
 	/**
 	 * Search and advanced search for users (called by AJAX).
 	 *
-	 * @param  string  $fname , $lname , ... (optional fields)
+	 * @param  string  $displayedType and ( $fname , $lname , ... (optional fields) )
 	 * @return Response
 	 */
 
