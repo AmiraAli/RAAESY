@@ -20,11 +20,11 @@
 <div class="container">
 
 Show: 
-<label><input type="radio" name="user" value="all"   onclick="show(this)"> All</label> |
-<label><input type="radio" name="user" value="regular"   onclick="show(this)">  Regular Users</label> | 
-<label><input type="radio" name="user" value="tech"  onclick="show(this)">  Technicians</label> |
-<label><input type="radio" name="user" value="admin"  onclick="show(this)">  Admins </label>|
-<label><input type="radio" name="user" value="disabled"  onclick="show(this)">  Disabled users </label>|
+<label><input type="radio" name="user" value="all"   onclick="search()" checked="true"> All</label> |
+<label><input type="radio" name="user" value="regular"   onclick="search()">  Regular Users</label> | 
+<label><input type="radio" name="user" value="tech"  onclick="search()">  Technicians</label> |
+<label><input type="radio" name="user" value="admin"  onclick="search()">  Admins </label>|
+<label><input type="radio" name="user" value="disabled"  onclick="search()">  Disabled users </label>|
 
 <label for="">Quick Search: </label>
 <input type="text" class="parent" placeholder="Fname/Lname/Email" onkeyup="myAutocomplete(this.value)" name="term" id="quickSearch"  autocomplete="on">
@@ -32,7 +32,7 @@ Show:
 <button id="toggle" class="btn btn-primary" > <span class="glyphicon glyphicon-search"></span></button>
 
 <a id="csv" href="users/downloadCSV" ><img src="/images/CSV.png"></a>
-<a id="pdf" href="users/downloadPDF" ><img src="/images/CSV.png"></a>
+<!-- <a id="pdf" href="users/downloadPDF" ><img src="/images/CSV.png"></a> -->
 
 <div id="autocompletemenu" style="display: none;">
    <ul id="autocompleteul"></ul>
@@ -101,7 +101,7 @@ Show:
 
 <div class="col-md-4" id="advancedSearchDiv">
 		<div class="panel panel-success">
-			<div class="panel-heading">Search</div>
+			<div class="panel-heading">Advanced Search</div>
 				<div class="panel-body">
                   
 						<div class="form-group">

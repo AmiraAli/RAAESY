@@ -48,34 +48,6 @@ $("#autocompletemenu").mouseout(function(){
 
 
 
-function show(elm){
-
-	var type = elm.value;
-	
-
-	$.ajax({
-    url: '/users/get_user_types',
-    type: 'POST',
-    data: {  
-   	type: type
-   	    },
-    success: function(result) {
-
-    	$("#con").html(result);		
-			},
-	error: function(jqXHR, textStatus, errorThrown) {
-        console.log(errorThrown);
-    }
-
-
-
-
-
-	});
-
-
-}
-
 function myAutocomplete(data) {
 
 	if (data==''){ 
@@ -130,15 +102,13 @@ function search(){
 	var phone = document.getElementById('phone').value;
 	var location = document.getElementById('location').value;
 
-     // alert(fname);
-     // alert(lname);
-     // alert(email);
-     // alert(phone);
-     // alert(location);
+    var displayedUsers  =  $('input[name=user]:checked').val() ; 
+
 	$.ajax({
     url: '/users/ajaxsearch',
     type: 'POST',
     data: {  
+        displayed: displayedUsers,
    		fname: fname,
         lname: lname,
         email: email,

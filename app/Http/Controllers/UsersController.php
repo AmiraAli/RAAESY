@@ -10,6 +10,9 @@ use Validator;
 use Mail;
 use Response;
 
+use App\Article;
+use App;
+
 class UsersController extends Controller {
 
 
@@ -383,22 +386,7 @@ class UsersController extends Controller {
 
 
 	/**
-	 * Search users (called by AJAX).
-	 *
-	 * @param  string  $fname , $lname , ... (optional fields)
-	 * @return Response
-	 */
-
-	public function search()
-	{
-	
-		return view('users.search');
-
-	}
-
-
-	/**
-	 * Advanced search for users (called by AJAX).
+	 * Search and advanced search for users (called by AJAX).
 	 *
 	 * @param  string  $fname , $lname , ... (optional fields)
 	 * @return Response
@@ -411,28 +399,43 @@ class UsersController extends Controller {
 		$email = Request::get('email');
 		$phone = Request::get('phone');
 		$location = Request::get('location');
-		
+		$displayedType = Request::get('displayed');
 
-		$users = User::all();
+		
+		// filter 1: get only displayed user 
+		if ($displayedType== "all"){
+			
+			$users =User::all();
+
+		}elseif ($displayedType== "disabled") {
+			
+			$users =User::where('isspam', 1)->get();
+
+		}else{
+			$users =User::where('type',$displayedType )->get();	
+		}
+		
+		// filter 2: get specified users from advanced search
+		
 		if ($fname != null) {
-			# code...
-			$users = User::whereFname($fname)->get();
+			
+			$users = $users->where('fname' , $fname);
 		}
 		if ($lname != null) {
-			# code...
-			$users = User::whereFLname($lname)->get();
+			
+			$users = $users->where('lname' , $lname);
 		}
 		if ($email != null) {
-			# code...
-			$users = User::whereEmail($email)->get();
+			
+			$users = $users->where('email' , $email);
 		}
 		if ($phone != null) {
-			# code...
-			$users = User::wherePhone($phone)->get();
+			
+			$users = $users->where('phone' , $phone);
 		}
 		if ($location != null) {
-			# code...
-			$users = User::whereLocation($location)->get();
+			
+			$users = $users->where('location', $location);
 		}
 
 		return view('users.ajaxsearch',compact('users'));
@@ -478,29 +481,47 @@ class UsersController extends Controller {
 	public function downloadPDF()
 	{
 		
-		$users=User::all();
 
-	    $filename = "users.pdf";
+	    /*$filename = "users.pdf";
 	    $handle = fopen($filename, 'w+');
 
 	    
+	    fputpdf($handle, array('id', 'First name', 'Last name', 'Email' ,'Phone' ,'Location' , 'Disabled' , 'Type' , 'Remember token' , 'Created at' , 'Updated at'));
+
 
 	    //put all fields except password
 	    foreach($users as $row) {
-	        fputs($handle, array($row['id'], $row['fname'], $row['lname'], $row['email'] , $row['phone'] , $row['location'] , $row['isspam'] , $row['type'] , $row['remember_token'] ,$row['created_at']  , $row['updated_at']));
+	        fputpdf($handle, array($row['id'], $row['fname'], $row['lname'], $row['email'] , $row['phone'] , $row['location'] , $row['isspam'] , $row['type'] , $row['remember_token'] ,$row['created_at']  , $row['updated_at']));
 	    }
 
-	    fclose($handle);
+	    fclose($handle);*/
+	    /*$articles=Article::all();
+    	$output = implode(",", array('Subject', 'Category','How can See It!?','Owner','Created_at','Updated_at'))."\n";
+    	foreach ($articles as $article) {
+		// iterate over each tweet and add it to the csv
+			if ($article->isshow==1){
+                    $show="Technicals only";
+            }else{
+                    $show="Technicals and Users"; 
+            } 	
+		    $output .= implode(",", array($article->subject , $article->category->name , $show , $article->user->fname ,  $article->created_at ,$article->updated_at)); // append each row
+			$output .="\n";
+
+		}
 
     	$headers = array(
         'Content-Type: application/pdf',
         'Content-Disposition:attachment; filename="cv.pdf"',
         'Content-Transfer-Encoding:binary',
-        'Content-Length:'.filesize($filename),
+        //'Content-Length:'.filesize($filename),
  	   );
 
-	   
-		return response()->download($filename, "CV.pdf");		
+	    return Response::make(rtrim($output, "\n"), 200, $headers);
+
+		//return response()->download($filename, "CV.pdf");	*/
+		$pdf = App::make('dompdf');
+		$pdf->loadView('users.index', array());
+		return $pdf->download('invoice.pdf');	
 	}
 
 }	
