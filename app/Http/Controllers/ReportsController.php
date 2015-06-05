@@ -573,13 +573,15 @@ class ReportsController extends Controller {
 	{
 		$from = date('Y-m-d', strtotime('-2 day'));
 		$to = date('Y-m-d', strtotime('+1 day'));
+		$tomorrow = date('Y-m-d',strtotime($to . "+1 days"));
 		$tickets = Ticket::select(DB::raw('count(*) as ticketCount,DATE(created_at) as date'))->whereBetween('created_at', [$from, $to])->groupBy(DB::raw('DATE(created_at)'))->get();	
-		// $closed = TicketStatus::select(DB::raw('count(IF(ticket_stauses.value = 'close', 1, null)) as ticketCount,DATE(created_at) as date'))->whereBetween('created_at', [$from, $to])->groupBy(DB::raw('DATE(created_at)'))->get();	
+		$closed = DB::select("select count(IF(ts.value = 'close', 1, null)) as closed,date(ts.created_at) as date from ticket_statuses ts  join (select created_at,ticket_id FROM (select * from ticket_statuses order by created_at desc) td  where created_at between '$from' and '$tomorrow' group by ticket_id,date(created_at) ) x on x.created_at=ts.created_at and x.ticket_id=ts.ticket_id and value='close' group by date(ts.created_at)");
 		
 		$points[0] = date('Y-m-d', strtotime('-2 day'));
 		$points[1] = date('Y-m-d', strtotime('-1 day'));
 		$points[2] = date('Y-m-d', strtotime('+0 day'));
 		$f = 0;
+		$fClosed=0;
 		foreach ($points as $point) {
 			foreach ($tickets as $ticket) {					
 				if(strtotime($ticket->date) == strtotime($point)){
@@ -591,8 +593,22 @@ class ReportsController extends Controller {
 				$createdTickets[] = 0;
 			}
 			$f = 0;
+		}
+		foreach ($points as $point) {
+			foreach ($closed as $closedTicket) {					
+				if(strtotime($closedTicket->date) == strtotime($point)){
+					$closedTickets[] = $closedTicket->closed;
+					$fClosed = 1;
+
+				}
+			}
+			if($fClosed == 0){
+				$closedTickets[] = 0;
+
+			}
+			$fClosed = 0;
 		}			
-		return view('reports.ticketsPerTime', compact('points','createdTickets'));
+		return view('reports.ticketsPerTime', compact('points','createdTickets','closedTickets'));
 	}
 
 
@@ -609,6 +625,7 @@ class ReportsController extends Controller {
 			if($unit == "day"){
 				
 				$tickets = Ticket::select(DB::raw('count(*) as ticketCount,DATE(created_at) as date'))->whereBetween('created_at', [$from, $tomorrow])->groupBy(DB::raw('DATE(created_at)'))->get();	
+				$closed = DB::select("select count(IF(ts.value = 'close', 1, null)) as closed,date(ts.created_at) as date from ticket_statuses ts  join (select created_at,ticket_id FROM (select * from ticket_statuses order by created_at desc) td  where created_at between '$from' and '$tomorrow' group by ticket_id,date(created_at) ) x on x.created_at=ts.created_at and x.ticket_id=ts.ticket_id and value='close' group by date(ts.created_at)");
 
 			     $datediff = strtotime($to) - strtotime($from);
 			     $timeDiff = floor($datediff/(60*60*24));
@@ -626,10 +643,26 @@ class ReportsController extends Controller {
 						}
 						$f = 0;
 			     }
+
+			     $fDay = 0;
+			     for($i = 0; $i <= $timeDiff; $i++){
+			     	$points[$i] = date('Y-m-d',strtotime($from . "+".$i ."days"));
+				     	foreach ($closed as $ticketClosed) {			
+							if(strtotime($ticketClosed->date) == strtotime($points[$i])){
+								$closedTickets[] = $ticketClosed->closed;
+								$fDay = 1;
+							}
+						}
+						if($fDay == 0){
+							$closedTickets[] = 0;
+						}
+						$fDay = 0;
+			     }
 			 }
 			 else if($unit == "month"){
 			 	$tickets = Ticket::select(DB::raw('count(*) as ticketCount,month(created_at) as date'))->whereBetween('created_at', [$from, $tomorrow])->groupBy(DB::raw('month(created_at)'))->get();		
-			 	
+			 	$closed = DB::select("select count(IF(ts.value = 'close', 1, null)) as closed,month(ts.created_at) as date from ticket_statuses ts  join (select created_at,ticket_id FROM (select * from ticket_statuses order by created_at desc) td  where created_at between '$from' and '$tomorrow' group by ticket_id,month(created_at) ) x on x.created_at=ts.created_at and x.ticket_id=ts.ticket_id and value='close' group by month(ts.created_at)");
+
 			 	$f = 0;
 			 	for($i = 0; $i <= ($dateTo["month"] - $dateFrom["month"]); $i++){
 			     	$points[$i] = $dateFrom["month"] + $i;
@@ -645,9 +678,26 @@ class ReportsController extends Controller {
 						$f = 0;
 			     }
 
+			    $fMonth = 0;
+			 	for($i = 0; $i <= ($dateTo["month"] - $dateFrom["month"]); $i++){
+			     	$points[$i] = $dateFrom["month"] + $i;
+				     	foreach ($closed as $ticketClosed) {			
+							if($ticketClosed->date == $points[$i]){
+								$closedTickets[] = $ticketClosed->closed;
+								$fMonth = 1;
+							}
+						}
+						if($fMonth == 0){
+							$closedTickets[] = 0;
+						}
+						$fMonth = 0;
+			     }
+
 			 }
 			 else if($unit == "week"){
 			 	$tickets = Ticket::select(DB::raw('count(*) as ticketCount,week(created_at) as date'))->whereBetween('created_at', [$from, $tomorrow])->groupBy(DB::raw('week(created_at)'))->get();		
+			 	$closed = DB::select("select count(IF(ts.value = 'close', 1, null)) as closed,week(ts.created_at) as date from ticket_statuses ts  join (select created_at,ticket_id FROM (select * from ticket_statuses order by created_at desc) td  where created_at between '$from' and '$tomorrow' group by ticket_id,week(created_at) ) x on x.created_at=ts.created_at and x.ticket_id=ts.ticket_id and value='close' group by week(ts.created_at)");
+
 			 	$fromDate  = mktime(0, 0, 0, $dateFrom["month"],$dateFrom["day"],$dateFrom["year"]);
 				$weekFrom  = (int)date('W', $fromDate);
 				$toDate  = mktime(0, 0, 0, $dateTo["month"],$dateTo["day"],$dateTo["year"]);
@@ -667,14 +717,32 @@ class ReportsController extends Controller {
 						$f = 0;
 			     }
 
+			     $fWeek = 0;
+			 	for($i = 0; $i <= ($weekTo - $weekFrom); $i++){
+			     	$points[$i] = $weekFrom + $i;
+				     	foreach ($closed as $ticketClosed) {			
+							if($ticketClosed->date == $points[$i] - 1){
+								$closedTickets[] = $ticketClosed->closed;
+								$fWeek = 1;
+							}
+						}
+						if($fWeek == 0){
+							$closedTickets[] = 0;
+						}
+						$fWeek = 0;
+			     }
+
 			 }
 		     $data["points"] = $points;
 
 			for($i = 0; $i < count($createdTickets); $i++){
 			    $createdTickets[$i] = (int)$createdTickets[$i];
 			} 
+			for($i = 0; $i < count($closedTickets); $i++){
+			    $closedTickets[$i] = (int)$closedTickets[$i];
+			}
 		     $data["createdTickets"] = $createdTickets;
-
+		     $data["closedTickets"] = $closedTickets;
 			 echo json_encode($data);
 		}
 	}

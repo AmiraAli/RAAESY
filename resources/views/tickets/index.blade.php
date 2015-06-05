@@ -93,7 +93,7 @@
 					</select>
 				</div>
 			</div>
-			<button class="btn btn-info" id="sortType" onclick="sortType()" style="display:inline;">ASC</button>
+			<button class="btn btn-info" id="sortType" onclick="sortType()" style="display:inline;">DESC</button>
 		</div>
 		<br>
 		<div class="form-group container">
