@@ -15,12 +15,12 @@
                 <div class="panel-body">
                         <div class="form-group col-md-3">
                             <label class="col-md-2 control-label">From</label>
-                            <input type="date" name="from" class="form-control" value="<?php echo date('Y-m-d', strtotime('-2 day')) ?>" id="from" />
+                            <input type="text" name="from" class="form-control" value="<?php echo date('Y-m-d', strtotime('-2 day')) ?>" id="from" />
                         </div>
 
                         <div class="form-group col-md-3">
                             <label class="col-md-2 control-label">To</label>
-                            <input type="date" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('+0 day')) ?>" id="to"/>
+                            <input type="text" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('+0 day')) ?>" id="to"/>
                         </div>
                         
                         <div class="col-md-4">
