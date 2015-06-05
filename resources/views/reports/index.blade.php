@@ -20,9 +20,15 @@
 						 		<a href="{{ url('/reports/summary') }}">Summary</a><br>
 						 		<small style="color: #777;font-size: 11px !important;">Build a ticket-report by date range, category, status and all details</small>
 						 	</li></h3>
+						 	<br>
 						 	<h3><li class="glyphicon glyphicon-signal">
-						 		<a href="{{ url('/reports/disthour') }}">Tickets per hour</a><br>
+						 		<a href="{{ url('/reports/disthour') }}">Tickets per Hour</a><br>
 						 		<small style="color: #777;font-size: 11px !important;">Distription of tickets per hour</small>
+						 	</li></h3>
+						 	<br>
+						 	<h3><li class="glyphicon glyphicon-signal">
+						 		<a href="{{ url('/reports/ticketsPerTime') }}">Tickets per Date</a><br>
+						 		<small style="color: #777;font-size: 11px !important;">Distription of tickets per day,week.month and custome Date..</small>
 						 	</li></h3>
 						</ul>
 					</div>
@@ -45,6 +51,11 @@
 						 		<a href="{{ url('/reports/problemMangement') }}">problem Mangement</a><br>
 						 		<small style="color: #777;font-size: 11px !important;">Analysis no of tickets solved in each subject and which subject has problem </small>
 						 	</li></h3>
+						 	<h3><li class="glyphicon glyphicon-list-alt">
+							 		<a href="{{ url('/reports/reportTicketStatus') }}">Tickets History</a><br>
+							 		<small style="color: #777;font-size: 11px !important;">Contains all history of each ticket no of open , no of close
+							 																and the date of when opend and when closed..</small>
+							 	</li></h3>
 							</ul>
 					</div>
 				</div>
