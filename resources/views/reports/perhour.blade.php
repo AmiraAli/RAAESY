@@ -9,8 +9,8 @@
 
 
 <div class="container">
-From : <input type="date" id="date1" >
-To : <input type="date" id="date2" >
+From : <input type="text" id="date1" >
+To : <input type="text" id="date2" >
 <button onclick="getReport()" >Get Report</button>
 
 
@@ -31,18 +31,19 @@ To : <input type="date" id="date2" >
 <script  src="http://code.highcharts.com/modules/exporting.js"></script>
 <script  src="/js/reports/dist_per_hour.js"></script>
 
-<script type="text/javascript" src="/Zebra_Datepicker/javascript/zebra_datepicker.js"></script>
-<link rel="stylesheet" href="/Zebra_Datepicker/css/default.css" type="text/css">
 
+<link rel="stylesheet" type="text/css" href="/datetimepicker/jquery.datetimepicker.css"/ >
+<script src="/datetimepicker/jquery.datetimepicker.js"></script>
 
 <script >
 	$(document).ready(function() {
 
-    // assuming the controls you want to attach the plugin to 
-    // have the "datepicker" class set
-    $('#date1').Zebra_DatePicker();
-    $('#date2').Zebra_DatePicker();
-
+    $('#date1').datetimepicker({
+  		format:'Y-m-d H:00:00',
+      	  });
+    $('#date2').datetimepicker({
+  		format:'Y-m-d H:00:00',
+      	  });
 
  });
 </script>

@@ -5,7 +5,7 @@
 <div  class="container">
 @if(Auth::user()->type == "admin")
 	<div class="row">
-	<a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Article</a>
+	<a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Ticket</a>
 	</div>
 	<br>
 @endif
