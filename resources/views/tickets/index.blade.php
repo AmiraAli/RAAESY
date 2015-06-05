@@ -32,7 +32,7 @@
 	<div class="row">
 	<a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Ticket</a>
 	@if(Auth::user()->type=="admin" )
-		<a  href="{{ url('/tickets/exportCSV') }}" > <span class="glyphicon glyphicon-export"></span>Export To Csv</a>
+		<a  href="{{ url('/tickets/exportCSV') }}" > <img src="/images/CSV.png" style="width:40px"></a>
 	@endif
 	</div>
 @endif

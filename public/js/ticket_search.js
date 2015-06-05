@@ -142,7 +142,6 @@ function sortType(){
     	searchData["sec"] = cat_sec[1];
     }
 
-    //searchData["sortType"] = $("#sortType").text();
     if ($("#sortType").text() == "DESC")
 			 {
 			 	searchData["sortType"]="ASC";

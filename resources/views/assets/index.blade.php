@@ -12,7 +12,7 @@
 @if(Auth::user()->type=="admin" or Auth::user()->type=="regular" )
 <a class="btn btn-primary" href="{{ url('/assets/create') }}"> New Asset</a>
 	@if(Auth::user()->type=="admin" )
-		<a  href="{{ url('/assets/csvimport') }}"><span class="glyphicon glyphicon-export"></span>Export To Csv</a>
+		<a  href="{{ url('/assets/csvimport') }}"><img src="/images/CSV.png" style="width:40px"></a>
 	@endif
 @endif
 </div>
