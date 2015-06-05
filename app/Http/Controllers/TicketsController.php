@@ -158,13 +158,17 @@ class TicketsController extends Controller {
 			]);
 			$ticket= new Ticket;
 			$ticket->description=$request->get('description');
-			$file=$ticket->file=$request->get('file');
 
 			//check for uploaded file and store it n public path
-			// if ($file) { 
-			// 	$extension = $file->getClientOriginalExtension();
-			// 	Storage::disk('local')->put($file->getFilename().'.'.$extension,  File::get($file));
-			// }
+			if ($request->hasFile('file')) { 
+				$destination='files/';
+				$filename=str_random(6)."_".$request->file('file')->getClientOriginalName();
+				$request->file('file')->move($destination,$filename);
+				$ticket->file=$filename;
+			}else{
+				$ticket->file=$request->get('file');
+			}
+
 
 			$ticket->category_id=$request->get('category');
 			$ticket->subject_id=$request->get('subject');
@@ -319,7 +323,16 @@ class TicketsController extends Controller {
 		$ticket= Ticket::find($id);
 		$ticket->description=$request->get('description');
 		$ticket->priority=$request->get('priority');
-		$ticket->file=$request->get('file');
+
+		//check for uploaded file and store it n public path
+			if ($request->hasFile('file')) { 
+				$destination='files/';
+				$filename=str_random(6)."_".$request->file('file')->getClientOriginalName();
+				$request->file('file')->move($destination,$filename);
+				$ticket->file=$filename;
+			}else{
+				$ticket->file=$ticket->file;
+			}
 		$ticket->category_id=$request->get('category');
 		$ticket->subject_id=$request->get('subject');
 		$ticket->user_id=Auth::user()->id;

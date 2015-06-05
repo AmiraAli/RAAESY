@@ -22,7 +22,7 @@
 					</ul>
 				</div>
 			@endif
-			 {!! Form::open(['route'=>['tickets.update',$ticket->id],'method'=>'put']) !!}
+			 {!! Form::open(['route'=>['tickets.update',$ticket->id],'method'=>'put','files' => true]) !!}
 			  <div class="row">
 				<div class="form-group col-md-6">
 					<label class="col-md-4 control-label">Subject</label>
