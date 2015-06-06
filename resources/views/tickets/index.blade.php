@@ -40,15 +40,15 @@
 
 	<ul class="nav nav-pills" role="tablist">
 		@if(Auth::user()->type === "admin")
-		  <li role="presentation" id="unanswered"><a href="#" onclick="searchTicket('unanswered')">Unanswered <span class="badge">{{ count($unanswered) }}</span></a></li>
-		  <li role="presentation" id="unassigned"><a href="#" onclick="searchTicket('unassigned')">Unassigned <span class="badge">{{ count($unassigned) }}</span></a></li>
-		  <li role="presentation" id="expired"><a href="#" onclick="searchTicket('expired')">Deadline exceeded <span class="badge">{{ count($expired) }}</span></a></li>
+		  <li role="presentation" id="unanswered"><a href="#" onclick="searchTicket('unanswered')" >Unanswered <span id="unansweredCount" class="badge">{{ count($unanswered) }}</span></a></li>
+		  <li role="presentation" id="unassigned"><a href="#" onclick="searchTicket('unassigned')">Unassigned <span id="unassignedCount" class="badge">{{ $unassigned[0]->count }}</span></a></li>
+		  <li role="presentation" id="expired"><a href="#" onclick="searchTicket('expired')">Deadline exceeded <span id="expiredCount" class="badge">{{ $expired[0]->count }}</span></a></li>
 		@endif
-		  <li role="presentation" id="open"><a href="#" onclick="searchTicket('open')">Unclosed <span class="badge">{{ count($open) }}</span></a></li>	  
-		  <li role="presentation" id="closed"><a href="#" onclick="searchTicket('closed')">Closed <span class="badge">{{ count($closed) }}</span></a></li>
-		  <li role="presentation" id="all" class="active" onclick="searchTicket('all')"><a href="#">All(including closed) <span class="badge">{{ count($tickets) }}</span></a></li>
+		  <li role="presentation" id="open"><a href="#" onclick="searchTicket('open')">Unclosed <span id="openCount" class="badge">{{ $open[0]->count }}</span></a></li>	  
+		  <li role="presentation" id="closed"><a href="#" onclick="searchTicket('closed')">Closed <span id="closedCount" class="badge">{{ $closed[0]->count }}</span></a></li>
+		  <li role="presentation" class="active" id="all"><a href="#" onclick="searchTicket('all')">All(including closed) <span id="allCount" class="badge">{{ count($tickets) }}</span></a></li>
 		@if(Auth::user()->type === "admin")
-		  <li role="presentation" id="spam"><a href="#" onclick="searchTicket('spam')">Spam <span class="badge">{{ count($spam) }}</span></a></li>	
+		  <li role="presentation" id="spam"><a href="#" onclick="searchTicket('spam')">Spam <span id="spamCount" class="badge">{{ $spam[0]->count }}</span></a></li>	
 		@endif
 	</ul>
 </div>

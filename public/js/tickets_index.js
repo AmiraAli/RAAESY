@@ -33,10 +33,18 @@ window.onload = function() {
 function Delete(id){
 //ajax request
    $.ajax({
+   	dataType: "json",
     url: '/tickets/'+id,
     type: 'DELETE',
     success: function(result) {
-		document.getElementById(id).remove();    
+		document.getElementById(id).remove(); 
+		$("#unansweredCount").html(result["unanswered"]); 
+		$("#unassignedCount").html(result["unassigned"]);
+		$("#expiredCount").html(result["expired"]);
+		$("#openCount").html(result["open"]);
+		$("#closedCount").html(result["closed"]);
+		$("#allCount").html(result["all"]);
+		$("#spamCount").html(result["spam"]);   
 	},
 	error: function(jqXHR, textStatus, errorThrown) {
           console.log(errorThrown);
@@ -51,11 +59,19 @@ function Delete(id){
 function spam(id){
 //ajax request
 $.ajax({
+		dataType: "json",
 		url: '/tickets/spamTicket',
 		type: "post",
 		data: {'id':id},
 		success: function(data){
-			document.getElementById(id).remove();    
+			document.getElementById(id).remove(); 
+			$("#unansweredCount").html(data["unanswered"]); 
+			$("#unassignedCount").html(data["unassigned"]);
+			$("#expiredCount").html(data["expired"]);
+			$("#openCount").html(data["open"]);
+			$("#closedCount").html(data["closed"]);
+			$("#allCount").html(data["all"]);
+			$("#spamCount").html(data["spam"]);
 		    },
 		error: function(jqXHR, textStatus, errorThrown) {
 			alert(errorThrown);
@@ -74,12 +90,20 @@ function unspam(id){
 console.log(id);
 //ajax request
 $.ajax({
+		dataType: "json",
 		url: '/tickets/unSpamTicket',
 		type: "post",
 		data: {'id':id},
 		success: function(data){
 			console.log("success");
-			document.getElementById(id).remove();    
+			document.getElementById(id).remove(); 
+			$("#unansweredCount").html(data["unanswered"]); 
+			$("#unassignedCount").html(data["unassigned"]);
+			$("#expiredCount").html(data["expired"]);
+			$("#openCount").html(data["open"]);
+			$("#closedCount").html(data["closed"]);
+			$("#allCount").html(data["all"]);
+			$("#spamCount").html(data["spam"]);   
 		    },
 		error: function(jqXHR, textStatus, errorThrown) {
 			alert(errorThrown);
