@@ -2,17 +2,20 @@
 @section('content')
 <div class="container-fluid">
 
+
+<a  href="/users/create?lang=ar" class="btn btn-primary" >عربى</a>
+<a  href="/users/create?lang=en" class="btn btn-primary" >English</a>
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
-				<div class="panel-heading">Add User</div>
+				<div class="panel-heading"><span id="header" >{{ trans('words.add_user') }}</span></div>
 				<div class="panel-body">
 				    @if (count($errors) > 0)
                         <div class="alert alert-danger">
-                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                            <strong> {{ trans('words.ooh') }} </strong> {{ trans('words.validError') }}<br><br>
                             <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
+                                @foreach ($errors->all() as $key => $error )
+                                    <li>{{ $error  }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -23,14 +26,14 @@
 
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">First Name</label>
+							<label class="col-md-4 control-label" > {{ trans('words.First') }}</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="fname"  value="{{ old('fname') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Last Name</label>
+							<label class="col-md-4 control-label">{{ trans('words.Last') }}</label>
 							<div class="col-md-6">
  							<input type="text" class="form-control" name="lname" value="{{ old('lname') }}"> 							</div>
 						</div>
@@ -39,20 +42,20 @@
 
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">E-Mail Address</label>
+							<label class="col-md-4 control-label">{{ trans('words.Email') }}</label>
 							<div class="col-md-6">
  								<input type="email" class="form-control" name="email" value="{{ old('email') }}"> 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Password</label>
+							<label class="col-md-4 control-label">{{ trans('words.Password') }}</label>
 							<div class="col-md-6">
 								<input type="password" class="form-control" name="password">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Confirm Password</label>
+							<label class="col-md-4 control-label">{{ trans('words.confirm') }}</label>
 							<div class="col-md-6">
 								<input type="password" class="form-control" name="password_confirmation">
 							</div>
@@ -60,35 +63,35 @@
 
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Phone</label>
+							<label class="col-md-4 control-label">{{ trans('words.phone') }}</label>
 							<div class="col-md-6">
  								<input type="text" class="form-control" name="phone" value="{{ old('phone') }}"> 							</div>
 						</div>
 
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Location</label>
+							<label class="col-md-4 control-label">{{ trans('words.Location') }}</label>
 							<div class="col-md-6">
  								<input type="text" class="form-control" name="location" value="{{ old('location') }}"> 							</div>
 						</div>
 
 
 						<div class="form-group">
-     						<label class="col-md-4 control-label">Type:</label>
+     						<label class="col-md-4 control-label">{{ trans('words.Type') }}</label>
 							<div class="col-md-6">
 						        <select  name="type">
 							        <option value="regular"
-									@if(old('type')==="regular") {{"selected=true"}} @endif >Regular user</option>
+									@if(old('type')==="regular") {{"selected=true"}} @endif >{{ trans('words.regular') }}</option>
 							        <option value="tech"
-							        @if(old('type') ==="tech") {{"selected=true"}} @endif >Technician</option>
+							        @if(old('type') ==="tech") {{"selected=true"}} @endif >{{ trans('words.tech') }}</option>
 							        <option value="admin"
-							        @if(old('type') ==="admin") {{"selected=true"}} @endif >Admin</option>
+							        @if(old('type') ==="admin") {{"selected=true"}} @endif >{{ trans('words.admin') }}</option>
 							    </select>
 						    </div>
 					    </div>
 
 						 <div class="form-group">
-     						<label class="col-md-4 control-label">Disable:</label>
+     						<label class="col-md-4 control-label">{{ trans('words.Disable') }}</label>
 								<div class="col-md-6">
 							        @if (old('isspam') == 0)
 							            {!! Form::checkbox('isspam', 'value') !!}
@@ -113,4 +116,38 @@
 		</div>
 	</div>
 </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){
+
+
+	if ("<?php echo Lang::getLocale();  ?>"  == "ar" ){
+		$(".control-label").css({
+        
+        float: 'right' ,
+        
+    });
+
+		$("#header").css({
+        //display:'block',
+        float: 'right' ,
+        //overflow: 'hidden';
+
+        
+    });
+
+		$(".alert alert-danger").css({
+
+			//text-align:'right', 
+			float:'right',
+
+		});
+		
+
+	}
+
+	});
+
+</script>
 @endsection

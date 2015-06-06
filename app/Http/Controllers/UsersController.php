@@ -13,6 +13,8 @@ use Response;
 use App\Article;
 use App;
 
+use Lang;
+
 class UsersController extends Controller {
 
 
@@ -101,6 +103,11 @@ class UsersController extends Controller {
 			return view('errors.authorization');
 		}
 
+		if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
+			Lang::setLocale('ar');
+		}else{
+			Lang::setLocale('en');
+		}
 		return view('users.create');
 	}
 
@@ -112,15 +119,46 @@ class UsersController extends Controller {
 	public function store()
 	{
 
+		Lang::setLocale('ar');
 
-		    $v = Validator::make(Request::all(), [
+			$arr = array ();
+
+			$arr['الاسم الأول'] = Request::get('fname');
+
+
+			$arr['الاسم الثانى'] = Request::get('lname');
+			$arr['البريد الإلكترونى'] =  Request::get('email');
+			$arr['كلمة المرور'] = Request::get('password');
+			$arr['رقم الهاتف'] = Request::get('phone');
+			$arr['الموقع'] = Request::get('location');
+
+
+			if ( Lang::getLocale() == "ar" ){
+				$v = Validator::make($arr, [
+					'الاسم الأول' => 'required|max:255',
+					'الاسم الثانى' => 'required|max:255',
+					'البريد الإلكترونى' => 'required|email|max:255|unique:users',
+					'كلمة المرور' => 'required|confirmed|min:6',
+					'رقم الهاتف' => 'required|numeric',
+					'الموقع' => 'required|max:255',
+
+        		]);
+
+			}else{
+				$v = Validator::make(Request::all() , [
            			'fname' => 'required|max:255',
 					'lname' => 'required|max:255',
 					'email' => 'required|email|max:255|unique:users',
 					'password' => 'required|confirmed|min:6',
 					'phone' => 'required|numeric',
 					'location' => 'required|max:255',
-        	]);
+        		]);
+
+			}
+
+
+			
+		    
         $subject=Request::get('subject');
 
 	    if ($v->fails())
@@ -436,7 +474,8 @@ class UsersController extends Controller {
 	    $handle = fopen($filename, 'w+');
 
 	    
-	    fputcsv($handle, array('id', 'First name', 'Last name', 'Email' ,'Phone' ,'Location' , 'Disabled' , 'Type'  , 'Created at' , 'Updated at'));
+	    //fputcsv($handle, array('id', 'First name', 'Last name', 'Email' ,'Phone' ,'Location' , 'Disabled' , 'Type'  , 'Created at' , 'Updated at'));
+	    fputcsv($handle, array('id', 'First name', 'Last name', 'Email' ,'Phone' ,'Location' , 'Disabled' , 'Type'  , 'Created at' , 'تم التعديل'));
 
 
 	    //put all fields except password
