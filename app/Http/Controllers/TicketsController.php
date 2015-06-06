@@ -105,7 +105,8 @@ class TicketsController extends Controller {
 			$closed = Ticket::where('status', "close")->where('tech_id', $request->user()->id)->where('is_spam', "0")->get();
 			// open tickets except spam tickets
 			$open = Ticket::where('status', "open")->where('tech_id', $request->user()->id)->where('is_spam', "0")->get();
-			return view('tickets.index',compact('tickets','open','closed','tags','sections'));
+				$technicals=User::where('type','=','tech')->get();
+			return view('tickets.index',compact('tickets','open','closed','tags','sections','technicals'));
 		}
 		else if(Auth::user()->type === "regular"){
 			$tickets = Ticket::where('is_spam', "0")->where('user_id', $request->user()->id)->get();
@@ -114,7 +115,8 @@ class TicketsController extends Controller {
 			$closed = Ticket::where('status', "close")->where('user_id', $request->user()->id)->where('is_spam', "0")->get();
 			// open tickets except spam tickets
 			$open = Ticket::where('status', "open")->where('user_id', $request->user()->id)->where('is_spam', "0")->get();
-			return view('tickets.index',compact('tickets','open','closed','tags','sections'));
+				$technicals=User::where('type','=','tech')->get();
+			return view('tickets.index',compact('tickets','open','closed','tags','sections','technicals'));
 		}
 	}
 
@@ -760,7 +762,7 @@ class TicketsController extends Controller {
 		            }
 			    if($deadLine and $startDate){
 		            	$Tickets=$Tickets->where('updated_at','>=',$startDate);
-				$Tickets=$Tickets->where('deadline','<=',$deadLine);
+				$Tickets=$Tickets->where('updated_at','<=',$deadLine);
 				}
 
 		            $Tickets=$Tickets->get();

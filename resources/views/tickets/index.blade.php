@@ -167,7 +167,7 @@
 	<div class="panel panel-default advancedSearchDiv">
 	  <div class='panel-heading'>AdvancedSearch</div>
 	  <div class='panel-body'>
-	  @if(Auth::user()->type === "admin")
+
 	   Priority: <select id='ticketPriority'>
 		<option></option>
 		<option>low</option>
@@ -183,9 +183,10 @@
 		@endforeach
 			</select><br><br>
 		<button onclick='AdvancedSearch()' class="btn btn-primary advancedsearchbuttonwithall">Search</button>
-	 	@endif
+
 	  </div>
 	</div>
+	 	
 </div>
 
 
