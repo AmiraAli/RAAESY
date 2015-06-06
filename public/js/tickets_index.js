@@ -79,9 +79,6 @@ $.ajax({
    });
 }
 
-
-
-
 /**
 *unspam function
 **/
@@ -95,7 +92,6 @@ $.ajax({
 		type: "post",
 		data: {'id':id},
 		success: function(data){
-			console.log("success");
 			document.getElementById(id).remove(); 
 			$("#unansweredCount").html(data["unanswered"]); 
 			$("#unassignedCount").html(data["unassigned"]);
@@ -122,6 +118,7 @@ function closeTeckit(id,checkspam,usertype){
 
 //ajax request
 $.ajax({
+		dataType: "json",
 		url: '/tickets/closeTicket',
 		type: "post",
 		data: {'id':id},
@@ -150,6 +147,13 @@ $.ajax({
 
 							document.getElementById(id+"status").innerHTML="Close";
 					}
+					$("#unansweredCount").html(data["unanswered"]); 
+					$("#unassignedCount").html(data["unassigned"]);
+					$("#expiredCount").html(data["expired"]);
+					$("#openCount").html(data["open"]);
+					$("#closedCount").html(data["closed"]);
+					$("#allCount").html(data["all"]);
+					$("#spamCount").html(data["spam"]);  
 		    },
 		error: function(jqXHR, textStatus, errorThrown) {
 			alert(errorThrown);
@@ -164,6 +168,7 @@ function openTeckit(id,checkspam,usertype){
 	var popupelem=document.getElementById(id+'popup');
 //ajax request
 $.ajax({
+		dataType: "json",
 		url: '/tickets/openTicket',
 		type: "post",
 		data: {'id':id},
@@ -193,6 +198,13 @@ $.ajax({
 							}
 							document.getElementById(id+"status").innerHTML="Open";
 					}
+					$("#unansweredCount").html(data["unanswered"]); 
+					$("#unassignedCount").html(data["unassigned"]);
+					$("#expiredCount").html(data["expired"]);
+					$("#openCount").html(data["open"]);
+					$("#closedCount").html(data["closed"]);
+					$("#allCount").html(data["all"]);
+					$("#spamCount").html(data["spam"]);  
 
 		    },
 		error: function(jqXHR, textStatus, errorThrown) {

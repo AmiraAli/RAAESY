@@ -1007,7 +1007,36 @@ class TicketsController extends Controller {
 			$ticketStatus->value='close';
 			$ticketStatus->ticket_id=$ticket->id;
 			$ticketStatus->save();
-			}	
+
+			$tickets = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "0")->get();
+			// unassigned tickets except spam tickets
+			$unassigned = Ticket::select(DB::raw('count(*) as count'))->whereNull('tech_id')->where('is_spam', "0")->get();
+			// closed tickets except spam tickets
+			$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('is_spam', "0")->get();
+			// open tickets except spam tickets
+			$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('is_spam', "0")->get();
+			// deadline exceeded except spam tickets
+			$expired = Ticket::select(DB::raw('count(*) as count'))->where('deadline', '<', Carbon::now())->where('is_spam', "0")->get();
+			// unanswered tickets tickets except spam tickets
+
+			$unanswered = Ticket::where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
+	            ->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null or sum(comments.readonly) = 0)  THEN 0  ELSE 1 END as c')
+	                    ->groupBy('tickets.id')
+	                    ->HAVING("c", "=" , '0' )
+	                     ->get();
+	        			// spam tickets except spam tickets
+			$spam = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "1")->get();
+
+	        $data["all"] = $tickets[0]->count;
+	        $data["unassigned"] = $unassigned[0]->count;
+	        $data["closed"] = $closed[0]->count;
+	        $data["open"] = $open[0]->count;
+	        $data["expired"] = $expired[0]->count;
+	        $data["unanswered"] = count($unanswered);
+	        $data["spam"] = $spam[0]->count;
+
+			echo json_encode($data);
+		}	
 	}
 
 
@@ -1027,7 +1056,36 @@ class TicketsController extends Controller {
 			$ticketStatus->value='open';
 			$ticketStatus->ticket_id=$ticket->id;
 			$ticketStatus->save();
-			}	
+
+			$tickets = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "0")->get();
+			// unassigned tickets except spam tickets
+			$unassigned = Ticket::select(DB::raw('count(*) as count'))->whereNull('tech_id')->where('is_spam', "0")->get();
+			// closed tickets except spam tickets
+			$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('is_spam', "0")->get();
+			// open tickets except spam tickets
+			$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('is_spam', "0")->get();
+			// deadline exceeded except spam tickets
+			$expired = Ticket::select(DB::raw('count(*) as count'))->where('deadline', '<', Carbon::now())->where('is_spam', "0")->get();
+			// unanswered tickets tickets except spam tickets
+
+			$unanswered = Ticket::where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
+	            ->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null or sum(comments.readonly) = 0)  THEN 0  ELSE 1 END as c')
+	                    ->groupBy('tickets.id')
+	                    ->HAVING("c", "=" , '0' )
+	                     ->get();
+	        			// spam tickets except spam tickets
+			$spam = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "1")->get();
+
+	        $data["all"] = $tickets[0]->count;
+	        $data["unassigned"] = $unassigned[0]->count;
+	        $data["closed"] = $closed[0]->count;
+	        $data["open"] = $open[0]->count;
+	        $data["expired"] = $expired[0]->count;
+	        $data["unanswered"] = count($unanswered);
+	        $data["spam"] = $spam[0]->count;
+
+			echo json_encode($data);
+		}	
 	}
 
 
