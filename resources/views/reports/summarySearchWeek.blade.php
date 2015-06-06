@@ -75,9 +75,8 @@
         </table>
  </div>
  <script type="text/javascript" src="/js/reports/summarycategory.js"></script>	
- <script type="text/javascript" src="/Zebra_Datepicker/javascript/zebra_datepicker.js"></script>
- <link rel="stylesheet" href="/Zebra_Datepicker/css/default.css" type="text/css">
-
+ <link rel="stylesheet" type="text/css" href="/datetimepicker/jquery.datetimepicker.css"/ >
+ <script src="/datetimepicker/jquery.datetimepicker.js"></script>
 
 
 <script type="text/javascript" >
@@ -89,10 +88,12 @@ var Globals = <?php echo json_encode(array(
 
 $(document).ready(function() {
 
-    // assuming the controls you want to attach the plugin to 
-    // have the "datepicker" class set
-    $('#startdate').Zebra_DatePicker();
-    $('#enddate').Zebra_DatePicker();
+    $('#startdate').datetimepicker({
+        format:'Y-m-d H:00:00',
+          });
+    $('#enddate').datetimepicker({
+        format:'Y-m-d H:00:00',
+          });
 
  });
 

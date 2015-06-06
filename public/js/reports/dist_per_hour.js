@@ -82,16 +82,6 @@ function getReport(){
         return ;
     };
 
-    st = new Date(date1);
-    end = new Date(date2);
-    if (st > end){
-         return ;
-    }
-
-
-    date1=date1+" 00:00:00";
-    date2 =date2+" 23:59:59";
-    
     //ajax:
 
     $.ajax({

@@ -7,7 +7,6 @@
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
     <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
-
         <div class="container-fluid">
         <div class="row">
          <div class="col-md-10 col-md-offset-1">
@@ -16,12 +15,12 @@
                 <div class="panel-body">
                         <div class="form-group col-md-3">
                             <label class="col-md-2 control-label">From</label>
-                            <input type="date" name="from" class="form-control" value="<?php echo date('Y-m-d', strtotime('-2 day')) ?>" id="from" />
+                            <input type="text" name="from" class="form-control" value="<?php echo date('Y-m-d', strtotime('-2 day')) ?>" id="from" />
                         </div>
 
                         <div class="form-group col-md-3">
                             <label class="col-md-2 control-label">To</label>
-                            <input type="date" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('+0 day')) ?>" id="to"/>
+                            <input type="text" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('+0 day')) ?>" id="to"/>
                         </div>
                         
                         <div class="col-md-4">
@@ -35,6 +34,7 @@
 
                         <div class="form-group col-md-2">
                             <button type="submit" class="btn btn-primary " onclick="prepareTickets ()">Go</button>
+
                         </div>
                 </div>
                 </div>
@@ -51,14 +51,15 @@
 
     <script>
         var createdTickets = <?php echo '[' . implode(', ', $createdTickets) . ']' ?>;
+        var closedTickets = <?php echo '[' . implode(', ', $closedTickets) . ']' ?>;
         var points = <?php echo '["' . implode('", "', $points) . '"]' ?>;
-
-        ticketsStatistics(createdTickets, points);
+        console.log(closedTickets);
+        ticketsStatistics(createdTickets, closedTickets, points);
 
         var unit = $("#groupby").val();
 
 
-        function ticketsStatistics(createdTickets, points){
+        function ticketsStatistics(createdTickets,closedTickets, points){
             $(function () {
                 $('#container').highcharts({
                     chart: {
@@ -76,7 +77,7 @@
                     },
                     yAxis: {
                         title: {
-                            text: 'Billions'
+                            text: 'Tickets'
                         },
                         labels: {
                             formatter: function () {
@@ -86,11 +87,11 @@
                     },
                     tooltip: {
                         shared: true,
-                        valueSuffix: ' millions'
+                        valueSuffix: ' Tickets'
                     },
                     plotOptions: {
                         area: {
-                            stacking: 'normal',
+                            //stacking: 'normal',
                             lineColor: '#666666',
                             lineWidth: 1,
                             marker: {
@@ -102,6 +103,9 @@
                     series: [{
                         name: 'Tickets created',
                         data: createdTickets
+                    },{
+                        name: 'Tickets closed',
+                        data: closedTickets
                     }]
                 });
             });
@@ -109,17 +113,20 @@
 
     </script>
 
-    <script type="text/javascript" src="/Zebra_Datepicker/javascript/zebra_datepicker.js"></script>
-    <link rel="stylesheet" href="/Zebra_Datepicker/css/default.css" type="text/css">
 
+ <link rel="stylesheet" type="text/css" href="/datetimepicker/jquery.datetimepicker.css"/ >
+ <script src="/datetimepicker/jquery.datetimepicker.js"></script>
 
-    <script>
+ <script >
     $(document).ready(function() {
 
-        // assuming the controls you want to attach the plugin to 
-        // have the "datepicker" class set
-        $('#from').Zebra_DatePicker();
-        $('#to').Zebra_DatePicker();
-    });
-    </script>
+        $('#from').datetimepicker({
+            format:'Y-m-d H:00:00',
+              });
+        $('#to').datetimepicker({
+            format:'Y-m-d H:00:00',
+              });
+
+ });
+ </script>
 @endsection

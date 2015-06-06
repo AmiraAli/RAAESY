@@ -21,7 +21,7 @@
 					</ul>
 				</div>
 			@endif
-			 {!! Form::open(['route'=>'tickets.store','method'=>'post']) !!}
+			 {!! Form::open(['route'=>'tickets.store','method'=>'post','files' => true]) !!}
 			  <div class="row">
 				<div class="form-group col-md-6">
 					<label class="col-md-4 control-label">Subject</label>
@@ -76,7 +76,7 @@
 					</div>
 					<div class="form-group col-md-6">
 						<label class="col-md-4 control-label">Due</label>
-						<input type="text" id="deadline" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('+1 day')) ?>" />
+						<input type="text" id="deadline" name="deadline" class="form-control" value="<?php echo date('Y-m-d H:i:s', strtotime('+1 day')) ?>" />
 					</div>
 					<div class="form-group col-md-6">
 						<label class="col-md-4 control-label">Assign</label>
@@ -125,18 +125,19 @@
  <script type="text/javascript" src="/js/jquery-te-1.4.0.min.js"></script>
  <script type="text/javascript" src="/js/ticket_form.js"></script>
 
- <script type="text/javascript" src="/Zebra_Datepicker/javascript/zebra_datepicker.js"></script>
- <link rel="stylesheet" href="/Zebra_Datepicker/css/default.css" type="text/css">
 
+ <link rel="stylesheet" type="text/css" href="/datetimepicker/jquery.datetimepicker.css"/ >
+ <script src="/datetimepicker/jquery.datetimepicker.js"></script>
 
  <script >
 	$(document).ready(function() {
 
-    // assuming the controls you want to attach the plugin to 
-    // have the "datepicker" class set
-    $('#deadline').Zebra_DatePicker();
-
- 	});
+    $('#deadline').datetimepicker({
+  		format:'Y-m-d H:00:00',
+      	  });
+   
+ });
+ </script>
  </script>
 
 	@endsection

@@ -21,6 +21,13 @@ $( "#selectFields" ).click(function() {
         {
         	$('.'+$(this).val()).show();
         }
+
+        if(    !$(".subject").is(":visible") && !$(".status").is(":visible") && !$(".category").is(":visible")
+        	&& !$(".created_at").is(":visible") && !$(".deadline").is(":visible") && !$(".priority").is(":visible") ){
+        	$(".setting").hide();
+        }else{
+        	$(".setting").show();
+        }
     });
 
 function tag() 
@@ -39,7 +46,7 @@ function tag()
 	    	searchData["sec"] = cat_sec[1];
 	    }
 
-     if ($("#sortType").text() == "ASC")
+     if ($("#sortType").text() == "DESC")
 			 {
 			 	searchData["sortType"] = "DESC";
 			 } 
@@ -103,7 +110,7 @@ function sortBy()
 	    data: searchData,
 	    success: function(result) {
 			 $('#table_show').html(result);
-			 $("#sortType").html("ASC");
+			 $("#sortType").html("DESC");
 
 			$('.checkbox1').each(function () {
 				 if(!$(this).is(":checked")) 
@@ -142,7 +149,14 @@ function sortType(){
     	searchData["sec"] = cat_sec[1];
     }
 
-    searchData["sortType"] = $("#sortType").text();
+    if ($("#sortType").text() == "DESC")
+			 {
+			 	searchData["sortType"]="ASC";
+			 } 
+			 else
+			 {
+			 	searchData["sortType"]="DESC";
+			 };
     searchData["sortBy"] = $('#sortBy ').val();
     searchData["tagId"] = $('#tag').val();
 
@@ -153,13 +167,13 @@ function sortType(){
 	    success: function(result) {
 			 $('#table_show').html(result);
 
-			 if ($("#sortType").text() == "ASC")
+			 if ($("#sortType").text() == "DESC")
 			 {
-			 	$("#sortType").html("DESC");
+			 	$("#sortType").html("ASC");
 			 } 
 			 else
 			 {
-			 	$("#sortType").html("ASC")
+			 	$("#sortType").html("DESC")
 			 };
 			 $('.checkbox1').each(function () {
 			 if(!$(this).is(":checked")) 
@@ -197,7 +211,7 @@ function searchTicket (id) {
     if(cat_sec[0] == "sec"){
     	searchData["sec"] = cat_sec[1];
     }
-     if ($("#sortType").text() == "ASC")
+     if ($("#sortType").text() == "DESC")
 			 {
 			 	searchData["sortType"] = "DESC";
 			 } 
@@ -258,7 +272,7 @@ function searchByCat (id) {
     if(cat_sec[0] == "sec"){
     	searchData["sec"] = cat_sec[1];
     }
-     if ($("#sortType").text() == "ASC")
+     if ($("#sortType").text() == "DESC")
 			 {
 			 	searchData["sortType"] = "DESC";
 			 } 

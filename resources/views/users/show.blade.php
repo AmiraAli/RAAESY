@@ -58,26 +58,35 @@
 			        <br/>
 			        <br/>
 				  
-					<label for="subject" class="col-sm-2 control-label">Role</label>
-		            <div class="col-sm-10">
-		                {{$user->type}}
-		            </div>
-		      
-			        <br/>
-			        <br/>
+				  	@if ($current_user->type == "admin")
+						<label for="subject" class="col-sm-2 control-label">Role</label>
+			            <div class="col-sm-10">
+			                @if ($user->type == "admin")
+			                	Admin
+			                @elseif ($user->type == "tech")
+			                	Technician
+			                @else
+			                	Regular User
+			                @endif
+			            </div>
+			      
+				        <br/>
+				        <br/>
 
-					<label for="subject" class="col-sm-2 control-label">Disabled</label>
-		            <div class="col-sm-10">
-		                @if ($user->isspam == true)
-							<input type="checkbox" disabled="true" checked="true">
-						@else
-							<input type="checkbox" disabled="true" >
-						@endif
+						<label for="subject" class="col-sm-2 control-label">Disabled</label>
+			            <div class="col-sm-10">
+			                @if ($user->isspam == true)
+								<input type="checkbox" disabled="true" checked="true">
+							@else
+								<input type="checkbox" disabled="true" >
+							@endif
 
-		            </div>
-		      
-			        <br/>
-			        <br/>
+			            </div>
+		      		
+
+			        	<br/>
+			        	<br/>
+			        @endif
 
 				</div>
 			</div>

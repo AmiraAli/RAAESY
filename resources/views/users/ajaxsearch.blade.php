@@ -41,9 +41,13 @@
 
 <td class="text-center">
 
+@if ($user->id != "1" | ($user->id == "1" && $current_user->id == "1" ) )
+	<a class="btn btn-success" href="/users/{{$user->id}}/edit">edit</a>
+@endif
 
-<a class="btn btn-success" href="/users/{{$user->id}}/edit">edit</a>
-<a class="btn btn-danger delete" href="#"  id="{{$user->id}}" onclick="Delete({{$user->id}})">delete</a>
+@if ($user->id != "1")
+	<a class="btn btn-danger delete" href="#"  id="{{$user->id}}" onclick="Delete({{$user->id}})">delete</a>
+@endif
 </td>
 
 </tr>

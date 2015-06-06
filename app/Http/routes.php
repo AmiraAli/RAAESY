@@ -29,8 +29,6 @@ Route::resource('/sections','SectionsController');
 Route::get('users/downloadCSV','UsersController@downloadCSV');
 Route::get('users/downloadPDF','UsersController@downloadPDF');
 
-
-Route::get('users/search','UsersController@search');
 Route::post('users/ajaxsearch','UsersController@ajaxsearch');
 Route::get('users/changepassword/{id}','UsersController@changepassword');
 Route::post('users/changepassprocess','UsersController@changepassprocess');
@@ -39,7 +37,6 @@ Route::post('users/changepassprocess','UsersController@changepassprocess');
 Route::resource('/users','UsersController');
 
 Route::get('users/destroy/{id}','UsersController@destroy');
-Route::post('users/get_user_types','UsersController@get_user_types');
 Route::post('users/autocomplete','UsersController@autocomplete');
 
 

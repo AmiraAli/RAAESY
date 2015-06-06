@@ -92,7 +92,7 @@ $.ajax({
 /**
 *close ticket function
 **/
-function closeTeckit(id,checkspam){
+function closeTeckit(id,checkspam,usertype){
 
 	var popupelem=document.getElementById(id+'popup');
 
@@ -106,10 +106,24 @@ $.ajax({
 						document.getElementById(id).remove();
 					}else{
 							if(checkspam == 0){
-								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='spam("+id+")'>Spam</a>|<a onclick='openTeckit("+id+","+checkspam+")'>Open</a>|<a onclick='Delete("+id+")'>Delete</a>");
+								if(usertype == 1){
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='spam("+id+")'>Spam</a>|<a onclick='openTeckit("+id+","+checkspam+",1)'>Open</a>|<a onclick='Delete("+id+")'>Delete</a>");
+								}else if(usertype == 2){
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='openTeckit("+id+","+checkspam+",2)'>Open</a>");
+								}else{
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a onclick='openTeckit("+id+","+checkspam+",3)'>Open</a>");	
+								}							
 							}else{
-								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='unspam("+id+")'>unSpam</a>|<a onclick='openTeckit("+id+","+checkspam+")'>Open</a>|<a onclick='Delete("+id+")'>Delete</a>");
+
+								if(usertype == 1){
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='unspam("+id+")'>unSpam</a>|<a onclick='openTeckit("+id+","+checkspam+",1)'>Open</a>|<a onclick='Delete("+id+")'>Delete</a>");
+								}else if(usertype == 2){
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='openTeckit("+id+","+checkspam+",2)'>Open</a>");
+								}else{
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a onclick='openTeckit("+id+","+checkspam+",3)'>Open</a>");	
+								}
 							}
+
 							document.getElementById(id+"status").innerHTML="Close";
 					}
 		    },
@@ -122,7 +136,7 @@ $.ajax({
 /**
 *open ticket function
 **/
-function openTeckit(id,checkspam){
+function openTeckit(id,checkspam,usertype){
 	var popupelem=document.getElementById(id+'popup');
 //ajax request
 $.ajax({
@@ -134,10 +148,24 @@ $.ajax({
 				if($('#all').attr('class') != "active"){
 						document.getElementById(id).remove();
 					}else{
+
 							if(checkspam == 0){
-								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='spam("+id+")'>Spam</a>|<a onclick='closeTeckit("+id+","+checkspam+")'>Close</a>|<a onclick='Delete("+id+")'>Delete</a>");
+								if(usertype == 1){
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='spam("+id+")'>Spam</a>|<a onclick='closeTeckit("+id+","+checkspam+",1)'>Close</a>|<a onclick='Delete("+id+")'>Delete</a>");
+								}else if(usertype == 2){
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='closeTeckit("+id+","+checkspam+",2)'>Close</a>");
+								}else{
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a onclick='closeTeckit("+id+","+checkspam+",3)'>Close</a>");	
+								}							
 							}else{
-								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='unspam("+id+")'>unSpam</a>|<a onclick='closeTeckit("+id+","+checkspam+")'>Close</a>|<a onclick='Delete("+id+")'>Delete</a>");
+
+								if(usertype == 1){
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='unspam("+id+")'>unSpam</a>|<a onclick='closeTeckit("+id+","+checkspam+",1)'>Close</a>|<a onclick='Delete("+id+")'>Delete</a>");
+								}else if(usertype == 2){
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='closeTeckit("+id+","+checkspam+",2)'>Close</a>");
+								}else{
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a onclick='closeTeckit("+id+","+checkspam+",3)'>Close</a>");	
+								}
 							}
 							document.getElementById(id+"status").innerHTML="Open";
 					}

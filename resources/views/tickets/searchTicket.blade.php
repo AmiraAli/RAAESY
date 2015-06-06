@@ -7,7 +7,7 @@
 				<td class="created_at text-center">Creation date</td>
 				<td class="deadline text-center">Dead line</td>
 				<td class="priority text-center">Periorty</td>
-				<td class="text-center">Settings</td>
+				<td class="setting text-center">Settings</td>
 			</tr>
 			  @foreach($tickets as $ticket)
 				   <tr id="{{ $ticket->id }}">
@@ -24,7 +24,7 @@
 				   		@else
 				   			<td class="priority text-center"><b class="alert-danger">{{ $ticket->priority }}</b></td>
 				   		@endif
-				   		<td class="text-center">
+				   		<td class="setting text-center">
 				   		@if (Auth::user()->type == "admin")
 
 						   		<a id="{{ $ticket->id }}popup" href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
@@ -36,30 +36,34 @@
 								@else
 						   			<a onclick='unspam({{ $ticket->id }})'>unSpam</a>|
 								@endif
-
-
-
 								@if($ticket->status == 'open')
-						   			<a onclick='closeTeckit({{ $ticket->id }},{{ $ticket->is_spam }})'>Close</a>|
+						   			<a onclick='closeTeckit({{ $ticket->id }},{{ $ticket->is_spam }},1)'>Close</a>|
 								@else
-						   			<a onclick='openTeckit({{ $ticket->id }},{{ $ticket->is_spam }})'>Open</a>|
+						   			<a onclick='openTeckit({{ $ticket->id }},{{ $ticket->is_spam }},1)'>Open</a>|
 								@endif
 						   		<a onclick='Delete({{ $ticket->id }})'>Delete</a>"
 						   		></a>
 
 						   	
-						@else
+						@elseif(Auth::user()->type == "regular")
 
-						   		<a href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+						   		<a id="{{ $ticket->id }}popup" href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
 						   		data-content=
 						   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|
 						   		<a href='/tickets/{{ $ticket->id }}/edit'>Edit</a>|
-						  
 								@if($ticket->status == 'open')
-						   			<a onclick='closeTeckit({{ $ticket->id }})'>Close</a>|
+						   			<a onclick='closeTeckit({{ $ticket->id }},0,2)'>Close</a>|
 								@else
-						   			<a onclick='openTeckit({{ $ticket->id }})'>Open</a>@endif"></a>
+						   			<a onclick='openTeckit({{ $ticket->id }},0,2)'>Open</a>@endif"></a>
 								
+						@else
+							<a id="{{ $ticket->id }}popup" href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
+						   		data-content=
+						   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|						  
+								@if($ticket->status == 'open')
+						   			<a onclick='closeTeckit({{ $ticket->id }},0,3)'>Close</a>|
+								@else
+						   			<a onclick='openTeckit({{ $ticket->id }},0,3)'>Open</a>@endif"></a>
 						@endif
 
 				   		</td>

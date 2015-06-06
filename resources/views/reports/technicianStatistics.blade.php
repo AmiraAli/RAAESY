@@ -10,7 +10,7 @@
 			<div class="panel-body">
 					<div class="form-group col-md-5">
 						<label class="col-md-4 control-label">From</label>
-						<input type="text" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('-31 day')) ?>" id="from" />
+						<input type="text" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('-1 month')) ?>" id="from" />
 					</div>
 
 					<div class="form-group col-md-5">
@@ -19,6 +19,9 @@
 					</div>
 					<div class="form-group col-md-2">
 					<button type="submit" class="btn btn-primary " onclick="technicianStatisticsSearch ()">Go</button>
+
+					<a  href="{{ url('/assets/csvimport') }}"><img src="/images/CSV.png" style="width:40px"></a>
+	
 					</div>
 			</div>
 		</div>
@@ -73,18 +76,20 @@
  <script type="text/javascript" src="/js/reports/technicianStatistics.js"></script>
  
 
- <script type="text/javascript" src="/Zebra_Datepicker/javascript/zebra_datepicker.js"></script>
- <link rel="stylesheet" href="/Zebra_Datepicker/css/default.css" type="text/css">
-
+ <link rel="stylesheet" type="text/css" href="/datetimepicker/jquery.datetimepicker.css"/ >
+ <script src="/datetimepicker/jquery.datetimepicker.js"></script>
 
  <script >
 	$(document).ready(function() {
 
-	    // assuming the controls you want to attach the plugin to 
-	    // have the "datepicker" class set
-	    $('#from').Zebra_DatePicker();
-	    $('#to').Zebra_DatePicker();
- 	});
+	    $('#from').datetimepicker({
+	        format:'Y-m-d H:00:00',
+	          });
+	    $('#to').datetimepicker({
+	        format:'Y-m-d H:00:00',
+	          });
+
+ });
  </script>
 
 @endsection

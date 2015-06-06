@@ -1,3 +1,9 @@
+<head>
+ 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+</head>
+<body>
+
 @extends('app')
 
 @section('content')
@@ -5,7 +11,7 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
-				<div class="panel-heading">Edit User</div>
+				<div class="panel-heading">{{$user->fname}} {{$user->lname}}</div>
 				<div class="panel-body">
 				 @if (count($errors) > 0)
                         <div class="alert alert-danger">
@@ -58,34 +64,46 @@
 								<input type="text" class="form-control" name="location" value="{{$user->location}}">
 							</div>
 						</div>
-						<div class="form-group">
-     						<label class="col-md-4 control-label">Role</label>
-							<div class="col-md-6">
-						        <select  name="type">
-							        <option value="regular"
-									@if($user->type ==="regular") {{"selected=true"}} @endif >Regular user</option>
-							        <option value="tech"
-							        @if($user->type ==="tech") {{"selected=true"}} @endif >Technician</option>
-							        <option value="admin"
-							        @if($user->type ==="admin") {{"selected=true"}} @endif >Admin</option>
-							    </select>
-						    </div>
-					    </div>
 
-						 <div class="form-group">
-     						<label class="col-md-4 control-label">Disable</label>
+						@if ($current_user->type == "admin"  && $user-> id != "1" )
+
+							<div class="form-group">
+	     						<label class="col-md-4 control-label">Role</label>
 								<div class="col-md-6">
-							        @if ($user->isspam == 0)
-							            {!! Form::checkbox('isspam', 'value') !!}
-							        @else
-							            {!! Form::checkbox('isspam', 'value',true) !!}
-							        @endif
+								        <select  name="type">
+									        <option value="regular"
+											@if($user->type ==="regular") {{"selected=true"}} @endif >Regular user</option>
+									        <option value="tech"
+									        @if($user->type ==="tech") {{"selected=true"}} @endif >Technician</option>
+									        <option value="admin"
+									        @if($user->type ==="admin") {{"selected=true"}} @endif >Admin</option>
+									    </select>
 
-  						        </div>
-					    </div>
+
+
+							    </div>
+						    </div>
+
+							 <div class="form-group">
+	     						<label class="col-md-4 control-label">Disable</label>
+									<div class="col-md-6">
+								        @if ($user->isspam == 0)
+								            {!! Form::checkbox('isspam', 'value') !!}
+								        @else
+								            {!! Form::checkbox('isspam', 'value',true) !!}
+								        @endif
+
+	  						        </div>
+						    </div>
 					  
+					  	@endif
+
 					    @if($current_user->id == $id  ) 
-					    <a class="btn btn-link" href="/users/changepassword/{{$user->id}}">Change Password</a>
+					    <div class="form-group">
+					    <div class="col-md-6 col-md-offset-4" >
+					    	<a class="btn btn-link" href="/users/changepassword/{{$user->id}}">Change Password</a>
+					    </div>
+					    </div>
 					    @endif
 
 
@@ -102,4 +120,6 @@
 		</div>
 	</div>
 </div>
-@stop
+@endsection
+
+</body>
