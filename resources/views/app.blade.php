@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +37,6 @@
 					<li><a href="{{ url('/tickets') }}">Tickets</a></li>
 					@if (Auth::check())
 						@if(Auth::user()->type == "admin")
-							<li><a href="{{ url('/tickets') }}">Tickets</a></li>
 							<li><a href="{{ url('/assets') }}">Assets</a></li>
 							<li><a href="{{ url('/users') }}">Users</a></li>
 							<li><a href="{{ url('/sections') }}">Categories&Sections</a></li>							

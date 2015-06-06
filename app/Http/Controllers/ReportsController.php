@@ -219,11 +219,11 @@ class ReportsController extends Controller {
 	**/
 	public function summary(){
 
-		$inprogressCount=Ticket::whereNull('tech_id')
+		$inprogressCount=Ticket::whereNotNull('tech_id')
 								->where('status','open')
 								->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
 								->count();
-		$newCount=Ticket::whereNotNull('tech_id')
+		$newCount=Ticket::whereNull('tech_id')
 								->where('status','open')
 								->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
 								->count();
@@ -293,11 +293,11 @@ class ReportsController extends Controller {
 			$data = Request::input('date');
 			if($data == "month"){
 
-				$inprogressCount=Ticket::whereNull('tech_id')
+				$inprogressCount=Ticket::whereNotNull('tech_id')
 								->where('status','open')
 								->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
 								->count();
-				$newCount=Ticket::whereNotNull('tech_id')
+				$newCount=Ticket::whereNull('tech_id')
 										->where('status','open')
 										->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
 										->count();
@@ -318,11 +318,11 @@ class ReportsController extends Controller {
 			}
 			
 			if($data == "week"){
-				$inprogressCount=Ticket::whereNull('tech_id')
+				$inprogressCount=Ticket::whereNotNull('tech_id')
 								->where('status','open')
 								->where('updated_at','>',date('Y-m-d', strtotime('-1 week')))
 								->count();
-				$newCount=Ticket::whereNotNull('tech_id')
+				$newCount=Ticket::whereNull('tech_id')
 										->where('status','open')
 										->where('updated_at','>',date('Y-m-d', strtotime('-1 week')))
 										->count();
@@ -346,12 +346,12 @@ class ReportsController extends Controller {
 				$startdate=Request::input('startdate');
 				$enddate=Request::input('enddate');
 
-				$inprogressCount=Ticket::whereNull('tech_id')
+				$inprogressCount=Ticket::whereNotNull('tech_id')
 								->where('status','open')
 								->where('updated_at','>=',$startdate)
 								->where('updated_at','<=',$enddate)
 								->count();
-				$newCount=Ticket::whereNotNull('tech_id')
+				$newCount=Ticket::whereNull('tech_id')
 										->where('status','open')
 										->where('updated_at','>=',$startdate)
 										->where('deadline','<=',$enddate)
