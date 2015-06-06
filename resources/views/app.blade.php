@@ -20,7 +20,7 @@
 	<![endif]-->
 </head>
 <body>
-	<nav class="navbar navbar-default" >
+	<nav class="navbar navbar-default mynav" >
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -33,7 +33,7 @@
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/') }}">Home</a></li>
+					<li><a href="{{ url('/home') }}">Home</a></li>
 					<li><a href="{{ url('/tickets') }}">Tickets</a></li>
 					@if (Auth::check())
 						@if(Auth::user()->type == "admin")
@@ -64,6 +64,9 @@
 			</div>
 		</div>
 	</nav>
+	<div class="image">
+		
+	</div>
 	@yield('content')
 
 	<!-- Scripts -->
