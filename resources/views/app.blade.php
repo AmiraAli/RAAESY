@@ -64,9 +64,9 @@
 			</div>
 		</div>
 	</nav>
-	<div class="image">
+<!-- 	<div class="image">
 		
-	</div>
+	</div> -->
 	@yield('content')
 
 	<!-- Scripts -->
