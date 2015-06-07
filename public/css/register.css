@@ -1,0 +1,23 @@
+.mybody{
+	background: url("/images/register8.jpg")no-repeat center center fixed; 
+	background-size: 100% 100%;
+	height: 678px;
+}
+.panelhead{
+	height: 50px;
+	background-color:rgba(73,165,191,0.35);
+	color: #fff;
+}
+.registerbtn{
+	background-color:rgba(73,165,191,0.35);
+}
+.mypanel{
+	margin-right: 600px;
+	width: 470px;
+	margin-top: 25px;
+}
+
+.panel-body{
+background-color:rgba(209,209,209,0.90);
+color: #fff;
+}

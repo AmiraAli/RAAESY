@@ -1,0 +1,24 @@
+.mybody{
+	background: url("/images/helpdesklogin.jpg")no-repeat center center fixed; 
+	background-size: 100% 100%;
+	height: 100%;
+}
+.panelhead{
+	color: #fff;
+	height: 50px;
+	background-color:rgba(147,206,222,0.94); 
+}
+.loginbtn{
+	background-color:  rgba(147,206,222,0.94); 
+}
+.mypanel{
+	margin-top: 120px;
+	width: 570px;
+	margin-left: 480px;
+}
+
+.panel-body{
+	color: #fff;
+	background-color:rgba(3,103,128,0.39);
+	height: 300px;
+}
