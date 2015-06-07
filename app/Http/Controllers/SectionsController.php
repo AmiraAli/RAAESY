@@ -7,8 +7,25 @@ use App\Http\Controllers\Controller;
 use App\Section;
 use Request;
 use App\Category;
+use Auth;
 
 class SectionsController extends Controller {
+
+	
+
+	public function __construct()
+	{
+		$this->middleware('auth');
+		if (Auth::check()){
+			if (Auth::User()->type !="admin"){								
+				Redirect('error')->send();
+
+			}
+		}
+	}
+	
+
+
 
 	/**
 	 * Display a listing of the resource.

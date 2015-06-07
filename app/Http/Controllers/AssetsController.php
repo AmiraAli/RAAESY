@@ -21,7 +21,8 @@ class AssetsController extends Controller {
 		$this->middleware('auth');
 		if (Auth::check()){
 			if (Auth::User()->type !="admin"){								
-				exit;
+				Redirect('error')->send();
+
 			}
 		}
 	}
