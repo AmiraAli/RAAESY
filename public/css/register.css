@@ -5,19 +5,19 @@
 }
 .panelhead{
 	height: 50px;
-	background-color:rgba(73,165,191,0.35);
+	background-color:rgba(117,165,209,1);
 	color: #fff;
 }
 .registerbtn{
-	background-color:rgba(73,165,191,0.35);
+	background-color:rgba(117,165,209,1);
 }
 .mypanel{
 	margin-right: 600px;
-	width: 470px;
+	width: 490px;
 	margin-top: 25px;
 }
 
 .panel-body{
-background-color:rgba(209,209,209,0.90);
+background-color:rgba(134,174,204,0.61);
 color: #fff;
 }
