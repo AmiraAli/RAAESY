@@ -65,7 +65,8 @@
 
 					<div class="panel panel-danger">
 						<div class="panel-heading">
-							<a href="#" id="toggle"><span class="glyphicon glyphicon-search"></span><strong>AdvancedSearch</strong></a>
+							<a href="#" id="toggle"><strong>AdvancedSearch              
+							<span class="glyphicon glyphicon-search"></span></strong></a>
 						</div>
 
 					  	<div class='panel-body advancedSearchDiv'>
