@@ -228,7 +228,10 @@ class UsersController extends Controller {
 			return view('errors.authorization');
 		}
 
-		$user = User::findOrFail($id);
+		$user = User::find($id);
+		if (empty($user)){
+			return view('errors.404');
+		}
 		return view('users.show',compact('user'));
 	}
 
@@ -474,8 +477,7 @@ class UsersController extends Controller {
 	    $handle = fopen($filename, 'w+');
 
 	    
-	    //fputcsv($handle, array('id', 'First name', 'Last name', 'Email' ,'Phone' ,'Location' , 'Disabled' , 'Type'  , 'Created at' , 'Updated at'));
-	    fputcsv($handle, array('id', 'First name', 'Last name', 'Email' ,'Phone' ,'Location' , 'Disabled' , 'Type'  , 'Created at' , 'تم التعديل'));
+	    fputcsv($handle, array('id', 'First name', 'Last name', 'Email' ,'Phone' ,'Location' , 'Disabled' , 'Type'  , 'Created at' , 'Updated at'));
 
 
 	    //put all fields except password

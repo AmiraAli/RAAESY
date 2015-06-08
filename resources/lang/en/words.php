@@ -17,6 +17,8 @@ return array(
 	"tech"   => "Technician" , 
 	"admin" =>  "Admin" ,
 	"ooh" => "Whoops!" , 
+	"validError" => "There were some problems with your input." , 
+	
 
 );
 
