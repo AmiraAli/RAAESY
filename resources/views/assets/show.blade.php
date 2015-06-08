@@ -24,9 +24,9 @@
 		<strong>Location :</strong>
 			{{ $asset->location }}
 			<br><br>
-	</div>
+	
 
-	<h2>Related Tickets</h2>
+		<h2>Related Tickets</h2>
 
 		<table class="table table-condensed">
 			<tr>
@@ -54,6 +54,7 @@
 		  
 		</table>
 	</div>
+</div>
 
 
 @endsection

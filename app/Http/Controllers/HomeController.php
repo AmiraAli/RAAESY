@@ -4,6 +4,8 @@ use Mail;
 use App\Category;
 use App\Section;
 use App\Article;
+use Request;
+
 class HomeController extends Controller {
 
 	/*
@@ -36,7 +38,12 @@ class HomeController extends Controller {
 	{
 		$categories = Category::all();
 		$sections=Section::all();
-		$articles=Article::all();
+		if(Auth::user()->type === "admin" || Auth::user()->type === "tech"){
+			$articles=Article::all();
+		}
+		else{
+			$articles=Article::where("isshow", 1)->get();
+		}
 
 		return view('home',compact('categories','sections','articles'));
 	}
@@ -49,5 +56,36 @@ class HomeController extends Controller {
  //    });
  //    return View::make('home');
  //    }
+
+	public function searchArticle()
+	{
+		if(Request::ajax()){ 
+			if(Auth::user()->type === "admin" || Auth::user()->type === "tech"){
+				$articles = Article::select("*");
+			}
+			else{
+				$articles = Article::where("isshow", 1)->get();
+			}
+			if(Request::input('cat')){
+				if(Request::input('cat') != "all"){
+					$articles = $articles->where('category_id', Request::input('cat'));
+				}
+			}
+			else if(Request::input('sec')){
+				
+				$categories = Category::select("id")->where("section_id", Request::input('sec'))->get();
+				$i = 0;
+				foreach ($categories as $key => $value) {
+					$arr[$i] = $value->id;
+					$i++;
+				}
+
+				$articles = $articles->whereIn('category_id', $arr);
+			}
+			$articles = $articles->get();
+
+			return view('searchArticle',compact('articles'));
+		}
+	}
 
 }

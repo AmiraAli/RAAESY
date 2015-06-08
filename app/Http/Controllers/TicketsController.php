@@ -891,7 +891,7 @@ class TicketsController extends Controller {
 
 				$tickets = $tickets->whereIn('category_id', $arr);
 			}
-			$tickets= $this->AdvancedSearch ($tickets , $search);;
+			$tickets= $this->AdvancedSearch ($tickets , $search);
 			$tickets = $tickets->get();
 
 			$tickets= $this->relatedTag ( $tickets , $tag);

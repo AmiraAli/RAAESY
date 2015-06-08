@@ -116,6 +116,7 @@ Route::get('reports/logsCSV','ReportsController@logsCSV');
 Route::get('/', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');
+Route::post('home/searchArticle', 'HomeController@searchArticle');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
