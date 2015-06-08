@@ -270,8 +270,7 @@ class AssetsController extends Controller {
 			$ticketasset=new TicketAsset;
 			$ticketasset->asset_id=$request->input("asset_id");
 			$ticketasset->ticket_id=intval($request->input("ticket_id"));
-			$ticketasset->save();
-			file_put_contents("/home/aya/teesst.html", $ticketasset);	
+			$ticketasset->save();	
 		$asset=Asset::find($request->input("asset_id"));
 		$asset->ticket_id=intval($request->input("ticket_id"));
 			}

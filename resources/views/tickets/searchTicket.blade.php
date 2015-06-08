@@ -72,3 +72,5 @@
 					@endforeach
 				</tbody>
 			</table>
+
+			<script type="text/javascript" src="/js/tickets_index.js"></script>

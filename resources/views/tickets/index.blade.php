@@ -4,6 +4,9 @@
 @section('content')
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link href="/css/searchticket.css" rel="stylesheet">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">
+<link type="text/css" rel="stylesheet" href="/css/jquery-te-1.4.0.css">	
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 <br>
 <div class="container">
@@ -58,14 +61,14 @@
 
 			<div class="row">
 				@if(Auth::user()->type === "admin")
-					<button id="toggle" class="glyphicon glyphicon-glass"></button>
+					
 
-					<div class="panel panel-danger advancedSearchDiv">
+					<div class="panel panel-danger">
 						<div class="panel-heading">
-							<h3 class="panel-title">AdvancedSearch</h3>
+							<a href="#" id="toggle"><strong>AdvancedSearch</strong><span class="glyphicon glyphicon-search"></span></a>
 						</div>
 
-					  	<div class='panel-body'>
+					  	<div class='panel-body advancedSearchDiv'>
 
 							<form class= "form-horizontal" onsubmit="return false">	   
 							   <div class="form-group">
@@ -117,13 +120,11 @@
 
 			<div class="row" id="category_list">
 				<div class="list-group">
-					<a href="#" class="list-group-item active" id="cat_all" onclick="searchByCat('cat_all', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><strong>All categories</strong></a>
-					@foreach ($sections as $section)
-						<a href="#" class="list-group-item" id="sec_{{ $section->id }}" onclick="searchByCat('sec_{{ $section->id }}', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"> &nbsp &nbsp<strong>{{ $section->name }}</strong></a>
-						@foreach ($section->categories as $category)
-							<a href="#" class="list-group-item" id="cat_{{ $category->id }}" onclick="searchByCat('cat_{{ $category->id }}', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"> &nbsp &nbsp &nbsp &nbsp{{ $category->name }}</a>
-						@endforeach	        			         
+					<a href="#" class="list-group-item active" id="cat_all" onclick="searchByCat('cat_all', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ count($tickets) }}</span><strong>All categories</strong></a>
+					@foreach ($categories as $category)
+						   <a href="#" class="list-group-item" id="cat_{{ $category->category_id }}" onclick="searchByCat('cat_{{ $category->category_id }}', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ $category->count }}</span>{{ $category->name }}</a>  			         
 				    @endforeach
+
 				  
 				</div>
 			</div>
