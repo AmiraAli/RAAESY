@@ -4,13 +4,15 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">
 <link type="text/css" rel="stylesheet" href="/css/jquery-te-1.4.0.css">	
+<link rel="stylesheet" type="text/css" href="/css/tickets/createticket.css">
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 	<div class="container-fluid">
+	<br>
 	<div class="row">
 	 <div class="col-md-8 col-md-offset-2">
-		<div class="panel panel-danger">
+		<div class="panel panel-primary">
 			<div class="panel-heading"> <strong>New ticket</strong> </div>
-			<div class="panel-body">
+			<div class="panel-body panelbody">
 			@if (count($errors) > 0)
 				<div class="alert alert-danger">
 					<strong>Whoops!</strong> There were some problems with your input.<br><br>
