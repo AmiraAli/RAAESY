@@ -132,10 +132,7 @@ $(document).ready(function(){
 		$("#header").css({
         //display:'block',
         float: 'right' ,
-        //overflow: 'hidden';
-
-        
-    });
+    }).height() + '10px');
 
 		$(".alert alert-danger").css({
 
