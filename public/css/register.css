@@ -1,0 +1,34 @@
+
+
+.panelhead{
+	height: 50px;
+	background-color:rgba(117,165,209,1);
+	color: #fff;
+}
+.registerbtn{
+	background-color:rgba(117,165,209,1);
+}
+.mypanel{
+	margin-right: 600px;
+	width: 490px;
+	margin-top: 25px;
+}
+
+.panel-body{
+background-color:rgba(134,174,204,0.61);
+color: #fff;
+}
+
+
+#bg {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+
+  /* Preserve aspet ratio */
+  min-width: 100%;
+  min-height: 100%;
+
+  width: 100%;
+  height: auto;
+}

@@ -21,7 +21,8 @@ class AssetsController extends Controller {
 		$this->middleware('auth');
 		if (Auth::check()){
 			if (Auth::User()->type !="admin"){								
-				exit;
+				Redirect('error')->send();
+
 			}
 		}
 	}
@@ -254,7 +255,7 @@ class AssetsController extends Controller {
 	{	
 			$assets=Asset::all();
 
-			//file_put_contents("/home/aya/teesst.html", $assets);
+
 
 			echo json_encode($assets);	
 
@@ -270,8 +271,9 @@ class AssetsController extends Controller {
 			$ticketasset=new TicketAsset;
 			$ticketasset->asset_id=$request->input("asset_id");
 			$ticketasset->ticket_id=intval($request->input("ticket_id"));
-			$ticketasset->save();
-			file_put_contents("/home/aya/teesst.html", $ticketasset);	
+
+			$ticketasset->save();	
+
 		$asset=Asset::find($request->input("asset_id"));
 		$asset->ticket_id=intval($request->input("ticket_id"));
 			}
@@ -314,16 +316,6 @@ class AssetsController extends Controller {
 	    // without using a local file
 	    return Response::make(rtrim($output, "\n"), 200, $headers);
 	}
-
-
-
-
-
-
-
-
-
-
 		
 }
 

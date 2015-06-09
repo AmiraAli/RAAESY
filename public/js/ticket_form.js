@@ -1,4 +1,3 @@
-
 window.onload = function() {
                     $.ajaxSetup({
 					                headers: {
@@ -11,8 +10,8 @@ window.onload = function() {
 *function to show new subject form 
 **/
 function add_new_subject () {
-	document.getElementById("subject_select").style.visibility = "hidden";
-	document.getElementById("subject_new").style.visibility = "visible";
+	document.getElementById("subject_select").style.display = "none";
+	document.getElementById("subject_new").style.display = "block";
 }
 
 /**
@@ -33,8 +32,8 @@ function submit_subject () {
 					option.value= data;
 					option.setAttribute("selected","true");
 					select.add(option);		       
-				    select.style.visibility = "visible";
-				document.getElementById("subject_new").style.visibility = "hidden";
+				    select.style.display = "block";
+				document.getElementById("subject_new").style.display = "none";
 		      },
 			  error: function(jqXHR, textStatus, errorThrown) {
 				alert("May be subject is already exists or something wrong!!....");
@@ -50,8 +49,8 @@ function submit_subject () {
 **/
 function cancel_subject () {
 	document.getElementById("new_subjvalue").value="";
-	document.getElementById("subject_select").style.visibility = "visible";
-	document.getElementById("subject_new").style.visibility = "hidden";
+	document.getElementById("subject_select").style.display = "block";
+	document.getElementById("subject_new").style.display = "none";
 }
 
 /**
@@ -88,7 +87,7 @@ $(document).ready(function(){
 								var tags=document.getElementById("tags_selected");
 								var span=document.createElement("span");
 								span.innerHTML=tag_value+" ";
-								span.setAttribute("class","btn btn-primary");
+								span.setAttribute("class","btn txtnav navbtn");
 								span.setAttribute("id",tag_value);
 								var remove_span=document.createElement("span");
 								remove_span.setAttribute("class","badge");
@@ -147,7 +146,7 @@ function check_tags_array () {
 * function to send the all tags selected to the form
 **/
 function submit_tags () {
-	document.getElementById("tags_selected").style.visibility = "hidden";
+	document.getElementById("tags_selected").style.display = "none";
 	var tags_field=document.getElementById("tagValues");
 	tags_field.value=tags_array.toString();
 }
@@ -169,7 +168,7 @@ $('.jqte-test').jqte();
 *function to show new tag form 
 **/
 function add_new_tag () {
-	document.getElementById("tag_new").style.visibility = "visible";
+	document.getElementById("tag_new").style.display = "block";
 }
 
 /**
@@ -185,7 +184,7 @@ function submit_tag () {
 		      type: "post",
 		      data: {'newtag':newtag},
 		      success: function(data){
-				document.getElementById("tag_new").style.visibility = "hidden";
+				document.getElementById("tag_new").style.display = "none";
 		      },
 			  error: function(jqXHR, textStatus, errorThrown) {
 				alert("May be tag is already exists or something wrong!!....");
@@ -200,5 +199,5 @@ function submit_tag () {
 *function to cancel new tag form 
 **/
 function cancel_tag () {
-	document.getElementById("tag_new").style.visibility = "hidden";
+	document.getElementById("tag_new").style.display = "none";
 }

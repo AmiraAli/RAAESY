@@ -1,4 +1,28 @@
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+.image{
+
+  height: 200px;
+  background: url("/images/rsz_helpdesk1.jpg"); 
+
+}
+.mynav{
+margin-bottom: 0px !important; 
+background-color: rgba(36,58,117,1);
+color: #fff;
+}
+.navbtn{
+  background-color: rgba(36,58,117,1);
+}
+.navtxt{
+  color:rgba(36,58,117,1);
+}
+.txtnav{
+  color: #fff;
+}
+.mybody{
+/*  background-color:rgba(134,174,204,0.37);*/
+background-color:rgba(191,198,242,0.28) ;
+}
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -884,6 +908,7 @@ body {
   line-height: 1.42857143;
   color: #333333;
   background-color: #ffffff;
+  /*background: url("/images/background13.jpg");*/
 }
 input,
 button,

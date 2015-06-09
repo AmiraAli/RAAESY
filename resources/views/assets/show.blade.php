@@ -2,9 +2,11 @@
 
 @section('content')
 
+<link href="/css/assets/show.css" rel="stylesheet">
 
 <div class="container">
-	<strong>Model :</strong>
+	<div id="asset-info">
+		<strong>Model :</strong>
 			{{ $asset->name }}
 			<br><br>
 		<strong>Manufacturer :</strong>
@@ -23,7 +25,8 @@
 			{{ $asset->location }}
 			<br><br>
 	
-	<h2>Related Tickets</h2>
+
+		<h2>Related Tickets</h2>
 
 		<table class="table table-condensed">
 			<tr>
@@ -51,6 +54,7 @@
 		  
 		</table>
 	</div>
+</div>
 
 
 @endsection

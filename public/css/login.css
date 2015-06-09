@@ -1,0 +1,32 @@
+
+.panelhead{
+	color: #fff;
+	height: 50px;
+	background-color:rgba(147,206,222,0.94); 
+}
+.loginbtn{
+	background-color:  rgba(147,206,222,0.94); 
+}
+.mypanel{
+	margin-top: 175px;
+	width: 570px;
+	margin-left: 480px;
+}
+
+.panel-body{
+	color: #fff;
+	background-color:rgba(3,103,128,0.39);
+}
+
+#bg {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+
+  /* Preserve aspet ratio */
+  min-width: 100%;
+  min-height: 100%;
+
+  width: 100%;
+  height: auto;
+}

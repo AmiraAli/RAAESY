@@ -13,6 +13,8 @@ use Response;
 use App\Article;
 use App;
 
+use Lang;
+
 class UsersController extends Controller {
 
 
@@ -59,7 +61,7 @@ class UsersController extends Controller {
 	{
 		//authenticate admin
 		if (!$this->adminAuth()){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 
 		$users=User::all();
@@ -98,9 +100,14 @@ class UsersController extends Controller {
 	{
 		//authorization
 		if (!$this->adminAuth() ){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 
+		if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
+			Lang::setLocale('ar');
+		}else{
+			Lang::setLocale('en');
+		}
 		return view('users.create');
 	}
 
@@ -112,15 +119,46 @@ class UsersController extends Controller {
 	public function store()
 	{
 
+		Lang::setLocale('ar');
 
-		    $v = Validator::make(Request::all(), [
+			$arr = array ();
+
+			$arr['الاسم الأول'] = Request::get('fname');
+
+
+			$arr['الاسم الثانى'] = Request::get('lname');
+			$arr['البريد الإلكترونى'] =  Request::get('email');
+			$arr['كلمة المرور'] = Request::get('password');
+			$arr['رقم الهاتف'] = Request::get('phone');
+			$arr['الموقع'] = Request::get('location');
+
+
+			if ( Lang::getLocale() == "ar" ){
+				$v = Validator::make($arr, [
+					'الاسم الأول' => 'required|max:255',
+					'الاسم الثانى' => 'required|max:255',
+					'البريد الإلكترونى' => 'required|email|max:255|unique:users',
+					'كلمة المرور' => 'required|confirmed|min:6',
+					'رقم الهاتف' => 'required|numeric',
+					'الموقع' => 'required|max:255',
+
+        		]);
+
+			}else{
+				$v = Validator::make(Request::all() , [
            			'fname' => 'required|max:255',
 					'lname' => 'required|max:255',
 					'email' => 'required|email|max:255|unique:users',
 					'password' => 'required|confirmed|min:6',
 					'phone' => 'required|numeric',
 					'location' => 'required|max:255',
-        	]);
+        		]);
+
+			}
+
+
+			
+		    
         $subject=Request::get('subject');
 
 	    if ($v->fails())
@@ -187,10 +225,13 @@ class UsersController extends Controller {
 	{
 		//authorization
 		if (!$this->adminAuth() && !$this->userAuth($id)){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 
-		$user = User::findOrFail($id);
+		$user = User::find($id);
+		if (empty($user)){
+			return view('errors.404');
+		}
 		return view('users.show',compact('user'));
 	}
 
@@ -205,12 +246,12 @@ class UsersController extends Controller {
 		
 		//authorization
 		if (!$this->adminAuth() && !$this->userAuth($id)){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 
 		//no one can edit the super admin profile ( having id = 1 )		
 		if ( $id=="1" && Auth::User()->id != "1" ) {
-			return view('errors.authorization');
+			return view('errors.404');
 		}		
 
 		$user = User::find($id);
@@ -301,7 +342,7 @@ class UsersController extends Controller {
 	{
 		//authorization
 		if (!$this->userAuth($id)){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 		return view('users.changepassword');
 	}

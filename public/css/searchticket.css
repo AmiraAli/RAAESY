@@ -1,14 +1,27 @@
 #searchticket{
-width:300px;
-float:right;
-
+	width:300px;
+	float:right;
 }
-.advancedSearchDiv{
+#search{
+	width:400px;
+	float:right;
+}
+
+#new-ticket{
+	float:right !important;
+}
+/*.advancedSearchDiv{
 
 width:280px;
 float:left;
-}
+}*/
 .advancedsearchbuttonwithall{
+	float:right;
+}
 
-float:right;
+#table_show{
+    border-radius: 15px;
+    border: 1px solid;
+    margin-left: 40px;
+    padding: 20px;
 }
