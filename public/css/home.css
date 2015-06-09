@@ -1,9 +1,12 @@
 #new-ticket{
 	float:right;
-	margin-right: 105px;
+	margin-right: 48px;
 	margin-bottom: 10px;
 }
 
 .article{
 	word-wrap:break-word;
+}
+#articles{
+	min-height: 130px !important;
 }
