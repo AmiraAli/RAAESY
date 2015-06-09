@@ -254,52 +254,20 @@ function sortType(is_admin){
 }
 
 function searchTicket (id , is_admin) {
-	$("#icons_list").find(".active").removeClass("active");
-	$("#"+id).addClass("active");
-	cat_sec = $("#category_list").find(".active").attr('id').split("_");
-
-	var searchData = {
-            'name'  : id
-        };
-    if(cat_sec[0] == "cat"){
-    	searchData["cat"] = cat_sec[1];
-    }
-    if(cat_sec[0] == "sec"){
-    	searchData["sec"] = cat_sec[1];
-    }
-     if ($("#sortType").text() == "DESC"){
-	 	searchData["sortType"] = "DESC";
-	 } 
-	 else{
-	 	searchData["sortType"] = "ASC";
-	 }
-
-
-    searchData["sortBy"] = $('#sortBy ').val();
-    if(is_admin == 1){
-	    searchData["tagId"] = $('#tag').val();
-	    searchData["priority"] = $("#ticketPriority").val();
-	    searchData["StartDate"] = document.getElementById("ticketStartDate").value;
-	   	searchData["endDate"] = document.getElementById('ticketEndDate').value;
-	 	var TechnicalSelect =document.getElementById("ticketTechnical");               
-		var options = TechnicalSelect.options;
-		searchData["tech"] = options[options.selectedIndex].id.split(",")[0];
-	}
-
-
-    searchAjax(searchData);	
+	getCategories(id, is_admin);
+	
 }
 
 
 
 function searchAjax(searchData){
+
 	   $.ajax({
 	    url: '/tickets/searchTicket',
 	    type: 'post',
 	    data: searchData,
 	    success: function(result) {
 			 $('#table_show').html(result);
-
 
 			 $('.checkbox1').each(function () {
 			 if(!$(this).is(":checked")) 
@@ -358,3 +326,53 @@ function searchByCat (id, is_admin) {
     searchAjax(searchData);	
 }
 
+function getCategories(key, is_admin){
+	var search = {
+            'key'  : key
+        };
+	   $.ajax({
+	    url: '/tickets/getCategories',
+	    type: 'post',
+	    data: search,
+	    success: function(result) {
+			 $('#category_list').html(result);
+			 $("#icons_list").find(".active").removeClass("active");
+			$("#"+key).addClass("active");
+			cat_sec = $("#category_list").find(".active").attr('id').split("_");
+
+			var searchData = {
+		            'name'  : key
+		        };
+		    if(cat_sec[0] == "cat"){
+		    	searchData["cat"] = cat_sec[1];
+		    }
+		    if(cat_sec[0] == "sec"){
+		    	searchData["sec"] = cat_sec[1];
+		    }
+		     if ($("#sortType").text() == "DESC"){
+			 	searchData["sortType"] = "DESC";
+			 } 
+			 else{
+			 	searchData["sortType"] = "ASC";
+			 }
+
+
+		    searchData["sortBy"] = $('#sortBy ').val();
+		    if(is_admin == 1){
+			    searchData["tagId"] = $('#tag').val();
+			    searchData["priority"] = $("#ticketPriority").val();
+			    searchData["StartDate"] = document.getElementById("ticketStartDate").value;
+			   	searchData["endDate"] = document.getElementById('ticketEndDate').value;
+			 	var TechnicalSelect =document.getElementById("ticketTechnical");               
+				var options = TechnicalSelect.options;
+				searchData["tech"] = options[options.selectedIndex].id.split(",")[0];
+			}
+
+
+		    searchAjax(searchData);	
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			console.log(errorThrown);
+	    }
+	});
+}
