@@ -11,8 +11,9 @@ use App\Ticket;
 |
 */
 
-#Route::get('search/autocomplete', 'ArticlesController@autocomplete');
-
+Route::get("/error", function(){
+   return view("errors.404");
+});
 Route::get('/assets/csvimport', 'AssetsController@importToCsv');
 Route::get('/tickets/exportCSV', 'TicketsController@exportCSV');
 
