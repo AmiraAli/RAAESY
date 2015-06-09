@@ -19,7 +19,7 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 </head>
-<body>
+<body class="mybody">
 	<nav class="navbar mynav" >
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -29,30 +29,30 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="{{ url('/articles/home') }}"><h4>RSB</h4></a>
+				<a class="navbar-brand txtnav" href="{{ url('/home') }}"><h4>RSB</h4></a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/home') }}">Home</a></li>
-					<li><a href="{{ url('/tickets') }}">Tickets</a></li>
+					<li><a class="txtnav" href="{{ url('/home') }}">Home</a></li>
+					<li><a class="txtnav" href="{{ url('/tickets') }}">Tickets</a></li>
 					@if (Auth::check())
 						@if(Auth::user()->type == "admin")
-							<li><a href="{{ url('/assets') }}">Assets</a></li>
-							<li><a href="{{ url('/users') }}">Users</a></li>
-							<li><a href="{{ url('/sections') }}">Categories&Sections</a></li>							
-							<li><a href="{{ url('/articles') }}">Articles</a></li>
-							<li><a href="{{ url('/reports') }}">Reports</a></li>
+							<li><a  class="txtnav" href="{{ url('/assets') }}">Assets</a></li>
+							<li><a  class="txtnav" href="{{ url('/users') }}">Users</a></li>
+							<li><a class="txtnav" href="{{ url('/sections') }}">Categories&Sections</a></li>							
+							<li><a class="txtnav" href="{{ url('/articles') }}">Articles</a></li>
+							<li><a class="txtnav" href="{{ url('/reports') }}">Reports</a></li>
 						@endif
 					@endif
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
 					@if (Auth::guest())
-						<li><a href="{{ url('/auth/login') }}">Login</a></li>
-						<li><a href="{{ url('/auth/register') }}">Register</a></li>
+						<li><a class="txtnav" href="{{ url('/auth/login') }}">Login</a></li>
+						<li><a class="txtnav" href="{{ url('/auth/register') }}">Register</a></li>
 					@else
-					    <li> <a class="navbar-brand" href="/users/{{$current_user->id}}"> {{ ucfirst ($current_user->fname)  }}</a></li>
-						<li ><a href="{{ url('/auth/logout') }}">Logout</a></li>
+					    <li> <a  class="txtnav" class="navbar-brand" href="/users/{{$current_user->id}}"> {{ ucfirst ($current_user->fname)  }}</a></li>
+						<li ><a class="txtnav" href="{{ url('/auth/logout') }}">Logout</a></li>
 					@endif
 				</ul>
 			</div>

@@ -7,10 +7,11 @@
 <link type="text/css" rel="stylesheet" href="/css/jquery-te-1.4.0.css">	
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 	<div class="container-fluid">
+	<br>
 	<div class="row">
 	 <div class="col-md-8 col-md-offset-2">
-		<div class="panel panel-danger">
-			<div class="panel-heading"> <strong>New ticket</strong> </div>
+		<div class="panel ">
+			<div class="panel-heading navbtn txtnav"> <strong>Edit ticket</strong> </div>
 			<div class="panel-body">
 			@if (count($errors) > 0)
 				<div class="alert alert-danger">
@@ -25,7 +26,7 @@
 			 {!! Form::open(['route'=>['tickets.update',$ticket->id],'method'=>'put','files' => true]) !!}
 			  <div class="row">
 				<div class="form-group col-md-6">
-					<label class="col-md-4 control-label">Subject</label>
+					<label class="col-md-4 control-label navtxt">Subject</label>
 				    <select class="form-control" name="subject" id="subject_select">
 					    @foreach ($subjects as $subject)
 					    	@if($ticket->subject_id === $subject->id)
@@ -35,13 +36,12 @@
 							@endif
 						@endforeach
 					</select>
-				</div>
-				<div class="col-md-6">
-					<a class="col-md-4" onclick="add_new_subject()">Add New</a>
-					<div class="col-md-offset-2"  id="subject_new" style="visibility:hidden;">
+				<br>
+					<a class="col-md-4 navtxt" onclick="add_new_subject()">Add New</a>
+					<div class="col-md-offset-2"  id="subject_new" style="display:none;">
 						<input type="text" class="form-control col-md-1" id="new_subjvalue"/>
-						<a class="btn btn-primary col-md-3" onclick="submit_subject()">Add</a>
-						<a class="btn btn-primary col-md-3" onclick="cancel_subject()">Cancel</a>
+						<a class="btn navbtn txtnav col-md-3" onclick="submit_subject()">Add</a>
+						<a class="btn navbtn txtnav col-md-3" onclick="cancel_subject()">Cancel</a>
 					</div>
 				</div>
 			   </div>
@@ -54,7 +54,7 @@
 
 				<div class="row">
 				 <div class="form-group col-md-6">
-					<label class="col-md-4 control-label">Category</label>
+					<label class="col-md-4 control-label navtxt">Category</label>
 				    <select class="form-control" name="category">
 				    @foreach ($sections as $section)
 				    <optgroup label=" {{ $section->name }} " >
@@ -76,7 +76,7 @@
 				@if (Auth::user()->type === "admin")
 				<div class="row">
 					<div class="form-group col-md-6">
-						<label class="col-md-4 control-label">Priority</label>
+						<label class="col-md-4 control-label navtxt">Priority</label>
 					    <select class="form-control" name="priority">
 						    @if ($ticket->priority === "low" )
 						      <option value="low" selected="true">LOW</option>
@@ -96,13 +96,12 @@
 						</select>
 					</div>
 					<div class="form-group col-md-6">
-						<label class="col-md-4 control-label">Due</label>
+						<label class="col-md-4 control-label navtxt">Due</label>
 						<input type="text" name="deadline" id="deadline" class="form-control"
-
-  value="{{explode(' ',$ticket->deadline)[0]}}"/>
+  						value="{{explode(' ',$ticket->deadline)[0]}}"/>
 					</div>
 					<div class="form-group col-md-6">
-						<label class="col-md-4 control-label">Assign</label>
+						<label class="col-md-4 control-label navtxt">Assign</label>
 					    <select class="form-control" name="tech">
 					@if($ticket->tech_id==NULL)
 					    	<option value="" selected>Not assigned</option>
@@ -123,8 +122,14 @@
 					</div>
 
 					<div class="form-group  col-md-6" id="tags_selected">
-						<label class="col-md-4 control-label">Tags</label>
+						<label class="col-md-4 control-label navtxt">Tags</label>
 						<input type="text" id="search" class="form-control">
+						<a class="col-md-4 navtxt" onclick="add_new_tag()">Add New Tag</a>
+						<div class="col-md-offset-2"  id="tag_new" style="display:none;">
+							<input type="text" class="form-control col-md-1" id="new_tagvalue"/>
+							<a class="btn txtnav navbtn col-md-3" onclick="submit_tag()">Add</a>
+							<a class="btn txtnav navbtn col-md-3" onclick="cancel_tag()">Cancel</a>
+						</div>
 					</div>
 					<input type="hidden" name="tagValues" id="tagValues">
 				</div>
@@ -132,13 +137,13 @@
 
 				<div class="row col-md-offset-1">
 				    <div class ="form-group">
-					    <label >Attach File</label>
+					    <label class="navtxt">Attach File</label>
 					    <input type="file" name="file">
 				    </div>
 			    </div>
 			    <div class="row">
 				    <div class="col-md-6 col-md-offset-4">
-				    	<button type="submit" class="btn btn-primary">Submit</button>
+				    	<button type="submit" class="btn navbtn txtnav">Submit</button>
 				    </div>
 			    </div>
 
