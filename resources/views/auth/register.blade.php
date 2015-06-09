@@ -1,5 +1,8 @@
 <link href='/bootstrab/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="/css/register.css">
+
+<img src="/images/register8.jpg" id="bg" alt="">
+
 <div class="container-fluid mybody">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">

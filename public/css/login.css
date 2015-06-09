@@ -1,8 +1,4 @@
-.mybody{
-	background: url("/images/helpdesklogin.jpg")no-repeat center center fixed; 
-	background-size: 100% 100%;
-	height: 100%;
-}
+
 .panelhead{
 	color: #fff;
 	height: 50px;
@@ -20,5 +16,17 @@
 .panel-body{
 	color: #fff;
 	background-color:rgba(3,103,128,0.39);
-	height: 300px;
+}
+
+#bg {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+
+  /* Preserve aspet ratio */
+  min-width: 100%;
+  min-height: 100%;
+
+  width: 100%;
+  height: auto;
 }

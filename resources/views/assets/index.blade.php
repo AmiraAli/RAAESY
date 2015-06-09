@@ -5,29 +5,30 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script type="text/javascript" src="/js/deleteAsset.js"></script>
 	<script type="text/javascript" src="/js/searchAsset.js"></script>
+	<link href="/css/assets/index.css" rel="stylesheet">
 
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
-	<div class="container"  >
-<div>
-@if(Auth::user()->type=="admin" or Auth::user()->type=="regular" )
-<a class="btn btn-primary" href="{{ url('/assets/create') }}"> New Asset</a>
-	@if(Auth::user()->type=="admin" )
+<div class="container">
+
+
+	<div class="row" id="new-asset">
+		<a class="btn btn-primary" href="{{ url('/assets/create') }}"> New Asset</a>
 		<a  href="{{ url('/assets/csvimport') }}"><img src="/images/CSV.png" style="width:40px"></a>
-	@endif
-@endif
-</div>
+	</div>
 
 
-<div id="search_result" class="col-md-8 ">
+
+<div id="search_result" class="col-md-8">
 	<table class="table table-hover">
 		<thead>
-			<tr>
+			<tr class="info">
 				<th class="text-center">Model</th>
 				<th class="text-center">Manufacturer</th>
 				<th class="text-center">Type</th>
 				<th class="text-center">Serial Number</th>
 				<th class="text-center">Belongs To</th>
 				<th class="text-center">Location</th>
+				<th class="text-center">Action</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -41,8 +42,6 @@
 			            <td class="text-center">{{ $asset->location }}</td>
 			            <td class="text-center">
 			            	 <a href="/assets/{{$asset->id}}/edit " class="btn btn-success btn" >Edit</a>
-			            </td>
-			            <td class="text-center">
 
 				            <button class="btn btn-danger" onclick="deleteAsset( {{ $asset->id }} )">Delete</button>
 
