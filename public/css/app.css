@@ -7,6 +7,21 @@
 }
 .mynav{
 margin-bottom: 0px !important; 
+background-color: rgba(36,58,117,1);
+color: #fff;
+}
+.navbtn{
+  background-color: rgba(36,58,117,1);
+}
+.navtxt{
+  color:rgba(36,58,117,1);
+}
+.txtnav{
+  color: #fff;
+}
+.mybody{
+/*  background-color:rgba(134,174,204,0.37);*/
+background-color:rgba(191,198,242,0.28) ;
 }
 html {
   font-family: sans-serif;

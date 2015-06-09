@@ -1,22 +1,20 @@
 
 .panelhead{
 	color: #fff;
-	height: 50px;
 	background-color:rgba(147,206,222,0.94); 
 }
 .loginbtn{
 	background-color:  rgba(147,206,222,0.94); 
 }
 .mypanel{
-	margin-top: 120px;
-	width: 570px;
-	margin-left: 480px;
+	margin-top: 10%;
 }
 
 .panel-body{
 	color: #fff;
 	background-color:rgba(3,103,128,0.39);
 }
+
 
 #bg {
   position: fixed; 
@@ -29,4 +27,32 @@
 
   width: 100%;
   height: auto;
+}
+
+
+@media all and (max-device-width: 640px){
+
+    body{
+
+    	font-size: 30px !important;
+
+    	background: #fcc;
+    }
+
+    .h4, h4  {
+    	font-size: 30px !important;
+    }
+
+     a , button{
+    	font-size: 22px !important;	
+    }
+    .form-control{
+    	height: 55px !important;
+    }
+
+    .mypanel , .panelhead{
+    	padding-left : 40px !important;
+    	padding-right:  40px !important;
+    }
+
 }
