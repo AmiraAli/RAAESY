@@ -8,7 +8,7 @@
 	<br>
 	@if(Auth::user()->type != "tech")
 		<div class="row" id="new-ticket">
-			<a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Ticket</a>
+			<a class="btn navbtn txtnav" href="{{ url('/tickets/create') }}"> New Ticket</a>
 		</div>
 	@endif
 	<br>
@@ -16,13 +16,11 @@
 		<div class="col-md-2">
 			<div class="row" id="category_list">
 				<div class="list-group">
-					<a href="#" class="list-group-item active" id="cat_all" onclick="searchByCat('cat_all', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><strong>All categories</strong></a>
-					@foreach ($sections as $section)
-						<a href="#" class="list-group-item" id="sec_{{ $section->id }}" onclick="searchByCat('sec_{{ $section->id }}', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"> &nbsp &nbsp<strong>{{ $section->name }}</strong></a>
-						@foreach ($section->categories as $category)
-							<a href="#" class="list-group-item" id="cat_{{ $category->id }}" onclick="searchByCat('cat_{{ $category->id }}', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"> &nbsp &nbsp &nbsp &nbsp{{ $category->name }}</a>
-						@endforeach	        			         
-				    @endforeach				  
+
+					<a href="#" class="list-group-item active" id="cat_all" onclick="searchByCat('cat_all', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ count($articles) }}</span><strong>All categories</strong></a>
+					@foreach ($categories as $category)
+						   <a href="#" class="list-group-item" id="cat_{{ $category->category_id }}" onclick="searchByCat('cat_{{ $category->category_id }}', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ $category->count }}</span>{{ $category->name }}</a>  			         
+				    @endforeach			  
 				</div>
 			</div>
 		</div>
@@ -32,7 +30,7 @@
 					<div class="panel panel-info">
 	
 				  		<div class="panel-body" >	
-				  			<a href="/articles/{{$article->id}}"><strong>{{$article->subject}}</strong></a><br>		    			
+				  			<a class="navtxt" href="/articles/{{$article->id}}"><strong>{{$article->subject}}</strong></a><br>		    			
 					    	@if (strlen($article->body) <= 100)
 					    		{{ $article->body }}
 					    	@else

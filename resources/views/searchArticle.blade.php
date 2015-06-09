@@ -3,7 +3,7 @@
 		<div class="panel panel-info">
 
 	  		<div class="panel-body" >	
-	  			<a href="/articles/{{$article->id}}"><strong>{{$article->subject}}</strong></a><br>		    			
+	  			<a  class="navtxt" href="/articles/{{$article->id}}"><strong>{{$article->subject}}</strong></a><br>		    			
 		    	@if (strlen($article->body) <= 100)
 		    		{{ $article->body }}
 		    	@else
