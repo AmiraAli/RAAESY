@@ -53,7 +53,7 @@ class ArticlesController extends Controller {
 		
 		//authenticate admin
 		if (!$this->adminAuth()){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 		$categories=Category::all();
 		$sections=Section::all();
@@ -94,7 +94,7 @@ class ArticlesController extends Controller {
 		
 		//authenticate admin
 		if (!$this->adminAuth()){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 		$categories=Category::all();
 		$sections=Section::all();
@@ -190,7 +190,7 @@ class ArticlesController extends Controller {
 		//
 		//authenticate admin
 		if (!$this->adminAuth()){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 		$sections=Section::all();
 		$categories=Category::all();
