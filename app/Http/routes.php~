@@ -13,7 +13,12 @@ use App\Ticket;
 
 #Route::get('search/autocomplete', 'ArticlesController@autocomplete');
 
+
+
+
+
 Route::get('/assets/csvimport', 'AssetsController@importToCsv');
+Route::get('/tickets/exportCSV', 'TicketsController@exportCSV');
 
 
 
@@ -25,7 +30,9 @@ Route::post('categories/saveCategory', 'CategoriesController@saveCategory');
 Route::resource('/sections','SectionsController');
 
 
-Route::get('users/search','UsersController@search');
+Route::get('users/downloadCSV','UsersController@downloadCSV');
+Route::get('users/downloadPDF','UsersController@downloadPDF');
+
 Route::post('users/ajaxsearch','UsersController@ajaxsearch');
 Route::get('users/changepassword/{id}','UsersController@changepassword');
 Route::post('users/changepassprocess','UsersController@changepassprocess');
@@ -34,7 +41,6 @@ Route::post('users/changepassprocess','UsersController@changepassprocess');
 Route::resource('/users','UsersController');
 
 Route::get('users/destroy/{id}','UsersController@destroy');
-Route::post('users/get_user_types','UsersController@get_user_types');
 Route::post('users/autocomplete','UsersController@autocomplete');
 
 
@@ -42,6 +48,10 @@ Route::post('articles/autocomplete','ArticlesController@autocomplete');
 Route::post('articles/getTags', 'ArticlesController@getTags');
 Route::post('articles/search', 'ArticlesController@search');
 Route::get('articles/home', 'ArticlesController@home');
+Route::get('articles/csvArticleReport', 'ArticlesController@csvArticleReport');
+
+
+
 
 Route::post('tickets/searchTicket', 'TicketsController@searchTicket');
 Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
@@ -55,6 +65,7 @@ Route::post('tickets/addSubject', 'TicketsController@addSubject');
 Route::post('tickets/getTags', 'TicketsController@getTags');
 Route::post('/subjects/all/', 'TicketsController@SearchAllSubject');
 Route::post('/tickets/all/subjects', 'TicketsController@TicketAllSubject');
+
 
 Route::post('/tickets/advancedsearch', 'TicketsController@AdvancedSearch');
 
@@ -85,14 +96,25 @@ Route::get('/reports', 'ReportsController@index');
 
 Route::post('/reports/disthourajax', 'ReportsController@ajaxdistHour');
 
+
 Route::get('/reports/technicianStatistics', 'ReportsController@technicianStatistics');
 Route::post('/reports/technicianStatisticsSearch', 'ReportsController@technicianStatisticsSearch');
+
+Route::get('/reports/ticketsPerTime', 'ReportsController@ticketsPerTime');
+Route::post('/reports/prepareTickets', 'ReportsController@prepareTickets');
 
 Route::get('/reports/problemMangement', 'ReportsController@problemMangement');
 Route::post('/reports/problemMangementDate', 'ReportsController@problemMangementDate');
 
 
 Route::get('/reports/reportTicketStatus','ReportsController@reportTicketStatus');
+Route::get('/reports/exportTicketStatusReport','ReportsController@exportTicketStatusReport');
+
+
+
+Route::get('reports/problemMangementCSV','ReportsController@problemMangementCSV');
+Route::get('reports/summaryCSV','ReportsController@summaryCSV');
+Route::get('reports/logsCSV','ReportsController@logsCSV');
 
 
 Route::get('/', 'WelcomeController@index');

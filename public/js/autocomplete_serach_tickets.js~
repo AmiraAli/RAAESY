@@ -8,7 +8,7 @@ $.ajax({
 
 
     success: function(result) {
-console.log(result+"aya");
+console.log("aya");
 subjects=JSON.parse(result);
 console.log(subjects);
 

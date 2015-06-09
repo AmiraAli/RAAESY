@@ -354,7 +354,7 @@ class ReportsController extends Controller {
 				$newCount=Ticket::whereNotNull('tech_id')
 										->where('status','open')
 										->where('updated_at','>=',$startdate)
-										->where('deadline','<=',$enddate)
+										->where('updated_at','<=',$enddate)
 										->count();
 				$resolvedCount=Ticket::where('status','close')
 										->where('updated_at','>=',$startdate)

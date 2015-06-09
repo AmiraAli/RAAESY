@@ -703,8 +703,31 @@ class TicketsController extends Controller {
 
 	public function SearchAllSubject(Request $request){
 	// Save notification
+$subject=array();
+	$type=Auth::user()->type;
+	$id=Auth::user()->id;
 	if($request->ajax()) {
-	$subjects=Subject::all()->lists('name');
+	if($type == 'admin')
+		$subjects=Subject::all()->lists('name');
+
+	if($type == 'regular'){
+	$tickets=Ticket::where('user_id','=',$id)->get();
+	foreach($tickets as $ticket){
+		$subject[]=Subject::where('id','=',$ticket->subject_id)->lists('name')[0];
+
+			}
+	$subjects = json_decode(json_encode($subject), FALSE);
+			}
+	
+	if($type == 'tech'){
+	$tickets=Ticket::where('tech_id','=',$id)->get();
+	foreach($tickets as $ticket){
+		$subject[]=Subject::where('id','=',$ticket->subject_id)->lists('name')[0];
+
+			}
+	$subjects = json_decode(json_encode($subject), FALSE);
+			}
+		
 
 	}
 	echo json_encode($subjects);

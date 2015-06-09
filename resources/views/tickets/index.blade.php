@@ -162,11 +162,11 @@
 	</div>
 
 
-<button id="toggle" class="glyphicon glyphicon-glass"></button>
 
-	<div class="panel panel-default advancedSearchDiv">
-	  <div class='panel-heading'>AdvancedSearch</div>
-	  <div class='panel-body'>
+
+	<div class="panel panel-default ">
+	  <div class='panel-heading'>AdvancedSearch <button id="toggle" class="glyphicon glyphicon-glass"></button></div>
+	  <div class="panel-body advancedSearchDiv">
 
 	   Priority: <select id='ticketPriority'>
 		<option></option>

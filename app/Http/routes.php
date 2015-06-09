@@ -13,6 +13,10 @@ use App\Ticket;
 
 #Route::get('search/autocomplete', 'ArticlesController@autocomplete');
 
+
+
+
+
 Route::get('/assets/csvimport', 'AssetsController@importToCsv');
 Route::get('/tickets/exportCSV', 'TicketsController@exportCSV');
 

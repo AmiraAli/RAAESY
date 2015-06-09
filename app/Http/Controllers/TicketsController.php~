@@ -25,6 +25,9 @@ use Carbon\Carbon;
 use App\Log;
 use Mail;
 use Response;
+ 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class TicketsController extends Controller {
 
@@ -157,7 +160,18 @@ class TicketsController extends Controller {
 			]);
 			$ticket= new Ticket;
 			$ticket->description=$request->get('description');
-			$ticket->file=$request->get('file');
+
+			//check for uploaded file and store it n public path
+			if ($request->hasFile('file')) { 
+				$destination='files/';
+				$filename=str_random(6)."_".$request->file('file')->getClientOriginalName();
+				$request->file('file')->move($destination,$filename);
+				$ticket->file=$filename;
+			}else{
+				$ticket->file=$request->get('file');
+			}
+
+
 			$ticket->category_id=$request->get('category');
 			$ticket->subject_id=$request->get('subject');
 			$ticket->user_id=Auth::user()->id;
@@ -311,7 +325,16 @@ class TicketsController extends Controller {
 		$ticket= Ticket::find($id);
 		$ticket->description=$request->get('description');
 		$ticket->priority=$request->get('priority');
-		$ticket->file=$request->get('file');
+
+		//check for uploaded file and store it n public path
+			if ($request->hasFile('file')) { 
+				$destination='files/';
+				$filename=str_random(6)."_".$request->file('file')->getClientOriginalName();
+				$request->file('file')->move($destination,$filename);
+				$ticket->file=$filename;
+			}else{
+				$ticket->file=$ticket->file;
+			}
 		$ticket->category_id=$request->get('category');
 		$ticket->subject_id=$request->get('subject');
 		$ticket->user_id=Auth::user()->id;
@@ -680,8 +703,31 @@ class TicketsController extends Controller {
 
 	public function SearchAllSubject(Request $request){
 	// Save notification
+$subject=array();
+	$type=Auth::user()->type;
+	$id=Auth::user()->id;
 	if($request->ajax()) {
-	$subjects=Subject::all()->lists('name');
+	if($type == 'admin')
+		$subjects=Subject::all()->lists('name');
+
+	if($type == 'regular'){
+	$tickets=Ticket::where('user_id','=',$id)->get();
+	foreach($tickets as $ticket){
+		$subject[]=Subject::where('id','=',$ticket->subject_id)->lists('name')[0];
+
+			}
+	$subjects = json_decode(json_encode($subject), FALSE);
+			}
+	
+	if($type == 'tech'){
+	$tickets=Ticket::where('tech_id','=',$id)->get();
+	foreach($tickets as $ticket){
+		$subject[]=Subject::where('id','=',$ticket->subject_id)->lists('name')[0];
+
+			}
+	$subjects = json_decode(json_encode($subject), FALSE);
+			}
+		
 
 	}
 	echo json_encode($subjects);
