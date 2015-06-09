@@ -18,12 +18,14 @@
 			  </div>
 			@foreach($articles as $article)
 					@if($category->id == $article->category_id)
-
-					  <div class="panel-body">
-					    <a href="/articles/{{$article->id}}">{{$article->subject}}</a> <br/>		
-					    {{substr(strip_tags($article->body),0,10)."....."}}
-					  </div>
-
+                      @if($article->isshow==1)
+                      	 @if(!$current_user->type=='regular')
+						  <div class="panel-body">
+						    <a href="/articles/{{$article->id}}">{{$article->subject}}</a> <br/>		
+						    {{substr(strip_tags($article->body),0,10)."....."}}
+						  </div>
+						  @endif
+					  @endif
 					@endif
 		    @endforeach
 		    </div>

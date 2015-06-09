@@ -72,6 +72,7 @@ Route::post('/tickets/unSpamTicket', 'TicketsController@unSpamTicket');
 Route::post('/tickets/closeTicket', 'TicketsController@closeTicket');
 Route::post('/tickets/openTicket', 'TicketsController@openTicket');
 Route::post('tickets/addTag', 'TicketsController@addTag');
+Route::post('tickets/getCategories', 'TicketsController@getCategories');
 
 Route::resource('tickets.comments', 'CommentsController');
 
@@ -117,6 +118,7 @@ Route::get('reports/logsCSV','ReportsController@logsCSV');
 Route::get('/', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');
+Route::post('home/searchArticle', 'HomeController@searchArticle');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

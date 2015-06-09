@@ -271,8 +271,9 @@ class AssetsController extends Controller {
 			$ticketasset=new TicketAsset;
 			$ticketasset->asset_id=$request->input("asset_id");
 			$ticketasset->ticket_id=intval($request->input("ticket_id"));
-			$ticketasset->save();
-	
+
+			$ticketasset->save();	
+
 		$asset=Asset::find($request->input("asset_id"));
 		$asset->ticket_id=intval($request->input("ticket_id"));
 			}
