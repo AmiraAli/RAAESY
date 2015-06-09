@@ -61,7 +61,7 @@ class UsersController extends Controller {
 	{
 		//authenticate admin
 		if (!$this->adminAuth()){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 
 		$users=User::all();
@@ -100,7 +100,7 @@ class UsersController extends Controller {
 	{
 		//authorization
 		if (!$this->adminAuth() ){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 
 		if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
@@ -225,7 +225,7 @@ class UsersController extends Controller {
 	{
 		//authorization
 		if (!$this->adminAuth() && !$this->userAuth($id)){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 
 		$user = User::find($id);
@@ -246,12 +246,12 @@ class UsersController extends Controller {
 		
 		//authorization
 		if (!$this->adminAuth() && !$this->userAuth($id)){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 
 		//no one can edit the super admin profile ( having id = 1 )		
 		if ( $id=="1" && Auth::User()->id != "1" ) {
-			return view('errors.authorization');
+			return view('errors.404');
 		}		
 
 		$user = User::find($id);
@@ -342,7 +342,7 @@ class UsersController extends Controller {
 	{
 		//authorization
 		if (!$this->userAuth($id)){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 		return view('users.changepassword');
 	}
