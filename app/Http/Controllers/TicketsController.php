@@ -1150,7 +1150,7 @@ class TicketsController extends Controller {
                     ->groupBy('tickets.id')
                     ->HAVING("c", "=" , '0' );
 
-                    $categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 group by category_id");
+                    $categories = DB::select("select count(categories.id) as count, categories.name,t2.id,t2.category_id from categories right join (select tickets.id,tickets.category_id , CASE WHEN (sum(comments.readonly) is null  or sum(comments.readonly) = 0 )  THEN 0  ELSE 1 END as c from tickets left join comments on tickets.id = comments.ticket_id where is_spam = 0 group by tickets.id having c = 0)t2 on t2.category_id= categories.id group by categories.id");
 
 				}else if($request->input('key') == "unassigned"){
 					$tickets = $tickets->whereNull('tech_id');

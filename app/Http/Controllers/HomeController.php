@@ -2,9 +2,9 @@
 use Auth;
 use Mail;
 use App\Category;
-use App\Section;
 use App\Article;
 use Request;
+use DB;
 
 class HomeController extends Controller {
 
@@ -36,16 +36,18 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
-		$categories = Category::all();
-		$sections=Section::all();
 		if(Auth::user()->type === "admin" || Auth::user()->type === "tech"){
 			$articles=Article::all();
+			$categories = DB::select("select articles.category_id, categories.name,count(*) as count from articles join categories on categories.id = articles.category_id group by category_id");
+
 		}
 		else{
 			$articles=Article::where("isshow", 1)->get();
+			$categories = DB::select("select articles.category_id, categories.name,count(*) as count from articles join categories on categories.id = articles.category_id where isshow = 1 group by category_id");
+
 		}
 
-		return view('home',compact('categories','sections','articles'));
+		return view('home',compact('categories','articles'));
 	}
 
 	// public function home()
