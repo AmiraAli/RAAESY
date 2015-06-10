@@ -69,8 +69,6 @@ class TicketsController extends Controller {
 	 */
 	public function index(Request $request)
 	{
-		$sections = Section::all();
-
 		$tags=Tag::all();
 
 		if(Auth::user()->type === "admin"){
@@ -97,9 +95,10 @@ class TicketsController extends Controller {
 	                     ->get();
 
 			$technicals=User::where('type','=','tech')->get();
+			$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 group by category_id");
 
 
-			return view('tickets.index',compact('tickets','unassigned','open','closed','expired','spam','tags','technicals','unanswered','sections'));
+			return view('tickets.index',compact('tickets','unassigned','open','closed','expired','spam','tags','technicals','unanswered','categories'));
 		}
 		else if(Auth::user()->type === "tech"){
 			$tickets = Ticket::where('is_spam', "0")->where('tech_id', $request->user()->id)->get();
@@ -107,8 +106,11 @@ class TicketsController extends Controller {
 			// closed tickets except spam tickets
 			$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('tech_id', $request->user()->id)->where('is_spam', "0")->get();
 			// open tickets except spam tickets
+
 			$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('tech_id', $request->user()->id)->where('is_spam', "0")->get();
-			return view('tickets.index',compact('tickets','open','closed','tags','sections'));
+			$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and tech_id = ? group by category_id", array($request->user()->id));
+
+			return view('tickets.index',compact('tickets','open','closed','tags','categories'));
 		}
 		else if(Auth::user()->type === "regular"){
 			$tickets = Ticket::where('is_spam', "0")->where('user_id', $request->user()->id)->get();
@@ -117,7 +119,9 @@ class TicketsController extends Controller {
 			$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('user_id', $request->user()->id)->where('is_spam', "0")->get();
 			// open tickets except spam tickets
 			$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('user_id', $request->user()->id)->where('is_spam', "0")->get();
-			return view('tickets.index',compact('tickets','open','closed','tags','sections'));
+			$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and user_id = ? group by category_id", array($request->user()->id));
+
+			return view('tickets.index',compact('tickets','open','closed','tags','categories'));
 		}
 	}
 
@@ -730,8 +734,31 @@ class TicketsController extends Controller {
 
 	public function SearchAllSubject(Request $request){
 	// Save notification
+$subject=array();
+	$type=Auth::user()->type;
+	$id=Auth::user()->id;
 	if($request->ajax()) {
-	$subjects=Subject::all()->lists('name');
+	if($type == 'admin')
+		$subjects=Subject::all()->lists('name');
+
+	if($type == 'regular'){
+	$tickets=Ticket::where('user_id','=',$id)->get();
+	foreach($tickets as $ticket){
+		$subject[]=Subject::where('id','=',$ticket->subject_id)->lists('name')[0];
+
+			}
+	$subjects = json_decode(json_encode($subject), FALSE);
+			}
+	
+	if($type == 'tech'){
+	$tickets=Ticket::where('tech_id','=',$id)->get();
+	foreach($tickets as $ticket){
+		$subject[]=Subject::where('id','=',$ticket->subject_id)->lists('name')[0];
+
+			}
+	$subjects = json_decode(json_encode($subject), FALSE);
+			}
+		
 
 	}
 	echo json_encode($subjects);
@@ -813,6 +840,7 @@ class TicketsController extends Controller {
 			    if($data["deadLine"] && $data["startDate"]){
 		            $Tickets=$Tickets->where('created_at','>=', $data["startDate"]);
 					$Tickets=$Tickets->where('deadline','<=', $data["deadLine"]);
+
 				}
 
 				return $Tickets;
@@ -891,7 +919,7 @@ class TicketsController extends Controller {
 
 				$tickets = $tickets->whereIn('category_id', $arr);
 			}
-			$tickets= $this->AdvancedSearch ($tickets , $search);;
+			$tickets= $this->AdvancedSearch ($tickets , $search);
 			$tickets = $tickets->get();
 
 			$tickets= $this->relatedTag ( $tickets , $tag);
@@ -1132,5 +1160,73 @@ class TicketsController extends Controller {
 	    // our response, this will be equivalent to your download() but
 	    // without using a local file
 	    return Response::make(rtrim($output, "\n"), 200, $headers);
+	}
+
+	public function getCategories(Request $request){
+		if($request->ajax()) {
+			if(Auth::user()->type === "admin"){
+				
+				$tickets = Ticket::select("*")->where('is_spam', "0");
+				if($request->input('key') == "all"){
+					$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 group by category_id");
+				}else if($request->input('key') == "unanswered"){
+					$tickets = $tickets->leftJoin('comments','tickets.id','=','comments.ticket_id')
+            		->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null or sum(comments.readonly) = 0 )  THEN 0  ELSE 1 END as c')
+                    ->groupBy('tickets.id')
+                    ->HAVING("c", "=" , '0' );
+
+                    $categories = DB::select("select count(categories.id) as count, categories.name,t2.id,t2.category_id from categories right join (select tickets.id,tickets.category_id , CASE WHEN (sum(comments.readonly) is null  or sum(comments.readonly) = 0 )  THEN 0  ELSE 1 END as c from tickets left join comments on tickets.id = comments.ticket_id where is_spam = 0 group by tickets.id having c = 0)t2 on t2.category_id= categories.id group by categories.id");
+
+				}else if($request->input('key') == "unassigned"){
+					$tickets = $tickets->whereNull('tech_id');
+					$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and tech_id is null group by category_id");
+				}else if($request->input('key') == "expired"){
+					$tickets = $tickets->where('deadline', '<', Carbon::now());
+					$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and deadline < ? group by category_id",array(Carbon::now()));
+				}else if($request->input('key') == "open"){
+					$tickets = $tickets->where('status', "open");
+					$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and status = 'open' group by category_id");
+				}else if($request->input('key') == "closed"){
+					$tickets = $tickets->where('status', "close");
+					$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and status = 'close' group by category_id");
+				}else if($request->input('key') == "spam"){
+					$tickets = Ticket::where('is_spam', "1");
+					$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 1 group by category_id");
+				}
+			}
+			else if(Auth::user()->type === "tech"){
+				$tickets = Ticket::select("*")->where('tech_id', $request->user()->id)->where('is_spam', "0");
+				if($request->input('key') == "all"){
+					$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and tech_id = ? group by category_id", array($request->user()->id)); 
+					
+				}else if($request->input('key') == "open"){
+					$tickets = $tickets->where('status', "open");
+					$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and tech_id = ? and status = 'open' group by category_id", array($request->user()->id)); 
+				
+				}else if($request->input('key') == "closed"){
+					$tickets = $tickets->where('status', "close");
+					$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and tech_id = ? and status = 'close' group by category_id", array($request->user()->id)); 
+				
+				}
+			}
+			else if(Auth::user()->type === "regular"){
+				$tickets = Ticket::select("*")->where('user_id', $request->user()->id)->where('is_spam', "0");
+				if($request->input('key') == "all"){
+					$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and user_id = ? group by category_id", array($request->user()->id));
+				
+				}else if($request->input('key') == "open"){
+					$tickets = $tickets->where('status', "open");
+					$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and user_id = ? and status = 'open' group by category_id", array($request->user()->id));
+				
+				}else if($request->input('key') == "closed"){
+					$tickets = $tickets->where('status', "close");
+					$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and user_id = ? and status = 'close' group by category_id", array($request->user()->id));
+				
+				}
+			}
+
+			$tickets = $tickets->get();
+			return view('tickets.categories',compact('categories', 'tickets'));	
+		}
 	}
 }

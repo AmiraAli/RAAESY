@@ -1,17 +1,11 @@
 <?php namespace App\Http\Controllers;
 
-//use Illuminate\Http\Request;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-//use Illuminate\Http\Request;
 use App\Article;
-
-//use App\Tag;
 use App\ArticleTag;
-
 use App\Log;
-
 use App\Category;
 use App\Section;
 use Auth;
@@ -56,10 +50,10 @@ class ArticlesController extends Controller {
 	 */
 	public function index()
 	{
-		//
+		
 		//authenticate admin
 		if (!$this->adminAuth()){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 		$categories=Category::all();
 		$sections=Section::all();
@@ -97,10 +91,10 @@ class ArticlesController extends Controller {
 	 */
 	public function create()
 	{
-		//
+		
 		//authenticate admin
 		if (!$this->adminAuth()){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 		$categories=Category::all();
 		$sections=Section::all();
@@ -114,7 +108,7 @@ class ArticlesController extends Controller {
 	 */
 	public function store()
 	{
-		//
+		
 
 		$v = Validator::make(Request::all(), [
         'subject' => 'required|max:255|unique:articles',
@@ -173,8 +167,11 @@ class ArticlesController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		
 		$article=Article::find($id);
+		if (empty($article)){
+			return view('errors.404');
+		}
 	    $articletags=ArticleTag::all();
 		$articles = Article::all();
 		$tags=Tag::all();
@@ -193,7 +190,7 @@ class ArticlesController extends Controller {
 		//
 		//authenticate admin
 		if (!$this->adminAuth()){
-			return view('errors.authorization');
+			return view('errors.404');
 		}
 		$sections=Section::all();
 		$categories=Category::all();

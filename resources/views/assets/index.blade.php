@@ -5,132 +5,135 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script type="text/javascript" src="/js/deleteAsset.js"></script>
 	<script type="text/javascript" src="/js/searchAsset.js"></script>
+	<link href="/css/assets/index.css" rel="stylesheet">
 
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
-	<div class="container"  >
-<div>
-@if(Auth::user()->type=="admin" or Auth::user()->type=="regular" )
-<a class="btn btn-primary" href="{{ url('/assets/create') }}"> New Asset</a>
-	@if(Auth::user()->type=="admin" )
+<div class="container">
+
+	<div class="row" id="new-asset">
 		<a  href="{{ url('/assets/csvimport') }}"><img src="/images/CSV.png" style="width:40px"></a>
-	@endif
-@endif
-</div>
-
-
-<div id="search_result" class="col-md-8 ">
-	<table class="table table-hover">
-		<thead>
-			<tr>
-				<th class="text-center">Model</th>
-				<th class="text-center">Manufacturer</th>
-				<th class="text-center">Type</th>
-				<th class="text-center">Serial Number</th>
-				<th class="text-center">Belongs To</th>
-				<th class="text-center">Location</th>
-			</tr>
-		</thead>
-		<tbody>
-     		@foreach ($assets as $asset)
-			        <tr id="{{ $asset->id }}">
-			             <td class="text-center"><a href="/assets/{{ $asset->id }}"><b>{{ $asset->name }}</b></a></td>
-			            <td class="text-center">{{ $asset->manufacturer }}</td>
-			            <td class="text-center">{{ $asset->assettype->name }}</td>
-			            <td class="text-center">{{ $asset->serialno }}</td>
-			            <td class="text-center">{{ $asset->user->fname }} {{ $asset->user->lname }}</td>
-			            <td class="text-center">{{ $asset->location }}</td>
-			            <td class="text-center">
-			            	 <a href="/assets/{{$asset->id}}/edit " class="btn btn-success btn" >Edit</a>
-			            </td>
-			            <td class="text-center">
-
-				            <button class="btn btn-danger" onclick="deleteAsset( {{ $asset->id }} )">Delete</button>
-
-			            </td>
-
-			        </tr>
-     		@endforeach
-
-     	</tbody>
-	</table>
-</div>
-	
-
-		<div class="col-md-4 ">
-			<div class="panel panel-success">
-				<div class="panel-heading">Search</div>
-				<div class="panel-body">
-					@if (count($errors) > 0)
-						<div class="alert alert-danger">
-							<strong>Whoops!</strong> There were some problems with your input.<br><br>
-							<ul>
-								@foreach ($errors->all() as $error)
-									<li>{{ $error }}</li>
-								@endforeach
-							</ul>
-						</div>
-					@endif
-
-					
-					<form class= "form-horizontal" onsubmit="return false">					
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-						<div class="form-group">
-							<label class="col-md-4 control-label">Model Name</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="name" id="model_name">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-4 control-label">Manufacturer</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="manufacturer" id="manufacturer">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-4 control-label">Type</label>
-							<div class="col-md-6">
-								<select class="form-control" name="assettype_id" id="type">
-								<option value="">Select Type</option>
-									@foreach ($types as $type)
-									    <option value="{{ $type->id }}">{{ $type->name }}</option>
+		<a class="btn btn-primary" href="{{ url('/assets/create') }}"> New Asset</a>
+	</div>
+	<div class="col-md-12">
+		<div class="col-md-3">
+			<div class="row">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">Search</h3>
+					</div>
+					<div class="panel-body">
+						@if (count($errors) > 0)
+							<div class="alert alert-danger">
+								<strong>Whoops!</strong> There were some problems with your input.<br><br>
+								<ul>
+									@foreach ($errors->all() as $error)
+										<li>{{ $error }}</li>
 									@endforeach
-								</select>
-							
+								</ul>
 							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-4 control-label">Serial Number</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="serialno" id="serialno">
-							</div>
-						</div>
-
-
-						<div class="form-group">
-							<label class="col-md-4 control-label">Location</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="location" id="location">
-							</div>
-						</div>
+						@endif
 
 						
-						<div class="form-group">
-							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" onclick="searchAsset()" class="btn btn-primary">
-									Search
-								</button>
+						<form class= "form-horizontal" onsubmit="return false">					
+							<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+							<div class="form-group">
+								<label class="col-md-4 control-label">Model</label>
+								<div class="col-md-7">
+									<input type="text" class="form-control" name="name" id="model_name">
+								</div>
 							</div>
-						</div>
-					
-					</form>
+
+							<div class="form-group">
+								<label class="col-md-4 control-label">Manufacturer</label>
+								<div class="col-md-7">
+									<input type="text" class="form-control" name="manufacturer" id="manufacturer">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-4 control-label">Type</label>
+								<div class="col-md-7">
+									<select class="form-control" name="assettype_id" id="type">
+									<option value="">Select Type</option>
+										@foreach ($types as $type)
+										    <option value="{{ $type->id }}">{{ $type->name }}</option>
+										@endforeach
+									</select>
+								
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-4 control-label">Serial No</label>
+								<div class="col-md-7">
+									<input type="text" class="form-control" name="serialno" id="serialno">
+								</div>
+							</div>
+
+
+							<div class="form-group">
+								<label class="col-md-4 control-label">Location</label>
+								<div class="col-md-7">
+									<input type="text" class="form-control" name="location" id="location">
+								</div>
+							</div>
+
+							
+							<div class="form-group">
+								<div class="col-md-4 submit">
+									<button type="submit" onclick="searchAsset()" class="btn btn-primary">
+										Search
+									</button>
+								</div>
+								<div class="col-md-4">
+									<button type="reset" class="btn btn-primary">
+										Reset
+									</button>
+								</div>
+							</div>
+						
+						</form>
+					</div>	
 				</div>
 			</div>
 		</div>
+
+		<div id="search_result" class="col-md-8">
+			<table class="table table-hover">
+				<thead>
+					<tr class="info">
+						<th class="text-center">Model</th>
+						<th class="text-center">Manufacturer</th>
+						<th class="text-center">Type</th>
+						<th class="text-center">Serial Number</th>
+						<th class="text-center">Belongs To</th>
+						<th class="text-center">Location</th>
+						<th class="text-center">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+		     		@foreach ($assets as $asset)
+				        <tr id="{{ $asset->id }}">
+				            <td class="text-center"><a href="/assets/{{ $asset->id }}"><b>{{ $asset->name }}</b></a></td>
+				            <td class="text-center">{{ $asset->manufacturer }}</td>
+				            <td class="text-center">{{ $asset->assettype->name }}</td>
+				            <td class="text-center">{{ $asset->serialno }}</td>
+				            <td class="text-center">{{ $asset->user->fname }} {{ $asset->user->lname }}</td>
+				            <td class="text-center">{{ $asset->location }}</td>
+				            <td class="text-center">
+				            	<a href="/assets/{{$asset->id}}/edit" class="do"><img src="/images/edit.png" width="30px" height="30px">	</a>
+				          		&ensp;&ensp; &ensp;
+					          	<a href="#" onclick="deleteAsset( {{ $asset->id }} )"><img src="/images/delete.png" width="30px" height="30px"></a>
+
+				            </td>
+				        </tr>
+		     		@endforeach
+		     	</tbody>
+			</table>
+		</div>
 	</div>
+</div>
 
 @endsection
 @endif

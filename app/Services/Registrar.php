@@ -50,8 +50,8 @@ class Registrar implements RegistrarContract {
 
 		// Mail::send('emails.welcome', $data, function($message) use ($data)
   //           {
-  //               $message->from('yoyo80884@gmail.com', "Site name");
-  //               $message->subject("Welcome to site name");
+  //               $message->from('yoyo80884@gmail.com', "RSB");
+  //               $message->subject("Welcome to RSB");
   //               $message->to($data['email']);
   //           });
 

@@ -2,13 +2,13 @@
 @section('content')
 <div class="container-fluid">
 
-
-<a  href="/users/create?lang=ar" class="btn btn-primary" >عربى</a>
-<a  href="/users/create?lang=en" class="btn btn-primary" >English</a>
+<br>
+<a  href="/users/create?lang=ar" class="btn navbtn txtnav" >عربى</a>
+<a  href="/users/create?lang=en" class="btn navbtn txtnav" >English</a>
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
-				<div class="panel-heading"><span id="header" >{{ trans('words.add_user') }}</span></div>
+			<div class="panel ">
+				<div class="panel-heading navbtn txtnav"><span id="header" >{{ trans('words.add_user') }}</span></div>
 				<div class="panel-body">
 				    @if (count($errors) > 0)
                         <div class="alert alert-danger">
@@ -26,14 +26,14 @@
 
 
 						<div class="form-group">
-							<label class="col-md-4 control-label" > {{ trans('words.First') }}</label>
+							<label class="col-md-4 control-label navtxt" > {{ trans('words.First') }}</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="fname"  value="{{ old('fname') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">{{ trans('words.Last') }}</label>
+							<label class="col-md-4 control-label navtxt">{{ trans('words.Last') }}</label>
 							<div class="col-md-6">
  							<input type="text" class="form-control" name="lname" value="{{ old('lname') }}"> 							</div>
 						</div>
@@ -42,20 +42,20 @@
 
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">{{ trans('words.Email') }}</label>
+							<label class="col-md-4 control-label navtxt">{{ trans('words.Email') }}</label>
 							<div class="col-md-6">
  								<input type="email" class="form-control" name="email" value="{{ old('email') }}"> 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">{{ trans('words.Password') }}</label>
+							<label class="col-md-4 control-label navtxt">{{ trans('words.Password') }}</label>
 							<div class="col-md-6">
 								<input type="password" class="form-control" name="password">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">{{ trans('words.confirm') }}</label>
+							<label class="col-md-4 control-label navtxt">{{ trans('words.confirm') }}</label>
 							<div class="col-md-6">
 								<input type="password" class="form-control" name="password_confirmation">
 							</div>
@@ -63,23 +63,23 @@
 
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">{{ trans('words.phone') }}</label>
+							<label class="col-md-4 control-label navtxt">{{ trans('words.phone') }}</label>
 							<div class="col-md-6">
- 								<input type="text" class="form-control" name="phone" value="{{ old('phone') }}"> 							</div>
+ 								<input type="number" class="form-control" name="phone" value="{{ old('phone') }}"> 							</div>
 						</div>
 
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">{{ trans('words.Location') }}</label>
+							<label class="col-md-4 control-label navtxt">{{ trans('words.Location') }}</label>
 							<div class="col-md-6">
  								<input type="text" class="form-control" name="location" value="{{ old('location') }}"> 							</div>
 						</div>
 
 
 						<div class="form-group">
-     						<label class="col-md-4 control-label">{{ trans('words.Type') }}</label>
-							<div class="col-md-6">
-						        <select  name="type">
+     						<label class="col-md-4 control-label navtxt">{{ trans('words.Type') }}</label>
+							<div class="col-md-4">
+						        <select   class="form-control" name="type">
 							        <option value="regular"
 									@if(old('type')==="regular") {{"selected=true"}} @endif >{{ trans('words.regular') }}</option>
 							        <option value="tech"
@@ -91,7 +91,7 @@
 					    </div>
 
 						 <div class="form-group">
-     						<label class="col-md-4 control-label">{{ trans('words.Disable') }}</label>
+     						<label class="col-md-4 control-label navtxt">{{ trans('words.Disable') }}</label>
 								<div class="col-md-6">
 							        @if (old('isspam') == 0)
 							            {!! Form::checkbox('isspam', 'value') !!}
@@ -105,7 +105,7 @@
 			
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn btn-primary">
+								<button type="submit" class="btn navbtn txtnav">
 									Add user
 								</button>
 							</div>
@@ -132,10 +132,7 @@ $(document).ready(function(){
 		$("#header").css({
         //display:'block',
         float: 'right' ,
-        //overflow: 'hidden';
-
-        
-    });
+    }).height() + '10px');
 
 		$(".alert alert-danger").css({
 

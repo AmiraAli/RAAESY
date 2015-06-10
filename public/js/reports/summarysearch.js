@@ -16,6 +16,7 @@ function search () {
 			      type: "post",
 			      data: {'date':date},
 			      success: function(data){
+
 			       $("#container").html(data);
 			      },
 				  error: function(jqXHR, textStatus, errorThrown) {

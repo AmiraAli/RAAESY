@@ -5,10 +5,11 @@
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 
 <div class="container-fluid">
+<br>
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
-				<div class="panel-heading">New Asset</div>
+			<div class="panel ">
+				<div class="panel-heading navbtn txtnav">New Asset</div>
 				<div class="panel-body">
 					@if (count($errors) > 0)
 						<div class="alert alert-danger">
@@ -25,21 +26,21 @@
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Model Name</label>
+							<label class="col-md-4 control-label navtxt">Model Name</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="name" value="{{ old('name') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Manufacturer</label>
+							<label class="col-md-4 control-label navtxt">Manufacturer</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="manufacturer" value="{{ old('manufacturer') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Type</label>
+							<label class="col-md-4 control-label navtxt">Type</label>
 							<div class="col-md-6">
 								<select class="form-control" name="assettype_id" id="types">
 									@foreach ($types as $type)
@@ -48,20 +49,20 @@
 								</select>
 								
 								<div class="new-type">
-									<a href="#" onclick="addType()">Add new type</a>
+									<a  class="navtxt" href="#" onclick="addType()">Add new type</a>
 								</div>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Serial Number</label>
+							<label class="col-md-4 control-label navtxt">Serial Number</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="serialno" value="{{ old('serialno') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Belongs To</label>
+							<label class="col-md-4 control-label navtxt">Belongs To</label>
 							<div class="col-md-6">
 								<select class="form-control" name="user_id">
 									@foreach ($users as $user)
@@ -69,20 +70,20 @@
 									    <option value="{{ $user->id }}" <?php if(old('user_id') === $user->id){ echo "selected"; } ?>>{{ $user->fname }} {{ $user->lname }}</option>
 									@endforeach
 								</select>
-								<a href="/users/create" >Add new user</a>
+								<a href="/users/create" class="navtxt">Add new user</a>
 								
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Location</label>
+							<label class="col-md-4 control-label navtxt">Location</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="location" value="{{ old('location') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Comment</label>
+							<label class="col-md-4 control-label navtxt">Comment</label>
 							<div class="col-md-6">
 								<textarea class="form-control" rows="3" name="comment" value="{{ old('comment') }}"></textarea>
 							</div>
@@ -91,7 +92,7 @@
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn btn-primary">
+								<button type="submit" class="btn navbtn txtnav">
 									Add
 								</button>
 							</div>
@@ -114,7 +115,7 @@
 	
 	function addType(){
 
-		$(".new-type").html('<br><div class="form-group"><label class="col-md-4 control-label">New Type</label><div class="col-md-6"><input type="text" id="type-name" class="form-control" name="name"></div></div><div class="error" id="type-error"></div><div class="form-group"><div class="col-md-6 col-md-offset-4"><a href="#" class="btn btn-primary btn" onclick="saveType()">Add</a>&nbsp<a href="#" class="btn btn-primary btn" onclick="cancel()">Cancel</a></div></div>');
+		$(".new-type").html('<br><div class="form-group"><label class="col-md-4 control-label navtxt">New Type</label><div class="col-md-6"><input type="text" id="type-name" class="form-control" name="name"></div></div><div class="error" id="type-error"></div><div class="form-group"><div class="col-md-6 col-md-offset-4"><a href="#" class="btn navbtn txtnav btn" onclick="saveType()">Add</a>&nbsp<a href="#" class="btn navbtn txtnav btn" onclick="cancel()">Cancel</a></div></div>');
 	}
 
 	function saveType(){

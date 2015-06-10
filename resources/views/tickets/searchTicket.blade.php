@@ -1,6 +1,6 @@
 <table class="table table-hover">
 				<thead>
-					<tr class="warning">	
+					<tr class="navbtn txtnav">	
 						<td class="subject text-center">Subject</td>
 						<td class="status text-center">Status</td>
 						<td class="category text-center">Category</td>
@@ -72,3 +72,5 @@
 					@endforeach
 				</tbody>
 			</table>
+
+			<script type="text/javascript" src="/js/tickets_index.js"></script>

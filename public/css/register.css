@@ -1,0 +1,72 @@
+
+
+.panelhead{
+	background-color:rgba(117,165,209,1);
+	color: #fff;
+}
+.registerbtn{
+	background-color:rgba(117,165,209,1);
+}
+.mypanel{
+	margin-right: 600px;
+	width: 490px;
+	margin-top: 25px;
+}
+
+.panel-body{
+background-color:rgba(134,174,204,0.61);
+color: #fff;
+}
+
+
+#bg {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+
+  /* Preserve aspet ratio */
+  min-width: 100%;
+  min-height: 100%;
+
+  width: 100%;
+  height: auto;
+}
+
+
+
+img{
+	max-width: 100%
+}
+
+#recaptchaLink{
+    cursor:pointer;
+}
+
+@media all and (max-device-width: 640px){
+
+   #form-container{
+
+   		padding: 100px !important;
+
+   }
+
+   body{
+      font-size: 30px !important;
+    }
+
+    a , button{
+      font-size: 22px !important; 
+    }
+
+    .h4, h4  {
+      font-size: 30px !important;
+    }
+
+    .alert-danger{
+      font-size: 15px !important;
+    }
+
+
+
+
+}

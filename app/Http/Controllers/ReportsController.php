@@ -19,7 +19,8 @@ class ReportsController extends Controller {
 		$this->middleware('auth');
 		if (Auth::check()){
 			if (Auth::User()->type !="admin"){								
-				exit;
+				Redirect('error')->send();
+
 			}
 		}
 	}
@@ -104,10 +105,10 @@ class ReportsController extends Controller {
 
 	public function logsCSV(){
 		$logs =Log::all();
-		//var_dump($logs); exit();
+
 		$output="";
 		foreach ($logs as $log ) {
-			# code...
+			
 		
 			$output .= implode(",", array('Done By : '.ucfirst ($log->user->fname) , 'at : '.$log->created_at))."\n";
 			
@@ -354,7 +355,7 @@ class ReportsController extends Controller {
 				$newCount=Ticket::whereNull('tech_id')
 										->where('status','open')
 										->where('updated_at','>=',$startdate)
-										->where('deadline','<=',$enddate)
+										->where('updated_at','<=',$enddate)
 										->count();
 				$resolvedCount=Ticket::where('status','close')
 										->where('updated_at','>=',$startdate)

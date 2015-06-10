@@ -4,7 +4,7 @@
 <input type="hidden" class="category" value="{{$ticketsPerCategorie->category->section->name}}/{{$ticketsPerCategorie->category->name}}">
 <input type="hidden" class="count" value={{$ticketsPerCategorie->tg}}>
 @endforeach
-<div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+<div id="summarycategory" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 
 
 

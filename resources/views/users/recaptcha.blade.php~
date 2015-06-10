@@ -1,0 +1,3 @@
+{!! captcha_img('flat'); !!}
+<br/><br/>
+<input type="text"  class="form-control" name="captcha">

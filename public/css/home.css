@@ -1,0 +1,13 @@
+#new-ticket{
+	float:right;
+	margin-right: 48px;
+	margin-bottom: 10px;
+}
+
+.article{
+	word-wrap:break-word;
+}
+#articles{
+	height: 130px !important;
+	overflow: hidden;
+}
