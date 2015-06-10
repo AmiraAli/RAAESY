@@ -5,35 +5,17 @@ $(document).ready(function(){
                 }
             });
 
-         // $(".table_show").hide();
   
 });
 
-// var x=0;
-// var arr=[];
 
 function tog(elm,elm2){
-  // if(arr.indexOf(elm)==-1){
-  //   arr.push(elm);
-  //   x=0;
-  // }
-  // if (x === 0  ) {
-  //   $("."+elm+"category").toggle();
-  //   x++;
-  // }
-    // $("#"+elm2).click(function(){
-    //     $(".table_show").toggle();
-    // });
+  
 
   $("#"+elm2).toggleClass('glyphicon glyphicon-triangle-right').toggleClass('glyphicon glyphicon-triangle-bottom');
 
-  // $("#table_show"+elm).css("display", $("#table_show"+elm).css("display") === 'none' ? '' : 'none');
-// $("#table_show"+elm).remove;
   $("#table_show"+elm).toggle();
 
-  // $("#"+elm+"categories").css("display", "block");
-     // $("#table_show"+elm).toggleClass('display','block').toggleClass('display','none');
-  // $("."+elm+"category").toggle();
 
 }
 
@@ -79,7 +61,7 @@ function createCategory(secId , secName ){
 	//--------------------------------------AddComment-----------------------------------------------------------
   function saveSection(){
 
-  	$("secsaveError").remove();
+  	$(".secsaveError").remove();
 
     var  name = document.getElementById('secName').value ;
 

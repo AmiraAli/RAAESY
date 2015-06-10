@@ -8,7 +8,7 @@
 
 	<button class="btn btn-primary newTicket" onclick="createSection()" >New Section</button>
 </div>
-	<br>
+	<br><br>
 <div  id="con" class="col-md-12 " >
 		
 	     		@foreach ($sections as $section)
@@ -40,10 +40,12 @@
 							@foreach ($categories as $category)
 
 								@if($category->section_id == $section->id)
-							     <tr class="text-center {{$section->id}}category" id="{{ $category->id }}category">  						        
+							     <tr class=" {{$section->id}}category" id="{{ $category->id }}category">  						        
 
-							        	<td class="text-center col-md-9 {{$category->id}}hideEditCat {{$category->id}}errorcat">
-							        	<div class="text-center hideEditCat{{$category->id}}" >{{$category->name}}</div></td>
+							        	<td class="col-md-5 {{$category->id}}hideEditCat">
+
+							        	<div class=" hideEditCat{{$category->id}}" >{{$category->name}}</div></td>
+							        	<td class=" col-md-5 {{$category->id}}errorcat"></td>
 							        	<td class="text-center ">
 							        	<div class="{{$category->id}}removeButtonCat" style="display:inline;">
 							        	<button class="btn btn-primary btn-xs disEditCat" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="EditCat({{ $category->id }}+'category','{{$category->id}}')" ><span class="glyphicon glyphicon-pencil disEditCat"></span></button>

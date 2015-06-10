@@ -28,7 +28,7 @@ function SaveCatEdit(elm,id,oldname){
  $(".catEditErr").remove();
   name=document.getElementById("exampleInputEmail2").value;
   if(name.trim() == ""){
-        $("."+id+"errorcat").append("<div class='catEditErr err' >Category name can not be empty!</div>");
+        $("."+id+"errorcat").prepend("<div class='catEditErr err' >Category name can not be empty!</div>");
          
 	return;
    }
