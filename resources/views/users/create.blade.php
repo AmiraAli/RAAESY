@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel ">
-				<div class="panel-heading navbtn txtnav"><span id="header" >{{ trans('words.add_user') }}</span></div>
+				<div class="panel-heading navbtn txtnav" style="height:35px;"><span id="header">{{ trans('words.add_user') }}</span></div>
 				<div class="panel-body">
 				    @if (count($errors) > 0)
                         <div class="alert alert-danger">
@@ -132,7 +132,7 @@ $(document).ready(function(){
 		$("#header").css({
         //display:'block',
         float: 'right' ,
-    }).height() + '10px');
+    });
 
 		$(".alert alert-danger").css({
 

@@ -12,13 +12,13 @@
 
 	<div class="row" id="new-asset">
 		<a  href="{{ url('/assets/csvimport') }}"><img src="/images/CSV.png" style="width:40px"></a>
-		<a class="btn btn-primary" href="{{ url('/assets/create') }}"> New Asset</a>
+		<a class="btn navbtn txtnav" href="{{ url('/assets/create') }}"> New Asset</a>
 	</div>
 	<div class="col-md-12">
 		<div class="col-md-3">
 			<div class="row">
-				<div class="panel panel-success">
-					<div class="panel-heading">
+				<div class="panel ">
+					<div class="panel-heading navbtn txtnav">
 						<h3 class="panel-title">Search</h3>
 					</div>
 					<div class="panel-body">
@@ -38,21 +38,21 @@
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 							<div class="form-group">
-								<label class="col-md-4 control-label">Model</label>
+								<label class="col-md-4 control-label navtxt">Model</label>
 								<div class="col-md-7">
 									<input type="text" class="form-control" name="name" id="model_name">
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-md-4 control-label">Manufacturer</label>
+								<label class="col-md-4 control-label navtxt">Manufacturer</label>
 								<div class="col-md-7">
 									<input type="text" class="form-control" name="manufacturer" id="manufacturer">
 								</div>
 							</div>
 
 							<div class="form-group">
-								<label class="col-md-4 control-label">Type</label>
+								<label class="col-md-4 control-label navtxt">Type</label>
 								<div class="col-md-7">
 									<select class="form-control" name="assettype_id" id="type">
 									<option value="">Select Type</option>
@@ -65,7 +65,7 @@
 							</div>
 
 							<div class="form-group">
-								<label class="col-md-4 control-label">Serial No</label>
+								<label class="col-md-4 control-label navtxt">Serial No</label>
 								<div class="col-md-7">
 									<input type="text" class="form-control" name="serialno" id="serialno">
 								</div>
@@ -73,7 +73,7 @@
 
 
 							<div class="form-group">
-								<label class="col-md-4 control-label">Location</label>
+								<label class="col-md-4 control-label navtxt">Location</label>
 								<div class="col-md-7">
 									<input type="text" class="form-control" name="location" id="location">
 								</div>
@@ -82,7 +82,7 @@
 							
 							<div class="form-group">
 								<div class="col-md-6 col-md-offset-4">
-									<button type="submit" onclick="searchAsset()" class="btn btn-primary">
+									<button type="submit" onclick="searchAsset()" class="btn navbtn txtnav">
 										Search
 									</button>
 								</div>
@@ -97,7 +97,7 @@
 		<div id="search_result" class="col-md-8">
 			<table class="table table-hover">
 				<thead>
-					<tr class="info">
+					<tr class="navbtn txtnav">
 						<th class="text-center">Model</th>
 						<th class="text-center">Manufacturer</th>
 						<th class="text-center">Type</th>
