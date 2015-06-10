@@ -3,8 +3,13 @@
 <div class="container-fluid">
 
 <br>
-<a  href="/users/create?lang=ar" class="btn navbtn txtnav" >عربى</a>
-<a  href="/users/create?lang=en" class="btn navbtn txtnav" >English</a>
+
+@if (Session::get('lang') =="ar")
+	<a  href="/users/create?lang=en" class="btn navbtn txtnav" >English</a>
+@else
+	<a  href="/users/create?lang=ar" class="btn navbtn txtnav" >عربى</a>
+@endif
+
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel ">
