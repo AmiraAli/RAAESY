@@ -73,6 +73,7 @@ return [
 	"unique"               => "The :attribute has already been taken.",
 	"url"                  => "The :attribute format is invalid.",
 	"timezone"             => "The :attribute must be a valid zone.",
+	"captcha"             => "The CAPTCHA was incorrect. Try again",
 
 	/*
 	|--------------------------------------------------------------------------

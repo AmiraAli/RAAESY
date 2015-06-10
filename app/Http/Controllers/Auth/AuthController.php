@@ -6,6 +6,8 @@ use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 use Session;
+use Request;
+
 
 class AuthController extends Controller {
 
@@ -40,10 +42,29 @@ class AuthController extends Controller {
 	  public function getLogout()
     {
         $this->auth->logout();
-        //Auth::logout();
         Session::flush();
         return redirect('auth/login');
 
     }
+
+
+
+	/**
+	 * Change the captcha image ( called by AJAX )
+	 *
+	 * @return Response
+	 */
+
+	public function recaptcha(){
+        
+
+		if(!Request::ajax()) {
+			return;
+		}
+
+        return view('auth.recaptcha');
+   
+	}
+	
 
 }

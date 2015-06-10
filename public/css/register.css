@@ -1,7 +1,6 @@
 
 
 .panelhead{
-	height: 50px;
 	background-color:rgba(117,165,209,1);
 	color: #fff;
 }
@@ -31,4 +30,43 @@ color: #fff;
 
   width: 100%;
   height: auto;
+}
+
+
+
+img{
+	max-width: 100%
+}
+
+#recaptchaLink{
+    cursor:pointer;
+}
+
+@media all and (max-device-width: 640px){
+
+   #form-container{
+
+   		padding: 100px !important;
+
+   }
+
+   body{
+      font-size: 30px !important;
+    }
+
+    a , button{
+      font-size: 22px !important; 
+    }
+
+    .h4, h4  {
+      font-size: 30px !important;
+    }
+
+    .alert-danger{
+      font-size: 15px !important;
+    }
+
+
+
+
 }

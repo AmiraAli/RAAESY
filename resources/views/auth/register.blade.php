@@ -2,13 +2,13 @@
 <link rel="stylesheet" type="text/css" href="/css/register.css">
 
 <img src="/images/register8.jpg" id="bg" alt="">
+<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 
-<div class="container-fluid mybody">
-	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			<div class=" mypanel">
+<div class="container-fluid">
+	<div class="row" >
+			 <div  class="col-lg-5 col-lg-offset-1 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2"> 
 				<div class="panel-heading panelhead"><b><h4>Register</h4></b></div>
-				<div class="panel-body panel-body">
+				<div class="panel-body" id="form-container">
 					@if (count($errors) > 0)
 						<div class="alert alert-danger">
 							<strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -65,7 +65,7 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label"><b>Phone</b></label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="phone" value="{{ old('phone') }}">
+								<input type="number" class="form-control" name="phone" value="{{ old('phone') }}">
 							</div>
 						</div>
 
@@ -80,9 +80,10 @@
 						<div class="form-group">
 
 							<label class="col-md-4 control-label"><b>Enter the word</b></label>
-							<div class="col-md-6">
+							<div class="col-md-6" id="captcha">
 								{!! captcha_img('flat'); !!}
-								<br>
+								<br/>
+								<a  id="recaptchaLink" onclick="recaptcha();">Re-captcha</a>
 								<input type="text"  class="form-control" name="captcha">
 							</div>
 						</div>
@@ -95,9 +96,10 @@
 							</div>
 						</div>
 					</form>
-				</div>
 			</div>
 		</div>
 	</div>
 </div>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="/bootstrab/js/bootstrap.min.js"></script>
+ 	<script src="/js/auth/register.js"></script>

@@ -80,10 +80,15 @@
 							</div>
 
 							
-							<div class="form-group">
-								<div class="col-md-6 col-md-offset-4">
+							<div class=" row form-group">
+								<div class="col-md-4 col-md-offset-4">
 									<button type="submit" onclick="searchAsset()" class="btn navbtn txtnav">
 										Search
+									</button>
+								</div>
+								<div class="col-md-4">
+									<button type="reset" class="btn navbtn txtnav">
+										Reset
 									</button>
 								</div>
 							</div>

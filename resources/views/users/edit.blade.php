@@ -50,7 +50,7 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label navtxt">Phone</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="phone" value="{{$user->phone}}">
+								<input type="number" class="form-control" name="phone" value="{{$user->phone}}">
 							</div>
 						</div>
 

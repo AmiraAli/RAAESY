@@ -26,6 +26,9 @@ Route::get("/error", function(){
 Route::get('/assets/csvimport', 'AssetsController@importToCsv');
 Route::get('/tickets/exportCSV', 'TicketsController@exportCSV');
 
+Route::get('/auth/recaptcha', 'Auth\AuthController@recaptcha');
+
+
 
 
 Route::resource('/categories','CategoriesController');
