@@ -14,6 +14,7 @@ use App\Article;
 use App;
 
 use Lang;
+use Session;
 
 class UsersController extends Controller {
 
@@ -105,8 +106,11 @@ class UsersController extends Controller {
 
 		if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
 			Lang::setLocale('ar');
+			Session::set('lang', 'ar');
 		}else{
 			Lang::setLocale('en');
+			Session::set('lang', 'en');
+
 		}
 		return view('users.create');
 	}
@@ -119,32 +123,41 @@ class UsersController extends Controller {
 	public function store()
 	{
 
-		Lang::setLocale('ar');
+		if (Session::get('lang') =="ar"){
 
+			Lang::setLocale('ar');	
 			$arr = array ();
 
+			//set validation array
 			$arr['الاسم الأول'] = Request::get('fname');
-
-
 			$arr['الاسم الثانى'] = Request::get('lname');
 			$arr['البريد الإلكترونى'] =  Request::get('email');
 			$arr['كلمة المرور'] = Request::get('password');
 			$arr['رقم الهاتف'] = Request::get('phone');
 			$arr['الموقع'] = Request::get('location');
+			$arr['email'] =  Request::get('email');
+			$arr['كلمة المرور_confirmation'] =  Request::get('password_confirmation');
 
 
-			if ( Lang::getLocale() == "ar" ){
-				$v = Validator::make($arr, [
+
+			$messages = array(
+  			  'email.unique' => 'البريد الإلكترونى الذى ادخلته مأخوذ مسبقاً',
+			);
+			
+			//validation
+			$v = Validator::make($arr, [
 					'الاسم الأول' => 'required|max:255',
 					'الاسم الثانى' => 'required|max:255',
-					'البريد الإلكترونى' => 'required|email|max:255|unique:users',
-					'كلمة المرور' => 'required|confirmed|min:6',
+					'البريد الإلكترونى' => 'required|email|max:255',
+					'email' => 'unique:users' , 
+					'كلمة المرور' => 'required|min:6|confirmed', 
 					'رقم الهاتف' => 'required|numeric',
 					'الموقع' => 'required|max:255',
 
-        		]);
+        	] , $messages );
 
-			}else{
+
+		}else{
 				$v = Validator::make(Request::all() , [
            			'fname' => 'required|max:255',
 					'lname' => 'required|max:255',
@@ -154,12 +167,8 @@ class UsersController extends Controller {
 					'location' => 'required|max:255',
         		]);
 
-			}
+		}
 
-
-			
-		    
-        $subject=Request::get('subject');
 
 	    if ($v->fails())
 	    {
@@ -494,53 +503,10 @@ class UsersController extends Controller {
 	    return Response::download($filename, 'users.csv', $headers);
 		
 	}
+
+
 	
 
-
-	public function downloadPDF()
-	{
-		
-
-	    /*$filename = "users.pdf";
-	    $handle = fopen($filename, 'w+');
-
-	    
-	    fputpdf($handle, array('id', 'First name', 'Last name', 'Email' ,'Phone' ,'Location' , 'Disabled' , 'Type' , 'Remember token' , 'Created at' , 'Updated at'));
-
-
-	    //put all fields except password
-	    foreach($users as $row) {
-	        fputpdf($handle, array($row['id'], $row['fname'], $row['lname'], $row['email'] , $row['phone'] , $row['location'] , $row['isspam'] , $row['type'] , $row['remember_token'] ,$row['created_at']  , $row['updated_at']));
-	    }
-
-	    fclose($handle);*/
-	    /*$articles=Article::all();
-    	$output = implode(",", array('Subject', 'Category','How can See It!?','Owner','Created_at','Updated_at'))."\n";
-    	foreach ($articles as $article) {
-		// iterate over each tweet and add it to the csv
-			if ($article->isshow==1){
-                    $show="Technicals only";
-            }else{
-                    $show="Technicals and Users"; 
-            } 	
-		    $output .= implode(",", array($article->subject , $article->category->name , $show , $article->user->fname ,  $article->created_at ,$article->updated_at)); // append each row
-			$output .="\n";
-
-		}
-
-    	$headers = array(
-        'Content-Type: application/pdf',
-        'Content-Disposition:attachment; filename="cv.pdf"',
-        'Content-Transfer-Encoding:binary',
-        //'Content-Length:'.filesize($filename),
- 	   );
-
-	    return Response::make(rtrim($output, "\n"), 200, $headers);
-
-		//return response()->download($filename, "CV.pdf");	*/
-		$pdf = App::make('dompdf');
-		$pdf->loadView('users.index', array());
-		return $pdf->download('invoice.pdf');	
-	}
+	
 
 }	
