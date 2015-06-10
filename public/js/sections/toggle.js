@@ -5,99 +5,68 @@ $(document).ready(function(){
                 }
             });
 
-            $("#createSectionDiv").hide();
-            $("#createCategoryDiv").hide();
-
-
-
+  
 });
 
- 
+
+function tog(elm,elm2){
+  
+
+  $("#"+elm2).toggleClass('glyphicon glyphicon-triangle-right').toggleClass('glyphicon glyphicon-triangle-bottom');
+
+  $("#table_show"+elm).toggle();
 
 
+}
 
+function createSection(){
 
-    function tog(elm,elm2){
-     
-	       $("#"+elm2).toggleClass('glyphicon glyphicon-menu-right');
-
-	        $("."+elm+"category").toggle();
-	   
-
-	}
-
-
-
-
-	function createSection(){
-
-	  	$(".alert-danger").remove();
-	  	document.getElementById('secName').value ='';
-
-      if ($(createCategoryDiv).is(":visible")){
-
-        $("#createCategoryDiv").hide();  
-        $("#createSectionDiv").show();  
-
-      }else{
-        $("#con").toggleClass('col-md-8');
-        $("#createSectionDiv").toggle();
-      
-      }
-    	
-      
+  	$(".secsaveError").remove();
+    $('.newTicket').hide();
+    var nodeSec=$('<div class="contn"><div class="col-md-5 mySecError" ></div>'+           
+          '<div class="col-md-4 " style="display:inline;">'+
+          '<input type="text" class="form-control" id="secName" placeholder="Section Name">'+
+          '</div>'+
+        '<div class="form-group" style="display:inline;">'+
+          '<div class="col-md-3 ">'+
+            '<button type="submit" onclick="saveSection()" class="btn btn-primary "><span class="glyphicon glyphicon-ok"></span> </button>&ensp; &ensp;'+
+            '<button  onclick="cancelAddSec()" class="btn btn-danger "><span class="glyphicon glyphicon-remove"></span> </button>'+
+          '</div></div></div>');
+     $(".newSect").append(nodeSec);
+    
 	}
 
   //-------------------------------------------------------------------------------------------------------------
 function createCategory(secId , secName ){
 
-      var pos = $("#_"+secId).position();
+  $(".disBut").attr('disabled','disabled');
 
-      $("#createCategoryDiv").css({
-        top: (pos.top ) + "px",
-        
-    });
+  $("#_"+secId).hide();
+  $('.'+secId+'removeButton').hide();
+  var node=$('<div class="beforAlert"><div class="col-md-6 addCat " style="display:inline;">'+
+        '<input type="text" class="form-control addCat" id="catName" placeholder="Category Name"></div>'+
+        '<div class="form-group addCat" style="display:inline;">'+
+            '<div class="col-md-6 ">'+
+              '<button type="submit" onclick="saveCategory()" class="btn btn-primary "><span class="glyphicon glyphicon-ok"></span> </button>&ensp; &ensp;'+
+              '<button  onclick="cancelAddCat()" class="btn btn-danger "><span class="glyphicon glyphicon-remove"></span> </button>'+
+              '<input type="hidden"  id="cat_secId" >'+
+              '<input type="hidden"  id="cat_secName">'+
+           ' </div></div></div>');
+  $("._"+secId).append(node);
 
-      //check if same button is pressed or another one of another section
-      var oldSecName = document.getElementById('cat_secName').value;
-
-      $(".alert-danger").remove();
-      document.getElementById('catName').value ='';
-      document.getElementById('cat_secName').value = secName;
-      document.getElementById('cat_secId').value = secId;
-
-
-
-      if ($(createSectionDiv).is(":visible") ){
-
-          $("#createSectionDiv").hide();
-          $("#createCategoryDiv").show();
-      }else{
-
-          if ( oldSecName == secName){
-            $("#con").toggleClass('col-md-8');
-            $("#createCategoryDiv").toggle();
-          }else{
-              document.getElementById("con").className= 'col-md-8' ;
-              $("#createCategoryDiv").show();
-          }
-
-      }
-
-      
+  document.getElementById('cat_secName').value = secName;
+  document.getElementById('cat_secId').value = secId;    
     
   }
 	//--------------------------------------AddComment-----------------------------------------------------------
   function saveSection(){
 
-
-    $("#createCategoryDiv").hide();
-  	$(".alert-danger").remove();
+  	$(".secsaveError").remove();
 
     var  name = document.getElementById('secName').value ;
 
     if (name.trim() == null || name.trim() == "") {
-    	$(".panel-body").prepend("<div class='alert alert-danger'>Section name can not be empty! </div>");
+    	$(".mySecError").prepend("<div class='secsaveError err'>Section name can not be empty! </div>");
     	return;
     }
    //ajax request
@@ -111,11 +80,13 @@ function createCategory(secId , secName ){
 
 
 		if (result == "not done"){
-			$(".panel-body").prepend("<div class='alert alert-danger'>Section name already exists</div>");
+			$(".mySecError").prepend("<div class='secsaveError err'>Section name already exists</div>");
 		}else{	
-        $("#con").toggleClass('col-md-8');
-        $("#createSectionDiv").toggle();
+       
         $("#con").append(result);
+        $(".secsaveError").remove();
+        $(".contn").remove();
+        $('.newTicket').show();
 		}
 					},
 	error: function(jqXHR, textStatus, errorThrown) {
@@ -131,11 +102,11 @@ function createCategory(secId , secName ){
     var categoryname=document.getElementById("catName").value;
     var sectionid=document.getElementById("cat_secId").value;
 
-    $(".alert-danger cat").remove();
-
+    //$(".alert-danger cat").remove();
+    $(".catsaveError").remove();
 
     if (categoryname.trim() == null || categoryname.trim() == "") {
-      $(".panel-body").prepend("<div class='alert alert-danger'>Category name can not be empty! </div>");
+      $("."+sectionid+"error").prepend("<div class='catsaveError err'>Category name can not be empty! </div>");
       return;
     }
 
@@ -150,11 +121,15 @@ function createCategory(secId , secName ){
 
 
             if (result == "not done"){
-                  $(".panel-body").prepend("<div class='alert alert-danger cat'>Category name already exists</div>");
+                  $("."+sectionid+"error").prepend("<div class='catsaveError err'>Category name already exists</div>");
             }else{  
-                  $("#con").toggleClass('col-md-8');
-                  $("#createCategoryDiv").toggle();
-                  $('#'+sectionid+'categories').append(result);  
+                  $('#'+sectionid+'categories').append(result); 
+                  $(".beforAlert").remove();
+                  $(".catsaveError").remove();
+                  $("#_"+sectionid).show();
+                  $('.'+sectionid+'removeButton').show();
+                  $(".disBut").removeAttr('disabled');
+                  
             } 
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -163,6 +138,21 @@ function createCategory(secId , secName ){
       });
   }
     
+function cancelAddCat()
+{
+  var sectionid=document.getElementById("cat_secId").value;
+  $(".beforAlert").remove();
+  $(".catsaveError").remove();
+  $("#_"+sectionid).show();
+  $('.'+sectionid+'removeButton').show();
+  $(".disBut").removeAttr('disabled');
+}
 
-
+function cancelAddSec()
+{
+  $(".secsaveError").remove();
+  $(".contn").remove();
+  $('.newTicket').show();
+ 
+}
 

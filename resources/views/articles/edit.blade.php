@@ -19,44 +19,35 @@
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" /> 
 
 
-
-
-	{!! Form::open(array('class' => 'form-inline', 'method' => 'PATCH', 'route' => array('articles.update',$article->id))) !!}
-	
-      @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+<div class="container-fluid">
+<br><br><br>
+  <div class="row">
+   <div class="col-md-7 col-md-offset-2">
+    <div class="panel ">
+      <div class="panel-heading navbtn txtnav"> <strong>Edit Article</strong> </div>
+      <div class="panel-body">
+  
+    {!! Form::open(array('class' => 'form-inline', 'method' => 'PATCH', 'route' => array('articles.update',$article->id))) !!}
+    
+     @if (count($errors) > 0)
+        <div class="alert alert-danger">
+          <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <ul>
+              @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+        </div>
        @endif
+  <div class="row">
+      <div class="form-group col-md-6">
+          {!! Form::label('SUBJECT', 'Subject', ['class'=> 'col-md-4 control-label navtxt']) !!}
 
-
-    <div class="form-group">
-        {!! Form::label('SUBJECT', 'SUBJECT:') !!}
-        {!! Form::text('subject',$article->subject,['class'=>'form-control']) !!}
-    </div>
-    <br/>
-   <div class="form-group">
-        {!! Form::label('BODY', 'BODY:') !!}
-        {!! Form::textarea('body',$article->body,['class'=>'jqte-test']) !!}
-    </div>
-    <br/>
-
-    <div class="form-group">
-        {!! Form::label('IS SHOW', 'IS SHOW:') !!}
-        @if ($article->isshow == 1)
-            {!! Form::checkbox('isshow', 'value') !!}
-        @else
-            {!! Form::checkbox('isshow', 'value',true) !!}
-        @endif
-
-    </div>
-    <div class="form-group">
-        <select class="form-control" name="category">
+          {!! Form::text('subject',$article->subject,['class'=>'form-control']) !!}
+      </div>
+       <div class="form-group col-md-6">
+          {!! Form::label('Category', 'Category', ['class'=> 'col-md-4 control-label navtxt']) !!}
+            <select class="form-control" name="category">
         @foreach ($sections as $section)
         <optgroup label=" {{ $section->name }} " >
             @foreach ($categories as $category)
@@ -71,33 +62,45 @@
             </optgroup>
         @endforeach
         </select>
-        </div>
-    <br/>
-
-
-    <!-- Tag -->
-     <div class="form-group" id="tags_selected">
-        <label class="control-label">Tags</label>
-        <input type="text" id="search" class="form-control">  
-        <input type="hidden" name="tagValues" id="tagValues">
      </div>
-    <br><br>
-
-
-
-
-    <div class="form-group">
-        {!! Form::submit('Save', ['class' => 'btn btn-primary form-control']) !!}
+    </div>
+    <div class="row">
+        <div class="form-group col-md-11">
+        {!! Form::textarea('body',$article->body,['class'=>'jqte-test']) !!}
+        </div>
     </div>
 
+   
+  <div class="form-group  col-md-6" id="tags_selected">
+       <label class="col-md-4 control-label navtxt">Tags</label>
+       <input type="text" id="search" class="form-control">
+  </div>
+  <input type="hidden" name="tagValues" id="tagValues">
+<div class="form-group">
+      {!! Form::label('IS SHOW', 'For Technical Only',['class'=> ' navtxt']) !!}
+      @if ($article->isshow == 1)
+            {!! Form::checkbox('isshow', 'value') !!}
+        @else
+            {!! Form::checkbox('isshow', 'value',true) !!}
+        @endif
+    </div >
+<div class="row">
+            <div class="col-md-6 col-md-offset-4">
+              <button onclick="submit_tags ()" class="btn navbtn txtnav">Submit</button>
+            </div>
+  </div>
 
-	{!! Form::close() !!}
+        {!! Form::close() !!}
 
 
+</div>
+</div>
+</div>
+</div>
+</div>
     <script>
          $('.jqte-test').jqte();
     </script>
-
     <script src="/js/jquery-2.1.3.js" type="text/javascript"> </script> 
     <script async src="//code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/jquery-te-1.4.0.min.js"></script>

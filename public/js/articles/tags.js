@@ -7,8 +7,6 @@ window.onload = function() {
             					  });
             				 };
 
-
-
 /**
 * global array of tags selected 
 **/
@@ -32,7 +30,7 @@ $(document).ready(function(){
 		        };
 			       $( "#search" ).autocomplete({
 						source: parsed,
-						change: function( event, ui ) {
+						select: function( event, ui ) {
 						console.log(ui['item']['value']);
 						tag_value=ui['item']['value'];
 						//append the selected tags && check if this tags is
@@ -43,7 +41,7 @@ $(document).ready(function(){
 								var tags=document.getElementById("tags_selected");
 								var span=document.createElement("span");
 								span.innerHTML=tag_value+" ";
-								span.setAttribute("class","btn btn-primary");
+								span.setAttribute("class","btn txtnav navbtn");
 								span.setAttribute("id",tag_value);
 								var remove_span=document.createElement("span");
 								remove_span.setAttribute("class","badge");
@@ -52,9 +50,13 @@ $(document).ready(function(){
 								span.appendChild(remove_span);
 								tags.appendChild(span);
 							}
-							check_tags_array();
+							//check_tags_array();
+						},
+						close:function(event,ui){
+							document.getElementById("search").value="";
 						}
 					});
+
      		      },
 			  error: function(jqXHR, textStatus, errorThrown) {
 				alert(errorThrown);
@@ -70,7 +72,7 @@ function remove_tag (tag_value) {
 	var i = tags_array.indexOf(tag_value);
 	tags_array.splice(i, 1);
 	document.getElementById(tag_value).remove();
-	check_tags_array ();
+	//check_tags_array ();
 }
 /**
 * function to check the status of tags array
@@ -102,11 +104,8 @@ function check_tags_array () {
 * function to send the all tags selected to the form
 **/
 function submit_tags () {
-	document.getElementById("tags_selected").style.visibility = "hidden";
+	// document.getElementById("tags_selected").style.display = "none";
 	var tags_field=document.getElementById("tagValues");
 	tags_field.value=tags_array.toString();
+	document.getElementsByTagName('form')[0].submit();
 }
-
-/**
-* text editor jquery
-**/

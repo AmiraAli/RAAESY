@@ -1,132 +1,71 @@
-<html>
-<head>
-<style>
-.formed
-{
-    width:90%;
-    table-layout:fixed;
-    padding:0;
-    margin:0;
-}
-.form{
-    width:90%;
-    table-layout:fixed;
-    padding:0;
-    margin:0;
-}
-</style>
-</head>
-<body>
 @extends('app')
 @section('content')
+<link href="/css/sections/sectionIndex.css" rel="stylesheet">
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
+<br>
 <div class="container">
-<div class="row">
-	<button class="btn btn-primary" onclick="createSection()" >Create New Section</button>
-</div>
+<div class="row newSect">
 
-	
+	<button class="btn btn-primary newTicket" onclick="createSection()" >New Section</button>
+</div>
+	<br><br>
 <div  id="con" class="col-md-12 " >
 		
-			
-
 	     		@foreach ($sections as $section)
 	<table class="table table-hover formed">	
+				     <tr id="{{$section->id}},sectionstest" class="info">
+				          <td  id="{{ $section->id }}"> 
+				          	<a href="#" style="text-decoration:none;" id="{{ $section->name }}" class="glyphicon glyphicon-triangle-right hideEdit{{$section->id}}" onclick="tog({{ $section->id }},'{{$section->name}}');">
+				          	{{ $section->name }}</a>
+				          	<input type="hidden" id="idSection" value="{{ $section->id }}"> 
+				          </td>
+				          <td class="text-center _{{$section->id}}">
+				          	<a href="#" onclick="createCategory({{$section->id}},'{{$section->name}}')" id="_{{$section->id}}" class="btn btn-primary btn disBut" >New Category</a>
+				          </td>
+						<td class="text-center {{$section->id}}error">
+						&ensp; &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+						<div class="{{$section->id}}removeButton" style="display:inline;">
+				            <button onclick="Edit({{$section->id}}+',sectionstest')" class=" btn btn-link do"><img src="/images/edit.png" width="30px" class="do" height="30px">	</button>
+				          &ensp;&ensp; &ensp;
+					          <a href="#" onclick="deleteSection( {{ $section->id }}+',sectionstest' )"><img src="/images/delete.png" width="30px" height="30px"></a>
+					          </div>
+				            </td>
+				        
 
-				     <tr id="{{$section->id}},sectionstest">
-				          <td class="text-center" id="{{ $section->id }}"> 
-				          	<a href="#" id="{{ $section->name }}" class="glyphicon glyphicon-triangle-right" onclick="tog({{ $section->id }},'{{$section->name}}');">
-				          	</a>{{ $section->name }}<input type="hidden" id="idSection" value="{{ $section->id }}"> 
-				          </td>
-				          <td class="text-center">
-				          	<a href="#" onclick="createCategory({{$section->id}},'{{$section->name}}')" id="_{{$section->id}}" class="btn btn-primary btn" >New Category</a>
-				          </td>
-						<td class="text-center">
-				            <a href="#" onclick="Edit({{$section->id}}+',sectionstest')" class="btn btn-warning btn" >Edit</a>
-				            </td>
-				            <td class="text-center">
-					          <button class="btn btn-danger" onclick="deleteSection( {{ $section->id }}+',sectionstest' )">Delete</button>
-				            </td>
 				      </tr>
 </table>
 
-				      <table id="{{$section->id}}categories" class="table table-hover form" >
+					<div class="container col-md-10 table_show" id="table_show{{$section->id}}" >
+				      	<table id="{{$section->id}}categories" class="table table-hover form sec" >
 							@foreach ($categories as $category)
 
-							     <tr class="text-center {{$section->id}}category" id="{{ $category->id }}category">  
-							        		
-							        @if($category->section_id == $section->id)
+								@if($category->section_id == $section->id)
+							     <tr class=" {{$section->id}}category" id="{{ $category->id }}category">  						        
 
-							        	<td>{{$category->name}}</td>
-							        	<td class="text-center">
-								       	 	<a href="#" onclick="EditCat({{ $category->id }}+'category','{{$category->id}}')" class="btn btn-warning btn" >Edit</a>
-								    	</td>
-								    	<td class="text-center">			            	
-									  		<button class="btn btn-danger" onclick="deleteCategory( {{ $category->id }}+'category' )">Delete</button>
+							        	<td class="col-md-5 {{$category->id}}hideEditCat">
+
+							        	<div class=" hideEditCat{{$category->id}}" >{{$category->name}}</div></td>
+							        	<td class=" col-md-5 {{$category->id}}errorcat"></td>
+							        	<td class="text-center ">
+							        	<div class="{{$category->id}}removeButtonCat" style="display:inline;">
+							        	<button class="btn btn-primary btn-xs disEditCat" data-title="Edit" data-toggle="modal" data-target="#edit" onclick="EditCat({{ $category->id }}+'category','{{$category->id}}')" ><span class="glyphicon glyphicon-pencil disEditCat"></span></button>
+
+								      &ensp;&ensp; &ensp;
+
+								    	<button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" onclick="deleteCategory( {{ $category->id }}+'category' )"><span class="glyphicon glyphicon-trash"></span></button>			            	
+									  		</div>
 									 	</td>			
 							        @endif
 							 	 </tr>
 							@endforeach
-					</table>
+					    </table>
+					</div>
 
 	     	@endforeach
 
 		
 	</div>
-	<!-- _____________________________________________________________________ -->
-
-	<div class="col-md-4" id="createSectionDiv">
-		<div class="panel panel-success">
-
-			<div class="panel-heading">New Section</div>
-
-				<div class="panel-body">
-					<div class="form-group">
-						<label class="col-md-6 control-label">Section Name</label>
-						<div class="col-md-6">
-	    					<input type="text" class="form-control" id="secName" placeholder="Section Name" name="name">
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-md-6 col-md-offset-4">
-							<button type="submit" onclick="saveSection()" class="btn btn-primary">Submit</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-<!-- ___________________________________________________________________________________-->
-
-		<div class="col-md-4" id="createCategoryDiv">
-			<div class="panel panel-success">
-
-			<div class="panel-heading">New Category</div>
-				<div class="panel-body">
-					<div class="form-group">
-						<label class="col-md-6 control-label">Category Name</label>
-						<div class="col-md-6">
-	    					<input type="text" class="form-control" id="catName" placeholder="Category Name">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-6 control-label">Section Name</label>
-						<div class="col-md-6">
-	    					<input type="text" class="form-control" id="cat_secName"  disabled="true">
-	    					<input type="hidden" class="form-control" id="cat_secId"  disabled="true">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<div class="col-md-6 col-md-offset-4">
-							<button type="submit" onclick="saveCategory()" class="btn btn-primary">Submit</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			</div>
-		
-		</div>
+	
 <!-- ___________________________________________________________________________________-->
 
 @endsection
@@ -135,7 +74,7 @@
 	<script src="/js/sections/toggle.js"></script>
 	<script type="text/javascript" src="/js/sections/editSection.js"></script>
     <script type="text/javascript" src="/js/sections/editCategories.js"></script>
-  <!-- <script type="text/javascript" src="/js/sections/newcategory.js"></script> -->
+
 <script>
 
 		window.onload = function() {

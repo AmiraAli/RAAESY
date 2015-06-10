@@ -6,15 +6,15 @@
             });
             };
 function EditCat(elm,id){
-	//alert("test");
 
-	console.log(document.getElementById(elm).innerHTML);
+  $(".disEditCat").attr('disabled','disabled');
 
          $.ajax({
                 url: '/categories/'+id+'/edit',
                 type: 'get',
                 success: function(result) {
-                   document.getElementById(elm).innerHTML=result;    
+                $(".hideEditCat"+id).hide();
+                 $("."+id+"hideEditCat").append(result);    
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                                 console.log(errorThrown);
@@ -23,31 +23,31 @@ function EditCat(elm,id){
 
 }
 
-
 function SaveCatEdit(elm,id,oldname){
 
- $(".alert-danger").remove();
+ $(".catEditErr").remove();
   name=document.getElementById("exampleInputEmail2").value;
   if(name.trim() == ""){
-        $("#yarab"+id).prepend("<div class='alert alert-danger'>Category name can not be empty!</div>");
+        $("."+id+"errorcat").prepend("<div class='catEditErr err' >Category name can not be empty!</div>");
          
 	return;
    }
 
   if(name.trim() == oldname){
-        $("#yarab"+id).prepend("<div class='alert alert-danger'>please change name!</div>");
+        $("."+id+"errorcat").append("<div class='catEditErr err'>please change name!</div>");
          
 	return;
    }
          $.ajax({
                 url: '/categories/'+id,
                 type: 'PUT',
-		data:{name:name},
+		            data:{name:name},
                 success: function(result) {
                     if(result=="NOT DONE"){
-			$("#yarab"+id).prepend("<div class='alert alert-danger'>Category name already exists!</div>");
+			$("."+id+"errorcat").append("<div class='catEditErr err'>Category name already exists!</div>");
 			return ;
 		    }
+                    $(".disEditCat").removeAttr('disabled');
                     document.getElementById(elm).innerHTML=result;  
   
                 },
@@ -58,4 +58,13 @@ function SaveCatEdit(elm,id,oldname){
             });
    
 
+}
+
+function cancelEditCat()
+{
+  var catid=document.getElementById("idCat").value;
+  $(".cancelEditCat").remove();
+  $(".catEditErr").remove();
+  $(".hideEditCat"+catid).show();
+  $(".disEditCat").removeAttr('disabled');
 }
