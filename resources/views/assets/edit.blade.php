@@ -62,6 +62,7 @@
 									    <option value="{{ $user->id }}" <?php if ($asset->user_id == $user->id){ echo "selected"; } ?>>{{ $user->fname }} {{ $user->lname }}</option>
 									@endforeach
 								</select>
+								<a href="/users/create" class="navtxt">Add new user</a>
 							</div>
 						</div>
 
