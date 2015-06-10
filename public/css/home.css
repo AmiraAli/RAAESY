@@ -8,5 +8,6 @@
 	word-wrap:break-word;
 }
 #articles{
-	min-height: 130px !important;
+	height: 130px !important;
+	overflow: hidden;
 }

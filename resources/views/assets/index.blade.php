@@ -81,9 +81,14 @@
 
 							
 							<div class="form-group">
-								<div class="col-md-6 col-md-offset-4">
+								<div class="col-md-4 submit">
 									<button type="submit" onclick="searchAsset()" class="btn btn-primary">
 										Search
+									</button>
+								</div>
+								<div class="col-md-4">
+									<button type="reset" class="btn btn-primary">
+										Reset
 									</button>
 								</div>
 							</div>
