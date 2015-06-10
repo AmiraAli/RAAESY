@@ -24,27 +24,23 @@
                             </ul>
                         </div>
        			 @endif
-{!! Form::open(['route'=>['users.update',$user->id],'method'=>'put'])!!}
+	{!! Form::open(['route'=>['users.update',$user->id],'method'=>'put','class'=>'form-horizontal'])!!}
 
-<div class="form-group">
-							<label class="col-md-4 control-label">First Name</label>
+						<div class="form-group">
+							<label class="col-md-4 control-label navtxt">First Name</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="fname" value="{{ $user->fname}}">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Last Name</label>
+							<label class="col-md-4 control-label navtxt">Last Name</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="lname" value="{{$user->lname}}">
 							</div>
 						</div>
-
-
-
-
 						<div class="form-group">
-							<label class="col-md-4 control-label">E-Mail Address</label>
+							<label class="col-md-4 control-label navtxt">E-Mail Address</label>
 							<div class="col-md-6">
 								<input type="email" class="form-control" name="email" value="{{ $user->email }}">
 							</div>
@@ -52,7 +48,7 @@
 
 						
 						<div class="form-group">
-							<label class="col-md-4 control-label">Phone</label>
+							<label class="col-md-4 control-label navtxt">Phone</label>
 							<div class="col-md-6">
 								<input type="number" class="form-control" name="phone" value="{{$user->phone}}">
 							</div>
@@ -60,18 +56,17 @@
 
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">Location</label>
+							<label class="col-md-4 control-label navtxt">Location</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" name="location" value="{{$user->location}}">
 							</div>
 						</div>
 
 						@if ($current_user->type == "admin"  && $user-> id != "1" )
-
 							<div class="form-group">
-	     						<label class="col-md-4 control-label">Role</label>
-								<div class="col-md-6">
-								        <select  name="type">
+	     						<label class="col-md-4 control-label navtxt">Role</label>
+								<div class="col-md-4">
+								        <select  name="type" class="form-control">
 									        <option value="regular"
 											@if($user->type ==="regular") {{"selected=true"}} @endif >Regular user</option>
 									        <option value="tech"
@@ -79,14 +74,11 @@
 									        <option value="admin"
 									        @if($user->type ==="admin") {{"selected=true"}} @endif >Admin</option>
 									    </select>
-
-
-
 							    </div>
 						    </div>
 
 							 <div class="form-group">
-	     						<label class="col-md-4 control-label">Disable</label>
+	     						<label class="col-md-4 control-label navtxt">Disable</label>
 									<div class="col-md-6">
 								        @if ($user->isspam == 0)
 								            {!! Form::checkbox('isspam', 'value') !!}
@@ -102,7 +94,7 @@
 					    @if($current_user->id == $id  ) 
 					    <div class="form-group">
 					    <div class="col-md-6 col-md-offset-4" >
-					    	<a class="btn btn-link" href="/users/changepassword/{{$user->id}}">Change Password</a>
+					    	<a class="btn navtxt" href="/users/changepassword/{{$user->id}}">Change Password</a>
 					    </div>
 					    </div>
 					    @endif
