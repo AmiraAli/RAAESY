@@ -1,11 +1,12 @@
-
-
+@extends('app')
+@section('content')
+<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 <div class="container" id="container">
 	<div class="row">
 		<div class="col-md-3">
 			<select class="form-control" id="date" onchange="custom()">
-				<option value="month" selected>Last month</option>
-		  		<option value="week" selected>Last week</option>
+				<option value="month">Last month</option>
+		  		<option value="week">Last week</option>
 		  		<option value="custom">Custom</option>
 			</select>
 		</div>
@@ -85,11 +86,11 @@
 		</table>
 	</div>
 </div>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+ <script src="http://code.highcharts.com/highcharts.js"></script>
+ <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
-
-
-
-
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
  <script type="text/javascript" src="/js/reports/summarycategory.js"></script>
  <script type="text/javascript" src="/js/reports/summarysearch.js"></script>
 
@@ -119,10 +120,9 @@
 
 
 google.load("visualization", "1", {packages:["corechart"]});
-
-drawChart();
+     google.setOnLoadCallback(drawChart);
       function drawChart() {
-
+alert("aya");
         var data = google.visualization.arrayToDataTable([
 
 		['Task', 'Hours per Day'],
@@ -147,4 +147,4 @@ drawChart();
 
 
 </script>
-
+@endsection

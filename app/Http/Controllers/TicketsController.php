@@ -106,6 +106,7 @@ class TicketsController extends Controller {
 			// closed tickets except spam tickets
 			$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('tech_id', $request->user()->id)->where('is_spam', "0")->get();
 			// open tickets except spam tickets
+
 			$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('tech_id', $request->user()->id)->where('is_spam', "0")->get();
 			$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and tech_id = ? group by category_id", array($request->user()->id));
 
@@ -733,8 +734,31 @@ class TicketsController extends Controller {
 
 	public function SearchAllSubject(Request $request){
 	// Save notification
+$subject=array();
+	$type=Auth::user()->type;
+	$id=Auth::user()->id;
 	if($request->ajax()) {
-	$subjects=Subject::all()->lists('name');
+	if($type == 'admin')
+		$subjects=Subject::all()->lists('name');
+
+	if($type == 'regular'){
+	$tickets=Ticket::where('user_id','=',$id)->get();
+	foreach($tickets as $ticket){
+		$subject[]=Subject::where('id','=',$ticket->subject_id)->lists('name')[0];
+
+			}
+	$subjects = json_decode(json_encode($subject), FALSE);
+			}
+	
+	if($type == 'tech'){
+	$tickets=Ticket::where('tech_id','=',$id)->get();
+	foreach($tickets as $ticket){
+		$subject[]=Subject::where('id','=',$ticket->subject_id)->lists('name')[0];
+
+			}
+	$subjects = json_decode(json_encode($subject), FALSE);
+			}
+		
 
 	}
 	echo json_encode($subjects);
@@ -816,6 +840,7 @@ class TicketsController extends Controller {
 			    if($data["deadLine"] && $data["startDate"]){
 		            $Tickets=$Tickets->where('created_at','>=', $data["startDate"]);
 					$Tickets=$Tickets->where('deadline','<=', $data["deadLine"]);
+
 				}
 
 				return $Tickets;

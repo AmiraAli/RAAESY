@@ -1,5 +1,3 @@
-
-
 @extends('app')
 @section('content')
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -15,7 +13,7 @@
 		<div class="input-group">   		
 	       <input type="Search" placeholder="subject...." id="searchticket" class="form-control" /> 
 	       <div class="input-group-btn">
-				<button class="btn btn-info" onclick="SearchButton()" >
+				<button class="btn navbtn txtnav" onclick="SearchButton()" >
 				   	<span class="glyphicon glyphicon-search"></span>
 			   	</button>
 		    </div>
@@ -28,7 +26,7 @@
 			@if(Auth::user()->type=="admin" )
 				<a  href="{{ url('/tickets/exportCSV') }}" > <img src="/images/CSV.png" style="width:40px"></a>
 			@endif
-			<a class="btn btn-primary" href="{{ url('/tickets/create') }}"> New Ticket</a>
+			<a class="btn navbtn txtnav" href="{{ url('/tickets/create') }}"> New Ticket</a>
 		</div>
 	@endif
 
@@ -63,9 +61,9 @@
 				@if(Auth::user()->type === "admin")
 					
 
-					<div class="panel panel-danger">
-						<div class="panel-heading">
-							<a href="#" id="toggle"><strong>AdvancedSearch              
+					<div class="panel ">
+						<div class="panel-heading navbtn txtnav">
+							<a  class="txtnav" href="#" id="toggle"><strong>AdvancedSearch              
 							<span class="glyphicon glyphicon-search"></span></strong></a>
 						</div>
 
@@ -110,7 +108,7 @@
 
 								<div class="form-group">
 									<div class="col-md-6 col-md-offset-4">
-										<button type="submit" onclick='AdvancedSearch()' class="btn btn-primary advancedsearchbuttonwithall">Search</button>
+										<button type="submit" onclick='AdvancedSearch()' class="btn navbtn txtnav advancedsearchbuttonwithall">Search</button>
 									</div>	
 								</div>
 							</form> 	
@@ -119,6 +117,7 @@
 				@endif
 			</div>
 
+
 			<div class="row" id="category_list">
 				<div class="list-group">
 					<a href="#" class="list-group-item active" id="cat_all" onclick="searchByCat('cat_all', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ count($tickets) }}</span><strong>All categories</strong></a>
@@ -126,14 +125,15 @@
 						   <a href="#" class="list-group-item" id="cat_{{ $category->category_id }}" onclick="searchByCat('cat_{{ $category->category_id }}', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ $category->count }}</span>{{ $category->name }}</a>  			         
 				    @endforeach
 
+
 				  
 				</div>
 			</div>
 
 			<div class="row" id="sort_list">
-				<div class="panel panel-danger">
-					<div class="panel-heading">
-						<h3 class="panel-title">Sort By</h3>
+				<div class="panel ">
+					<div class="panel-heading navbtn txtnav">
+						<h3 class="panel-title txtnav">Sort By</h3>
 					</div>
 					<div class="panel-body">
 						<div class="form-group" style="display:inline;">
@@ -146,7 +146,7 @@
 								</select>
 							</div>
 						</div>
-						<button class="btn btn-info" id="sortType" onclick="sortType(<?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)" style="display:inline;">DESC</button>
+						<button class="btn navbtn txtnav" id="sortType" onclick="sortType(<?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)" style="display:inline;">DESC</button>
 					
 						<br>
 
@@ -198,8 +198,8 @@
 			</div>
 			@if(Auth::user()->type === "admin")
 				<div class="row">
-					<div class="panel panel-danger">
-						<div class="panel-heading">
+					<div class="panel ">
+						<div class="panel-heading navbtn txtnav">
 							<h3 class="panel-title">Tags</h3>
 						</div>
 						<div class="panel-body">
@@ -222,7 +222,7 @@
 		<div class="col-md-8" id="table_show">
 			<table class="table table-hover">
 				<thead>
-					<tr class="warning">	
+					<tr class="navbtn txtnav">	
 						<td class="subject text-center">Subject</td>
 						<td class="status text-center">Status</td>
 						<td class="category text-center">Category</td>
