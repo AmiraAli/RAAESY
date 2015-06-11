@@ -10,8 +10,8 @@ use App\User;
 use Request;
 use Auth;
 use Response;
-
-
+use Lang;
+use Session;
 class ReportsController extends Controller {
 
 	public function __construct()
@@ -19,7 +19,8 @@ class ReportsController extends Controller {
 		$this->middleware('auth');
 		if (Auth::check()){
 			if (Auth::User()->type !="admin"){								
-				exit;
+				Redirect('error')->send();
+
 			}
 		}
 	}
@@ -104,10 +105,10 @@ class ReportsController extends Controller {
 
 	public function logsCSV(){
 		$logs =Log::all();
-		//var_dump($logs); exit();
+
 		$output="";
 		foreach ($logs as $log ) {
-			# code...
+			
 		
 			$output .= implode(",", array('Done By : '.ucfirst ($log->user->fname) , 'at : '.$log->created_at))."\n";
 			
@@ -219,11 +220,11 @@ class ReportsController extends Controller {
 	**/
 	public function summary(){
 
-		$inprogressCount=Ticket::whereNull('tech_id')
+		$inprogressCount=Ticket::whereNotNull('tech_id')
 								->where('status','open')
 								->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
 								->count();
-		$newCount=Ticket::whereNotNull('tech_id')
+		$newCount=Ticket::whereNull('tech_id')
 								->where('status','open')
 								->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
 								->count();
@@ -292,24 +293,25 @@ class ReportsController extends Controller {
 			// $data = Input::all();
 			$data = Request::input('date');
 			if($data == "month"){
-$inprogressCount=Ticket::whereNull('tech_id')
+
+				$inprogressCount=Ticket::whereNotNull('tech_id')
 								->where('status','open')
 								->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
 								->count();
-		$newCount=Ticket::whereNotNull('tech_id')
-								->where('status','open')
-								->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
-								->count();
-		$resolvedCount=Ticket::where('status','close')
-								->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
-								->count();
+				$newCount=Ticket::whereNull('tech_id')
+										->where('status','open')
+										->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
+										->count();
+				$resolvedCount=Ticket::where('status','close')
+										->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
+										->count();
 
-		$ticketsPerCategories=Ticket::selectRaw('count(*) as count , category_id ')
-									->groupBy('category_id')
-									->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
-									->get();
+				$ticketsPerCategories=Ticket::selectRaw('count(*) as count , category_id ')
+											->groupBy('category_id')
+											->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
+											->get();
 
-		$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
+				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
 
 				return view('reports.summarySearchMonth',compact('inprogressCount','newCount'
 												,'resolvedCount','ticketsPerCategories'
@@ -317,11 +319,11 @@ $inprogressCount=Ticket::whereNull('tech_id')
 			}
 			
 			if($data == "week"){
-				$inprogressCount=Ticket::whereNull('tech_id')
+				$inprogressCount=Ticket::whereNotNull('tech_id')
 								->where('status','open')
 								->where('updated_at','>',date('Y-m-d', strtotime('-1 week')))
 								->count();
-				$newCount=Ticket::whereNotNull('tech_id')
+				$newCount=Ticket::whereNull('tech_id')
 										->where('status','open')
 										->where('updated_at','>',date('Y-m-d', strtotime('-1 week')))
 										->count();
@@ -345,12 +347,12 @@ $inprogressCount=Ticket::whereNull('tech_id')
 				$startdate=Request::input('startdate');
 				$enddate=Request::input('enddate');
 
-				$inprogressCount=Ticket::whereNull('tech_id')
+				$inprogressCount=Ticket::whereNotNull('tech_id')
 								->where('status','open')
 								->where('updated_at','>=',$startdate)
 								->where('updated_at','<=',$enddate)
 								->count();
-				$newCount=Ticket::whereNotNull('tech_id')
+				$newCount=Ticket::whereNull('tech_id')
 										->where('status','open')
 										->where('updated_at','>=',$startdate)
 										->where('updated_at','<=',$enddate)
@@ -389,6 +391,16 @@ $inprogressCount=Ticket::whereNull('tech_id')
 	 */
 	public function problemMangement()
 	{
+        
+
+if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
+			Lang::setLocale('ar');
+			Session::set('lang', 'ar');
+		}else{
+			Lang::setLocale('en');
+			Session::set('lang', 'en');
+
+		}
 
 	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->groupBy('subject_id')->get();
 	$all=Ticket::all();
@@ -483,6 +495,7 @@ $inprogressCount=Ticket::whereNull('tech_id')
 	 * @return Response
 	 */
 	public function problemMangementDate(){
+
 	
 	$startdate=Request::input('startdate');
 	$enddate=Request::input('enddate');
@@ -840,4 +853,51 @@ $inprogressCount=Ticket::whereNull('tech_id')
 
 
 
+public function problemMangementLang(){
+
+      $lang=Request::input("lang");
+if($lang=="عربى")
+      Lang::setLocale('ar');
+if($lang=="English")
+      Lang::setLocale('en');
+
+
+
+
+
+$startdate=Request::input('startdate');
+	$enddate=Request::input('enddate');
+
+	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->whereBetween('updated_at', [$startdate, $enddate])
+									   ->groupBy('subject_id')->get();
+	$all=Ticket::all();
+
+	foreach($allTickets as $allTicket){
+	$count=0;
+	$idsPerSubject=array();
+	$sectionCategoryPerSubject=array();
+		foreach($all as $ticket){
+			if($ticket->subject->name==$allTicket->subject->name  ){
+				if($ticket->status=='close'){
+					$count=$count+1;
+				}
+				$idsPerSubject[]=$ticket->id;
+				$sectionCategoryPerSubject[]=$ticket->category->section->name.'/'.$ticket->category->name;
+				}
+		}
+		$percentage=($count/$allTicket->allticket)*100;
+		$allTicket->closedcount=$count;
+		$allTicket->percentage=$percentage;
+		$allTicket->ids=$idsPerSubject;
+		$allTicket->sectionCategory=$sectionCategoryPerSubject;
+	}
+
+	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
+	return  view('reports.problemMangementLang',compact('lang','allTickets','startdate','enddate'));
+
+}
+//Session::set('locale',input::get('locale'))
+//redirect
+//Lang::setLocale(Session::get('locale'))
+//Lang::locale()=="ar"
 }

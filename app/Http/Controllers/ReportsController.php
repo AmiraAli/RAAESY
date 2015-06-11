@@ -10,8 +10,8 @@ use App\User;
 use Request;
 use Auth;
 use Response;
-
-
+use Lang;
+use Session;
 class ReportsController extends Controller {
 
 	public function __construct()
@@ -391,6 +391,16 @@ class ReportsController extends Controller {
 	 */
 	public function problemMangement()
 	{
+        
+
+if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
+			Lang::setLocale('ar');
+			Session::set('lang', 'ar');
+		}else{
+			Lang::setLocale('en');
+			Session::set('lang', 'en');
+
+		}
 
 	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->groupBy('subject_id')->get();
 	$all=Ticket::all();
@@ -485,6 +495,7 @@ class ReportsController extends Controller {
 	 * @return Response
 	 */
 	public function problemMangementDate(){
+
 	
 	$startdate=Request::input('startdate');
 	$enddate=Request::input('enddate');
@@ -842,4 +853,51 @@ class ReportsController extends Controller {
 
 
 
+public function problemMangementLang(){
+
+      $lang=Request::input("lang");
+if($lang=="عربى")
+      Lang::setLocale('ar');
+if($lang=="English")
+      Lang::setLocale('en');
+
+
+
+
+
+$startdate=Request::input('startdate');
+	$enddate=Request::input('enddate');
+
+	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->whereBetween('updated_at', [$startdate, $enddate])
+									   ->groupBy('subject_id')->get();
+	$all=Ticket::all();
+
+	foreach($allTickets as $allTicket){
+	$count=0;
+	$idsPerSubject=array();
+	$sectionCategoryPerSubject=array();
+		foreach($all as $ticket){
+			if($ticket->subject->name==$allTicket->subject->name  ){
+				if($ticket->status=='close'){
+					$count=$count+1;
+				}
+				$idsPerSubject[]=$ticket->id;
+				$sectionCategoryPerSubject[]=$ticket->category->section->name.'/'.$ticket->category->name;
+				}
+		}
+		$percentage=($count/$allTicket->allticket)*100;
+		$allTicket->closedcount=$count;
+		$allTicket->percentage=$percentage;
+		$allTicket->ids=$idsPerSubject;
+		$allTicket->sectionCategory=$sectionCategoryPerSubject;
+	}
+
+	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
+	return  view('reports.problemMangementLang',compact('lang','allTickets','startdate','enddate'));
+
+}
+//Session::set('locale',input::get('locale'))
+//redirect
+//Lang::setLocale(Session::get('locale'))
+//Lang::locale()=="ar"
 }
