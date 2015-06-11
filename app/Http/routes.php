@@ -137,5 +137,5 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
-
+Route::post('/reports/problemmangementlang','ReportsController@problemMangementLang');
 

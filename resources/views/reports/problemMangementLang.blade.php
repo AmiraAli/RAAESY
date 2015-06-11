@@ -4,10 +4,11 @@
 			From:<input type="date" id="startdate" value={{$startdate}}>
 			To:<input type="date" id="enddate" value={{$enddate}}>
 		</div>
-@if (Session::get('lang') =="ar")
-	<button id="lang" onclick="language()" class="btn navbtn txtnav" >English</button>
-@else
+@if($lang=="English")
 	<button id="lang" onclick="language()" class="btn navbtn txtnav" >عربى</button>
+@else
+	<button id="lang" onclick="language()" class="btn navbtn txtnav" >English</button>
+
 @endif
 		<div style="float:left;">
 			<button class="btn btn-primary" onclick="searchDate()"><span class="glyphicon glyphicon-search"></span></button>
@@ -18,10 +19,10 @@
 	<table class="table " >
 	
 		<tr>
-			<td>Subject
-			<td>Total Ticket Count
-			<td>Total Ticket Solved
-			<td>Percentages
+			<td>{{trans('problemmangement.subject')}}
+			<td>{{trans('problemmangement.total ticket count')}}
+			<td>{{trans('problemmangement.total ticket solved')}}
+			<td>{{trans('problemmangement.percentages')}}
 		</tr>
 		  	<tr>
 				<td>{{$allTicket->subject->name}}</td>
@@ -39,13 +40,13 @@
 			<div class="panel panel-default">
 			<div class="panel-body" style="background:#FFCCFF;">
 			<div class="col-md-3">
-				<h4>Tickets Id</h4>
+				<h4>{{trans('problemmangement.ticketsid')}}</h4>
 				@foreach($allTicket->ids as $id)
 					#{{$id}}<br>
 				@endforeach
 			</div>
 			<div class="col-md-3">
-				<h4>Tickets Section/category</h4>
+				<h4>{{trans('problemmangement.tickets sections/category')}}</h4>
 				@foreach($allTicket->sectionCategory as $section)
 					{{$section}}<br>
 				@endforeach
