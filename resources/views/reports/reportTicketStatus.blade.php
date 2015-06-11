@@ -13,6 +13,14 @@
 @section('content')
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="/js/reports/reportTicketStatus.js"></script>
+
+@if (Session::get('lang') =="ar")
+	<a  href="/reports/reportTicketStatus?lang=en" class="btn navbtn txtnav" >English</a>
+@else
+	<a  href="/reports/reportTicketStatus?lang=ar" class="btn navbtn txtnav" >عربى</a>
+@endif
+
+
 <?php $open= array(); $close= array(); ?>
 	@foreach($tickets as $ticket)
 		<?php $countOpen=0; $countClose=0; ?>
@@ -42,11 +50,11 @@
 	<div  class="container">
 		<table class="table table-hover "> 
 		<th> </th>
-		<th>id</th>
-		<th>subject</th>
-		<th>Current Status</th>
-		<th>No of Open</th>
-		<th>No of Close</th>
+		<th>{{ trans('words.id')}}</th>
+		<th>{{ trans('words.subject') }}</th>
+		<th>{{ trans('words.Current_Status')}}</th>
+		<th>{{ trans('words.No_of_Open')}}</th>
+		<th>{{ trans('words.No_of_Close')}}</th>
 		<tbody id="tbody">
 			@foreach($tickets as $ticket)
 		  <tr>
@@ -54,7 +62,11 @@
 <a href="#" class='glyphicon glyphicon-triangle-right' onclick='toggle({{$ticket->id}})'></a>	</td>	  
 					<td>#{{$ticket->id}}</td>
 					<td>{{$ticket->subject->name}}</td>
-					<td>{{ $ticket->status }}</td>
+					@if($ticket->status=='open')
+					<td>{{ trans('words.open')}}</td>
+					@else
+					<td>{{ trans('words.close')}}</td>
+					@endif
 					@if(!empty($open[$ticket->id]))
 						<td>{{ $open[$ticket->id] }}</td>
 				    @else
@@ -70,7 +82,11 @@
 		  <tr class="text-center {{$ticket->id}}" >	
 
 						@if($ticketStatus->ticket_id==$ticket->id)
-							<td class="text-center">{{$ticketStatus->value}}</td>
+						   @if($ticketStatus->value=='open')
+							<td class="text-center">{{ trans('words.open')}}</td>
+							@else
+							<td class="text-center">{{ trans('words.close')}}</td>
+							@endif
 							<td class="text-center">{{$ticketStatus->created_at}}</td>
 							
 						@endif

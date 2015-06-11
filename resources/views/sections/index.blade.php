@@ -6,7 +6,7 @@
 <div class="container">
 <div class="row newSect">
 
-	<button class="btn btn-primary newTicket" onclick="createSection()" >New Section</button>
+	<button class="btn navbtn txtnav newTicket" onclick="createSection()" >New Section</button>
 </div>
 	<br><br>
 <div  id="con" class="col-md-12 " >
@@ -15,12 +15,12 @@
 	<table class="table table-hover formed">	
 				     <tr id="{{$section->id}},sectionstest" class="info">
 				          <td  id="{{ $section->id }}"> 
-				          	<a href="#" style="text-decoration:none;" id="{{ $section->name }}" class="glyphicon glyphicon-triangle-right hideEdit{{$section->id}}" onclick="tog({{ $section->id }},'{{$section->name}}');">
+				          	<a href="#" style="text-decoration:none;" id="{{ $section->name }}" class="glyphicon glyphicon-triangle-right  navtxt hideEdit{{$section->id}}" onclick="tog({{ $section->id }},'{{$section->name}}');">
 				          	{{ $section->name }}</a>
 				          	<input type="hidden" id="idSection" value="{{ $section->id }}"> 
 				          </td>
 				          <td class="text-center _{{$section->id}}">
-				          	<a href="#" onclick="createCategory({{$section->id}},'{{$section->name}}')" id="_{{$section->id}}" class="btn btn-primary btn disBut" >New Category</a>
+				          	<a href="#" onclick="createCategory({{$section->id}},'{{$section->name}}')" id="_{{$section->id}}" class="btn navbtn txtnav btn disBut" >New Category</a>
 				          </td>
 						<td class="text-center {{$section->id}}error">
 						&ensp; &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
@@ -44,7 +44,7 @@
 
 							        	<td class="col-md-5 {{$category->id}}hideEditCat">
 
-							        	<div class=" hideEditCat{{$category->id}}" >{{$category->name}}</div></td>
+							        	<div class=" navtxt hideEditCat{{$category->id}}" >{{$category->name}}</div></td>
 							        	<td class=" col-md-5 {{$category->id}}errorcat"></td>
 							        	<td class="text-center ">
 							        	<div class="{{$category->id}}removeButtonCat" style="display:inline;">
