@@ -18,16 +18,32 @@
 
 
 <div class="container">
+	<br>
+	<div class="row">
+		<div id="search">
+	        <div class="form-group">
+	            <label class="col-md-4 control-label navtxt"><b>Quick Search</b></label>
+	            <div class="col-md-7"> 
+	                <input type="text" class="form-control parent" placeholder="Fname/Lname/Email" onkeyup="myAutocomplete(this.value)" name="term" id="quickSearch"  autocomplete="on">
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	<div>
+        <div class="form-group">
+            <label class="col-md-1 control-label navtxt"><b>Show</b></label>
+            <div class="col-md-6"> 
+                <label><input type="radio" name="user" value="all"   onclick="search()" checked="true"> All</label> |
+				<label><input type="radio" name="user" value="regular"   onclick="search()">  Regular Users</label> | 
+				<label><input type="radio" name="user" value="tech"  onclick="search()">  Technicians</label> |
+				<label><input type="radio" name="user" value="admin"  onclick="search()">  Admins </label>|
+				<label><input type="radio" name="user" value="disabled"  onclick="search()">  Disabled users </label>|
 
-Show: 
-<label><input type="radio" name="user" value="all"   onclick="search()" checked="true"> All</label> |
-<label><input type="radio" name="user" value="regular"   onclick="search()">  Regular Users</label> | 
-<label><input type="radio" name="user" value="tech"  onclick="search()">  Technicians</label> |
-<label><input type="radio" name="user" value="admin"  onclick="search()">  Admins </label>|
-<label><input type="radio" name="user" value="disabled"  onclick="search()">  Disabled users </label>|
+            </div>
+        </div>
+    </div>
 
-<label for="">Quick Search: </label>
-<input type="text" class="parent" placeholder="Fname/Lname/Email" onkeyup="myAutocomplete(this.value)" name="term" id="quickSearch"  autocomplete="on">
 <a class="btn btn-primary" href="/users/create" >Create New User</a>
 <button id="toggle" class="btn btn-primary" > <span class="glyphicon glyphicon-search"></span></button>
 
@@ -78,18 +94,17 @@ Show:
 		<input type="checkbox" disabled="true" >
 	@endif
 
-</td>
-
-
+</td>         
 
 <td class="text-center">
 
 @if ($user->id != "1" | ($user->id == "1" && $current_user->id == "1" ) )
-	<a class="btn btn-success" href="/users/{{$user->id}}/edit">edit</a>
+	<a href="/users/{{$user->id}}/edit" class="do"><img src="/images/edit.png" width="30px" height="30px">   </a> 
 @endif
 
 @if ($user->id != "1")
-	<a class="btn btn-danger delete" href="#"  id="{{$user->id}}" onclick="Delete({{$user->id}})">delete</a>
+	 &ensp;&ensp; &ensp;
+ 	<a href="#" id="{{$user->id}}" onclick="Delete({{$user->id}})"><img src="/images/delete.png" width="30px" height="30px"></a>
 @endif
 </td>
 
