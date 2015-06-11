@@ -18,6 +18,13 @@ return array(
 	"admin" =>  "Admin" ,
 	"ooh" => "Whoops!" , 
 	"validError" => "There were some problems with your input." , 
+
+	"Done_by" => "Done by",
+
+	"name" => "name" ,
+	"title" => "title" ,
+
+	"with" => "with ",
 	
 
 );

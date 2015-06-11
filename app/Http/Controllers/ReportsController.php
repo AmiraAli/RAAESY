@@ -10,6 +10,8 @@ use App\User;
 use Request;
 use Auth;
 use Response;
+use Lang;
+use Session;
 
 
 class ReportsController extends Controller {
@@ -23,6 +25,7 @@ class ReportsController extends Controller {
 
 			}
 		}
+
 	}
 	/**
 	* Function to sort tickets
@@ -99,6 +102,16 @@ class ReportsController extends Controller {
 	 */
 	public function logs()
 	{
+		
+		if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
+			Lang::setLocale('ar');
+			Session::set('lang', 'ar');
+		}else{
+			Lang::setLocale('en');
+			Session::set('lang', 'en');
+
+		}
+
 		$logs =Log::all();
 		return view('reports.logs',compact('logs'));
 	}
