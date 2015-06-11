@@ -23,13 +23,13 @@
 	<nav class="navbar mynav" >
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<button  type="button" class="navbar-toggle collapsed txtnav" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 					<span class="sr-only">Toggle Navigation</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand txtnav" href="{{ url('/home') }}"><h4>RSB</h4></a>
+				<a class="navbar-brand txtnav" href="{{ url('/home') }}"><img class="img-circle" src="/images/RSB.png" style="height:40px"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
@@ -51,7 +51,7 @@
 						<li><a class="txtnav" href="{{ url('/auth/login') }}">Login</a></li>
 						<li><a class="txtnav" href="{{ url('/auth/register') }}">Register</a></li>
 					@else
-					    <li> <a  class="txtnav" class="navbar-brand" href="/users/{{$current_user->id}}"> {{ ucfirst ($current_user->fname)  }}</a></li>
+					    <li> <a  class="navbar-brand txtnav" href="/users/{{$current_user->id}}"> {{ ucfirst ($current_user->fname)  }}</a></li>
 						<li ><a class="txtnav" href="{{ url('/auth/logout') }}">Logout</a></li>
 					@endif
 				</ul>
