@@ -1,4 +1,13 @@
-
+.head{
+  font-family: times, Times New Roman, times-roman, georgia, serif;
+  color: #fff;
+  margin: 0;
+  padding: 0px 0px 6px 0px;
+  font-size: 51px;
+  line-height: 44px;
+  letter-spacing: -2px;
+  font-weight: bold;
+}
 .panelhead{
 	color: #fff;
 	background-color:rgba(147,206,222,0.94); 
