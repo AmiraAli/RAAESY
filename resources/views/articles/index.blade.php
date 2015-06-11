@@ -22,7 +22,7 @@
  <a href="{{url('/articles/create')}}" class="btn btn-success">Create Article</a>
 
  <!--csv report-->
- <a id="csv" href="articles/csvArticleReport">
+ <a id="csv" href="articles/problemMangementCSV">
 
     <img src="/images/CSV.png" style="width:40px"></img>
 

@@ -10,6 +10,8 @@ use App\User;
 use Request;
 use Auth;
 use Response;
+use Lang;
+use Session;
 
 
 class ReportsController extends Controller {
@@ -752,6 +754,15 @@ class ReportsController extends Controller {
 
 
 	public function reportTicketStatus(){
+
+		if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
+			Lang::setLocale('ar');
+			Session::set('lang', 'ar');
+		}else{
+			Lang::setLocale('en');
+			Session::set('lang', 'en');
+
+		}
 
 		$tickets=Ticket::all();
 		$ticketStatuses= TicketStatus::all();

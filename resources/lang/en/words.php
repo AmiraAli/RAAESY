@@ -18,7 +18,13 @@ return array(
 	"admin" =>  "Admin" ,
 	"ooh" => "Whoops!" , 
 	"validError" => "There were some problems with your input." , 
-	
+	"subject"=>	"subject",
+	"Current_Status"=>"Current Status",
+	"No_of_Open"=> "No of Open",
+	"No_of_Close"=>"No of Close",
+	"open"=>"open",
+	"close"=>"close",
+	"id"=>"id",
 
 );
 
