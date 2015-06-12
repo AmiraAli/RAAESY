@@ -10,11 +10,15 @@
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 @extends('app')
 @section('content')
+<br>
 <div class="container">
 
+<div class="col-md-8">
+  <div class="row ">
+  <div class="col-md-12 ">
 <!-- ticketbody-->
   <div class="leftposition">
-	<div class="panel panel-default ticketbody">
+	<div class="panel ticketbody">
 	  <div class="panel-body " id="takeoverajax">
 @if(Auth::user()->type=="admin" or Auth::user()->id==$ticket->user_id )
 <input type="hidden" id="techid" value="tech,{{$ticket->tech_id}}">
@@ -54,8 +58,8 @@
 <!--commentbody-->
   <div id="comments">
 	@foreach($comments as $comment)
-	  <div class="panel panel-default  commentbody" id="{{$comment->id}}Comments">
-	    <div class='panel-heading'>{{$comment->user->fname}} {{$comment->user->lname}}</div>
+	  <div class="panel commentbody" id="{{$comment->id}}Comments">
+	    <div class='panel-heading navbtn txtnav'>{{$comment->user->fname}} {{$comment->user->lname}}</div>
 	      <div class="panel-body ">
 
 		@if($comment->readonly==1)
@@ -102,29 +106,36 @@
 @endif
    </div>
 
-</div>
+</div></div></div></div>
 
+<div class="col-md-4 ">
+  <div class="row ">
+<div class="col-md-12 ">
 <!--ticketdetails-->
 <div class="rightposition">
-	<div class="panel panel-default ticketdetails">
-	  <div class="panel-heading">
+	<div class="panel ticketdetails">
+	  <div class="panel-heading navbtn txtnav">
 		<h3 class="panel-title">Ticket Details</h3>
 	  </div>
 	  <div class="panel-body assigned"> 
-		<h4 class="title">Section    </h4>{{ $ticket->category->section->name }}<br>
-		<h4 class="title">Category   </h4>{{ $ticket->category->name }}<br>
-		<h4 class="title">Periorty   </h4>{{ $ticket->priority }}<br>
-		<h4 class="title">StartDate  </h4>{{ $ticket->created_at }}<br>
-		<h4 class="title">Due        </h4>{{ $ticket->deadline }}<br>
-		<h4 class="title">From       </h4> {{ $ticket->user->fname }} {{$ticket->user->lname}}<br>
-		<h4 class="title">AssignedTo </h4> @if($ticket->tech){{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}@endif
+		<span class="title">Section </span>{{ $ticket->category->section->name }}<br>
+		<span class="title">Category </span>{{ $ticket->category->name }}<br>
+		<span class="title">Periorty </span>{{ $ticket->priority }}<br>
+		<span class="title">Start Date </span>{{ $ticket->created_at }}<br>
+		<span class="title">Due   </span>{{ $ticket->deadline }}<br>
+		<span class="title">From  </span> {{ $ticket->user->fname }} {{$ticket->user->lname}}<br>
+		<span class="title">Assigned To  </span> @if($ticket->tech){{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}@endif
 	  </div>
 	</div>
 <!--relatedassets-->
 @if(Auth::user()->type=="admin")	
-	<div class="panel panel-default relatedassets">
-		  <div class="panel-heading">
-			    <h3 class="panel-title">Related Assets</h3>
+	<div class="panel relatedassets">
+		  <div class="panel-heading navbtn txtnav">
+			    <div class="panel-title" style="display:inline;">Related Assets</div>
+			    <div id="addnewasset">
+				<button id="{{$ticket->id}}:newasset" onclick="AddAssets({{$ticket->id}}+':newasset')" class="butn">AddAsset</button>
+
+			</div>
 		  </div>
 	          <div class="panel-body">
 			@foreach($relatedAssets as $relatedAsset)
@@ -133,17 +144,14 @@
 			@endforeach
 
 			
-<div id="addnewasset">
-				<button id="{{$ticket->id}}:newasset" onclick="AddAssets({{$ticket->id}}+':newasset')">AddAsset</button>
-
-			</div><div id="asseterrormessage"></div>
+<div id="asseterrormessage"></div>
 
 		  </div>
 	</div>
 <!--relatedtags-->
 
-	<div class="panel panel-default relatedtags">
-		<div class="panel-heading">
+	<div class="panel relatedtags">
+		<div class="panel-heading navbtn txtnav">
 			<h3 class="panel-title">Related tags</h3>
 		</div>
 		<div class="panel-body"> 
@@ -159,7 +167,7 @@
 		</div>
 	</div>
 @endif
-</div>
+</div></div></div></div>
 <!---->
 </div>
 @endsection

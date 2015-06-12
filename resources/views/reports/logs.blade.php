@@ -9,17 +9,24 @@
 
 	}
 </style>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>  
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>  
+
+
 	  
 </head>
 <body>
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 @extends('app')
 @section('content')
-
 <div class="container">
+	<h3 class="navtxt"><a href="{{ url('/reports')}}"> Reports</a>
+	>>Deletion Log</h3>
+</div>
+<div class="container">
+<br>
 
-<a id="csv" href="/reports/logsCSV" >
+<?php echo $logs->render(); ?>
+<a  class="row pull-right" id="csv" href="/reports/logsCSV" >
 
     <img src="/images/CSV.png" style="width:40px"></img>
 
@@ -28,12 +35,12 @@
 <div  id="con" class="col-md-12" >
 @foreach ($logs as $log  )
  <div class="row" >
- 	<div class="panel panel-default">
+ 	<div class="panel">
 
 	<?php if (preg_match("/^.*[a-z].*$/i", $log->user->fname )){ ?>
- 		<div class="panel-heading"><span class="admin">{{ trans('words.Done_by' , ['admin' => ucfirst($log->user->fname) ]) }} </span>
+ 		<div class="panel-heading navbtn txtnav "><span class="admin pull-left" >{{ trans('words.Done_by' , ['admin' => ucfirst($log->user->fname) ]) }}</span>
  	<?php }else{ ?>
-		<div class="panel-heading"><span class="admin">{{ trans('words.Done_by_ar' , ['admin' => ucfirst($log->user->fname) ]) }} </span>
+		<div class="panel-heading navbtn txtnav"><span class="admin pull-left" >{{ trans('words.Done_by_ar' , ['admin' => ucfirst($log->user->fname) ]) }} </span>
  	<?php } ?>
  	<span class="date"> 		
  	
@@ -95,9 +102,6 @@
 	
 @endforeach
 
-
-<?php echo $logs->render(); ?>
-
 </div>
 
 
@@ -107,6 +111,33 @@
 				</div>				
 </div>
 
+
+
+ <script >
+
+
+  window.onload = function() {
+
+	 if ( "<?php echo Session::get('locale') ; ?>" == 'ar'){
+ 		$('.admin').attr("class",'pull-right');
+ 		$('.date').attr("class",'pull-left');
+ 		$(".panel").css({
+			overflow: "hidden",
+		});
+ 		$(".panel-body").css({
+			float:'right',
+		});
+ 	}
+	 
+
+	$(".panel-heading").css({
+		overflow: "hidden",
+	});
+
+ 	
+}
+
+ </script>  
 
 
 @stop

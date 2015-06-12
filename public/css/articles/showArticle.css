@@ -1,0 +1,33 @@
+.my{
+
+	border-radius: 15px;
+    border: 2px solid;
+    border-color: rgba(36,58,117,1);
+    padding: 15px;
+}
+
+.fntt{
+	font-size: 30px;
+	font-family: Arial black;
+	color: rgba(36,58,117,1);
+}
+
+.fnt{
+	font-size: 16px;
+}
+
+.dt{
+	float:right;
+	font-size: 20px;
+}
+
+.write{
+	font-size: 18px;
+	font-family: Arial black;
+}
+
+.ff{
+	border-radius: 15px;
+    border: 2px solid;
+    border-color: rgba(36,58,117,1);
+}

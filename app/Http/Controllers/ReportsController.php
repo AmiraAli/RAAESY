@@ -536,7 +536,11 @@ if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
 	}
 
 	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
-	return view('reports.ticketStatisticsDate',compact('allTickets','startdate','enddate'));
+	if($allTickets){
+		return view('reports.ticketStatisticsDate',compact('allTickets','startdate','enddate'));
+	}else{
+		echo "<h1 class='navtxt'> No Tickets Within this rrange of date!</h1>";
+	}
 }
 	public function technicianStatistics()
 	{

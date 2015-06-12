@@ -1,45 +1,63 @@
 @extends('app')
 @section('content')
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
+<div class="container">
+    <h3 class="navtxt"><a href="{{ url('/reports')}}"> Reports</a>
+    >>Problem Mangement</h3>
+</div>
 <div class="container" id="container">
+<br>
 	<div class="raw">
 		<div class="col-md-5"  id="customedate">
 			{{trans('problemmangement.from')}}:<input type="date" id="startdate">
 			{{trans('problemmangement.to')}}:<input type="date" id="enddate">
 		</div>
-@if (Session::get('lang') =="ar")
-	<a  href="/reports/problemMangement?lang=en" class="btn navbtn txtnav" >English</a>
-@else
-	<a  href="/reports/problemMangement?lang=ar" class="btn navbtn txtnav" >عربى</a>
-@endif
 		<div style="float:left;">
-			<button class="btn btn-primary" onclick="searchDate()"><span class="glyphicon glyphicon-search"></span></button>
+			<button class="btn navbtn txtnav" onclick="searchDate()"><span class="glyphicon glyphicon-search"></span></button>
 		</div>
+		 <!--csv report-->
+		 <a  id="csv" href="/reports/problemMangementCSV">
+		    <img src="/images/CSV.png" style="width:40px"></img>
+		</a>
 	</div>
-	 <!--csv report-->
- <a id="csv" href="/reports/problemMangementCSV">
-
-    <img src="/images/CSV.png" style="width:40px"></img>
-
-</a>
+	@if (Session::get('lang') =="ar")
+		<a  href="/reports/problemMangement?lang=en" class="btn navbtn txtnav pull-right" >English</a>
+	@else
+		<a  href="/reports/problemMangement?lang=ar" class="btn navbtn txtnav pull-right" >عربى</a>
+	@endif
+	<br><br>
+	<?php
+	if (empty(json_decode(json_encode($allTickets), true)))
+	{
+		echo "<h2 class='navtxt'> No Tickets within this range of date!!</h2>";
+	}else{
+	?>
 		@foreach($allTickets as $allTicket)
-	<table class="table " >
-		<tr>
-			<td>{{trans('problemmangement.subject')}}
-			<td>{{trans('problemmangement.total ticket count')}}
-			<td>{{trans('problemmangement.total ticket solved')}}
-			<td>{{trans('problemmangement.percentages')}}
+	<table class="table table-hover" >
+		<thead>
+		<tr class="navbtn txtnav">
+			<th>{{trans('problemmangement.subject')}}</th>
+			<th>{{trans('problemmangement.total ticket count')}}</th>
+			<th>{{trans('problemmangement.total ticket solved')}}</th>
+			<th>{{trans('problemmangement.percentages')}}</th>
 		</tr>
-		  	<tr>
+		</td>
+		<tbody>
+		@if ($allTicket->percentage < 25)
+		  	<tr style="background:rgba(240,96,86,0.85); color:#FFF;">
+		@else
+			<tr>
+		@endif
 				<td>{{$allTicket->subject->name}}</td>
 				<td>{{$allTicket->allticket}}</td>
 				<td>{{$allTicket->closedcount}}</td>
 				<td>{{$allTicket->percentage}}%</td>
 			</tr>
-			
+		
+		</tbody>
 	</table>
 			<div class="panel panel-default">
-			<div class="panel-body" style="background:#FFCCFF;">
+			<div class="panel-body" style="background:#bce0ee;">
 			<div class="col-md-3">
 				<h4>{{trans('problemmangement.ticketsid')}}</h4>
 				@foreach($allTicket->ids as $id)
@@ -57,8 +75,9 @@
 			</div>
 			
 		@endforeach
-
- 	
+	<?php
+}
+?>
 </div>
 @endsection
  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
