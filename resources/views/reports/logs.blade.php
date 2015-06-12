@@ -9,15 +9,12 @@
 
 	}
 </style>
-	
-
-        
+	  
 </head>
 <body>
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 @extends('app')
 @section('content')
-
 
 <div class="container">
 
@@ -32,32 +29,62 @@
  <div class="row" >
  	<div class="panel panel-default">
 
- 	<div class="panel-heading">Done by: <b>{{ ucfirst ($log->user->fname) }}</b> 
+	<?php if (preg_match("/^.*[a-z].*$/i", $log->user->fname )){ ?>
+ 		<div class="panel-heading">{{ trans('words.Done_by' , ['admin' => ucfirst($log->user->fname) ]) }} 
+ 	<?php }else{ ?>
+		<div class="panel-heading">{{ trans('words.Done_by_ar' , ['admin' => ucfirst($log->user->fname) ]) }} 
+ 	<?php } ?>
  	<span> 		
  	
 	{{ $log->created_at }} </span></div>
 
  	<div class="panel-body">
- 	<?php $name ='p'; ?>
+ 	<?php $name =''; ?>
 
  	@if ( $log->type == 'user')
-             <?php $name='name'; ?>                  
+			 <?php $type= trans('words.user') ?>                  
+             <?php $name= trans('words.name') ?> 
+
   	@elseif ( $log->type == 'article')
-			<?php $name = 'title'; ?>
-	@else
-			<?php $name = 'subject'; ?>
-	@endif
+  			<?php $type= trans('words.article') ?>                  
+			<?php $name = trans('words.title') ?>                  
 
+	@elseif ( $log->type == 'category')
+	  		<?php $type= trans('words.category') ?>                  
+			<?php $name =  trans('words.Subject') ?>                  
 
- 	{{$log->user->fname}}
+	@elseif ( $log->type == 'asset')
+	  		<?php $type= trans('words.asset') ?>                  
+			<?php $name =  trans('words.Subject') ?> 
+	@else 									 <!-- Ticket -->
+			
+			<?php $type= trans('words.ticket') ?>                  
+			<?php $name =  trans('words.Subject') ?> 
+	@endif 
 
-	@if ( $log->action == 'spam')
-		marked the {{$log->type}} #{{$log->id}} with {{$name}} "{{$log->name}}" as spam
 	
+	@if ( $log->action == 'spam')
+
+	<?php if (preg_match("/^.*[a-z].*$/i", $log->name )){ ?>
+
+		{{ trans('words.spam_msg', ['admin' => $log->user->fname , 'type' => $type ,    'id' => $log->id ,'title'=>$name  , 'name'=>  $log->name ]  ) }} 
+	
+	<?php }else{ ?>
+
+		{{ trans('words.spam_msg_ar', ['admin' => $log->user->fname , 'type' => $type ,    'id' => $log->id ,'title'=>$name  , 'name'=>  $log->name ]  ) }} 
+	<?php } ?>
+
 	@else
-		{{$log->action}}d the {{$log->type}} #{{$log->id}} with {{$name}} "{{$log->name}}"
+		<?php if (preg_match("/^.*[a-z].*$/i", $log->name )){ ?>
+
+		{{ trans('words.delete_msg', ['admin' => $log->user->fname , 'type' => $type ,    'id' => $log->id ,'title'=>$name , 'name'=>  $log->name  ]  ) }} 
+		<?php }else{ ?>
+	 		{{ trans('words.delete_msg_ar', ['admin' => $log->user->fname , 'type' => $type ,    'id' => $log->id ,'title'=>$name  , 'name'=>  $log->name ]  ) }} 
+
+		<?php } ?>
 	@endif
 
+	
  	
 	</div>
 

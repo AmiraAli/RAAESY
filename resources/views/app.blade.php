@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>RASESY</title>
+	<title>RSB</title>
 	<link href='/bootstrab/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 	<!-- Fonts -->
@@ -49,16 +49,21 @@
 						<li><a class="txtnav" href="{{ url('/auth/login') }}">Login</a></li>
 						<li><a class="txtnav" href="{{ url('/auth/register') }}">Register</a></li>
 					@else
+ 
 					    <li> <a  class="navbar-brand txtnav" href="/users/{{$current_user->id}}"> {{ ucfirst ($current_user->fname)  }}</a></li>
 						<li ><a class="txtnav" href="{{ url('/auth/logout') }}">Logout</a></li>
+
+						@if (Session::get('locale') =="ar")
+							<li><a href="/home/setLang?lang=en" class="txtnav" ><span id="locale">E</span></a></li>
+						@else
+							<li><a href="/home/setLang?lang=ar" class="txtnav" ><span id="locale">ع</span></a></li>
+						@endif
 					@endif
 				</ul>
 			</div>
 		</div>
 	</nav>
-<!-- 	<div class="image">
-		
-	</div> -->
+
 	@yield('content')
 
 	<!-- Scripts -->

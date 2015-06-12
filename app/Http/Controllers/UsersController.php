@@ -9,11 +9,8 @@ use Request;
 use Validator;
 use Mail;
 use Response;
-
 use App\Article;
 use App;
-
-use Lang;
 use Session;
 
 class UsersController extends Controller {
@@ -65,7 +62,7 @@ class UsersController extends Controller {
 			return view('errors.404');
 		}
 
-		$users=User::all();
+		$users=User::where('isspam', 0)->get();
 		return view('users.index',compact('users'));
 	}
 
@@ -104,14 +101,6 @@ class UsersController extends Controller {
 			return view('errors.404');
 		}
 
-		if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
-			Lang::setLocale('ar');
-			Session::set('lang', 'ar');
-		}else{
-			Lang::setLocale('en');
-			Session::set('lang', 'en');
-
-		}
 		return view('users.create');
 	}
 
@@ -123,12 +112,11 @@ class UsersController extends Controller {
 	public function store()
 	{
 
-		if (Session::get('lang') =="ar"){
-
-			Lang::setLocale('ar');	
+		if (Session::get('locale') =="ar"){
+	
 			$arr = array ();
 
-			//set validation array
+			//set validation array with arabic field names
 			$arr['الاسم الأول'] = Request::get('fname');
 			$arr['الاسم الثانى'] = Request::get('lname');
 			$arr['البريد الإلكترونى'] =  Request::get('email');
@@ -183,15 +171,7 @@ class UsersController extends Controller {
 			$user->password=bcrypt(Request::get('password'));
 			$user->phone=Request::get('phone');
 			$user->location=Request::get('location');
-			
-
-			if (Request::get('isspam')){
-				$user->isspam= 1;
-			
-			}else{
-				$user->isspam=0;
-
-			}
+			$user->isspam= 0;
 			$user->type=Request::get('type');
 
 			$user->save();
@@ -210,12 +190,15 @@ class UsersController extends Controller {
 						  'location' => $user->location,
 						  'password'=>Request::get('password'),
 				    );
-		// Mail::send('emails.welcome', $data, function($message) use ($data)
-  //           {
-  //               $message->from('yoyo80884@gmail.com', "Site name");
-  //               $message->subject("Welcome to site name");
-  //               $message->to($data['email']);
-  //           });
+			
+			if (!empty (Request::get('sendMsg')) ) {
+				Mail::send('emails.welcome', $data, function($message) use ($data)
+	            {
+	                $message->from('yoyo80884@gmail.com', "RSB");
+	                $message->subject("Welcome to RSB");
+	                $message->to($data['email']);
+	            });
+			}
 
 
 			return redirect('/users');
@@ -298,21 +281,6 @@ class UsersController extends Controller {
 			$user->phone=Request::get('phone');
 			$user->location=Request::get('location');
 
-			if (Request::get('isspam')){
-				
-				//check if admin soan a user
-				if ($user->isspam == 0){
-
-					//add notification in log
-					$this->addnotification("spam"  , "user" , $user );
-				}
-				$user->isspam= 1;
-
-			}else{
-				$user->isspam=0;
-
-			}
-
 			if (Request::get('type')){
 				$user->type=Request::get('type');
 			}
@@ -334,11 +302,38 @@ class UsersController extends Controller {
 	{
 		$user=User::find($id);
 
-		//add notification wher user deleted
+		//add notification when user deleted
 		$this->addnotification("delete"  , "user" , $user );
 		$user->delete();
 				
 	}
+
+	/**
+	 * spam/unspam user ( called by AJAX )
+	 *
+	 * @param  int  $id, int spam
+	 * @return Response
+	 */
+	public function spam($id)
+	{
+		
+		if(!Request::ajax()) {
+			return;
+		}
+
+		$user=User::find($id);
+
+		$user->isspam=Request::get('spam');
+		$user->save();
+		
+		//add notification when user deleted
+		if (Request::get('spam') == 1){
+			$this->addnotification("spam"  , "user" , $user );
+		}
+				
+	}
+
+
 
 
 
@@ -429,18 +424,21 @@ class UsersController extends Controller {
 		$location = Request::get('location');
 		$displayedType = Request::get('displayed');
 
+		//to show user type in the table
+		$showType = false;
 		
 		// filter 1: get only displayed user 
 		if ($displayedType== "all"){
 			
-			$users =User::all();
+			$users =User::where('isspam', 0)->get();
 
 		}elseif ($displayedType== "disabled") {
 			
 			$users =User::where('isspam', 1)->get();
+			$showType = true;
 
 		}else{
-			$users =User::where('type',$displayedType )->get();	
+			$users =User::where('type',$displayedType )->where('isspam', 0)->get();
 		}
 		
 		// filter 2: get specified users from advanced search
@@ -466,7 +464,7 @@ class UsersController extends Controller {
 			$users = $users->where('location', $location);
 		}
 
-		return view('users.ajaxsearch',compact('users'));
+		return view('users.ajaxsearch',compact('users', 'showType' ));
 
 	}
 

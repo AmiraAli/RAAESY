@@ -32,7 +32,6 @@ Show:
 <button id="toggle" class="btn btn-primary" > <span class="glyphicon glyphicon-search"></span></button>
 
 <a id="csv" href="users/downloadCSV" ><img src="/images/CSV.png"></a>
-<!-- <a id="pdf" href="users/downloadPDF" ><img src="/images/CSV.png"></a> -->
 
 <div id="autocompletemenu" style="display: none;">
    <ul id="autocompleteul"></ul>
@@ -47,7 +46,6 @@ Show:
 <th>Email</th>
 <th>Phone</th>
 <th>Location</th>
-<th>Disabled</th>
 <tbody id="tbody">
 @foreach($users as $user)
 <tr id="{{$user->id}}"><td>
@@ -70,26 +68,21 @@ Show:
 	{{$user->location}}	
 
 </td>
-<td>
-	@if ($user->isspam == true)
 
-		<input type="checkbox" disabled="true" checked="true">
-	@else
-		<input type="checkbox" disabled="true" >
-	@endif
-
-</td>
 
 
 
 <td class="text-center">
 
 @if ($user->id != "1" | ($user->id == "1" && $current_user->id == "1" ) )
-	<a class="btn btn-success" href="/users/{{$user->id}}/edit">edit</a>
+	<a class="transparent edit" href="/users/{{$user->id}}/edit"><img src="/images/edit.png"></a>
+
+	
 @endif
 
 @if ($user->id != "1")
-	<a class="btn btn-danger delete" href="#"  id="{{$user->id}}" onclick="Delete({{$user->id}})">delete</a>
+	<button class="transparent enable" onclick="Spam('disable_{{$user->id}}')" ><img src="/images/disable.png"></button>
+	<button class="transparent del" onclick="Delete({{$user->id}})" ><img src="/images/delete.png"></button>
 @endif
 </td>
 
