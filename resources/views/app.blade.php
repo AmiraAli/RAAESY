@@ -54,9 +54,9 @@
 						<li ><a class="txtnav" href="{{ url('/auth/logout') }}">Logout</a></li>
 
 						@if (Session::get('locale') =="ar")
-							<li><a href="/home/setLang?lang=en" class="txtnav" ><span id="locale">E</span></a></li>
+							<li><a href="/home/setLang?lang=en" class="txtnav" id="translation"><span id="locale">E</span></a></li>
 						@else
-							<li><a href="/home/setLang?lang=ar" class="txtnav" ><span id="locale">ع</span></a></li>
+							<li><a href="/home/setLang?lang=ar" class="txtnav" id="translation"><span id="locale">ع</span></a></li>
 						@endif
 					@endif
 				</ul>

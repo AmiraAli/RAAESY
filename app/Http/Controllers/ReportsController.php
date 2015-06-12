@@ -396,14 +396,6 @@ class ReportsController extends Controller {
 	{
         
 
-if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
-			Lang::setLocale('ar');
-			Session::set('lang', 'ar');
-		}else{
-			Lang::setLocale('en');
-			Session::set('lang', 'en');
-
-		}
 
 	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->groupBy('subject_id')->get();
 	$all=Ticket::all();
@@ -499,14 +491,7 @@ if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
 	 */
 	public function problemMangementDate(){
 
-if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
-			Lang::setLocale('ar');
-			Session::set('lang', 'ar');
-		}else{
-			Lang::setLocale('en');
-			Session::set('lang', 'en');
 
-		}
 	
 	$startdate=Request::input('startdate');
 	$enddate=Request::input('enddate');
@@ -877,13 +862,15 @@ if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
 
 
 
+
+
 public function problemMangementLang(){
 
       $lang=Request::input("lang");
-if($lang=="عربى")
-      Lang::setLocale('ar');
-if($lang=="English")
-      Lang::setLocale('en');
+if($lang=="ع")
+      Session::set('locale', 'ar');
+if($lang=="E")
+      Session::set('locale', 'en');
 
 
 
@@ -920,4 +907,10 @@ $startdate=Request::input('startdate');
 	return  view('reports.problemMangementLang',compact('lang','allTickets','startdate','enddate'));
 
 	}
+
+
+
+
+
+
 }

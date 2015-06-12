@@ -10,9 +10,8 @@ return array(
 	"total ticket solved" =>  "اجمالى المشاكل المحلولة",
 	"percentages" =>  "النسبة المئوية",
 	"ticketsid" =>    "رقم المشكلة" , 
-	"tickets sections/category" =>    "أقسام / فئة" , 
-		
-
+	"tickets sections/category" =>    "أقسام / فئة" , 	
+	"error" =>    "أقسام / فئة" , 
 );
 
 ?>

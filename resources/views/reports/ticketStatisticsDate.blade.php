@@ -1,8 +1,8 @@
 <br>
 <div class="raw">
 		<div class="col-md-5"  id="customedate">
-			From:<input type="date" id="startdate" value={{$startdate}}>
-			To:<input type="date" id="enddate" value={{$enddate}}>
+			{{trans('problemmangement.from')}}:<input type="date" id="startdate" value={{$startdate}}>
+			{{trans('problemmangement.to')}}::<input type="date" id="enddate" value={{$enddate}}>
 		</div>
 		<div style="float:left;">
 			<button class="btn navbtn txtnav" onclick="searchDate()"><span class="glyphicon glyphicon-search"></span></button>
@@ -12,16 +12,12 @@
 		    <img src="/images/CSV.png" style="width:40px"></img>
 		</a>
 </div>
-	@if (Session::get('lang') =="ar")
-		<a  href="/reports/problemMangement?lang=en" class="btn navbtn txtnav pull-right" >English</a>
-	@else
-		<a  href="/reports/problemMangement?lang=ar" class="btn navbtn txtnav pull-right" >عربى</a>
-	@endif
+	
 	<br><br>
 	<?php
 	if (empty(json_decode(json_encode($allTickets), true)))
 	{
-		echo "<h2 class='navtxt'> No Tickets within this range of date!!</h2>";
+		echo "<h2 class='navtxt'> ".trans('problemmangement.error')."</h2>";
 	}else{
 	?>
 		@foreach($allTickets as $allTicket)
@@ -52,13 +48,13 @@
 			<div class="panel panel-default">
 			<div class="panel-body" style="background:#bce0ee;">
 			<div class="col-md-3">
-				<h4>Tickets Id</h4>
+				<h4>{{trans('problemmangement.ticketsid')}}</h4>
 				@foreach($allTicket->ids as $id)
 					#{{$id}}<br>
 				@endforeach
 			</div>
 			<div class="col-md-3">
-				<h4>Tickets Section/category</h4>
+				<h4>{{trans('problemmangement.tickets sections/category')}}</h4>
 				@foreach($allTicket->sectionCategory as $section)
 					{{$section}}<br>
 				@endforeach
@@ -73,3 +69,4 @@
 ?>
  <script type="text/javascript" src="/js/reports/problemmangement.js"></script>
  <script type="text/javascript" src="/js/reports/lang.js"></script>
+
