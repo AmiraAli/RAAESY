@@ -1,7 +1,9 @@
 @extends('app')
 @section('content')
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
+<link rel="stylesheet" type="text/css" href="/css/reports/summary.css">
 <div class="container" id="container">
+<br>
 	<div class="row">
 		<div class="col-md-3">
 			<select class="form-control" id="date" onchange="custom()">
@@ -18,6 +20,7 @@
 			<button class="btn btn-primary" onclick="search()"><span class="glyphicon glyphicon-search"></span></button>
 		</div>
 	</div>
+	<br>
 	<div class="row">
 		<div class="col-md-6">
 		@if($ticketsPerCategories)
@@ -26,10 +29,10 @@
 				<input type="hidden" class="count" value="{{ $ticketsPerCategorie->count }}">
 			@endforeach
 		@endif
-    <div id="piechart" style="width: 700px; height: 600px;"></div>
+    <div id="piechart" style="width: 550px; height: 500px;"></div>
 		</div>
 		<div class="col-md-6">
-			<div id="status" style="width: 700px; height: 600px;"></div>
+			<div id="status" style="width: 550px; height: 500px;"></div>
 		</div>
 	</div>
 	<!--csv report-->

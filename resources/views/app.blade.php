@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +27,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand txtnav" href="{{ url('/home') }}"><img class="img-circle" src="/images/RSB.png" style="height:40px"></a>
+				<img class="img-circle" href="{{ url('/home') }}" src="/images/RSB.png" style="height:40px">
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">

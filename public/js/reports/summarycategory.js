@@ -24,7 +24,7 @@ drawChart();
         var data = google.visualization.arrayToDataTable(array);
 
         var options = {
-          title: 'ticketsper category',
+          title: 'Tickets Per Category',
 	
         };
 
