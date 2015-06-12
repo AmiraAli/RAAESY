@@ -190,12 +190,15 @@ class UsersController extends Controller {
 						  'location' => $user->location,
 						  'password'=>Request::get('password'),
 				    );
-		// Mail::send('emails.welcome', $data, function($message) use ($data)
-  //           {
-  //               $message->from('yoyo80884@gmail.com', "Site name");
-  //               $message->subject("Welcome to site name");
-  //               $message->to($data['email']);
-  //           });
+			
+			if (!empty (Request::get('sendMsg')) ) {
+				Mail::send('emails.welcome', $data, function($message) use ($data)
+	            {
+	                $message->from('yoyo80884@gmail.com', "RSB");
+	                $message->subject("Welcome to RSB");
+	                $message->to($data['email']);
+	            });
+			}
 
 
 			return redirect('/users');

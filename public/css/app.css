@@ -6259,4 +6259,6 @@ label,
 
 #locale{
     padding: 5px;
+    display: inline;
+    float: none;
 }

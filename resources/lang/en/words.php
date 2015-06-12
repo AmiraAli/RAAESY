@@ -16,6 +16,7 @@ return array(
       "regular" =>  "Regular User" ,
 	"tech"   => "Technician" , 
 	"admin" =>  "Admin" ,
+	"send_welcome_msg" => 'Send Welcome Message' ,
 	"user_add" => "Add User",
 	"ooh" => "Whoops!" , 
 	"validError" => "There were some problems with your input." , 

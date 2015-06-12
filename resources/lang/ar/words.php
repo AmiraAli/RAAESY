@@ -16,6 +16,7 @@ return array(
     "regular" =>  "مستخدم عادى",
 	"tech"   =>  "فنى" ,
 	"admin" => "مشرف" ,
+	"send_welcome_msg" => 'ارسال رسالة ترحيب' ,
 	"user_add" => "اضف العضو",
 	"ooh" => "للأسف،" , 
 	"validError" => "وجدت بعض الأخطاء فى مدخلاتك." , 

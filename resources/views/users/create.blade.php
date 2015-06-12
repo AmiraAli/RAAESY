@@ -88,6 +88,18 @@
 							    </select>
 						    </div>
 					    </div>
+
+					     <div class="form-group">
+     						<label class="col-md-4 control-label navtxt">{{ trans('words.send_welcome_msg') }}</label>
+								<div class="col-md-4">
+							        @if (old('sendMsg') == true)
+							            {!! Form::checkbox('sendMsg', 'value' ,true ) !!}
+							        @else
+							            {!! Form::checkbox('sendMsg', 'value' ) !!}
+							        @endif
+
+  						        </div>
+  						 </div>
 			
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
