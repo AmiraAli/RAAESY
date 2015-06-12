@@ -7,15 +7,9 @@
             });
 
 
-    $(".del").attr('title', 'Delete User');
-    $(".enable").attr('title', 'Unspam user');
-    $(".edit").attr('title', 'Edit User');
-    $(".disable").attr('title', 'Mark as Spam');
-    $("#toggle").attr('title', 'Advanced Search');
-    $("#csv").attr('title', 'Export as CSV');
-
-
     
+
+       
     var flag=false;
 
     var input = $("#quickSearch");
@@ -52,11 +46,61 @@ $("#autocompletemenu").mouseout(function(){
 		}
 	});
    
+    //convert pagination to AJAX
+    paginateWithAjax();
+
+    //add titles to buttons
+    addTitles();
+
+    $("#toggle").attr('title', 'Advanced Search');
+    $("#csv").attr('title', 'Export as CSV');
+
 
  };
 
 
+//add titles to buttons
+function addTitles(){
+    $(".del").attr('title', 'Delete User');
+    $(".enable").attr('title', 'Unspam user');
+    $(".edit").attr('title', 'Edit User');
+    $(".disable").attr('title', 'Mark as Spam');
+    
+}
 
+
+
+
+//convert pagination to AJAX
+function paginateWithAjax(){
+    $('.pagination a').on('click', function(e){
+        e.preventDefault();
+        
+        form = $('#advSearchForm');
+        $('#displayed').val ( $('input[name=user]:checked').val() );
+        data =  form.serializeArray();
+
+        var url = $(this).attr('href');
+        url = url.replace("/users/?","/users/ajaxsearch/?");
+        
+        $.post(url, data ,
+        function(data){
+            $('#con').html(data);
+
+            //convert refreshing pagination to ajax
+            paginateWithAjax();
+
+            //add title to buttons when hovered
+            addTitles();
+
+        });
+    });
+}
+
+
+
+
+//Autocompete function
 function myAutocomplete(data) {
 
 	if (data==''){ 
@@ -105,35 +149,24 @@ function myAutocomplete(data) {
 
 function search(){
 
-	var fname = document.getElementById('fname').value;
-	var lname = document.getElementById('lname').value;
-	var email = document.getElementById('email').value;
-	var phone = document.getElementById('phone').value;
-	var location = document.getElementById('location').value;
-
-    var displayedUsers  =  $('input[name=user]:checked').val() ; 
+	form = $('#advSearchForm');
+    $('#displayed').val ( $('input[name=user]:checked').val() );
+    data =  form.serializeArray();
 
 	$.ajax({
     url: '/users/ajaxsearch',
     type: 'POST',
-    data: {  
-        displayed: displayedUsers,
-   		fname: fname,
-        lname: lname,
-        email: email,
-        phone: phone,
-        location: location,
-   	    },
+        data: data,
     success: function(result) {
     			var container = document.getElementById('con');
     			container.innerHTML = "";
     			container.innerHTML = result;
 
+                //convert refreshing pagination to ajax
+                paginateWithAjax();
+
                 //add title to buttons when hovered
-                $(".del").attr('title', 'Delete User');
-                $(".enable").attr('title', 'Unspam user');
-                $(".edit").attr('title', 'Edit User');
-                $(".disable").attr('title', 'Mark as Spam');
+                addTitles();
 
 			  },
 	error: function(jqXHR, textStatus, errorThrown) {
