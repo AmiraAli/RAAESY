@@ -6,6 +6,15 @@
                 }
             });
 
+
+    $(".del").attr('title', 'Delete User');
+    $(".enable").attr('title', 'Unspam user');
+    $(".edit").attr('title', 'Edit User');
+    $(".disable").attr('title', 'Mark as Spam');
+    $("#toggle").attr('title', 'Advanced Search');
+    $("#csv").attr('title', 'Export as CSV');
+
+
     
     var flag=false;
 
@@ -119,6 +128,13 @@ function search(){
     			var container = document.getElementById('con');
     			container.innerHTML = "";
     			container.innerHTML = result;
+
+                //add title to buttons when hovered
+                $(".del").attr('title', 'Delete User');
+                $(".enable").attr('title', 'Unspam user');
+                $(".edit").attr('title', 'Edit User');
+                $(".disable").attr('title', 'Mark as Spam');
+
 			  },
 	error: function(jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
