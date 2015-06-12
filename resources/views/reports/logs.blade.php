@@ -9,6 +9,7 @@
 
 	}
 </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>  
 	  
 </head>
 <body>
@@ -30,11 +31,11 @@
  	<div class="panel panel-default">
 
 	<?php if (preg_match("/^.*[a-z].*$/i", $log->user->fname )){ ?>
- 		<div class="panel-heading">{{ trans('words.Done_by' , ['admin' => ucfirst($log->user->fname) ]) }} 
+ 		<div class="panel-heading"><span class="admin">{{ trans('words.Done_by' , ['admin' => ucfirst($log->user->fname) ]) }} </span>
  	<?php }else{ ?>
-		<div class="panel-heading">{{ trans('words.Done_by_ar' , ['admin' => ucfirst($log->user->fname) ]) }} 
+		<div class="panel-heading"><span class="admin">{{ trans('words.Done_by_ar' , ['admin' => ucfirst($log->user->fname) ]) }} </span>
  	<?php } ?>
- 	<span> 		
+ 	<span class="date"> 		
  	
 	{{ $log->created_at }} </span></div>
 
