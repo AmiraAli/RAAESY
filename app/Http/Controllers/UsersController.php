@@ -65,7 +65,7 @@ class UsersController extends Controller {
 			return view('errors.404');
 		}
 
-		$users=User::all();
+		$users=User::where('isspam', 0)->get();
 		return view('users.index',compact('users'));
 	}
 
@@ -183,15 +183,7 @@ class UsersController extends Controller {
 			$user->password=bcrypt(Request::get('password'));
 			$user->phone=Request::get('phone');
 			$user->location=Request::get('location');
-			
-
-			if (Request::get('isspam')){
-				$user->isspam= 1;
-			
-			}else{
-				$user->isspam=0;
-
-			}
+			$user->isspam= 0;
 			$user->type=Request::get('type');
 
 			$user->save();
@@ -298,21 +290,6 @@ class UsersController extends Controller {
 			$user->phone=Request::get('phone');
 			$user->location=Request::get('location');
 
-			if (Request::get('isspam')){
-				
-				//check if admin soan a user
-				if ($user->isspam == 0){
-
-					//add notification in log
-					$this->addnotification("spam"  , "user" , $user );
-				}
-				$user->isspam= 1;
-
-			}else{
-				$user->isspam=0;
-
-			}
-
 			if (Request::get('type')){
 				$user->type=Request::get('type');
 			}
@@ -334,11 +311,38 @@ class UsersController extends Controller {
 	{
 		$user=User::find($id);
 
-		//add notification wher user deleted
+		//add notification when user deleted
 		$this->addnotification("delete"  , "user" , $user );
 		$user->delete();
 				
 	}
+
+	/**
+	 * spam/unspam user ( called by AJAX )
+	 *
+	 * @param  int  $id, int spam
+	 * @return Response
+	 */
+	public function spam($id)
+	{
+		
+		if(!Request::ajax()) {
+			return;
+		}
+
+		$user=User::find($id);
+
+		$user->isspam=Request::get('spam');
+		$user->save();
+		
+		//add notification when user deleted
+		if (Request::get('spam') == 1){
+			$this->addnotification("spam"  , "user" , $user );
+		}
+				
+	}
+
+
 
 
 
@@ -429,18 +433,21 @@ class UsersController extends Controller {
 		$location = Request::get('location');
 		$displayedType = Request::get('displayed');
 
+		//to show user type in the table
+		$showType = false;
 		
 		// filter 1: get only displayed user 
 		if ($displayedType== "all"){
 			
-			$users =User::all();
+			$users =User::where('isspam', 0)->get();
 
 		}elseif ($displayedType== "disabled") {
 			
 			$users =User::where('isspam', 1)->get();
+			$showType = true;
 
 		}else{
-			$users =User::where('type',$displayedType )->get();	
+			$users =User::where('type',$displayedType )->where('isspam', 0)->get();
 		}
 		
 		// filter 2: get specified users from advanced search
@@ -466,7 +473,7 @@ class UsersController extends Controller {
 			$users = $users->where('location', $location);
 		}
 
-		return view('users.ajaxsearch',compact('users'));
+		return view('users.ajaxsearch',compact('users', 'showType' ));
 
 	}
 

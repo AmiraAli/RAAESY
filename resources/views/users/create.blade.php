@@ -94,19 +94,6 @@
 							    </select>
 						    </div>
 					    </div>
-
-						 <div class="form-group">
-     						<label class="col-md-4 control-label navtxt">{{ trans('words.Disable') }}</label>
-								<div class="col-md-6">
-							        @if (old('isspam') == 0)
-							            {!! Form::checkbox('isspam', 'value') !!}
-							        @else
-							            {!! Form::checkbox('isspam', 'value',true) !!}
-							        @endif
-
-  						        </div>
-					    </div>
-
 			
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">

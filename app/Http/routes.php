@@ -49,8 +49,11 @@ Route::post('users/changepassprocess','UsersController@changepassprocess');
 
 Route::resource('/users','UsersController');
 
+
 Route::get('users/destroy/{id}','UsersController@destroy');
 Route::post('users/autocomplete','UsersController@autocomplete');
+
+Route::post('users/spam/{id}','UsersController@spam');
 
 
 Route::post('articles/autocomplete','ArticlesController@autocomplete');
