@@ -20,11 +20,7 @@
 		    <img src="/images/CSV.png" style="width:40px"></img>
 		</a>
 	</div>
-	@if (Session::get('lang') =="ar")
-		<a  href="/reports/problemMangement?lang=en" class="btn navbtn txtnav pull-right" >English</a>
-	@else
-		<a  href="/reports/problemMangement?lang=ar" class="btn navbtn txtnav pull-right" >عربى</a>
-	@endif
+	
 	<br><br>
 	<?php
 	if (empty(json_decode(json_encode($allTickets), true)))

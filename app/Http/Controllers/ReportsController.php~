@@ -24,6 +24,7 @@ class ReportsController extends Controller {
 
 			}
 		}
+
 	}
 	/**
 	* Function to sort tickets
@@ -100,7 +101,8 @@ class ReportsController extends Controller {
 	 */
 	public function logs()
 	{
-		$logs =Log::all();
+		
+		$logs =Log::paginate(10);
 		return view('reports.logs',compact('logs'));
 	}
 
@@ -394,14 +396,6 @@ class ReportsController extends Controller {
 	{
         
 
-if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
-			Lang::setLocale('ar');
-			Session::set('lang', 'ar');
-		}else{
-			Lang::setLocale('en');
-			Session::set('lang', 'en');
-
-		}
 
 	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->groupBy('subject_id')->get();
 	$all=Ticket::all();
@@ -497,6 +491,7 @@ if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
 	 */
 	public function problemMangementDate(){
 
+
 	
 	$startdate=Request::input('startdate');
 	$enddate=Request::input('enddate');
@@ -526,7 +521,11 @@ if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
 	}
 
 	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
-	return view('reports.ticketStatisticsDate',compact('allTickets','startdate','enddate'));
+	if($allTickets){
+		return view('reports.ticketStatisticsDate',compact('allTickets','startdate','enddate'));
+	}else{
+		echo "<h1 class='navtxt'> No Tickets Within this rrange of date!</h1>";
+	}
 }
 	public function technicianStatistics()
 	{
@@ -863,12 +862,14 @@ if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
 
 
 
+
+
 public function problemMangementLang(){
 
       $lang=Request::input("lang");
-if($lang=="عربى")
+if($lang=="ع")
       Lang::setLocale('ar');
-if($lang=="English")
+if($lang=="E")
       Lang::setLocale('en');
 
 
@@ -905,9 +906,11 @@ $startdate=Request::input('startdate');
 	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
 	return  view('reports.problemMangementLang',compact('lang','allTickets','startdate','enddate'));
 
-}
-//Session::set('locale',input::get('locale'))
-//redirect
-//Lang::setLocale(Session::get('locale'))
-//Lang::locale()=="ar"
+	}
+
+
+
+
+
+
 }

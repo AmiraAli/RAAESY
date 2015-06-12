@@ -9,10 +9,15 @@ window.onload = function() {
                     
             };
  
-function language(){
+
+
+document.getElementById("translation").onclick= function(e){
+        e.preventDefault();
+        
+
 var startdate=document.getElementById("startdate").value;
 		var enddate=document.getElementById("enddate").value;
-    var lang=$("#lang").text();
+    var lang=$("#translation").text();
 console.log(lang);
     $.ajax({
             
@@ -20,10 +25,10 @@ console.log(lang);
             type: 'post',
             data: {lang:lang,'startdate':startdate, 'enddate':enddate},
             success: function(result) {
-if (lang=="English")
- $("#lang").text("عربى");
+if (lang=="E")
+ $("#translation").text("ع");
 else
- $("#lang").text("English");
+ $("#translation").text("E");
 $("#container").html(result);
 
 

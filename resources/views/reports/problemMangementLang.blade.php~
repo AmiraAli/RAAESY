@@ -1,15 +1,10 @@
 
 <div class="raw">
 		<div class="col-md-5"  id="customedate">
-			From:<input type="date" id="startdate" value={{$startdate}}>
-			To:<input type="date" id="enddate" value={{$enddate}}>
+			{{trans('problemmangement.from')}}:<input type="date" id="startdate" value={{$startdate}}>
+			{{trans('problemmangement.to')}}:<input type="date" id="enddate" value={{$enddate}}>
 		</div>
-@if($lang=="English")
-	<button id="lang" onclick="language()" class="btn navbtn txtnav" >عربى</button>
-@else
-	<button id="lang" onclick="language()" class="btn navbtn txtnav" >English</button>
 
-@endif
 		<div style="float:left;">
 			<button class="btn btn-primary" onclick="searchDate()"><span class="glyphicon glyphicon-search"></span></button>
 		</div>
