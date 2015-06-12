@@ -6,7 +6,11 @@
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
     <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
-    <br>
+    <div class="container">
+    <h3 class="navtxt"><a href="{{ url('/reports')}}"> Reports</a>
+    >>Tickets per day</h3>
+</div>
+<br>
         <div class="container-fluid">
         <div class="row">
          <div class="col-md-10 col-md-offset-1">

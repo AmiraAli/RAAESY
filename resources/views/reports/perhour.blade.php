@@ -4,6 +4,10 @@
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 <link rel="stylesheet" type="text/css" href="/css/reports/perhour.css">
 <div class="container">
+	<h3 class="navtxt"><a href="{{ url('/reports')}}"> Reports</a>
+	>>Tickets per Hour</h3>
+</div>
+<div class="container">
 <br>
 <div class="row">
 From : <input type="text" id="date1" value="<?php echo date('Y-m-d H:i:s', strtotime('-10day')) ?>">

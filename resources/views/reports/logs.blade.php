@@ -15,10 +15,15 @@
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 @extends('app')
 @section('content')
-
 <div class="container">
+	<h3 class="navtxt"><a href="{{ url('/reports')}}"> Reports</a>
+	>>Deletion Log</h3>
+</div>
+<div class="container">
+<br>
 
-<a id="csv" href="/reports/logsCSV" >
+<?php echo $logs->render(); ?>
+<a  class="row pull-right" id="csv" href="/reports/logsCSV" >
 
     <img src="/images/CSV.png" style="width:40px"></img>
 
@@ -27,12 +32,12 @@
 <div  id="con" class="col-md-12" >
 @foreach ($logs as $log  )
  <div class="row" >
- 	<div class="panel panel-default">
+ 	<div class="panel">
 
 	<?php if (preg_match("/^.*[a-z].*$/i", $log->user->fname )){ ?>
- 		<div class="panel-heading">{{ trans('words.Done_by' , ['admin' => ucfirst($log->user->fname) ]) }} 
+ 		<div class="panel-heading navbtn txtnav">{{ trans('words.Done_by' , ['admin' => ucfirst($log->user->fname) ]) }} 
  	<?php }else{ ?>
-		<div class="panel-heading">{{ trans('words.Done_by_ar' , ['admin' => ucfirst($log->user->fname) ]) }} 
+		<div class="panel-heading navbtn txtnav">{{ trans('words.Done_by_ar' , ['admin' => ucfirst($log->user->fname) ]) }} 
  	<?php } ?>
  	<span> 		
  	
@@ -93,9 +98,6 @@
 	</div>
 	
 @endforeach
-
-
-<?php echo $logs->render(); ?>
 
 </div>
 

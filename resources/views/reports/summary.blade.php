@@ -2,6 +2,10 @@
 @section('content')
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 <link rel="stylesheet" type="text/css" href="/css/reports/summary.css">
+<div class="container">
+	<h3 class="navtxt"><a href="{{ url('/reports')}}"> Reports</a>
+	>>Summary</h3>
+</div>
 <div class="container" id="container">
 <br>
 	<div class="row">
@@ -17,7 +21,7 @@
 			To:<input type="text" id="enddate">
 		</div>
 		<div style="float:left;">
-			<button class="btn btn-primary" onclick="search()"><span class="glyphicon glyphicon-search"></span></button>
+			<button class="btn navbtn txtnav" onclick="search()"><span class="glyphicon glyphicon-search"></span></button>
 		</div>
 		<a  style="float:left;" id="csv" href="/reports/summaryCSV">
     	<img src="/images/CSV.png" style="width:40px"></img>
