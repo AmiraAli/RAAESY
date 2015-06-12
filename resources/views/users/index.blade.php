@@ -90,8 +90,7 @@ Show:
 @endforeach
 </tbody>
 </table>
-
-
+<?php echo $users->render(); ?>
 
 </div>
 
@@ -100,11 +99,11 @@ Show:
 		<div class="panel panel-success">
 			<div class="panel-heading">Advanced Search</div>
 				<div class="panel-body">
-                  
+                  <form id="advSearchForm">
 						<div class="form-group">
 							<label class="col-md-6 control-label">First Name</label>
 							<div class="col-md-6">
-								<input type="text" id="fname" class="form-control" name="fname" value="{{ old('email') }}">
+								<input type="text"  class="form-control" name="fname" value="{{ old('email') }}">
 							</div>
 						</div>
 
@@ -112,37 +111,39 @@ Show:
 							<label class="col-md-6 control-label">Last Name</label>
 							<br/>
 							<div class="col-md-6">
-								<input type="text" id="lname" class="form-control" name="lname" value="{{ old('email') }}">
+								<input type="text"  class="form-control" name="lname" value="{{ old('email') }}">
 							</div>
 						</div>
 						
 						<div class="form-group">
 							<label class="col-md-6 control-label">E-Mail Address</label>
 							<div class="col-md-6">
-								<input type="email" id="email" class="form-control" name="email" value="{{ old('email') }}">
+								<input type="email"  class="form-control" name="email" value="{{ old('email') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-6 control-label">Phone</label>
 							<div class="col-md-6">
-								<input type="text" id="phone" class="form-control" name="phone">
+								<input type="text"  class="form-control" name="phone">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-6 control-label">Location</label>
 							<div class="col-md-6">
-								<input type="text" id="location" class="form-control" name="location">
+								<input type="text"  class="form-control" name="location">
 							</div>
 						</div>
+
+						<input type="hidden" id="displayed" name="displayed">
 
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" onclick="search()" class="btn btn-primary">Search</button>
+								<button type="button" onclick="search()" class="btn btn-primary">Search</button>
 							</div>
 						</div>
-
+				<form>
 
 		
 

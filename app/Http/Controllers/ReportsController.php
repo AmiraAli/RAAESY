@@ -102,7 +102,7 @@ class ReportsController extends Controller {
 	public function logs()
 	{
 		
-		$logs =Log::all();
+		$logs =Log::paginate(10);
 		return view('reports.logs',compact('logs'));
 	}
 

@@ -95,6 +95,8 @@
 @endforeach
 
 
+<?php echo $logs->render(); ?>
+
 </div>
 
 

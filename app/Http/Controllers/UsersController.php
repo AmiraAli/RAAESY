@@ -62,7 +62,7 @@ class UsersController extends Controller {
 			return view('errors.404');
 		}
 
-		$users=User::where('isspam', 0)->get();
+		$users=User::where('isspam', 0)->paginate(10);
 		return view('users.index',compact('users'));
 	}
 
@@ -423,6 +423,7 @@ class UsersController extends Controller {
 		$phone = Request::get('phone');
 		$location = Request::get('location');
 		$displayedType = Request::get('displayed');
+		
 
 		//to show user type in the table
 		$showType = false;
@@ -430,15 +431,15 @@ class UsersController extends Controller {
 		// filter 1: get only displayed user 
 		if ($displayedType== "all"){
 			
-			$users =User::where('isspam', 0)->get();
+			$users =User::where('isspam', 0);
 
 		}elseif ($displayedType== "disabled") {
 			
-			$users =User::where('isspam', 1)->get();
+			$users =User::where('isspam', 1);
 			$showType = true;
 
 		}else{
-			$users =User::where('type',$displayedType )->where('isspam', 0)->get();
+			$users =User::where('type',$displayedType )->where('isspam', 0);
 		}
 		
 		// filter 2: get specified users from advanced search
@@ -463,6 +464,8 @@ class UsersController extends Controller {
 			
 			$users = $users->where('location', $location);
 		}
+
+		$users = $users->paginate(10);
 
 		return view('users.ajaxsearch',compact('users', 'showType' ));
 
