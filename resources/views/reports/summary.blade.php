@@ -19,8 +19,12 @@
 		<div style="float:left;">
 			<button class="btn btn-primary" onclick="search()"><span class="glyphicon glyphicon-search"></span></button>
 		</div>
+		<a  style="float:left;" id="csv" href="/reports/summaryCSV">
+    	<img src="/images/CSV.png" style="width:40px"></img>
+		</a>
 	</div>
 	<br>
+	<div class="row" id="datainfo">
 	<div class="row">
 		<div class="col-md-6">
 		@if($ticketsPerCategories)
@@ -29,31 +33,29 @@
 				<input type="hidden" class="count" value="{{ $ticketsPerCategorie->count }}">
 			@endforeach
 		@endif
-    <div id="piechart" style="width: 550px; height: 500px;"></div>
+    <div  class="divchart" id="piechart" style="width: 550px; height: 500px;"></div>
 		</div>
 		<div class="col-md-6">
-			<div id="status" style="width: 550px; height: 500px;"></div>
+			<div  class="divchart" id="status" style="width: 550px; height: 500px;"></div>
 		</div>
 	</div>
-	<!--csv report-->
- <a id="csv" href="/reports/summaryCSV">
-
-    <img src="/images/CSV.png" style="width:40px"></img>
-
-</a>
-	<div class="row">
-		<table class="table table-condensed">
-			<tr>
-			<td > Ticket ID</td>
-			<td> Ticket Subject</td>
-			<td> Ticket Category</td>
-			<td> Assigned To</td>
-			<td> Start Date</td>
-			<td> Close Date</td>
-			<td> Deadline </td>
-			<td> Status </td>
-			<td> Priority</td>
-			</tr>
+	<br>
+	<div class="row divtable" >
+		<table class="table table-hover">
+			<thead >
+				<tr class="navbtn txtnav">
+					<th > Ticket ID</th>
+					<th> Ticket Subject</th>
+					<th> Ticket Category</th>
+					<th> Assigned To</th>
+					<th> Start Date</th>
+					<th> Close Date</th>
+					<th> Deadline </th>
+					<th> Status </th>
+					<th> Priority</th>
+				</tr>
+			</thead>
+			<tbody>
 			@foreach($tickets as $ticket)
 			<tr>
 				<td>#{{ $ticket->id }}</td>
@@ -86,9 +88,12 @@
 				@endif
 			</tr>
 			@endforeach
+			</tbody>
 		</table>
 	</div>
+	</div>
 </div>
+
  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
  <script src="http://code.highcharts.com/highcharts.js"></script>
  <script src="http://code.highcharts.com/modules/exporting.js"></script>

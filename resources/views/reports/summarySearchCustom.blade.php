@@ -1,48 +1,56 @@
-
-<div class="row">
-		<div class="col-md-3">
-			<select class="form-control" id="date" onchange="custom()">
-				<option value="month" selected="true">Last month</option>
-		  		<option value="week">Last week</option>
+<br>
+    <div class="row">
+        <div class="col-md-3">
+            <select class="form-control" id="date" onchange="custom()">
+                <option value="month">Last month</option>
+                <option value="week">Last week</option>
                 <option value="custom" selected="true">Custom</option>
-
-			</select>
-		</div>
-        <div class="col-md-5" style="display:none;" style="visibility:hidden;" id="customedate">
+            </select>
+        </div>
+        <div class="col-md-5" style="display:block;" id="customedate">
             From:<input type="text" id="startdate" value="{{ $startdate }}">
             To:<input type="text" id="enddate" value="{{ $enddate }}">
         </div>
 		<div style="float:left;">
 			<button class="btn btn-primary" onclick="search()"><span class="glyphicon glyphicon-search"></span></button>
 		</div>
+        <a  style="float:left;" id="csv" href="/reports/summaryCSV">
+        <img src="/images/CSV.png" style="width:40px"></img>
+        </a>
 </div>
-<div class="row">
-		<div class="col-md-6">
-			@if($ticketsPerCategories)
+<br>
+<div class="row" id="datainfo">
+    <div class="row">
+        <div class="col-md-6">
+        @if($ticketsPerCategories)
             @foreach($ticketsPerCategories as $ticketsPerCategorie)
                 <input type="hidden" class="category" value="{{$ticketsPerCategorie->category->section->name}}/{{$ticketsPerCategorie->category->name}}">
                 <input type="hidden" class="count" value="{{ $ticketsPerCategorie->count }}">
             @endforeach
         @endif
-			<div id="piechart" style="width: 700px; height: 600px;"></div>
-		</div>
-		<div class="col-md-6">
-			<div id="status" style="width: 700px; height: 600px;"></div>
-		</div>
-	</div>
-<div class="row">
-        <table class="table table-condensed">
-            <tr>
-            <td > Ticket ID</td>
-            <td> Ticket Subject</td>
-            <td> Ticket Category</td>
-            <td> Assigned To</td>
-            <td> Start Date</td>
-            <td> Close Date</td>
-            <td> Deadline </td>
-            <td> Status </td>
-            <td> Priority</td>
-            </tr>
+    <div  class="divchart" id="piechart" style="width: 550px; height: 500px;"></div>
+        </div>
+        <div class="col-md-6">
+            <div  class="divchart" id="status" style="width: 550px; height: 500px;"></div>
+        </div>
+    </div>
+    <br>
+<div class="row divtable" >
+        <table class="table table-hover">
+            <thead >
+                <tr class="navbtn txtnav">
+                    <th > Ticket ID</th>
+                    <th> Ticket Subject</th>
+                    <th> Ticket Category</th>
+                    <th> Assigned To</th>
+                    <th> Start Date</th>
+                    <th> Close Date</th>
+                    <th> Deadline </th>
+                    <th> Status </th>
+                    <th> Priority</th>
+                </tr>
+            </thead>
+            <tbody>
             @foreach($tickets as $ticket)
             <tr>
                 <td>#{{ $ticket->id }}</td>
@@ -75,8 +83,11 @@
                 @endif
             </tr>
             @endforeach
+            </tbody>
         </table>
- </div>
+    </div>
+    </div>
+
  <script type="text/javascript" src="/js/reports/summarycategory.js"></script>
  <script type="text/javascript" src="/js/reports/summarysearch.js"></script>
 
