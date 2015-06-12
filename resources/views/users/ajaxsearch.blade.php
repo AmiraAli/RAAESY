@@ -4,7 +4,9 @@
 <th>Email</th>
 <th>Phone</th>
 <th>Location</th>
-<th>Disabled</th>
+@if ($showType)
+<th>Role</th>
+@endif
 <tbody id="tbody">
 @foreach($users as $user)
 <tr id="{{$user->id}}"><td>
@@ -27,26 +29,36 @@
 	{{$user->location}}	
 
 </td>
+@if ($showType)
 <td>
-	@if ($user->isspam == true)
-
-		<input type="checkbox" disabled="true" checked="true">
-	@else
-		<input type="checkbox" disabled="true" >
-	@endif
-
+   @if ($user->type == "admin")
+    	Admin
+    @elseif ($user->type == "tech")
+    	Technician
+    @else
+    	Regular User
+    @endif
 </td>
+@endif
+
+
 
 
 
 <td class="text-center">
 
 @if ($user->id != "1" | ($user->id == "1" && $current_user->id == "1" ) )
-	<a class="btn btn-success" href="/users/{{$user->id}}/edit">edit</a>
+	<a class="transparent edit" href="/users/{{$user->id}}/edit"><img src="/images/edit.png"></a>
 @endif
 
 @if ($user->id != "1")
-	<a class="btn btn-danger delete" href="#"  id="{{$user->id}}" onclick="Delete({{$user->id}})">delete</a>
+	@if ($showType)
+		<button class="transparent enable" onclick="Spam('enable_{{$user->id}}')" ><img src="/images/enable.png"></button>
+	@else
+		<button class="transparent disable" onclick="Spam('disable_{{$user->id}}')" ><img src="/images/disable.png"></button>
+	@endif
+
+	<button class="transparent del" onclick="Delete({{$user->id}})" ><img src="/images/delete.png"></button>
 @endif
 </td>
 
@@ -54,3 +66,5 @@
 @endforeach
 </tbody>
 </table>
+<?php echo $users->render(); ?>
+

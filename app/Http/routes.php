@@ -23,6 +23,9 @@ Route::get("/error", function(){
    return view("errors.404");
 });
 
+Route::get('/home/setLang', 'HomeController@changeLang');
+
+
 Route::get('/assets/csvimport', 'AssetsController@importToCsv');
 Route::get('/tickets/exportCSV', 'TicketsController@exportCSV');
 
@@ -49,8 +52,11 @@ Route::post('users/changepassprocess','UsersController@changepassprocess');
 
 Route::resource('/users','UsersController');
 
+
 Route::get('users/destroy/{id}','UsersController@destroy');
 Route::post('users/autocomplete','UsersController@autocomplete');
+
+Route::post('users/spam/{id}','UsersController@spam');
 
 
 Route::post('articles/autocomplete','ArticlesController@autocomplete');
@@ -137,5 +143,5 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
-
+Route::post('/reports/problemmangementlang','ReportsController@problemMangementLang');
 

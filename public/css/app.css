@@ -6256,3 +6256,9 @@ label,
 .checkbox label {
   font-weight: 300;
 }
+
+#locale{
+    padding: 5px;
+    display: inline;
+    float: none;
+}
