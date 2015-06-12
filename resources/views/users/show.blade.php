@@ -1,57 +1,52 @@
 @extends('app')
 @section('content')
 
+<link href="/css/users/showUser.css" rel="stylesheet">
 
-
-
-
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
-				<div class="panel-heading">{{$user->fname}} {{$user->lname}}
-
-					<div class="pull-right"> <a  href="/users/{{$user->id}}/edit">edit</a></div>
-
+<div class="container">
+	<div class="row ">
+		<div class="col-md-5 my">
+			<div class="panel">
+				<div class="panel-heading navbtn txtnav fnt" >{{$user->fname}} {{$user->lname}}
 				</div>
 
 				<div class="panel-body">
 
 				<div class="container">
-		         	<label for="subject" class="col-sm-2 control-label">First Name</label>
-		            <div class="col-sm-10">
+		         	<label for="subject" class="col-sm-2 control-label clr">First Name</label>
+		            <div class="col-sm-10 fnt">
 		                {{$user->fname}}
 		            </div>
 		      
 			        <br/>
 			        <br/>
 				        
-					<label for="subject" class="col-sm-2 control-label">Last Name</label>
-		            <div class="col-sm-10">
+					<label for="subject" class="col-sm-2 control-label clr">Last Name</label>
+		            <div class="col-sm-10 fnt">
 		                {{$user->lname}}
 		            </div>
 		      
 			        <br/>
 			        <br/>
 				  
-				  	<label for="subject" class="col-sm-2 control-label">Email</label>
-		            <div class="col-sm-10">
+				  	<label for="subject" class="col-sm-2 control-label clr">Email</label>
+		            <div class="col-sm-10 fnt">
 		                {{$user->email}}
 		            </div>
 		      
 			        <br/>
 			        <br/>
 				  
-				  	<label for="subject" class="col-sm-2 control-label">Phone</label>
-		            <div class="col-sm-10">
+				  	<label for="subject" class="col-sm-2 control-label clr">Phone</label>
+		            <div class="col-sm-10 fnt">
 		                {{$user->phone}}
 		            </div>
 		      
 			        <br/>
 			        <br/>
 				  
-				  	<label for="subject" class="col-sm-2 control-label">Location</label>
-		            <div class="col-sm-10">
+				  	<label for="subject" class="col-sm-2 control-label clr">Location</label>
+		            <div class="col-sm-10 fnt">
 		                {{$user->location}}
 		            </div>
 		      
@@ -59,8 +54,8 @@
 			        <br/>
 				  
 				  	@if ($current_user->type == "admin")
-						<label for="subject" class="col-sm-2 control-label">Role</label>
-			            <div class="col-sm-10">
+						<label for="subject" class="col-sm-2 control-label clr">Role</label>
+			            <div class="col-sm-10 fnt">
 			                @if ($user->type == "admin")
 			                	Admin
 			                @elseif ($user->type == "tech")
@@ -73,8 +68,8 @@
 				        <br/>
 				        <br/>
 
-						<label for="subject" class="col-sm-2 control-label">Disabled</label>
-			            <div class="col-sm-10">
+						<label for="subject" class="col-sm-2 control-label clr">Disabled</label>
+			            <div class="col-sm-10 fnt">
 			                @if ($user->isspam == true)
 								<input type="checkbox" disabled="true" checked="true">
 							@else
@@ -85,8 +80,10 @@
 		      		
 
 			        	<br/>
-			        	<br/>
+			        	
 			        @endif
+
+			        <div class="butn col-sm-8"> <a  href="/users/{{$user->id}}/edit" class="btn btn-default">Edit</a></div>
 
 				</div>
 			</div>

@@ -56,10 +56,11 @@
         console.log(closedTickets);
         ticketsStatistics(createdTickets, closedTickets, points);
 
-        var unit = $("#groupby").val();
+        
 
 
         function ticketsStatistics(createdTickets,closedTickets, points){
+            var unit = $("#groupby").val();
             $(function () {
                 $('#container').highcharts({
                     chart: {
