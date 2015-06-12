@@ -23,6 +23,9 @@ Route::get("/error", function(){
    return view("errors.404");
 });
 
+Route::get('/home/setLang', 'HomeController@changeLang');
+
+
 Route::get('/assets/csvimport', 'AssetsController@importToCsv');
 Route::get('/tickets/exportCSV', 'TicketsController@exportCSV');
 

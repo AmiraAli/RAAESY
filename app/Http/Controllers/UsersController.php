@@ -9,11 +9,8 @@ use Request;
 use Validator;
 use Mail;
 use Response;
-
 use App\Article;
 use App;
-
-use Lang;
 use Session;
 
 class UsersController extends Controller {
@@ -104,14 +101,6 @@ class UsersController extends Controller {
 			return view('errors.404');
 		}
 
-		if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
-			Lang::setLocale('ar');
-			Session::set('lang', 'ar');
-		}else{
-			Lang::setLocale('en');
-			Session::set('lang', 'en');
-
-		}
 		return view('users.create');
 	}
 
@@ -123,12 +112,11 @@ class UsersController extends Controller {
 	public function store()
 	{
 
-		if (Session::get('lang') =="ar"){
-
-			Lang::setLocale('ar');	
+		if (Session::get('locale') =="ar"){
+	
 			$arr = array ();
 
-			//set validation array
+			//set validation array with arabic field names
 			$arr['الاسم الأول'] = Request::get('fname');
 			$arr['الاسم الثانى'] = Request::get('lname');
 			$arr['البريد الإلكترونى'] =  Request::get('email');

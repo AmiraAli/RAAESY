@@ -4,12 +4,6 @@
 
 <br>
 
-@if (Session::get('lang') =="ar")
-	<a  href="/users/create?lang=en" class="btn navbtn txtnav" >English</a>
-@else
-	<a  href="/users/create?lang=ar" class="btn navbtn txtnav" >عربى</a>
-@endif
-
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel ">
@@ -98,7 +92,7 @@
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn navbtn txtnav">
-									Add user
+									{{ trans('words.user_add') }}
 								</button>
 							</div>
 						</div>

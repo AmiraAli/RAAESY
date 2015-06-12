@@ -16,6 +16,7 @@ return array(
       "regular" =>  "Regular User" ,
 	"tech"   => "Technician" , 
 	"admin" =>  "Admin" ,
+	"user_add" => "Add User",
 	"ooh" => "Whoops!" , 
 	"validError" => "There were some problems with your input." , 
 
@@ -33,11 +34,11 @@ return array(
 	"open"=>"open",
 	"close"=>"close",
 	"id"=>"id",
-	"spam_msg" => ":admin marked the :type #:id with :title ':name' as spam " , 
-	"spam_msg_ar" => ":admin marked the :type #:id with :title ':name' as spam " , 
+	"spam_msg" => ":admin marked the :type #:id with :title  ':name' as spam " , 
+	"spam_msg_ar" => ":admin marked the :type #:id with :title  ':name' as spam " , 
 
-	"delete_msg" => ":admin deleted the :type #:id with :title ':name'" ,  
-	"delete_msg_ar" => ":admin deleted the :type #:id with :title ':name'  " ,  
+	"delete_msg" => ":admin deleted the :type #:id with :title  ':name'" ,  
+	"delete_msg_ar" => ":admin deleted the :type #:id with :title  ':name'  " ,  
 
 
 	"ticket" => "ticket" , 

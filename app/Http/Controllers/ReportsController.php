@@ -102,15 +102,6 @@ class ReportsController extends Controller {
 	public function logs()
 	{
 		
-		if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
-			Lang::setLocale('ar');
-			Session::set('lang', 'ar');
-		}else{
-			Lang::setLocale('en');
-			Session::set('lang', 'en');
-
-		}
-
 		$logs =Log::all();
 		return view('reports.logs',compact('logs'));
 	}
@@ -924,9 +915,5 @@ $startdate=Request::input('startdate');
 	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
 	return  view('reports.problemMangementLang',compact('lang','allTickets','startdate','enddate'));
 
-}
-//Session::set('locale',input::get('locale'))
-//redirect
-//Lang::setLocale(Session::get('locale'))
-//Lang::locale()=="ar"
+	}
 }

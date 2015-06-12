@@ -16,12 +16,6 @@
 @extends('app')
 @section('content')
 
-@if (Session::get('lang') =="ar")
-	<a  href="/reports/logs?lang=en" class="btn navbtn txtnav" >English</a>
-@else
-	<a  href="/reports/logs?lang=ar" class="btn navbtn txtnav" >عربى</a>
-@endif 
-
 <div class="container">
 
 <a id="csv" href="/reports/logsCSV" >
