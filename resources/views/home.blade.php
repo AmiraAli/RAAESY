@@ -74,7 +74,7 @@
 		<div class="col-md-10" id="article-show">
 			@foreach($articles as $article)
         @if($article->isshow==1)
-                  @if(Auth::user()->type != "regular")
+           @if(Auth::user()->type != "regular")
 				<div class="col-md-4 article" >	
 					<div class="panel panel-info">
 				  		<div class="panel-body"  id="articles">
@@ -89,8 +89,8 @@
                  
 					 	</div>			
 				    </div>
-             @endif
-                @endif
+          @endif
+        @endif
 				</div>    
 			@endforeach
 		</div>
