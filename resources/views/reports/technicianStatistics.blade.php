@@ -2,11 +2,16 @@
 	@extends('app')
 	@section('content')
 	<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
+	<div class="container">
+    <h3 class="navtxt"><a href="{{ url('/reports')}}"> Reports</a>
+    >>Technician Statistics</h3>
+</div>
 	<div class="container-fluid">
+	<br>
 	<div class="row">
 	 <div class="col-md-8 col-md-offset-2">
-		<div class="panel panel-info">
-			<div class="panel-heading"> <strong>Choose Date</strong> </div>
+		<div class="panel ">
+			<div class="panel-heading navbtn txtnav"> <strong>Choose Date</strong> </div>
 			<div class="panel-body">
 					<div class="form-group col-md-5">
 						<label class="col-md-4 control-label">From</label>
@@ -18,7 +23,7 @@
 						<input type="text" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('+0 day')) ?>" id="to"/>
 					</div>
 					<div class="form-group col-md-2">
-					<button type="submit" class="btn btn-primary " onclick="technicianStatisticsSearch ()">Go</button>
+					<button type="submit" class="btn navbtn txtnav " onclick="technicianStatisticsSearch ()">Go</button>
 
 					<a  href="{{ url('/assets/csvimport') }}"><img src="/images/CSV.png" style="width:40px"></a>
 	
@@ -32,8 +37,8 @@
 <div class="container-fluid">
 	<div class="row">
 	 <div class="col-md-8 col-md-offset-2">
-		<div class="panel panel-info">
-			<div class="panel-heading"> <strong>Technician Statistics</strong> </div>
+		<div class="panel ">
+			<div class="panel-heading navbtn txtnav"> <strong>Technician Statistics</strong> </div>
 			<div class="panel-body">
 
 <table class="table table-condensed" id="table_show">

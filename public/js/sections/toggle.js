@@ -18,7 +18,7 @@ function tog(elm,elm2){
 
 
 }
-
+//--------------------------------------------------------------------------------------
 function createSection(){
 
   	$(".secsaveError").remove();
@@ -102,7 +102,6 @@ function createCategory(secId , secName ){
     var categoryname=document.getElementById("catName").value;
     var sectionid=document.getElementById("cat_secId").value;
 
-    //$(".alert-danger cat").remove();
     $(".catsaveError").remove();
 
     if (categoryname.trim() == null || categoryname.trim() == "") {

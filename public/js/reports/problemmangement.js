@@ -1,10 +1,4 @@
-window.onload = function() {
-                    $.ajaxSetup({
-					                headers: {
-					                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
-					                         }
-            					  });
-            				 };
+
 /**
 * function to get search by date
 **/

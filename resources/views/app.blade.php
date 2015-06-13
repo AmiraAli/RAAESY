@@ -1,12 +1,10 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>RASESY</title>
+	<title>RSB</title>
 	<link href='/bootstrab/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 	<!-- Fonts -->
@@ -29,7 +27,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand txtnav" href="{{ url('/home') }}"><img class="img-circle" src="/images/RSB.png" style="height:40px"></a>
+				<img class="img-circle" href="{{ url('/home') }}" src="/images/RSB.png" style="height:40px">
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
@@ -51,16 +49,21 @@
 						<li><a class="txtnav" href="{{ url('/auth/login') }}">Login</a></li>
 						<li><a class="txtnav" href="{{ url('/auth/register') }}">Register</a></li>
 					@else
+ 
 					    <li> <a  class="navbar-brand txtnav" href="/users/{{$current_user->id}}"> {{ ucfirst ($current_user->fname)  }}</a></li>
 						<li ><a class="txtnav" href="{{ url('/auth/logout') }}">Logout</a></li>
+
+						@if (Session::get('locale') =="ar")
+							<li><a href="/home/setLang?lang=en" class="txtnav" id="translation"><span id="locale">E</span></a></li>
+						@else
+							<li><a href="/home/setLang?lang=ar" class="txtnav" id="translation"><span id="locale">ع</span></a></li>
+						@endif
 					@endif
 				</ul>
 			</div>
 		</div>
 	</nav>
-<!-- 	<div class="image">
-		
-	</div> -->
+
 	@yield('content')
 
 	<!-- Scripts -->

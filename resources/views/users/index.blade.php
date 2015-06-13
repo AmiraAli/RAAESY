@@ -32,7 +32,6 @@ Show:
 <button id="toggle" class="btn btn-primary" > <span class="glyphicon glyphicon-search"></span></button>
 
 <a id="csv" href="users/downloadCSV" ><img src="/images/CSV.png"></a>
-<!-- <a id="pdf" href="users/downloadPDF" ><img src="/images/CSV.png"></a> -->
 
 <div id="autocompletemenu" style="display: none;">
    <ul id="autocompleteul"></ul>
@@ -47,7 +46,6 @@ Show:
 <th>Email</th>
 <th>Phone</th>
 <th>Location</th>
-<th>Disabled</th>
 <tbody id="tbody">
 @foreach($users as $user)
 <tr id="{{$user->id}}"><td>
@@ -70,26 +68,21 @@ Show:
 	{{$user->location}}	
 
 </td>
-<td>
-	@if ($user->isspam == true)
 
-		<input type="checkbox" disabled="true" checked="true">
-	@else
-		<input type="checkbox" disabled="true" >
-	@endif
-
-</td>
 
 
 
 <td class="text-center">
 
 @if ($user->id != "1" | ($user->id == "1" && $current_user->id == "1" ) )
-	<a class="btn btn-success" href="/users/{{$user->id}}/edit">edit</a>
+	<a class="transparent edit" href="/users/{{$user->id}}/edit"><img src="/images/edit.png"></a>
+
+	
 @endif
 
 @if ($user->id != "1")
-	<a class="btn btn-danger delete" href="#"  id="{{$user->id}}" onclick="Delete({{$user->id}})">delete</a>
+	<button class="transparent enable" onclick="Spam('disable_{{$user->id}}')" ><img src="/images/disable.png"></button>
+	<button class="transparent del" onclick="Delete({{$user->id}})" ><img src="/images/delete.png"></button>
 @endif
 </td>
 
@@ -97,8 +90,7 @@ Show:
 @endforeach
 </tbody>
 </table>
-
-
+<?php echo $users->render(); ?>
 
 </div>
 
@@ -107,11 +99,11 @@ Show:
 		<div class="panel panel-success">
 			<div class="panel-heading">Advanced Search</div>
 				<div class="panel-body">
-                  
+                  <form id="advSearchForm">
 						<div class="form-group">
 							<label class="col-md-6 control-label">First Name</label>
 							<div class="col-md-6">
-								<input type="text" id="fname" class="form-control" name="fname" value="{{ old('email') }}">
+								<input type="text"  class="form-control" name="fname" value="{{ old('email') }}">
 							</div>
 						</div>
 
@@ -119,37 +111,39 @@ Show:
 							<label class="col-md-6 control-label">Last Name</label>
 							<br/>
 							<div class="col-md-6">
-								<input type="text" id="lname" class="form-control" name="lname" value="{{ old('email') }}">
+								<input type="text"  class="form-control" name="lname" value="{{ old('email') }}">
 							</div>
 						</div>
 						
 						<div class="form-group">
 							<label class="col-md-6 control-label">E-Mail Address</label>
 							<div class="col-md-6">
-								<input type="email" id="email" class="form-control" name="email" value="{{ old('email') }}">
+								<input type="email"  class="form-control" name="email" value="{{ old('email') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-6 control-label">Phone</label>
 							<div class="col-md-6">
-								<input type="text" id="phone" class="form-control" name="phone">
+								<input type="text"  class="form-control" name="phone">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-6 control-label">Location</label>
 							<div class="col-md-6">
-								<input type="text" id="location" class="form-control" name="location">
+								<input type="text"  class="form-control" name="location">
 							</div>
 						</div>
+
+						<input type="hidden" id="displayed" name="displayed">
 
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" onclick="search()" class="btn btn-primary">Search</button>
+								<button type="button" onclick="search()" class="btn btn-primary">Search</button>
 							</div>
 						</div>
-
+				<form>
 
 		
 

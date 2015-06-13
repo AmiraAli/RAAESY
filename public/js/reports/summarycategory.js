@@ -18,17 +18,25 @@ length=array.length;
 
     google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
-drawChart();
+
+      drawChart();
       function drawChart() {
 
         var data = google.visualization.arrayToDataTable(array);
 
-        var options = {
-          title: 'ticketsper category',
-	
-        };
+        if(data.getNumberOfRows() == 0){
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+               $("#datainfo").html("<h2 class='navtxt'> Sorry, No tickets within this range of date!</h2>");
 
-        chart.draw(data, options);
+          }else{
+               var options = {
+                                title: 'Tickets Per Category',
+                               };
+
+               var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+              chart.draw(data, options);    
+          }
+
+       
       }
