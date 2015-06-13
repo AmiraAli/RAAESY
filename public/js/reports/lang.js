@@ -18,7 +18,7 @@ document.getElementById("translation").onclick= function(e){
 var startdate=document.getElementById("startdate").value;
 		var enddate=document.getElementById("enddate").value;
     var lang=$("#translation").text();
-console.log(lang);
+console.log(document.getElementById("translation"));
     $.ajax({
             
             url: '/reports/problemmangementlang',
