@@ -3,7 +3,7 @@ $(document).ready(function(){
 
     $("#toggle").click(function(){
 
-    	$("#con").toggleClass('col-md-8');
+    	$("#con").toggleClass('col-md-9');
 
         $("#advancedSearchDiv").toggle();
 

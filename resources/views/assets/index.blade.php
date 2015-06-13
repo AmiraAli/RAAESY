@@ -81,7 +81,7 @@
 
 							
 							<div class=" row form-group">
-								<div class="col-md-4 col-md-offset-4">
+								<div class="col-md-4 col-md-offset-2">
 									<button type="submit" onclick="searchAsset()" class="btn navbtn txtnav">
 										Search
 									</button>

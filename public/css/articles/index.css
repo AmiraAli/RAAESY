@@ -18,7 +18,7 @@ label{
 li {
 	cursor: pointer;
 	display: block;
-
+	margin : 1px;
 }
 
 #search{

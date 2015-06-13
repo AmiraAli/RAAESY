@@ -1,4 +1,4 @@
-label{
+.sho{
 	margin : 10px;
 }
 
@@ -23,15 +23,27 @@ li {
 
 }
 
-img{
-	width: 30px;
-	height: 30px;
-}
-
 #autocompletemenu{
 	z-index: 10;
 }		
 
 #search{
 	float:right;
+}
+#new-user{
+	float:right !important;
+	margin-right: 30px;
+}
+
+#con{
+    border-radius: 15px;
+    border: 2px solid ;
+   	border-color: rgba(36,58,117,1);
+    padding: 10px;
+}
+#toggle{
+	float: right;
+}
+#advancedSearchDiv{
+	float: right;
 }
