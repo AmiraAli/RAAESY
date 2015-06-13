@@ -31,6 +31,15 @@ else
  $("#translation").text("E");
 $("#container").html(result);
 
+// ----------------------------------------
+        $('#startdate').datetimepicker({
+            format:'Y-m-d H:00:00',
+        });
+        $('#enddate').datetimepicker({
+            format:'Y-m-d H:00:00',
+        });
+//-----------------------------------------
+
 
 
                 //ticketsStatistics(result["createdTickets"],result["closedTickets"], result["points"]);

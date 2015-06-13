@@ -74,20 +74,3 @@
  <link rel="stylesheet" type="text/css" href="/datetimepicker/jquery.datetimepicker.css"/ >
  <script src="/datetimepicker/jquery.datetimepicker.js"></script>
 
-<script >
- window.onload = function() {
-    $.ajaxSetup({
-	    headers: {
-	        'X-XSRF-Token': $('meta[name="_token"]').attr('content')
-	             }
-	});
-
-	    $('#startdate').datetimepicker({
-	  		format:'Y-m-d H:00:00',
-	    });
-	    $('#enddate').datetimepicker({
-	  		format:'Y-m-d H:00:00',
-	    });
-};
-</script>
- 
