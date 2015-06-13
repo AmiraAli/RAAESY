@@ -75,6 +75,7 @@ setChart();
 
 function getReport(){
 
+
     var date1 = document.getElementById('date1').value;
     var date2 = document.getElementById('date2').value;
     
@@ -83,7 +84,6 @@ function getReport(){
     };
 
     //ajax:
-
     $.ajax({
         url: '/reports/disthourajax',
         type: 'post',
