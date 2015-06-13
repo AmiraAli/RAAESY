@@ -27,15 +27,18 @@ function Delete(elm){
 function edit(elm){
 	var ids = elm.name.split("_");
 var body=elm.id;
-console.log(body);
+
    //ajax request
    $.ajax({
     url: '/tickets/'+ids[1]+'/comments/'+ids[0]+'/edit',
     type: 'get',
     
     success: function(result) {
-		$("#"+ids[0]+"Comments").html("<textarea type='text' class='form-control' id='bodyedit'>"+body+"</textarea><button class='btn btn-primary buttonsave' onclick='SaveComment("+ids[0]+','+ids[1]+")'>Save</button>");
-			},
+		$('.cmtbtn').hide();
+    $("#"+ids[0]+"combdy2").hide();
+    $("#"+ids[0]+"combdy").append("<div class='col-md-10 cmtedt'><textarea type='text' class='form-control' rows='3' id='bodyedit'>"+body+"</textarea></div><div class='col-md-2 cmtedt'> <button class='btn btn-primary buttonsave' onclick='SaveComment("+ids[0]+','+ids[1]+")'><span class='glyphicon glyphicon-ok'></span></button> <button  onclick='cancelEditCmt("+ids[0]+")' class='btn btn-danger'><span class='glyphicon glyphicon-remove'></span> </button> </div>");
+
+      },
 	error: function(jqXHR, textStatus, errorThrown) {
                     console.log(errorThrown);
     }
@@ -47,16 +50,20 @@ console.log(body);
 function SaveComment(commentid,ticketid){
 
 var body=document.getElementById("bodyedit").value;
-console.log(body);
+
 $.ajax({
     url: '/tickets/'+ticketid+'/comments/'+commentid,
    type: 'put',
    data:{body:body}, 
     success: function(result) {
 //name from session
-result=JSON.parse(result);
-		$("#"+commentid+"Comments").html("<div class='panel-heading'>"+result['fname']+" "+result['lname']+"</div><div class='panel-body'>"+"<button id='"+body+"'name="+commentid+"_"+ticketid+" onclick='edit(this)' class='btn btn-primary buttonright' >Edit</button>	<button name="+commentid+"_"+ticketid+" onclick='Delete(this)' class='btn btn-primary buttonright'>Delete</button>"+body+"<br>"+result['updated_at']);
-			},
+    result=JSON.parse(result);
+    $('.cmtedt').remove();
+    $("#"+commentid+"combdy2").show();
+    $('.cmtbtn').show();
+    $("[name="+commentid+"_"+ticketid +"]").attr('id', body);
+		$("#"+commentid+"combdy2").html(body+"<br>"+result['updated_at']);
+      },
 	error: function(jqXHR, textStatus, errorThrown) {
                     console.log(errorThrown);
     }
@@ -82,8 +89,8 @@ function add(ticketId){
 		if (result['created_at']!= result['updated_at']){
 			edited = "Edited: ";
 		}
-
-		$("#comments").append("<div class='panel panel-default  commentbody' id="+result['id']+"Comments"+"><div class='panel-heading'>"+result['fname']+" "+result['lname']+"</div><div class='panel-body'>"+"<button id='"+body+"'name="+result['id']+"_"+ticketId+" onclick='edit(this)' class='btn btn-primary buttonright' >Edit</button>	<button name="+result['id']+"_"+ticketId+" onclick='Delete(this)' class='btn btn-primary buttonright'>Delete</button>"+body+"<br>"+result['created_at']+"</div>");
+console.log(result);
+		$("#comments").append("<div class='panel  commentbody' id="+result['id']+"Comments"+"><div class='panel-heading navbtn txtnav'>"+result['fname']+" "+result['lname']+"</div><div class='panel-body'>"+"<button name="+result['id']+"_"+ticketId+" onclick='Delete(this)' class='btn btn-link buttonright'><span class='glyphicon glyphicon-remove' style='color:#d82727;'></span></button> <button id='"+body+"'name="+result['id']+"_"+ticketId+" onclick='edit(this)' class='btn btn-link buttonright' ><span class='glyphicon glyphicon-pencil'></span></button>"+body+"<br>"+result['created_at']+"</div>");
 		document.forms["addForm"]["body"].value = '';
 			},
 	error: function(jqXHR, textStatus, errorThrown) {
@@ -92,3 +99,9 @@ function add(ticketId){
 });
 }
 //------------------------------------------------------------------------------------------------------------------
+function cancelEditCmt(commentid)
+{
+  $('.cmtedt').remove();
+  $("#"+commentid+"combdy2").show();
+  $('.cmtbtn').show();
+}

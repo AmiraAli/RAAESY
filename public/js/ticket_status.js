@@ -49,9 +49,9 @@ console.log(csrf);
 		var leftDiv=document.querySelector("#comments");
 		var newLine=document.createElement("br");
 		var commentDiv=document.createElement('div');
-		  commentDiv.setAttribute("class","panel panel-default  commentbody");
+		  commentDiv.setAttribute("class","panel commentbody");
 		var headDiv=document.createElement('div');
-		  headDiv.setAttribute('class','panel-heading');
+		  headDiv.setAttribute('class','panel-heading navbtn txtnav');
 		var head=document.createTextNode(result['fname']+" "+result['lname']);
 		var commentDiv1=document.createElement('div');
 		  commentDiv1.setAttribute("class","panel-body ");
@@ -90,10 +90,12 @@ $.ajax({
 
     success: function(result) {
 result=JSON.parse(result)
-console.log(result+"aya");
+//console.log(result+"aya");
 if(result.length!=0){
 var select =document.createElement("select");
 select.setAttribute('id','select');
+select.setAttribute('class','form-control');
+// select.className += " "+'col-md-4';
 for(i=0;i<result.length;i++){
 var option=document.createElement("option");
 option.setAttribute('id',result[i].id);
@@ -104,14 +106,24 @@ select.appendChild(option);
 var position=document.getElementById(ticket_id);
 var parentElm=document.getElementById("newelement");
 parentElm.appendChild(select);
-document.getElementById(elm).remove();
+document.getElementById(elm).style.display = 'none';
 
 var saveButton=document.createElement('button');
 var saveButtonText=document.createTextNode('save');
 saveButton.appendChild(saveButtonText);
 saveButton.setAttribute('id','saveButton');
+saveButton.setAttribute('class','btn btn-default');
 saveButton.setAttribute('onclick','Save('+ticket_id+')');
 parentElm.appendChild(saveButton);
+
+var cancelButton=document.createElement('button');
+var cancelButtonText=document.createTextNode('cancel');
+cancelButton.appendChild(cancelButtonText);
+cancelButton.setAttribute('id','cancelButton');
+cancelButton.setAttribute('class','btn btn-default');
+cancelButton.setAttribute('onclick','cancel()');
+parentElm.appendChild(cancelButton);
+
 }
 else{
 
@@ -157,11 +169,11 @@ $.ajax({
 	var leftDiv=document.querySelector("#comments");
 	var newLine=document.createElement("br");
 	var commentDiv=document.createElement('div');
-	 commentDiv.setAttribute("class","panel panel-default  commentbody");
+	 commentDiv.setAttribute("class","panel commentbody");
 
 	var commentDiv1=document.createElement('div');
 	var headDiv=document.createElement('div');
-		  headDiv.setAttribute('class','panel-heading');
+		  headDiv.setAttribute('class','panel-heading navbtn txtnav');
 		var head=document.createTextNode(result['fname']+" "+result['lname']);
 
 	 commentDiv1.setAttribute("class","panel-body ");
@@ -185,6 +197,14 @@ $.ajax({
                     console.log(jqXHR.error);
     }
 });
+}
+
+function cancel ()
+{
+	$("#select").remove();
+	$("#saveButton").remove();
+	$("#cancelButton").remove();
+	var c= document.getElementsByClassName("assgn")[0].style.display = 'inline';
 }
 
 
