@@ -9,8 +9,8 @@
 <br>
 	<div class="raw">
 		<div class="col-md-5"  id="customedate">
-			{{trans('problemmangement.from')}}:<input type="date" id="startdate">
-			{{trans('problemmangement.to')}}:<input type="date" id="enddate">
+			{{trans('problemmangement.from')}}:<input type="text" id="startdate">
+			{{trans('problemmangement.to')}}:<input type="text" id="enddate">
 		</div>
 		<div style="float:left;">
 			<button class="btn navbtn txtnav" onclick="searchDate()"><span class="glyphicon glyphicon-search"></span></button>
@@ -20,11 +20,7 @@
 		    <img src="/images/CSV.png" style="width:40px"></img>
 		</a>
 	</div>
-	@if (Session::get('lang') =="ar")
-		<a  href="/reports/problemMangement?lang=en" class="btn navbtn txtnav pull-right" >English</a>
-	@else
-		<a  href="/reports/problemMangement?lang=ar" class="btn navbtn txtnav pull-right" >عربى</a>
-	@endif
+	
 	<br><br>
 	<?php
 	if (empty(json_decode(json_encode($allTickets), true)))
@@ -79,7 +75,35 @@
 }
 ?>
 </div>
-@endsection
+
  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
  <script type="text/javascript" src="/js/reports/problemmangement.js"></script>
  <script type="text/javascript" src="/js/reports/lang.js"></script>
+
+
+
+ <!-- DateTime picker -->
+ <link rel="stylesheet" type="text/css" href="/datetimepicker/jquery.datetimepicker.css"/ >
+ <script src="/datetimepicker/jquery.datetimepicker.js"></script>
+<script >
+ window.onload = function() {
+    $.ajaxSetup({
+	    headers: {
+	        'X-XSRF-Token': $('meta[name="_token"]').attr('content')
+	             }
+	});
+
+	    $('#startdate').datetimepicker({
+	  		format:'Y-m-d',
+            timepicker:false,
+            mask:true,
+	    });
+	    $('#enddate').datetimepicker({
+	  		format:'Y-m-d',
+            timepicker:false,
+            mask:true,
+	    });
+};
+</script>
+@endsection
+

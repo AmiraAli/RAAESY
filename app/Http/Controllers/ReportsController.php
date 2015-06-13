@@ -396,14 +396,6 @@ class ReportsController extends Controller {
 	{
         
 
-if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
-			Lang::setLocale('ar');
-			Session::set('lang', 'ar');
-		}else{
-			Lang::setLocale('en');
-			Session::set('lang', 'en');
-
-		}
 
 	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->groupBy('subject_id')->get();
 	$all=Ticket::all();
@@ -499,14 +491,7 @@ if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
 	 */
 	public function problemMangementDate(){
 
-if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
-			Lang::setLocale('ar');
-			Session::set('lang', 'ar');
-		}else{
-			Lang::setLocale('en');
-			Session::set('lang', 'en');
 
-		}
 	
 	$startdate=Request::input('startdate');
 	$enddate=Request::input('enddate');
@@ -539,9 +524,11 @@ if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
 	if($allTickets){
 		return view('reports.ticketStatisticsDate',compact('allTickets','startdate','enddate'));
 	}else{
-		echo "<h1 class='navtxt'> No Tickets Within this rrange of date!</h1>";
+		echo "<h1 class='navtxt'> No Tickets Within this range of date!</h1>";
 	}
 }
+
+
 	public function technicianStatistics()
 	{
 
@@ -779,16 +766,7 @@ if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
 
 	public function reportTicketStatus(){
 
-		if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
-			Lang::setLocale('ar');
-			Session::set('lang', 'ar');
-		}else{
-			Lang::setLocale('en');
-			Session::set('lang', 'en');
-
-		}
-
-		$tickets=Ticket::all();
+		$tickets=Ticket::paginate(10);
 		$ticketStatuses= TicketStatus::all();
 		$opens=TicketStatus::where('value','open')->count();
 		$closes=TicketStatus::where('value','close')->count();
@@ -877,19 +855,23 @@ if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
 
 
 
+
+
 public function problemMangementLang(){
 
-      $lang=Request::input("lang");
-if($lang=="عربى")
-      Lang::setLocale('ar');
-if($lang=="English")
-      Lang::setLocale('en');
+    $lang=Request::input("lang");
+	if($lang=="ع"){
+    	Session::set('locale', 'ar');
+    	Lang::setLocale('ar');
+    }
+	if($lang=="E"){
+      	Session::set('locale', 'en');
+      	Lang::setLocale('en');
+
+	}
 
 
-
-
-
-$startdate=Request::input('startdate');
+	$startdate=Request::input('startdate');
 	$enddate=Request::input('enddate');
 
 	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->whereBetween('updated_at', [$startdate, $enddate])
@@ -918,6 +900,13 @@ $startdate=Request::input('startdate');
 
 	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
 	return  view('reports.problemMangementLang',compact('lang','allTickets','startdate','enddate'));
+	
 
 	}
+
+
+
+
+
+
 }

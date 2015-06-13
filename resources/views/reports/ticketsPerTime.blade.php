@@ -120,10 +120,14 @@
     $(document).ready(function() {
 
         $('#from').datetimepicker({
-            format:'Y-m-d H:00:00',
+            format:'Y-m-d',
+            timepicker:false,
+            mask:true,
               });
         $('#to').datetimepicker({
-            format:'Y-m-d H:00:00',
+            format:'Y-m-d',
+             timepicker:false,
+             mask:true,
               });
 
  });

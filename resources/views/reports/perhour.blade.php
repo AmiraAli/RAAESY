@@ -10,9 +10,12 @@
 <div class="container">
 <br>
 <div class="row">
-From : <input type="text" id="date1" value="<?php echo date('Y-m-d H:i:s', strtotime('-10day')) ?>">
-To : <input type="text" id="date2" value="<?php echo date('Y-m-d H:i:s', time()) ?>">
-<button class="btn navbtn txtnav" onclick="getReport()" >Get Report</button>
+
+<form onsubmit="getReport(); return false;" >
+  From : <input type="text" id="date1" value="<?php echo date('Y-m-d H:i:s', strtotime('-10day')) ?>">
+  To : <input type="text" id="date2" value="<?php echo date('Y-m-d H:i:s', time()) ?>">
+  <button class="btn navbtn txtnav" >Get Report</button>
+</form >
 </div>
 <br><br><br>
 <div  class="row divchart" id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
@@ -35,11 +38,13 @@ To : <input type="text" id="date2" value="<?php echo date('Y-m-d H:i:s', time())
 	$(document).ready(function() {
 
     $('#date1').datetimepicker({
-  		format:'Y-m-d H:00:00',
-      	  });
+  		 format:'Y-m-d H:i:s',
+       mask:true, // '9999/19/39 29:59' - digit is the maximum possible for a cell
+    });
     $('#date2').datetimepicker({
-  		format:'Y-m-d H:00:00',
-      	  });
+  		 format:'Y-m-d H:i:s',
+       mask:true, // '9999/19/39 29:59' - digit is the maximum possible for a cell
+    });
 
  });
 </script>
