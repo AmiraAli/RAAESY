@@ -43,7 +43,7 @@
               <p><h4>Our Reports make it easy to keep an eye on your team performance.</h4></p>
               @if(Auth::user()->type != "tech")
               <p><a class="btn btn-lg navbtn txtnav" href="{{ url('/tickets/create') }}" role="button">New Ticket</a></p>
-           	 @endif
+             @endif
             </div>
           </div>
         </div>
@@ -59,42 +59,35 @@
     </div><!-- /.carousel -->
 <div  class="container">
 <br><br>
-	<div class="col-md-12">	
-		<div class="col-md-2">
-			<div class="row" id="category_list">
-				<div class="list-group">
+  <div class="col-md-12"> 
+    <div class="col-md-2">
+      <div class="row" id="category_list">
+        <div class="list-group">
 
-					<a href="#" class="list-group-item active" id="cat_all" onclick="searchByCat('cat_all', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ count($articles) }}</span><strong>All categories</strong></a>
-					@foreach ($categories as $category)
-						   <a href="#" class="list-group-item" id="cat_{{ $category->category_id }}" onclick="searchByCat('cat_{{ $category->category_id }}', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ $category->count }}</span>{{ $category->name }}</a>  			         
-				    @endforeach			  
-				</div>
-			</div>
-		</div>
-		<div class="col-md-10" id="article-show">
-			@foreach($articles as $article)
-        @if($article->isshow==1)
-           @if(Auth::user()->type != "regular")
-				<div class="col-md-4 article" >	
-					<div class="panel panel-info">
-				  		<div class="panel-body"  id="articles">
-
-				  			<a href="/articles/{{$article->id}}"><strong>{{$article->subject}}</strong></a><br>
-              		    			
-    					    	@if (strlen($article->body) <= 100)
-    					    		{!! $article->body !!}
-    					    	@else
-    					    		{!! substr(strip_tags($article->body),0,100)." <b>.......</b>" !!}
-    					    	@endif
-                 
-					 	</div>			
-				    </div>
-          @endif
-        @endif
-				</div>    
-			@endforeach
-		</div>
-	</div>
+          <a href="#" class="list-group-item active" id="cat_all" onclick="searchByCat('cat_all', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ count($articles) }}</span><strong>All categories</strong></a>
+          @foreach ($categories as $category)
+               <a href="#" class="list-group-item" id="cat_{{ $category->category_id }}" onclick="searchByCat('cat_{{ $category->category_id }}', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ $category->count }}</span>{{ $category->name }}</a>                 
+            @endforeach       
+        </div>
+      </div>
+    </div>
+    <div class="col-md-10" id="article-show">
+      @foreach($articles as $article)
+        <div class="col-md-4 article" > 
+          <div class="panel panel-info">
+              <div class="panel-body"  id="articles"> 
+                <a href="/articles/{{$article->id}}"><strong>{{$article->subject}}</strong></a><br>             
+                @if (strlen($article->body) <= 100)
+                  {!! $article->body !!}
+                @else
+                  {!! substr(strip_tags($article->body),0,100)." <b>.......</b>" !!}
+                @endif
+            </div>      
+            </div>
+        </div>    
+      @endforeach
+    </div>
+  </div>
 </div>
 
 
