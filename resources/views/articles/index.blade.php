@@ -95,7 +95,8 @@
 
 
     <div class="col-md-11" id="table_show">  
-        <table class="table table-hover" id="con">
+     <div id="con">
+        <table class="table table-hover" >
             <thead>
                 <tr class="info">
                      <th class="text-center">Subject</th>
@@ -130,6 +131,8 @@
                  @endforeach
              </tbody>
          </table>
+      <center> <?php echo $articles->render(); ?> </center> 
+        </div>
     </div>
 </div>
 

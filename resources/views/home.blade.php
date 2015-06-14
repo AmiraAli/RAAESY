@@ -58,6 +58,7 @@
       </a>
     </div><!-- /.carousel -->
 <div  class="container">
+
 <br><br>
   <div class="col-md-12"> 
     <div class="col-md-2">
@@ -87,7 +88,10 @@
         </div>    
       @endforeach
     </div>
+    <center> <?php echo $articles->render(); ?></center>
+
   </div>
+
 </div>
 
 

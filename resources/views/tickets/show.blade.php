@@ -161,7 +161,7 @@
 
 	<div class="panel relatedtags">
 		<div class="panel-heading navbtn txtnav">
-			<h3 class="panel-title">Related tags</h3>
+			<h3 class="panel-title">Related Tickets By tags</h3>
 		</div>
 		<div class="panel-body"> 
 
