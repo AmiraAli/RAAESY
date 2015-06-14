@@ -5,7 +5,8 @@ use App\Category;
 use App\Article;
 use Request;
 use DB;
-use session;
+use Session;
+
 
 class HomeController extends Controller {
 
@@ -67,7 +68,7 @@ class HomeController extends Controller {
 				$articles = Article::select("*");
 			}
 			else{
-				$articles = Article::where("isshow", 1)->get();
+				$articles = Article::where("isshow", 1);
 			}
 			if(Request::input('cat')){
 				if(Request::input('cat') != "all"){
@@ -91,7 +92,6 @@ class HomeController extends Controller {
 		}
 	}
 
-
 	/**
 	 * Change the language in session ( called by AJAX )
 	 *
@@ -109,5 +109,9 @@ class HomeController extends Controller {
 
 		return redirect()->back();
 	}
+
+
+
+
 
 }
