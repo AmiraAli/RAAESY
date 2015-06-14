@@ -50,9 +50,7 @@
         </div>
         <button id="toggle" class="btn btn-primary" > <span class="glyphicon glyphicon-search"></span></button>
     </div>
-	
-	<!-- <a id="pdf" href="users/downloadPDF" ><img src="/images/CSV.png"></a> -->
-	
+		
 	</br>
 	<div class="row">
 		<div  id="con" class="col-md-12" >
@@ -74,15 +72,24 @@
 							<td class="text-center">{{$user->phone}}</td>
 							<td class="text-center">{{$user->location}}</td>      
 							<td class="text-center">
-								@if ($user->id != "1")
+
+								<!-- admin #1 can spam anywone except himself -->
+								<!-- regular admins can not spam each other -->
+								@if ( ($current_user->id == 1 && $user->id != 1) | $user->type != "admin")
 									<a href="#" class="transparent disable" onclick="Spam('disable_{{$user->id}}')" ><img src="/images/disable.png" width="30px" height="30px"></a>
 									&ensp;&ensp; &ensp;
 								@endif
-								@if ($user->id != "1" | ($user->id == "1" && $current_user->id == "1" ) )
+								
+								<!-- admin #1 only can edit his/any admin's profile  -->
+								<!-- regular admins can not edit each other profiles-->
+								@if ( $current_user->id == "1" | $user->id == $current_user->id | $user->type!="admin") 
 									<a href="/users/{{$user->id}}/edit" class="do edit"><img src="/images/edit.png" width="30px" height="30px">   </a> 
 								@endif
 
-								@if ($user->id != "1")
+
+								<!-- admin #1 can not bel deleted  -->
+								<!-- admins can not be deleted except by admin #1 -->
+								@if ($user->id != "1" && ( $user->type !="admin" || $current_user->id == 1 ))
 									 &ensp;&ensp; &ensp;
 								 	<a href="#" class="del" onclick="Delete({{$user->id}})"><img src="/images/delete.png" width="30px" height="30px"></a>
 								@endif
