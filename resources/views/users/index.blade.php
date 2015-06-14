@@ -79,12 +79,12 @@
 									&ensp;&ensp; &ensp;
 								@endif
 								@if ($user->id != "1" | ($user->id == "1" && $current_user->id == "1" ) )
-									<a href="/users/{{$user->id}}/edit" class="do"><img src="/images/edit.png" width="30px" height="30px">   </a> 
+									<a href="/users/{{$user->id}}/edit" class="do edit"><img src="/images/edit.png" width="30px" height="30px">   </a> 
 								@endif
 
 								@if ($user->id != "1")
 									 &ensp;&ensp; &ensp;
-								 	<a href="#" id="{{$user->id}}" onclick="Delete({{$user->id}})"><img src="/images/delete.png" width="30px" height="30px"></a>
+								 	<a href="#" class="del" onclick="Delete({{$user->id}})"><img src="/images/delete.png" width="30px" height="30px"></a>
 								@endif
 							</td>
 
