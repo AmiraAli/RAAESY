@@ -1,29 +1,25 @@
-
-#asset-info{
-	border-radius: 15px;
-    border: 1px solid;
-    margin-left: 40px;
-    padding: 20px;
+.my{
+	position: fixed;
+  	top: 50%;
+  	left: 50%;
+ 	transform: translate(-50%, -50%);
 }
+
 .clr{
 	color:  rgba(36,58,117,1);
 	font-size: 18px;
 	font-family: Arial black;
 }
+
 .butn{
 	float: right;
 }
+
 .btn.btn-default {
     color: #ffffff;
     background-color: rgba(36,58,117,1);   
 }
+
 .fnt{
 	font-size: 16px;
-}
-.ticket{
-	word-wrap:break-word;
-}
-#tickets{
-	height: 80px !important;
-	overflow: hidden;
 }

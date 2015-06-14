@@ -4,12 +4,6 @@
 
 <br>
 
-@if (Session::get('lang') =="ar")
-	<a  href="/users/create?lang=en" class="btn navbtn txtnav" >English</a>
-@else
-	<a  href="/users/create?lang=ar" class="btn navbtn txtnav" >عربى</a>
-@endif
-
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel ">
@@ -95,23 +89,22 @@
 						    </div>
 					    </div>
 
-						 <div class="form-group">
-     						<label class="col-md-4 control-label navtxt">{{ trans('words.Disable') }}</label>
-								<div class="col-md-6">
-							        @if (old('isspam') == 0)
-							            {!! Form::checkbox('isspam', 'value') !!}
+					     <div class="form-group">
+     						<label class="col-md-4 control-label navtxt">{{ trans('words.send_welcome_msg') }}</label>
+								<div class="col-md-4">
+							        @if (old('sendMsg') == true)
+							            {!! Form::checkbox('sendMsg', 'value' ,true ) !!}
 							        @else
-							            {!! Form::checkbox('isspam', 'value',true) !!}
+							            {!! Form::checkbox('sendMsg', 'value' ) !!}
 							        @endif
 
   						        </div>
-					    </div>
-
+  						 </div>
 			
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn navbtn txtnav">
-									Add user
+									{{ trans('words.user_add') }}
 								</button>
 							</div>
 						</div>

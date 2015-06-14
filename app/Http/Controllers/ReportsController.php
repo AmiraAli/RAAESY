@@ -10,7 +10,8 @@ use App\User;
 use Request;
 use Auth;
 use Response;
-
+use Lang;
+use Session;
 
 class ReportsController extends Controller {
 
@@ -23,6 +24,7 @@ class ReportsController extends Controller {
 
 			}
 		}
+
 	}
 	/**
 	* Function to sort tickets
@@ -99,7 +101,8 @@ class ReportsController extends Controller {
 	 */
 	public function logs()
 	{
-		$logs =Log::all();
+		
+		$logs =Log::paginate(10);
 		return view('reports.logs',compact('logs'));
 	}
 
@@ -391,6 +394,8 @@ class ReportsController extends Controller {
 	 */
 	public function problemMangement()
 	{
+        
+
 
 	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->groupBy('subject_id')->get();
 	$all=Ticket::all();
@@ -485,6 +490,8 @@ class ReportsController extends Controller {
 	 * @return Response
 	 */
 	public function problemMangementDate(){
+
+
 	
 	$startdate=Request::input('startdate');
 	$enddate=Request::input('enddate');
@@ -514,7 +521,11 @@ class ReportsController extends Controller {
 	}
 
 	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
-	return view('reports.ticketStatisticsDate',compact('allTickets','startdate','enddate'));
+	if($allTickets){
+		return view('reports.ticketStatisticsDate',compact('allTickets','startdate','enddate'));
+	}else{
+		echo "<h1 class='navtxt'> No Tickets Within this rrange of date!</h1>";
+	}
 }
 	public function technicianStatistics()
 	{
@@ -753,6 +764,15 @@ class ReportsController extends Controller {
 
 	public function reportTicketStatus(){
 
+		if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
+			Lang::setLocale('ar');
+			Session::set('lang', 'ar');
+		}else{
+			Lang::setLocale('en');
+			Session::set('lang', 'en');
+
+		}
+
 		$tickets=Ticket::all();
 		$ticketStatuses= TicketStatus::all();
 		$opens=TicketStatus::where('value','open')->count();
@@ -839,6 +859,57 @@ class ReportsController extends Controller {
 	
 
 	}
+
+
+
+
+
+public function problemMangementLang(){
+
+      $lang=Request::input("lang");
+if($lang=="ع")
+      Session::set('locale', 'ar');
+if($lang=="E")
+      Session::set('locale', 'en');
+
+
+
+
+
+$startdate=Request::input('startdate');
+	$enddate=Request::input('enddate');
+
+	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->whereBetween('updated_at', [$startdate, $enddate])
+									   ->groupBy('subject_id')->get();
+	$all=Ticket::all();
+
+	foreach($allTickets as $allTicket){
+	$count=0;
+	$idsPerSubject=array();
+	$sectionCategoryPerSubject=array();
+		foreach($all as $ticket){
+			if($ticket->subject->name==$allTicket->subject->name  ){
+				if($ticket->status=='close'){
+					$count=$count+1;
+				}
+				$idsPerSubject[]=$ticket->id;
+				$sectionCategoryPerSubject[]=$ticket->category->section->name.'/'.$ticket->category->name;
+				}
+		}
+		$percentage=($count/$allTicket->allticket)*100;
+		$allTicket->closedcount=$count;
+		$allTicket->percentage=$percentage;
+		$allTicket->ids=$idsPerSubject;
+		$allTicket->sectionCategory=$sectionCategoryPerSubject;
+	}
+
+	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
+	return  view('reports.problemMangementLang',compact('lang','allTickets','startdate','enddate'));
+
+	}
+
+
+
 
 
 

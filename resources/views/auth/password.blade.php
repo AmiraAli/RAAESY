@@ -6,15 +6,21 @@
 
 <div class="container-fluid mybody">
 	<div class="row" >
-		<!-- <div class="col-md-8 col-md-offset-2"> -->
 			<div class="mypanel col-sm-10 col-sm-offset-1 col-lg-6 col-lg-offset-6">
 				<div class="panel-heading panelhead"><b><h4>Reset Password</h4></b></div>
 				<div class="panel-body">
 				@if (isset ($spamMessage))
 					<div class="alert alert-danger">
-							{{$spamMessage}}
+						{{$spamMessage}}
 					</div>		 
-						@endif
+				@endif
+
+				@if (session('status'))
+					<div class="alert alert-success">
+						{{ session('status') }}
+					</div>
+				@endif
+
 					@if (count($errors) > 0)
 						<div class="alert alert-danger">
 						
@@ -45,7 +51,6 @@
 					</form>
 				</div>
 			</div>
-		<!-- </div> -->
 	</div>
 </div>
 

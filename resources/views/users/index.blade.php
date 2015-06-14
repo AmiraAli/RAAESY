@@ -51,7 +51,7 @@
     </div>
 	
 	<!-- <a id="pdf" href="users/downloadPDF" ><img src="/images/CSV.png"></a> -->
-
+	
 	</br>
 	<div class="row">
 		<div  id="con" class="col-md-12" >
@@ -62,7 +62,6 @@
 						<th class="text-center">Email</th>
 						<th class="text-center">Phone</th>
 						<th class="text-center">Location</th>
-						<th class="text-center">Disabled</th>
 						<th class="text-center">Action</th>
 					</tr>
 				</thead>
@@ -72,15 +71,12 @@
 							<td class="text-center"><a href="/users/{{$user->id}}"><b>{{$user->fname}}	{{$user->lname}}</b></a></td>
 							<td class="text-center">{{$user->email}}</td>
 							<td class="text-center">{{$user->phone}}</td>
-							<td class="text-center">{{$user->location}}</td>
+							<td class="text-center">{{$user->location}}</td>      
 							<td class="text-center">
-								@if ($user->isspam == true)
-									<input type="checkbox" disabled="true" checked="true">
-								@else
-									<input type="checkbox" disabled="true" >
+								@if ($user->id != "1")
+									<a href="#" class="transparent enable" onclick="Spam('disable_{{$user->id}}')" ><img src="/images/disable.png" width="30px" height="30px"></a>
+									&ensp;&ensp; &ensp;
 								@endif
-							</td>         
-							<td class="text-center">
 								@if ($user->id != "1" | ($user->id == "1" && $current_user->id == "1" ) )
 									<a href="/users/{{$user->id}}/edit" class="do"><img src="/images/edit.png" width="30px" height="30px">   </a> 
 								@endif
@@ -95,7 +91,9 @@
 					@endforeach
 				</tbody>
 			</table>
+			<?php echo $users->render(); ?>
 		</div>
+
 
 		<div class="col-md-3" id="advancedSearchDiv">
 			<div class="row">
@@ -104,7 +102,7 @@
 						<h3 class="panel-title">Advanced Search</h3>
 					</div>
 					<div class="panel-body">
-						<form class= "form-horizontal" onsubmit="return false">					
+						<form class= "form-horizontal" onsubmit="return false" id="advSearchForm">					
 							<input type="hidden" name="_token" value="{{ csrf_token() }}"> 
 
 							<div class="form-group">
@@ -142,6 +140,8 @@
 								</div>
 							</div>
 
+							<input type="hidden" id="displayed" name="displayed">
+
 							<div class="form-group">
 								<div class="col-md-3 col-md-offset-2">
 									<button type="submit" onclick="search()" class="btn navbtn txtnav">Search</button>
@@ -159,4 +159,9 @@
 </div>
 
 
+
 @endsection
+
+
+
+

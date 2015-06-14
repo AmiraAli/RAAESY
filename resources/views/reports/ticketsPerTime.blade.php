@@ -1,17 +1,21 @@
 @extends('app')
-
-
 @section('content')
+<link rel="stylesheet" type="text/css" href="/css/reports/ticketspertime.css">
     <script sync src="http://code.jquery.com/jquery-1.9.0.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
     <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
+    <div class="container">
+    <h3 class="navtxt"><a href="{{ url('/reports')}}"> Reports</a>
+    >>Tickets per day</h3>
+</div>
+<br>
         <div class="container-fluid">
         <div class="row">
          <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-info">
-                <div class="panel-heading"> <strong>Tickets per day</strong> </div>
+            <div class="panel ">
+                <div class="panel-heading navbtn txtnav"> <strong>Tickets per day</strong> </div>
                 <div class="panel-body">
                         <div class="form-group col-md-3">
                             <label class="col-md-2 control-label">From</label>
@@ -33,19 +37,15 @@
                         </div>
 
                         <div class="form-group col-md-2">
-                            <button type="submit" class="btn btn-primary " onclick="prepareTickets ()">Go</button>
+                            <button type="submit" class="btn navbtn txtnav" onclick="prepareTickets ()">Go</button>
 
                         </div>
                 </div>
                 </div>
             </div>
             </div>
-        </div>
-
-
-
-
-    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <div  class="row divchart" id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    </div>
 
     <script src="/js/reports/ticketsPerTime.js"></script>
 
@@ -56,10 +56,11 @@
         console.log(closedTickets);
         ticketsStatistics(createdTickets, closedTickets, points);
 
-        var unit = $("#groupby").val();
+        
 
 
         function ticketsStatistics(createdTickets,closedTickets, points){
+            var unit = $("#groupby").val();
             $(function () {
                 $('#container').highcharts({
                     chart: {
@@ -121,10 +122,14 @@
     $(document).ready(function() {
 
         $('#from').datetimepicker({
-            format:'Y-m-d H:00:00',
+            format:'Y-m-d',
+            timepicker:false,
+            mask:true,
               });
         $('#to').datetimepicker({
-            format:'Y-m-d H:00:00',
+            format:'Y-m-d',
+             timepicker:false,
+             mask:true,
               });
 
  });

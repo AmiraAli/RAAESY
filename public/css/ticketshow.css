@@ -1,4 +1,4 @@
-.relatedassets{
+/*.relatedassets{
 width:400px;
 clear:both;
 float:right;
@@ -15,18 +15,36 @@ float:left;
 .commentbody{
 width:700px;
 float:left;
-}
-.ticketdetails{
+}*/
+/*.ticketdetails{
 width:400px;
 
 float:right;
+}*/
+
+.assigned{
+	font-size: 16px;
 }
 .title{
-width:10px
-    display: inline-block;
 
+	color:  rgba(36,58,117,1);
+	font-size: 19px;
+	font-family: Arial black;
+	 display: inline-block;
+     min-width: 120px;
 }
-.rightposition{
+
+#addnewasset{
+	display: inline;
+	float: right;
+}
+
+.butn{
+	color: #ffffff;
+    background-color: rgba(36,58,117,1);
+}
+
+/*.rightposition{
 width:400px;
 
 float:right;
@@ -35,7 +53,7 @@ float:right;
 width:700px;
 
 float:left;
-}
+}*/
 
 .buttonright {
     text-align: right;
