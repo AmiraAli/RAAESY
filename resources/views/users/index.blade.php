@@ -81,7 +81,7 @@ Show:
 @endif
 
 @if ($user->id != "1")
-	<button class="transparent enable" onclick="Spam('disable_{{$user->id}}')" ><img src="/images/disable.png"></button>
+	<button class="transparent disable" onclick="Spam('disable_{{$user->id}}')" ><img src="/images/disable.png"></button>
 	<button class="transparent del" onclick="Delete({{$user->id}})" ><img src="/images/delete.png"></button>
 @endif
 </td>
