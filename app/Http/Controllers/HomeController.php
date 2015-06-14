@@ -5,7 +5,6 @@ use App\Category;
 use App\Article;
 use Request;
 use DB;
-use session;
 
 class HomeController extends Controller {
 
@@ -89,25 +88,6 @@ class HomeController extends Controller {
 
 			return view('searchArticle',compact('articles'));
 		}
-	}
-
-
-	/**
-	 * Change the language in session ( called by AJAX )
-	 *
-	 * @return Response
-	 */
-
-	public function changeLang(){      
-
-
-		if (Request::get('lang') =='ar'){
-			Session::set('locale', 'ar');
-		}else{
-			Session::set('locale', 'en');
-		}
-
-		return redirect()->back();
 	}
 
 }
