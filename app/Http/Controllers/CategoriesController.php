@@ -1,14 +1,39 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use Request;
 use App\Http\Controllers\Controller;
-
-//use Illuminate\Http\Request;
 use App\Category;
 use App\Section;
-use Request;
+use App\Log;
+use Auth;
 
 class CategoriesController extends Controller {
+
+	
+
+	/**
+	 * Notify when user is spam/delete (called by AJAX).
+	 *
+	 * @param  object  $model_obj , string action
+	 * @return Response
+	 */
+
+
+	private function addnotification($action , $type , $model_obj ){
+
+		$notification = new Log();
+		$notification->type = $type ;
+		$notification->action = $action;
+		$notification->name = $model_obj->name;
+		$notification->type_id = $model_obj->id;
+		$notification->user_id = Auth::user()->id;
+		$notification->save();
+
+	}
+
+
+
 
 	/**
 	 * Display a listing of the resource.
@@ -97,6 +122,10 @@ class CategoriesController extends Controller {
 	public function destroy($id)
 	{
 		$category = Category::find($id);
+
+		//add notification wher article deleted
+		$this->addnotification("delete"  , "category" , $category );
+		
 		$category->delete();
 	}
 
