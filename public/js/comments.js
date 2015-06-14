@@ -38,7 +38,7 @@ var body=elm.id;
     $("[name="+ids[0]+"_"+ids[1]+"_dl]").css("display", "none");
     $('.cmtbtn').attr('disabled','disabled');
     $("#"+ids[0]+"combdy2").hide();
-    $("#"+ids[0]+"combdy").append("<div class='col-md-9 cmtedt'><textarea type='text' class='form-control' rows='3' id='bodyedit'>"+body+"</textarea></div><div class='col-md-3 cmtedt'> <button class='btn btn-primary buttonsave' onclick='SaveComment("+ids[0]+','+ids[1]+")'><span class='glyphicon glyphicon-ok'></span></button><button onclick='cancelEditCmt("+ids[0]+','+ids[1]+")' class='btn btn-danger'><span class='glyphicon glyphicon-remove'></span> </button> </div>");
+    $("#"+ids[0]+"combdy").append("<div class='col-md-9 cmtedt'><textarea type='text' class='form-control' rows='2' id='bodyedit'>"+body+"</textarea></div><div class='col-md-3 cmtedt'> <button class='btn btn-primary buttonsave' onclick='SaveComment("+ids[0]+','+ids[1]+")'><span class='glyphicon glyphicon-ok'></span></button><button onclick='cancelEditCmt("+ids[0]+','+ids[1]+")' class='btn btn-danger'><span class='glyphicon glyphicon-remove'></span> </button> </div>");
 
       },
 	error: function(jqXHR, textStatus, errorThrown) {
