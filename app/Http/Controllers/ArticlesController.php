@@ -307,7 +307,9 @@ class ArticlesController extends Controller {
 	    }elseif ($category_id==0){
 	    	$articleTags= ArticleTag::where('tag_id','=',$tag_id)->get();
 	    	$articles= DB::select("select distinct (articles.id)  , articles.*   from articles  , article_tags where article_tags.article_id = articles.id   and article_tags.id = 1" );
-	    	$articles->paginate(2); exit;
+	    	//var_dump($articles); exit();
+	    	$articles->take(2); //exit;
+	    	//$articles=Article::distinct()->where('')
 	    	return view('articles.searchTag',compact('articleTags','articles'));
 	    	//var_dump($articles); exit();
 	    }elseif ($tag_id==0){
