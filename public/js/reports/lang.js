@@ -13,23 +13,39 @@ window.onload = function() {
 
 document.getElementById("translation").onclick= function(e){
         e.preventDefault();
-        
-
-var startdate=document.getElementById("startdate").value;
+ 
+        var startdate=document.getElementById("startdate").value;
 		var enddate=document.getElementById("enddate").value;
-    var lang=$("#translation").text();
-console.log(lang);
-    $.ajax({
+        var lang=$("#translation").text();
+        console.log(lang);
+        $.ajax({
             
             url: '/reports/problemmangementlang',
             type: 'post',
-            data: {lang:lang,'startdate':startdate, 'enddate':enddate},
+            data: {
+                lang:lang,
+                startdate:startdate,
+                enddate:enddate
+            },
             success: function(result) {
-if (lang=="E")
- $("#translation").text("ع");
-else
- $("#translation").text("E");
-$("#container").html(result);
+                if (lang=="E")
+                    $("#translation").text("ع");
+                else
+                    $("#translation").text("E");
+                $("#container").html(result);
+
+            // ----------------------------------------
+                    $('#startdate').datetimepicker({
+                        format:'Y-m-d',
+                        timepicker:false,
+                        mask:true,
+                    });
+                    $('#enddate').datetimepicker({
+                        format:'Y-m-d',
+                        timepicker:false,
+                        mask:true,
+                  });
+            //-----------------------------------------
 
 
 

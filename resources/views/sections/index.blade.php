@@ -6,7 +6,7 @@
 <div class="container">
 <div class="row newSect">
 
-	<button class="btn navbtn txtnav newTicket" onclick="createSection()" >New Section</button>
+	<button class="btn navbtn txtnav newTicket hv" onclick="createSection()" >New Section</button>
 </div>
 	<br><br>
 <div  id="con" class="col-md-12" >
@@ -20,7 +20,7 @@
 	          	<input type="hidden" id="idSection" value="{{ $section->id }}"> 
 	          </td>
 	          <td class="text-center _{{$section->id}}">
-	          	<a href="#" onclick="createCategory({{$section->id}},'{{$section->name}}')" id="_{{$section->id}}" class="btn navbtn txtnav btn disBut" >New Category</a>
+	          	<a href="#" onclick="createCategory({{$section->id}},'{{$section->name}}')" id="_{{$section->id}}" class="btn navbtn txtnav btn disBut hv" >New Category</a>
 	          </td>
 			<td class="text-center {{$section->id}}error">
 			&ensp; &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
@@ -83,7 +83,7 @@
 
 		function deleteSection(id){ 
 			   var ids = id.split(',')[0];
-			console.log(id);
+			//console.log(id);
 		   $.ajax({
 			    url: '/sections/'+ids,
 			    type: 'DELETE',
@@ -91,13 +91,14 @@
 
 				var x="text-center "+ids+"category";
 				var allChild=document.getElementsByClassName(x);
-				console.log(allChild);
+				//console.log(allChild);
 				for(i=0;i<allChild.length;i++){
 
 					allChild[i].innerHTML="";
 				}
-					
+					//$("#"+id).css("margin-bottom", "0"); 
 				 document.getElementById(id).remove(); 
+				 				  
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
 					console.log(errorThrown);
@@ -109,7 +110,7 @@
 
 
 function deleteCategory(id){ 
-		console.log(id);
+		//console.log(id);
 		   $.ajax({
 			    url: '/categories/'+id,
 			    type: 'DELETE',

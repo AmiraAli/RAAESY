@@ -13,7 +13,7 @@
 		<div class="input-group">   		
 	       <input type="Search" placeholder="subject...." id="searchticket" class="form-control" /> 
 	       <div class="input-group-btn">
-				<button class="btn navbtn txtnav" onclick="SearchButton()" >
+				<button class="btn navbtn txtnav hv" onclick="SearchButton()" >
 				   	<span class="glyphicon glyphicon-search"></span>
 			   	</button>
 		    </div>
@@ -26,7 +26,7 @@
 			@if(Auth::user()->type=="admin" )
 				<a  href="{{ url('/tickets/exportCSV') }}" > <img src="/images/CSV.png" style="width:40px"></a>
 			@endif
-			<a class="btn navbtn txtnav" href="{{ url('/tickets/create') }}"> New Ticket</a>
+			<a class="btn navbtn txtnav hv" href="{{ url('/tickets/create') }}"> New Ticket</a>
 		</div>
 	@endif
 
@@ -63,7 +63,7 @@
 
 					<div class="panel ">
 						<div class="panel-heading navbtn txtnav">
-							<a  class="txtnav" href="#" id="toggle"><strong>AdvancedSearch              
+							<a  class="txtnav  hv" href="#" id="toggle"><strong>AdvancedSearch              
 							<span class="glyphicon glyphicon-search"></span></strong></a>
 						</div>
 
@@ -146,7 +146,7 @@
 								</select>
 							</div>
 						</div>
-						<button class="btn navbtn txtnav" id="sortType" onclick="sortType(<?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)" style="display:inline;">DESC</button>
+						<button class="btn navbtn txtnav hv" id="sortType" onclick="sortType(<?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)" style="display:inline;">DESC</button>
 					
 						<br>
 

@@ -20,7 +20,7 @@ class Registrar implements RegistrarContract {
 			'lname' => 'required|max:255',
 			'email' => 'required|email|max:255|unique:users',
 			'password' => 'required|confirmed|min:6',
-			'phone' => 'required|max:255',
+			'phone' => 'required|numeric',
 			'location' => 'required|max:255',
 			'captcha' => 'required|captcha',
 		]);
