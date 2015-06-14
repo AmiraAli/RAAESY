@@ -34,9 +34,11 @@ var body=elm.id;
     type: 'get',
     
     success: function(result) {
-		$('.cmtbtn').hide();
+    document.getElementById(body).style.display = 'none';
+    $("[name="+ids[0]+"_"+ids[1]+"_dl]").css("display", "none");
+    $('.cmtbtn').attr('disabled','disabled');
     $("#"+ids[0]+"combdy2").hide();
-    $("#"+ids[0]+"combdy").append("<div class='col-md-10 cmtedt'><textarea type='text' class='form-control' rows='3' id='bodyedit'>"+body+"</textarea></div><div class='col-md-2 cmtedt'> <button class='btn btn-primary buttonsave' onclick='SaveComment("+ids[0]+','+ids[1]+")'><span class='glyphicon glyphicon-ok'></span></button> <button  onclick='cancelEditCmt("+ids[0]+")' class='btn btn-danger'><span class='glyphicon glyphicon-remove'></span> </button> </div>");
+    $("#"+ids[0]+"combdy").append("<div class='col-md-9 cmtedt'><textarea type='text' class='form-control' rows='3' id='bodyedit'>"+body+"</textarea></div><div class='col-md-3 cmtedt'> <button class='btn btn-primary buttonsave' onclick='SaveComment("+ids[0]+','+ids[1]+")'><span class='glyphicon glyphicon-ok'></span></button><button onclick='cancelEditCmt("+ids[0]+','+ids[1]+")' class='btn btn-danger'><span class='glyphicon glyphicon-remove'></span> </button> </div>");
 
       },
 	error: function(jqXHR, textStatus, errorThrown) {
@@ -60,9 +62,12 @@ $.ajax({
     result=JSON.parse(result);
     $('.cmtedt').remove();
     $("#"+commentid+"combdy2").show();
-    $('.cmtbtn').show();
+   // $('.cmtbtn').show();
+   $('.cmtbtn').removeAttr('disabled');
     $("[name="+commentid+"_"+ticketid +"]").attr('id', body);
 		$("#"+commentid+"combdy2").html(body+"<br>"+result['updated_at']);
+    $("[name="+commentid+"_"+ticketid +"]").css("display", "inline");
+    $("[name="+commentid+"_"+ticketid +"_dl]").css("display", "inline");
       },
 	error: function(jqXHR, textStatus, errorThrown) {
                     console.log(errorThrown);
@@ -89,8 +94,8 @@ function add(ticketId){
 		if (result['created_at']!= result['updated_at']){
 			edited = "Edited: ";
 		}
-console.log(result);
-		$("#comments").append("<div class='panel  commentbody' id="+result['id']+"Comments"+"><div class='panel-heading navbtn txtnav'>"+result['fname']+" "+result['lname']+"</div><div class='panel-body'>"+"<button name="+result['id']+"_"+ticketId+" onclick='Delete(this)' class='btn btn-link buttonright'><span class='glyphicon glyphicon-remove' style='color:#d82727;'></span></button> <button id='"+body+"'name="+result['id']+"_"+ticketId+" onclick='edit(this)' class='btn btn-link buttonright' ><span class='glyphicon glyphicon-pencil'></span></button>"+body+"<br>"+result['created_at']+"</div>");
+//console.log(result);
+		$("#comments").append("<div class='panel  commentbody' id="+result['id']+"Comments"+"><div class='panel-heading navbtn txtnav'>"+result['fname']+" "+result['lname']+"</div><div class='panel-body'>"+"<button name="+result['id']+"_"+ticketId+"_dl onclick='Delete(this)' class='btn btn-link buttonright'><span class='glyphicon glyphicon-remove' style='color:#d82727;'></span></button> <button id='"+body+"'name="+result['id']+"_"+ticketId+" onclick='edit(this)' class='btn btn-link buttonright cmtbtn' ><span class='glyphicon glyphicon-pencil'></span></button><div id="+result['id']+"combdy><div id="+result['id']+"combdy2>"+body+"<br>"+result['created_at']+"</div></div></div>");
 		document.forms["addForm"]["body"].value = '';
 			},
 	error: function(jqXHR, textStatus, errorThrown) {
@@ -99,9 +104,12 @@ console.log(result);
 });
 }
 //------------------------------------------------------------------------------------------------------------------
-function cancelEditCmt(commentid)
+function cancelEditCmt(commentid,ticketid)
 {
   $('.cmtedt').remove();
   $("#"+commentid+"combdy2").show();
-  $('.cmtbtn').show();
+  //$('.cmtbtn').show();
+  $("[name="+commentid+"_"+ticketid +"]").css("display", "inline");
+  $("[name="+commentid+"_"+ticketid +"_dl]").css("display", "inline");
+  $('.cmtbtn').removeAttr('disabled');
 }

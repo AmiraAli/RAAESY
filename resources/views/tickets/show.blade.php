@@ -65,8 +65,8 @@
 
 		@if($comment->readonly==1)
 			@if(Auth::user()->type=="admin" or Auth::user()->id==$comment->user_id)
-		 		<button name="{{$comment->id}}_{{$ticket->id}}" onclick='Delete(this)' class="btn btn-link
-				buttonright cmtbtn"><span class='glyphicon glyphicon-remove' style='color:#d82727;'></span></button> 		
+		 		<button name="{{$comment->id}}_{{$ticket->id}}_dl" onclick='Delete(this)' class="btn btn-link
+				buttonright"><span class='glyphicon glyphicon-remove' style='color:#d82727;'></span></button> 		
 			@endif
 			@if(Auth::user()->id==$comment->user_id)
 		 		<button name="{{$comment->id}}_{{$ticket->id}}" id="{{$comment->body}}"

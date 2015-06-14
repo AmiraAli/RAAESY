@@ -204,7 +204,7 @@ function cancel ()
 	$("#select").remove();
 	$("#saveButton").remove();
 	$("#cancelButton").remove();
-	var c= document.getElementsByClassName("assgn")[0].style.display = 'inline';
+	document.getElementsByClassName("assgn")[0].style.display = 'inline';
 }
 
 
