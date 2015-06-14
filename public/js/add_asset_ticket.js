@@ -96,7 +96,8 @@ $.ajax({
 	
 	result=JSON.parse(result);
 
-	$("#addnewasset").append("<a href='/assets/'"+result['id']+">"+result['name']+"</a><br>");
+
+	$("#new-asset").append("<span class='btn'><a href='/assets/'"+result['id']+"><span class='asset'>"+result['name']+"</span></a><span class='badge' onclick='remove_asset()'>x</span></span><br>");
 	var addasset=document.createElement("button");
 	var addassettext=document.createTextNode("AddAssets");
 	addasset.setAttribute('id',parseInt(result['ticket_id'])+":newasset");
@@ -118,6 +119,10 @@ $.ajax({
                     console.log(jqXHR.error);
     }
 });
+}
+
+function remove_asset(id){
+	alert(id);
 }
 
 

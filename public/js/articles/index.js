@@ -119,8 +119,11 @@ $("#autocompletemenu").mouseout(function(){
 }
 
 
-function show(url = '/articles/search'){
+function show(url){
 
+    if (url==""){
+        url = '/articles/search';
+    }
 	var category = document.getElementById('cat').value;
 	var tag = document.getElementById('tag').value;
 	$.ajax({
