@@ -144,11 +144,10 @@
 
 			  </div>
 			<div id="new-asset">
-
 				@foreach($relatedAssets as $relatedAsset)
 				
 					<input type="hidden" id="{{$relatedAsset->id}}:showenassets" class="showenasset">
-					<span class='btn' id='{{$relatedAsset->id}}'><a href="/assets/{{$relatedAsset->id}}"><span class="asset">{{$relatedAsset->name}}</span></a><span class='badge' onclick='remove_asset({{$relatedAsset->id}})'>x</span></span><br>
+					<span class='btn' id='{{$relatedAsset->id}}'><a href="/assets/{{$relatedAsset->id}}"><span class="asset">{{$relatedAsset->asset->name}}</span></a><span class='badge' onclick='remove_asset({{$relatedAsset->id}})'>x</span></span><br>
 				@endforeach
 			</div>
 
