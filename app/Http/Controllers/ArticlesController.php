@@ -58,7 +58,7 @@ class ArticlesController extends Controller {
 		}
 		$categories=Category::all();
 		$sections=Section::all();
-		$articles=Article::paginate(2);
+		$articles=Article::paginate(5);
 		$tags=Tag::all();
 		return view('articles.index',compact('articles','categories','sections','tags'));
 	}
@@ -99,7 +99,7 @@ class ArticlesController extends Controller {
 		}
 		$categories=Category::all();
 		$sections=Section::all();
-		return view('articles.x',compact('categories','sections'));
+		return view('articles.create',compact('categories','sections'));
 	}
 
 	/**
@@ -300,32 +300,26 @@ class ArticlesController extends Controller {
 		$category_id = Request::get('dataCat');
 		$tag_id = Request::get('dataTag');
         if($category_id !=0 && $tag_id !=0){
-			/*$articles=Article::where('category_id','=',$category_id)->paginate(2);
-	        $articleTags= ArticleTag::where('tag_id','=',$tag_id)->get();	*/
-
+	
 	        $articles = Article::where('category_id','=',$category_id)->join('article_tags','article_tags.article_id','=','articles.id')
 	            ->select('articles.*')
-	            ->where('article_tags.id', '=' , $tag_id )->paginate(2);
+	            ->where('article_tags.tag_id', '=' , $tag_id )->paginate(5);
 
-			
-		 //   return view('articles.searchCategoryTag',compact('articles','articleTags'));
-
-	    }elseif($category_id ==0 && $tag_id ==0){
-	    	$articles = Article::paginate(2);
+	    }elseif($category_id ==0 && $tag_id ==0){ //both not set
+	    	$articles = Article::paginate(5);
 	    }elseif ($category_id==0 ){   //tags only case
 	            $articles = Article::join('article_tags','article_tags.article_id','=','articles.id')
 	            ->select('articles.*')
-	            ->where('article_tags.id', '=' , $tag_id )->paginate(2);
+	            ->where('article_tags.tag_id', '=' , $tag_id )->paginate(5);
 		
 	    }elseif ($tag_id==0){        //category only case
 
-	    	$articles=Article::where('category_id','=',$category_id)->paginate(2);
-	    	//return view('articles.searchCategory',compact('articles'));
+	    	$articles=Article::where('category_id','=',$category_id)->paginate(5);
 
 	    }
 
 		
-	        return view('articles.searchTag',compact('articles'));
+	        return view('articles.search',compact('articles'));
 
 	}
 
