@@ -300,26 +300,32 @@ class ArticlesController extends Controller {
 		$category_id = Request::get('dataCat');
 		$tag_id = Request::get('dataTag');
         if($category_id !=0 && $tag_id !=0){
-			$articles=Article::where('category_id','=',$category_id)->paginate(2);
-	        $articleTags= ArticleTag::where('tag_id','=',$tag_id)->get();			
-		    return view('articles.searchCategoryTag',compact('articles','articleTags'));
+			/*$articles=Article::where('category_id','=',$category_id)->paginate(2);
+	        $articleTags= ArticleTag::where('tag_id','=',$tag_id)->get();	*/
 
-	    }elseif ($category_id==0){
-	    	$articleTags= ArticleTag::where('tag_id','=',$tag_id)->get();
-	    	$articles= DB::select("select distinct (articles.id)  , articles.*   from articles  , article_tags where article_tags.article_id = articles.id   and article_tags.id = 1" );
-	    	//var_dump($articles); exit();
-	    	$articles->take(2); //exit;
-	    	//$articles=Article::distinct()->where('')
-	    	return view('articles.searchTag',compact('articleTags','articles'));
-	    	//var_dump($articles); exit();
-	    }elseif ($tag_id==0){
+	        $articles = Article::where('category_id','=',$category_id)->join('article_tags','article_tags.article_id','=','articles.id')
+	            ->select('articles.*')
+	            ->where('article_tags.id', '=' , $tag_id )->paginate(2);
+
+			
+		 //   return view('articles.searchCategoryTag',compact('articles','articleTags'));
+
+	    }elseif($category_id ==0 && $tag_id ==0){
+	    	$articles = Article::paginate(2);
+	    }elseif ($category_id==0 ){   //tags only case
+	            $articles = Article::join('article_tags','article_tags.article_id','=','articles.id')
+	            ->select('articles.*')
+	            ->where('article_tags.id', '=' , $tag_id )->paginate(2);
+		
+	    }elseif ($tag_id==0){        //category only case
 
 	    	$articles=Article::where('category_id','=',$category_id)->paginate(2);
-	    	return view('articles.searchCategory',compact('articles'));
+	    	//return view('articles.searchCategory',compact('articles'));
 
 	    }
 
 		
+	        return view('articles.searchTag',compact('articles'));
 
 	}
 
