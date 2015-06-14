@@ -62,7 +62,6 @@ $.ajax({
     result=JSON.parse(result);
     $('.cmtedt').remove();
     $("#"+commentid+"combdy2").show();
-   // $('.cmtbtn').show();
    $('.cmtbtn').removeAttr('disabled');
     $("[name="+commentid+"_"+ticketid +"]").attr('id', body);
 		$("#"+commentid+"combdy2").html(body+"<br>"+result['updated_at']);
@@ -108,7 +107,6 @@ function cancelEditCmt(commentid,ticketid)
 {
   $('.cmtedt').remove();
   $("#"+commentid+"combdy2").show();
-  //$('.cmtbtn').show();
   $("[name="+commentid+"_"+ticketid +"]").css("display", "inline");
   $("[name="+commentid+"_"+ticketid +"_dl]").css("display", "inline");
   $('.cmtbtn').removeAttr('disabled');
