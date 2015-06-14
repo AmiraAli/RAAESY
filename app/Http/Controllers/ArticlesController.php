@@ -14,6 +14,7 @@ use Input;
 use Editor;
 use Validator;
 use App\Tag;
+use DB;
 
 //for csv
 use Response;
@@ -57,7 +58,7 @@ class ArticlesController extends Controller {
 		}
 		$categories=Category::all();
 		$sections=Section::all();
-		$articles=Article::all();
+		$articles=Article::paginate(2);
 		$tags=Tag::all();
 		return view('articles.index',compact('articles','categories','sections','tags'));
 	}
@@ -298,24 +299,20 @@ class ArticlesController extends Controller {
 
 		$category_id = Request::get('dataCat');
 		$tag_id = Request::get('dataTag');
-		//var_dump($category_id);
-		//var_dump($tag_id); exit();
         if($category_id !=0 && $tag_id !=0){
-        	//echo "inside if"; exit();
-			$articles=Article::where('category_id','=',$category_id)->get();
+			$articles=Article::where('category_id','=',$category_id)->paginate(2);
 	        $articleTags= ArticleTag::where('tag_id','=',$tag_id)->get();			
 		    return view('articles.searchCategoryTag',compact('articles','articleTags'));
 
 	    }elseif ($category_id==0){
-           // echo "inside elseif 1"; exit();
 	    	$articleTags= ArticleTag::where('tag_id','=',$tag_id)->get();
-	    	$articles= Article::all();
-	    	//var_dump($articleTags); exit();
+	    	$articles= DB::select("select distinct (articles.id)  , articles.*   from articles  , article_tags where article_tags.article_id = articles.id   and article_tags.id = 1" );
+	    	$articles->paginate(2); exit;
 	    	return view('articles.searchTag',compact('articleTags','articles'));
-
+	    	//var_dump($articles); exit();
 	    }elseif ($tag_id==0){
 
-	    	$articles=Article::where('category_id','=',$category_id)->get();
+	    	$articles=Article::where('category_id','=',$category_id)->paginate(2);
 	    	return view('articles.searchCategory',compact('articles'));
 
 	    }

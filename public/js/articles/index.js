@@ -15,6 +15,21 @@ $.ajaxSetup({
  };
 
 
+
+//convert pagination to AJAX
+function paginateWithAjax(){
+  
+    $('.pagination a').on('click', function(e){
+        e.preventDefault();
+        
+        var url = $(this).attr('href');
+        show(url);
+    });
+}
+
+paginateWithAjax();
+
+
 function init(){
 var input = $("#quickSearch");
 var pos = input.position();
@@ -104,15 +119,12 @@ $("#autocompletemenu").mouseout(function(){
 }
 
 
-function show(){
+function show(url = '/articles/search'){
 
 	var category = document.getElementById('cat').value;
 	var tag = document.getElementById('tag').value;
-	//var category = elm;
-    // alert(category);
-     //alert(tag);
 	$.ajax({
-    url: '/articles/search',
+    url: url ,
     type: 'POST',
     data: {  
    		dataCat: category,
@@ -122,6 +134,8 @@ function show(){
     			var container = document.getElementById('con');
     			container.innerHTML = "";
     			container.innerHTML = result;
+    			paginateWithAjax();
+
 			  },
 	error: function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown);

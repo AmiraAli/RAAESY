@@ -1,6 +1,6 @@
 
 
-<table class="table table-hover" id="con">
+<table class="table table-hover" >
     <thead>
         <tr class="info">
              <th class="text-center">Subject</th>
@@ -42,4 +42,6 @@
      </tbody>
 
  </table>
+<?php echo $articles->render(); ?>
+
 

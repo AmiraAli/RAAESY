@@ -44,7 +44,7 @@
 				<label class="sho"><input type="radio" name="user" value="regular"   onclick="search()">  Regular Users</label> | 
 				<label class="sho"><input type="radio" name="user" value="tech"  onclick="search()">  Technicians</label> |
 				<label class="sho"><input type="radio" name="user" value="admin"  onclick="search()">  Admins </label>|
-				<label class="sho"><input type="radio" name="user" value="disabled"  onclick="search()">  Disabled users </label>|
+				<label class="sho"><input type="radio" name="user" value="disabled"  onclick="search()">  Disabled users </label>
 
             </div>
         </div>
