@@ -1,7 +1,7 @@
 
 <td class="col-md-5 {{$category->id}}hideEditCat">
 
-    	<div class=" hideEditCat{{$category->id}}" >{{$category->name}}</div></td>
+    	<div class=" navtxt hideEditCat{{$category->id}}" >{{$category->name}}</div></td>
     	<td class=" col-md-5 {{$category->id}}errorcat"></td>
     	<td class="text-center ">
     	<div class="{{$category->id}}removeButtonCat" style="display:inline;">
