@@ -134,9 +134,9 @@ class UsersController extends Controller {
 			
 			//validation
 			$v = Validator::make($arr, [
-					'الاسم الأول' => 'required|max:255',
-					'الاسم الثانى' => 'required|max:255',
-					'البريد الإلكترونى' => 'required|email|max:255',
+					'الاسم الأول' => 'required|max:15',
+					'الاسم الأخير' => 'required|max:15',
+					'البريد الإلكترونى' => 'required|email|max:40',
 					'email' => 'unique:users' , 
 					'كلمة المرور' => 'required|min:6|confirmed', 
 					'رقم الهاتف' => 'required|numeric',
@@ -147,9 +147,9 @@ class UsersController extends Controller {
 
 		}else{
 				$v = Validator::make(Request::all() , [
-           			'fname' => 'required|max:255',
-					'lname' => 'required|max:255',
-					'email' => 'required|email|max:255|unique:users',
+           			'fname' => 'required|max:15',
+					'lname' => 'required|max:15',
+					'email' => 'required|email|max:40|unique:users',
 					'password' => 'required|confirmed|min:6',
 					'phone' => 'required|numeric',
 					'location' => 'required|max:255',
@@ -247,6 +247,9 @@ class UsersController extends Controller {
 		}		
 
 		$user = User::find($id);
+		if (empty($user)){
+			return view('errors.404');
+		}
 
 		return view('users.edit',compact('user', 'id'));
 	}
