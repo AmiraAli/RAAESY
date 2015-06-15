@@ -27,7 +27,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<img class="img-circle" href="{{ url('/home') }}" src="/images/RSB.png" style="height:40px">
+				<img class="img-circle" href="{{ url('/home') }}" src="/images/IOGO-RSP.png" style="height:50px;width:80px;">
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
@@ -54,7 +54,7 @@
 						<li ><a class="txtnav" href="{{ url('/auth/logout') }}">Logout</a></li>
 
 						@if (Session::get('locale') =="ar")
-							<li><a href="/home/setLang?lang=en" class="txtnav" id="translation"><span id="locale">E</span></a></li>
+							<li><a href="/home/setLang?lang=en" class="txtnav" id="translation"><span id="locale">En</span></a></li>
 						@else
 							<li><a href="/home/setLang?lang=ar" class="txtnav" id="translation"><span id="locale">ع</span></a></li>
 						@endif

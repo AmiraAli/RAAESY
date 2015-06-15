@@ -8,7 +8,7 @@
 	<div class="row" >
 		<!-- <div class="col-md-8 col-md-offset-2"> -->
 			<div class="mypanel col-sm-10 col-sm-offset-1 col-lg-6 col-lg-offset-6">
-				<div class="panel-heading panelhead"><b><h4 class="head">RSB<small>Login</small></h4></b></div>
+				<div class="panel-heading panelhead"><b><h4 class="head"><img src="/images/IOGO-RSP.png" style="height:100px;width:100px;"><small>Login</small></h4></b></div>
 				<div class="panel-body">
 				@if (isset ($spamMessage))
 					<div class="alert alert-danger">
