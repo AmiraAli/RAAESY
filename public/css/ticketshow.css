@@ -23,6 +23,7 @@ float:right;
 	border-radius: 15px !important;
     border: 2px solid !important;
     border-color: rgba(36,58,117,1) !important;
+    word-wrap:break-word;
 }
 
 textarea {
@@ -70,6 +71,10 @@ float:left;
 .buttonsave {
     text-align: right;
     float: right;
+}
+.asset{
+ 	display: inline-block;
+    width: 80px;	
 }
 
 

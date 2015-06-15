@@ -24,6 +24,7 @@
 .write{
 	font-size: 18px;
 	font-family: Arial black;
+	word-wrap:break-word;
 }
 
 .ff{

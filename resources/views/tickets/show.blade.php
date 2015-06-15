@@ -140,16 +140,19 @@
 		  </div> 
 	          <div class="panel-body">
 	          <div id="addnewasset">
-				<button id="{{$ticket->id}}:newasset" onclick="AddAssets({{$ticket->id}}+':newasset')" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>  AddAsset</button>
+				<button id="{{$ticket->id}}:newasset" onclick="AddAssets({{$ticket->id}}+':newasset')" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>  Add Asset</button>
 
+			  </div>
+			<div id="new-asset">
+				@foreach($relatedAssets as $relatedAsset)
+				
+					<input type="hidden" id="{{$relatedAsset->id}}:showenassets" class="showenasset">
+					<span class='btn' id='{{$relatedAsset->id}}'><a href="/assets/{{$relatedAsset->id}}"><span class="asset">{{$relatedAsset->asset->name}}</span></a><span class='badge' onclick='remove_asset({{$relatedAsset->id}})'>x</span></span><br>
+				@endforeach
 			</div>
-			@foreach($relatedAssets as $relatedAsset)
-				<input type="hidden" id="{{$relatedAsset->id}}:showenassets" class="showenasset">
-				<a href="/assets/{{$relatedAsset->id}}">{{$relatedAsset->name}}</a><br>
-			@endforeach
 
 			
-<div id="asseterrormessage"></div>
+			<div id="asseterrormessage"></div>
 
 		  </div>
 	</div>
@@ -157,7 +160,7 @@
 
 	<div class="panel relatedtags">
 		<div class="panel-heading navbtn txtnav">
-			<h3 class="panel-title">Related tags</h3>
+			<h3 class="panel-title">Related Tickets By tags</h3>
 		</div>
 		<div class="panel-body"> 
 

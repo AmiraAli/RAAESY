@@ -5,6 +5,8 @@ use App\Category;
 use App\Article;
 use Request;
 use DB;
+use Session;
+
 
 class HomeController extends Controller {
 
@@ -37,17 +39,19 @@ class HomeController extends Controller {
 	public function index()
 	{
 		if(Auth::user()->type === "admin" || Auth::user()->type === "tech"){
-			$articles=Article::all();
+			$articles=Article::paginate(6);
 			$categories = DB::select("select articles.category_id, categories.name,count(*) as count from articles join categories on categories.id = articles.category_id group by category_id");
 
 		}
 		else{
-			$articles=Article::where("isshow", 1)->get();
+			$articles=Article::where("isshow", 1)->paginate(6);
 			$categories = DB::select("select articles.category_id, categories.name,count(*) as count from articles join categories on categories.id = articles.category_id where isshow = 1 group by category_id");
 
 		}
 
-		return view('home',compact('categories','articles'));
+		$countArticle=Article::All()->count();
+
+		return view('home',compact('categories','articles','countArticle'));
 	}
 
 	// public function home()
@@ -84,10 +88,32 @@ class HomeController extends Controller {
 
 				$articles = $articles->whereIn('category_id', $arr);
 			}
-			$articles = $articles->get();
+			$articles = $articles->paginate(6);
 
 			return view('searchArticle',compact('articles'));
 		}
 	}
+
+	/**
+	 * Change the language in session ( called by AJAX )
+	 *
+	 * @return Response
+	 */
+
+	public function changeLang(){      
+
+
+		if (Request::get('lang') =='ar'){
+			Session::set('locale', 'ar');
+		}else{
+			Session::set('locale', 'en');
+		}
+
+		return redirect()->back();
+	}
+
+
+
+
 
 }

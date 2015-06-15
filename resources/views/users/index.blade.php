@@ -27,6 +27,7 @@
 	        </div>
 	    </div>
 	
+
 		<div id="new-user">
 			 <a id="csv" href="users/downloadCSV">
                 <img src="/images/CSV.png" style="width:40px"></img>
@@ -43,15 +44,13 @@
 				<label class="sho"><input type="radio" name="user" value="regular"   onclick="search()">  Regular Users</label> | 
 				<label class="sho"><input type="radio" name="user" value="tech"  onclick="search()">  Technicians</label> |
 				<label class="sho"><input type="radio" name="user" value="admin"  onclick="search()">  Admins </label>|
-				<label class="sho"><input type="radio" name="user" value="disabled"  onclick="search()">  Disabled users </label>|
+				<label class="sho"><input type="radio" name="user" value="disabled"  onclick="search()">  Disabled users </label>
 
             </div>
         </div>
         <button id="toggle" class="btn btn-primary" > <span class="glyphicon glyphicon-search"></span></button>
     </div>
-	
-	<!-- <a id="pdf" href="users/downloadPDF" ><img src="/images/CSV.png"></a> -->
-	
+		
 	</br>
 	<div class="row">
 		<div  id="con" class="col-md-12" >
@@ -73,17 +72,26 @@
 							<td class="text-center">{{$user->phone}}</td>
 							<td class="text-center">{{$user->location}}</td>      
 							<td class="text-center">
-								@if ($user->id != "1")
-									<a href="#" class="transparent enable" onclick="Spam('disable_{{$user->id}}')" ><img src="/images/disable.png" width="30px" height="30px"></a>
+
+								<!-- admin #1 can spam anywone except himself -->
+								<!-- regular admins can not spam each other -->
+								@if ( ($current_user->id == 1 && $user->id != 1) | $user->type != "admin")
+									<a href="#" class="transparent disable" onclick="Spam('disable_{{$user->id}}')" ><img src="/images/disable.png" width="30px" height="30px"></a>
 									&ensp;&ensp; &ensp;
 								@endif
-								@if ($user->id != "1" | ($user->id == "1" && $current_user->id == "1" ) )
-									<a href="/users/{{$user->id}}/edit" class="do"><img src="/images/edit.png" width="30px" height="30px">   </a> 
+								
+								<!-- admin #1 only can edit his/any admin's profile  -->
+								<!-- regular admins can not edit each other profiles-->
+								@if ( $current_user->id == "1" | $user->id == $current_user->id | $user->type!="admin") 
+									<a href="/users/{{$user->id}}/edit" class="do edit"><img src="/images/edit.png" width="30px" height="30px">   </a> 
 								@endif
 
-								@if ($user->id != "1")
+
+								<!-- admin #1 can not bel deleted  -->
+								<!-- admins can not be deleted except by admin #1 -->
+								@if ($user->id != "1" && ( $user->type !="admin" || $current_user->id == 1 ))
 									 &ensp;&ensp; &ensp;
-								 	<a href="#" id="{{$user->id}}" onclick="Delete({{$user->id}})"><img src="/images/delete.png" width="30px" height="30px"></a>
+								 	<a href="#" class="del" onclick="Delete({{$user->id}})"><img src="/images/delete.png" width="30px" height="30px"></a>
 								@endif
 							</td>
 

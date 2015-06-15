@@ -106,6 +106,19 @@ class ReportsController extends Controller {
 		return view('reports.logs',compact('logs'));
 	}
 
+
+	public function logsAjax()
+	{
+		
+		
+		if(!Request::ajax()) {
+			return;
+		}
+		
+		$logs =Log::paginate(10);
+		return view('reports.logsAjax',compact('logs'));
+	}
+
 	public function logsCSV(){
 		$logs =Log::all();
 

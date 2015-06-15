@@ -1,22 +1,48 @@
-window.onload = function() {
-/*	$(".panel-body").css({
-		float:'right',
-	});*/
+//convert pagination to AJAX
+function paginateWithAjax(){
+    $('.pagination a').on('click', function(e){
+        e.preventDefault();
+        
 
-	$(".panel-heading").css({
-		overflow: "hidden",
-	});
-/*
-	$(".date").css({
-		float: "left",
-	});
+        var url = $(this).attr('href');
+        
+        $.post(url, "" ,
+        function(data){
+            $('#con').html(data);
 
-	$(".admin").css({
-		float: "right",
-	});
-	$(".panel").css({
-		overflow: 'hidden',
-	});*/
+            //for css style 
+            init();
+            
+            //convert refreshing pagination to ajax
+            paginateWithAjax();
+
+
+        });
+    });
 }
+
+
+window.onload = function() {
+
+  	init();
+	 
+
+	$.ajaxSetup({
+    	headers: {
+        	'X-XSRF-Token': $('meta[name="_token"]').attr('content')
+    	}
+	});
+
+	paginateWithAjax();
+
+ 	
+}
+
+
+
+
+
+
+
 
 
