@@ -49,24 +49,10 @@ $("#autocompletemenu").mouseout(function(){
     //convert pagination to AJAX
     paginateWithAjax();
 
-    //add titles to buttons
-    addTitles();
-
-    $("#toggle").attr('title', 'Advanced Search');
-    $("#csv").attr('title', 'Export as CSV');
-
 
  };
 
 
-//add titles to buttons
-function addTitles(){
-    $(".del").attr('title', 'Delete User');
-    $(".enable").attr('title', 'Unspam user');
-    $(".edit").attr('title', 'Edit User');
-    $(".disable").attr('title', 'Mark as Spam');
-    
-}
 
 
 
@@ -89,9 +75,6 @@ function paginateWithAjax(){
 
             //convert refreshing pagination to ajax
             paginateWithAjax();
-
-            //add title to buttons when hovered
-            addTitles();
 
         });
     });
@@ -165,8 +148,6 @@ function search(){
                 //convert refreshing pagination to ajax
                 paginateWithAjax();
 
-                //add title to buttons when hovered
-                addTitles();
 
 			  },
 	error: function(jqXHR, textStatus, errorThrown) {
