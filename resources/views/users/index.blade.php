@@ -32,7 +32,7 @@
 			 <a id="csv" href="users/downloadCSV">
                 <img src="/images/CSV.png" style="width:40px"></img>
             </a>
-			<a class="btn btn-primary" href="/users/create" >Create User</a>
+			<a class="btn navbtn txtnav" href="/users/create" >Create User</a>
 		</div>
 	</div>
 
