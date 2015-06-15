@@ -1,10 +1,4 @@
-window.onload = function() {
-                    $.ajaxSetup({
-					                headers: {
-					                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
-					                         }
-            					  });
-            				 };
+
 /**
 * function to get search by date
 **/
@@ -19,6 +13,15 @@ function searchDate () {
 				      data: {'startdate':startdate, 'enddate':enddate},
 				      success: function(data){
 				       $("#container").html(data)
+										       
+						// ----------------------------------------
+						        $('#startdate').datetimepicker({
+						            format:'Y-m-d H:00:00',
+						        });
+						        $('#enddate').datetimepicker({
+						            format:'Y-m-d H:00:00',
+						        });
+						//-----------------------------------------
 
 				      },
 					  error: function(jqXHR, textStatus, errorThrown) {

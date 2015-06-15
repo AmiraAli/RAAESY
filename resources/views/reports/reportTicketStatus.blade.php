@@ -9,15 +9,12 @@
     >>Tickets History</h3>
 </div>
 <div class="container">
+<?php echo $tickets->render(); ?>
 <br>
 <div class="row pull-right">
 <!-- CSV -->
 <a href="/reports/exportTicketStatusReport"><img src="/images/CSV.png" style="width:40px"></a>
-@if (Session::get('lang') =="ar")
-	<a  href="/reports/reportTicketStatus?lang=en" class="btn navbtn txtnav" >English</a>
-@else
-	<a  href="/reports/reportTicketStatus?lang=ar" class="btn navbtn txtnav" >عربى</a>
-@endif
+
 </div>
 
 <?php $open= array(); $close= array(); ?>

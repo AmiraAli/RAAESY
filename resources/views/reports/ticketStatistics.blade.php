@@ -9,8 +9,8 @@
 <br>
 	<div class="raw">
 		<div class="col-md-5"  id="customedate">
-			{{trans('problemmangement.from')}}:<input type="date" id="startdate">
-			{{trans('problemmangement.to')}}:<input type="date" id="enddate">
+			{{trans('problemmangement.from')}}:<input type="text" id="startdate">
+			{{trans('problemmangement.to')}}:<input type="text" id="enddate">
 		</div>
 		<div style="float:left;">
 			<button class="btn navbtn txtnav" onclick="searchDate()"><span class="glyphicon glyphicon-search"></span></button>
@@ -75,7 +75,31 @@
 }
 ?>
 </div>
-@endsection
+
  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
  <script type="text/javascript" src="/js/reports/problemmangement.js"></script>
- <script type="text/javascript" src="/js/reports/lang.js"></script>
+
+
+
+
+ <!-- DateTime picker -->
+ <link rel="stylesheet" type="text/css" href="/datetimepicker/jquery.datetimepicker.css"/ >
+ <script src="/datetimepicker/jquery.datetimepicker.js"></script>
+<script >
+ window.onload = function() {
+    $.ajaxSetup({
+	    headers: {
+	        'X-XSRF-Token': $('meta[name="_token"]').attr('content')
+	             }
+	});
+
+	    $('#startdate').datetimepicker({
+	  		format:'Y-m-d H:00:00',
+	    });
+	    $('#enddate').datetimepicker({
+	  		format:'Y-m-d H:00:00',
+	    });
+};
+</script>
+@endsection
+
