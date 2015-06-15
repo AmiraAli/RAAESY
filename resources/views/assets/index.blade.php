@@ -122,9 +122,9 @@
 				            <td class="text-center"><a href="/users/{{ $asset->user_id}}"><b>{{ $asset->user->fname }} {{ $asset->user->lname }}</b></a></td>
 				            <td class="text-center">{{ $asset->location }}</td>
 				            <td class="text-center">
-				            	<a href="/assets/{{$asset->id}}/edit" class="do"><img src="/images/edit.png" width="30px" height="30px">	</a>
+				            	<a title="Edit Asset" href="/assets/{{$asset->id}}/edit" class="do"><img src="/images/edit.png" width="30px" height="30px">	</a>
 				          		&ensp;&ensp; &ensp;
-					          	<a href="#" onclick="deleteAsset( {{ $asset->id }} )"><img src="/images/delete.png" width="30px" height="30px"></a>
+					          	<a  title="Delete Asset" href="#" onclick="deleteAsset( {{ $asset->id }} )"><img src="/images/delete.png" width="30px" height="30px"></a>
 
 				            </td>
 				        </tr>
