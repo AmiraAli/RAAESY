@@ -123,6 +123,9 @@ Route::post('/reports/problemMangementDate', 'ReportsController@problemMangement
 
 
 Route::get('/reports/reportTicketStatus','ReportsController@reportTicketStatus');
+Route::post('/reports/reportTicketStatus','ReportsController@reportTicketStatusAjax');
+
+
 Route::get('/reports/exportTicketStatusReport','ReportsController@exportTicketStatusReport');
 
 
