@@ -146,4 +146,5 @@ Route::controllers([
 ]);
 
 Route::post('/reports/problemmangementlang','ReportsController@problemMangementLang');
+Route::post('/assets/removeAsset/', 'AssetsController@removeAsset');
 

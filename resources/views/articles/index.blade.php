@@ -78,7 +78,9 @@
                 </div>
                 
                 <div class="form-group col-md-3">
+
                     <button class="btn navbtn txtnav" onclick="show('')">Search</button>
+
                 </div>
             </div>
         </div>

@@ -322,6 +322,16 @@ class AssetsController extends Controller {
 	    // without using a local file
 	    return Response::make(rtrim($output, "\n"), 200, $headers);
 	}
+
+	public function removeAsset(Request $request)
+	{	
+		if($request->ajax()) {
+
+			$ticketId = $request->input('ticket_id');
+			$assetId = $request->input('asset_id');
+			$relatedAsset = TicketAsset::where('ticket_id',$ticketId)->where('asset_id',$assetId)->delete();
+		}
+	}
 		
 }
 
