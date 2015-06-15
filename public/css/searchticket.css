@@ -5,6 +5,7 @@
 #search{
 	width:400px;
 	float:right;
+	margin-right: 70px;
 }
 
 #new-ticket{
@@ -26,4 +27,7 @@ float:left;
 
     margin-left: 40px;
     padding: 10px;
+}
+.hv{
+	color: #ffffff !important;
 }

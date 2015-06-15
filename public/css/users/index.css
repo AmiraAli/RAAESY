@@ -1,43 +1,59 @@
-			label{
-        		margin : 10px;
-        	}
+.sho{
+	margin : 10px;
+}
 
-        	#searchDiv{
-        		clear: both !important;
-        	}
+#searchDiv{
+	clear: both !important;
+}
 
-        	#autocompletemenu{
-        		border: 1px solid #B9BCBE;
-				border-radius: 3px;
-				padding-top: 3px;
-				padding-bottom: 3px;
-				padding-left: 6px;
-				background: none repeat scroll 0% 0% #FFF;
-				margin-right: 5px;
-        	}
-        	li {
-	        	cursor: pointer;
-				display: block;
-				margin : 1px;
+#autocompletemenu{
+	border: 1px solid #B9BCBE;
+	border-radius: 3px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-left: 6px;
+	background: none repeat scroll 0% 0% #FFF;
+	margin-right: 5px;
+}
+li {
+	cursor: pointer;
+	display: block;
+	margin : 1px;
 
-			
-			}
+}
 
-			img{
-				width: 30px;
-				height: 30px;
-			}
-			
-			#autocompletemenu{
-				z-index: 10;
-			}		
+#autocompletemenu{
+	z-index: 10;
+}		
 
-			.transparent{
-				background-color: Transparent;
-    			background-repeat:no-repeat;
-    			border: none;
-    			cursor:pointer;
-    			overflow: hidden;
-    			outline:none;
+#search{
+	float:right;
+}
+#new-user{
+	float:right !important;
+	margin-right: 30px;
+}
 
-    		}
+#con{
+    border-radius: 15px;
+    border: 2px solid ;
+   	border-color: rgba(36,58,117,1);
+    padding: 10px;
+}
+#toggle{
+	float: right;
+}
+#advancedSearchDiv{
+	float: right;
+}
+
+
+.transparent{
+	background-color: Transparent;
+	background-repeat:no-repeat;
+	border: none;
+	cursor:pointer;
+	overflow: hidden;
+	outline:none;
+
+}

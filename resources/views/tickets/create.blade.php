@@ -84,7 +84,7 @@
 					    <select class="form-control" name="tech">
 					    	<option value="" selected>Not assigned</option>
 						    @foreach ($users as $user)
-						    	<option value="{{ $user->id }}" <?php if(old('tech') === $user->id){ echo "selected"; } ?>> {{ $user->fname }}</option>
+						    	<option value="{{ $user->id }}" <?php if(old('tech') === $user->id){ echo "selected"; } ?>> {{ $user->fname }} {{ $user->lname }}</option>
 							@endforeach
 						</select>
 					</div>

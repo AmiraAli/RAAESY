@@ -2,12 +2,12 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-//use Illuminate\Http\Request;
 use App\Section;
 use Request;
 use App\Category;
 use Auth;
+
+
 
 class SectionsController extends Controller {
 
@@ -24,8 +24,6 @@ class SectionsController extends Controller {
 		}
 	}
 	
-
-
 
 	/**
 	 * Display a listing of the resource.

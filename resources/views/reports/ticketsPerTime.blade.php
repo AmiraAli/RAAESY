@@ -57,8 +57,6 @@
         ticketsStatistics(createdTickets, closedTickets, points);
 
         
-
-
         function ticketsStatistics(createdTickets,closedTickets, points){
             var unit = $("#groupby").val();
             $(function () {

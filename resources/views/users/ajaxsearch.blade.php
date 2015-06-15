@@ -1,70 +1,54 @@
-<table class="table table-hover ">
-<th>First Name</th>
-<th>Last Name</th>
-<th>Email</th>
-<th>Phone</th>
-<th>Location</th>
-@if ($showType)
-<th>Role</th>
-@endif
-<tbody id="tbody">
-@foreach($users as $user)
-<tr id="{{$user->id}}"><td>
-<a href="/users/{{$user->id}}">{{$user->fname}}	</a>
-</td>
-<td>
-	{{$user->lname}}	
+<table class="table table-hover">
+	<thead>
+		<tr class="navbtn txtnav">
+			<th class="text-center">Name</th>
+			<th class="text-center">Email</th>
+			<th class="text-center">Phone</th>
+			<th class="text-center">Location</th>
+			<th class="text-center">Action</th>
+		</tr>
+	</thead>
+	<tbody id="tbody">
+		@foreach($users as $user)
+			<tr id="{{$user->id}}">
+				<td class="text-center"><a href="/users/{{$user->id}}"><b>{{$user->fname}}	{{$user->lname}}</b></a></td>
+				<td class="text-center">{{$user->email}}</td>
+				<td class="text-center">{{$user->phone}}</td>
+				<td class="text-center">{{$user->location}}</td>        
+				<td class="text-center">
+					@if ($user->id != "1") 
 
-</td>
-<td>
-	{{$user->email}}	
+						@if ($showType)
+							<a href="#" class="transparent enable" onclick="Spam('enable_{{$user->id}}')" ><img src="/images/enable.png" width="30px" height="30px"></a>
+							&ensp;&ensp; &ensp;
+						@else
 
-</td>
+							<!-- admin #1 can spam anywone except himself -->
+							<!-- regular admins can not spam each other -->
+							@if ( ($current_user->id == 1 && $user->id != 1) | $user->type != "admin")
+							<a href="#" class="transparent disable" onclick="Spam('disable_{{$user->id}}')" ><img src="/images/disable.png" width="30px" height="30px"></a>
+							&ensp;&ensp; &ensp;
+							@endif
+						@endif
+						 
+						
+					@endif
 
-<td>
-	{{$user->phone}}	
+						<!-- admin #1 only can edit his/any admin's profile  -->
+						<!-- regular admins can not edit each other profiles-->
+						@if ( $current_user->id == "1" | $user->id == $current_user->id | $user->type!="admin") 
+							<a href="/users/{{$user->id}}/edit" class="do edit"><img src="/images/edit.png" width="30px" height="30px">   </a> 
+						@endif
 
-</td>
-<td>
-	{{$user->location}}	
+						<!-- admin #1 can not bel deleted  -->
+						<!-- admins can not be deleted except by admin #1 -->
+						@if ($user->id != "1" && ( $user->type !="admin" || $current_user->id == 1 ))
+						 &ensp;&ensp; &ensp;
+					 	<a href="#" class="del" onclick="Delete({{$user->id}})"><img src="/images/delete.png" width="30px" height="30px"></a>
+					@endif
+				</td>
 
-</td>
-@if ($showType)
-<td>
-   @if ($user->type == "admin")
-    	Admin
-    @elseif ($user->type == "tech")
-    	Technician
-    @else
-    	Regular User
-    @endif
-</td>
-@endif
-
-
-
-
-
-<td class="text-center">
-
-@if ($user->id != "1" | ($user->id == "1" && $current_user->id == "1" ) )
-	<a class="transparent edit" href="/users/{{$user->id}}/edit"><img src="/images/edit.png"></a>
-@endif
-
-@if ($user->id != "1")
-	@if ($showType)
-		<button class="transparent enable" onclick="Spam('enable_{{$user->id}}')" ><img src="/images/enable.png"></button>
-	@else
-		<button class="transparent disable" onclick="Spam('disable_{{$user->id}}')" ><img src="/images/disable.png"></button>
-	@endif
-
-	<button class="transparent del" onclick="Delete({{$user->id}})" ><img src="/images/delete.png"></button>
-@endif
-</td>
-
-</tr>
-@endforeach
-</tbody>
+			</tr>
+		@endforeach
+	</tbody>
 </table>
-<?php echo $users->render(); ?>
-

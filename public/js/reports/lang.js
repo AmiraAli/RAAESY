@@ -38,10 +38,14 @@ document.getElementById("translation").onclick= function(e){
 
             // ----------------------------------------
                     $('#startdate').datetimepicker({
-                        format:'Y-m-d H:00:00',
+                        format:'Y-m-d',
+                        timepicker:false,
+                        mask:true,
                     });
                     $('#enddate').datetimepicker({
-                        format:'Y-m-d H:00:00',
+                        format:'Y-m-d',
+                        timepicker:false,
+                        mask:true,
                   });
             //-----------------------------------------
 

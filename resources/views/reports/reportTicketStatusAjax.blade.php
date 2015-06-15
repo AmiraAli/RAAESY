@@ -1,29 +1,4 @@
-@extends('app')
 
-@section('content')
-<style>
-	#con{
-		border:none !important;
-	}
-</style>
-<link href="/css/sections/sectionIndex.css" rel="stylesheet">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="/js/reports/reportTicketStatus.js"></script>
-<div class="container">
-    <h3 class="navtxt"><a href="{{ url('/reports')}}"> Reports</a>
-    >>Tickets History</h3>
-</div>
-<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
-
-<div class="container">
-
-<br>
-<div class="row pull-right">
-<!-- CSV -->
-<a href="/reports/exportTicketStatusReport"><img src="/images/CSV.png" style="width:40px"></a>
-
-</div>
-<div id="con">
 <center><?php echo $tickets->render(); ?></center>
 <?php $open= array(); $close= array(); ?>
 	@foreach($tickets as $ticket)
@@ -46,10 +21,8 @@
 				@endif	
 
 		@endforeach	
-
 	@endforeach
-
-
+	
 <br><br>
 	<div  class="row">
 		<table class="table table-hover">
@@ -112,7 +85,3 @@
 		</tbody>
 		</table>
 </div>
-</div>
-</div>
-
- @endsection

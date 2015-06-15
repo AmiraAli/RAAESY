@@ -110,6 +110,9 @@ class AssetsController extends Controller {
 	public function show($id)
 	{
 		$asset = Asset::find($id);
+		if (empty($asset)){
+			return view('errors.404');
+		}
    		return view('assets.show',compact('asset'));
 	}
 
@@ -122,6 +125,9 @@ class AssetsController extends Controller {
 	public function edit($id)
 	{
 		$asset = Asset::find($id);
+		if (empty($asset)){
+			return view('errors.404');
+		}
 		$types = AssetType::all();
 		$users = User::all();
 	

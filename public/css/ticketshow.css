@@ -7,12 +7,9 @@ float:right;
 width:400px;
 clear:both;
 float:right;
-}
-.ticketbody{
-width:700px;
-float:left;
-}
-.commentbody{
+}*/
+
+/*.commentbody{
 width:700px;
 float:left;
 }*/
@@ -21,6 +18,18 @@ width:400px;
 
 float:right;
 }*/
+
+.ticketbody{
+	border-radius: 15px !important;
+    border: 2px solid !important;
+    border-color: rgba(36,58,117,1) !important;
+    word-wrap:break-word;
+}
+
+textarea {
+    resize: none;
+
+}
 
 .assigned{
 	font-size: 16px;
@@ -39,9 +48,9 @@ float:right;
 	float: right;
 }
 
-.butn{
-	color: #ffffff;
-    background-color: rgba(36,58,117,1);
+.btn.btn-default{
+	color: #ffffff !important;
+    background-color: rgba(36,58,117,1) !important;
 }
 
 /*.rightposition{
@@ -62,6 +71,10 @@ float:left;
 .buttonsave {
     text-align: right;
     float: right;
+}
+.asset{
+ 	display: inline-block;
+    width: 80px;	
 }
 
 
