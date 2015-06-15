@@ -41,15 +41,17 @@
 		</div>
 		<div class="row">
 		<h4 class="col-md-6">  {{ $ticket->subject->name }}</h4> 
-		@if($ticket->file)
-			<div class="col-md-6">
-			<h4>More details upladed:</h4>
-			<p><a href="{{ URL::to( '/files/'. $ticket->file)  }}" target="_blank">{{ $ticket->file }}</a></p>
-			</div>
-		@endif
+		<p>  {!! $ticket->description !!}</p>
 		</div>
 		<div class="row">
-		<p>  {!! $ticket->description !!}</p>
+		
+
+		@if($ticket->file)
+			<div class="col-md-6">
+			<span>More details uploded:</span>
+			<a href="{{ URL::to( '/files/'. $ticket->file)  }}" target="_blank">{{ $ticket->file }}</a>
+			</div>
+		@endif
 		</div>
 	  </div>
 	</div>
