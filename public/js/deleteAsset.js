@@ -1,11 +1,3 @@
-window.onload = function() {
-                    $.ajaxSetup({
-                headers: {
-                    'X-XSRF-Token': $('meta[name="_token"]').attr('content')
-                }
-            });
-            };
-
 		function deleteAsset(id){
 			//ajax request
 		   $.ajax({
