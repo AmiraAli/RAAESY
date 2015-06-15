@@ -78,7 +78,7 @@
                 </div>
                 
                 <div class="form-group col-md-3">
-                    <button class="btn btn-primary" onclick="show('')">Search</button>
+                    <button class="btn btn-primary" onclick="show()">Search</button>
                 </div>
             </div>
         </div>
