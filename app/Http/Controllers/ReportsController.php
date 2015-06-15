@@ -106,6 +106,19 @@ class ReportsController extends Controller {
 		return view('reports.logs',compact('logs'));
 	}
 
+
+	public function logsAjax()
+	{
+		
+		
+		if(!Request::ajax()) {
+			return;
+		}
+		
+		$logs =Log::paginate(10);
+		return view('reports.logsAjax',compact('logs'));
+	}
+
 	public function logsCSV(){
 		$logs =Log::all();
 
@@ -766,13 +779,28 @@ class ReportsController extends Controller {
 
 	public function reportTicketStatus(){
 
-		$tickets=Ticket::paginate(10);
+		$tickets=Ticket::paginate(2);
 		$ticketStatuses= TicketStatus::all();
 		$opens=TicketStatus::where('value','open')->count();
 		$closes=TicketStatus::where('value','close')->count();
 		return view('reports.reportTicketStatus',compact('tickets','ticketStatuses','opens','closes'));
 	}
 
+
+	/**
+	 * Show the ticket Status of the opened/closed tickets ( called by AJAX )
+	 *
+	 * @return Response
+	 */
+
+	public function reportTicketStatusAjax(){
+
+		$tickets=Ticket::paginate(2);
+		$ticketStatuses= TicketStatus::all();
+		$opens=TicketStatus::where('value','open')->count();
+		$closes=TicketStatus::where('value','close')->count();
+		return view('reports.reportTicketStatusAjax',compact('tickets','ticketStatuses','opens','closes'));
+	}
 
 	public function exportTicketStatusReport(){
 

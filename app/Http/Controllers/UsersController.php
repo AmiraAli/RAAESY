@@ -241,10 +241,12 @@ class UsersController extends Controller {
 			return view('errors.404');
 		}
 
-		//no one can edit the super admin profile ( having id = 1 )		
-		if ( $id=="1" && Auth::User()->id != "1" ) {
+		//no one can edit the super admin profile ( having id = 1 )	
+		//only super user can edit admins profile	
+		$userType = User::find($id)->type;
+		if ( Auth::User()->id != "1" && $userType=="admin" && !($this->userAuth($id)) ){
 			return view('errors.404');
-		}		
+		}
 
 		$user = User::find($id);
 		if (empty($user)){

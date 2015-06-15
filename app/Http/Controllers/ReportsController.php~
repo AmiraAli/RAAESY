@@ -866,11 +866,11 @@ class ReportsController extends Controller {
 
 public function problemMangementLang(){
 
-      $lang=Request::input("lang");
+      $lang=Request::input("lang1");
 if($lang=="ع")
-      Lang::setLocale('ar');
+      Session::set('locale', 'ar');
 if($lang=="E")
-      Lang::setLocale('en');
+      Session::set('locale', 'en');
 
 
 

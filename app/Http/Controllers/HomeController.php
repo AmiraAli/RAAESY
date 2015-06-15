@@ -49,7 +49,9 @@ class HomeController extends Controller {
 
 		}
 
-		return view('home',compact('categories','articles'));
+		$countArticle=Article::All()->count();
+
+		return view('home',compact('categories','articles','countArticle'));
 	}
 
 	// public function home()
@@ -86,7 +88,7 @@ class HomeController extends Controller {
 
 				$articles = $articles->whereIn('category_id', $arr);
 			}
-			$articles = $articles->get();
+			$articles = $articles->paginate(6);
 
 			return view('searchArticle',compact('articles'));
 		}

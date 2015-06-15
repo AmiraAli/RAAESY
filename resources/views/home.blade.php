@@ -65,14 +65,15 @@
       <div class="row" id="category_list">
         <div class="list-group">
 
-          <a href="#" class="list-group-item active" id="cat_all" onclick="searchByCat('cat_all', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ count($articles) }}</span><strong>All categories</strong></a>
+          <a href="#" class="list-group-item active" id="cat_all" onclick="searchByCat('cat_all', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ $countArticle }}</span><strong>All categories</strong></a>
           @foreach ($categories as $category)
                <a href="#" class="list-group-item" id="cat_{{ $category->category_id }}" onclick="searchByCat('cat_{{ $category->category_id }}', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ $category->count }}</span>{{ $category->name }}</a>                 
             @endforeach       
         </div>
       </div>
     </div>
-    <div class="col-md-10" id="article-show">
+    <div id="article-show">
+    <div class="col-md-10" >
       @foreach($articles as $article)
         <div class="col-md-4 article" > 
           <div class="panel panel-info">
@@ -87,9 +88,11 @@
             </div>
         </div>    
       @endforeach
-    </div>
-    <center> <?php echo $articles->render(); ?></center>
 
+
+    </div>
+                  <center> <?php echo $articles->render(); ?></center>
+</div>
   </div>
 
 </div>
