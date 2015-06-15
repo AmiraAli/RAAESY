@@ -1,11 +1,6 @@
 @extends('app')
 
 @section('content')
-<style>
-	#con{
-		border:none !important;
-	}
-</style>
 <link href="/css/sections/sectionIndex.css" rel="stylesheet">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="/js/reports/reportTicketStatus.js"></script>
@@ -13,8 +8,6 @@
     <h3 class="navtxt"><a href="{{ url('/reports')}}"> Reports</a>
     >>Tickets History</h3>
 </div>
-<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
-
 <div class="container">
 
 <br>
@@ -48,7 +41,7 @@
 		@endforeach	
 
 	@endforeach
-
+</div>
 
 <br><br>
 	<div  class="row">
@@ -111,7 +104,6 @@
 			@endforeach
 		</tbody>
 		</table>
-</div>
 </div>
 </div>
 

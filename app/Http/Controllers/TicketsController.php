@@ -268,6 +268,7 @@ class TicketsController extends Controller {
 	// Get Related Assests
 
 	$relatedAssets = Ticket::find($id)->TicketAssets;
+	// $relatedAssets = TicketAsset::where("ticket_id", $id)->get();
 //$relatedAssets = Ticket::join('ticket_assets', 'tickets.id', '=', 'ticket_assets.ticket_id')->where('tickets.id','=',$id)->get();
 	//get all comments
 	$comments=Ticket::find($id)->comments;

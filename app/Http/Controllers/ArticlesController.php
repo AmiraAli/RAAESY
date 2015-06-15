@@ -14,6 +14,7 @@ use Input;
 use Editor;
 use Validator;
 use App\Tag;
+use DB;
 
 //for csv
 use Response;
@@ -57,7 +58,7 @@ class ArticlesController extends Controller {
 		}
 		$categories=Category::all();
 		$sections=Section::all();
-		$articles=Article::all();
+		$articles=Article::paginate(5);
 		$tags=Tag::all();
 		return view('articles.index',compact('articles','categories','sections','tags'));
 	}
@@ -98,7 +99,7 @@ class ArticlesController extends Controller {
 		}
 		$categories=Category::all();
 		$sections=Section::all();
-		return view('articles.x',compact('categories','sections'));
+		return view('articles.create',compact('categories','sections'));
 	}
 
 	/**
@@ -298,29 +299,27 @@ class ArticlesController extends Controller {
 
 		$category_id = Request::get('dataCat');
 		$tag_id = Request::get('dataTag');
-		//var_dump($category_id);
-		//var_dump($tag_id); exit();
         if($category_id !=0 && $tag_id !=0){
-        	//echo "inside if"; exit();
-			$articles=Article::where('category_id','=',$category_id)->get();
-	        $articleTags= ArticleTag::where('tag_id','=',$tag_id)->get();			
-		    return view('articles.searchCategoryTag',compact('articles','articleTags'));
+	
+	        $articles = Article::where('category_id','=',$category_id)->join('article_tags','article_tags.article_id','=','articles.id')
+	            ->select('articles.*')
+	            ->where('article_tags.tag_id', '=' , $tag_id )->paginate(5);
 
-	    }elseif ($category_id==0){
-           // echo "inside elseif 1"; exit();
-	    	$articleTags= ArticleTag::where('tag_id','=',$tag_id)->get();
-	    	$articles= Article::all();
-	    	//var_dump($articleTags); exit();
-	    	return view('articles.searchTag',compact('articleTags','articles'));
+	    }elseif($category_id ==0 && $tag_id ==0){ //both not set
+	    	$articles = Article::paginate(5);
+	    }elseif ($category_id==0 ){   //tags only case
+	            $articles = Article::join('article_tags','article_tags.article_id','=','articles.id')
+	            ->select('articles.*')
+	            ->where('article_tags.tag_id', '=' , $tag_id )->paginate(5);
+		
+	    }elseif ($tag_id==0){        //category only case
 
-	    }elseif ($tag_id==0){
-
-	    	$articles=Article::where('category_id','=',$category_id)->get();
-	    	return view('articles.searchCategory',compact('articles'));
+	    	$articles=Article::where('category_id','=',$category_id)->paginate(5);
 
 	    }
 
 		
+	        return view('articles.search',compact('articles'));
 
 	}
 

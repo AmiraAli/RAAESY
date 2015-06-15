@@ -1,15 +1,15 @@
-<html>
-<head>
-	<link href="/css/ticketshow.css" rel="stylesheet">
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="/js/ticket_status.js"></script>
-	<script src="/js/comments.js"></script>
-	<script src="/js/add_asset_ticket.js"></script>
-</head>
-<body>
+
+<link href="/css/ticketshow.css" rel="stylesheet">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="/js/ticket_status.js"></script>
+<script src="/js/comments.js"></script>
+<script src="/js/add_asset_ticket.js"></script>
+
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
+
 @extends('app')
 @section('content')
+
 <br>
 <div class="container">
 
@@ -137,21 +137,26 @@
 @if(Auth::user()->type=="admin")	
 	<div class="panel relatedassets">
 		  <div class="panel-heading navbtn txtnav">
-			    <div class="panel-title" style="display:inline;">Related Assets</div>
-			    
+			    <div class="panel-title" style="display:inline;">Related Assets</div>			    
 		  </div> 
-	          <div class="panel-body">
-	          <div id="addnewasset">
-				<button id="{{$ticket->id}}:newasset" onclick="AddAssets({{$ticket->id}}+':newasset')" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>  AddAsset</button>
+          <div class="panel-body">
+	          	<div id="addnewasset">
+					<button id="{{$ticket->id}}:newasset" onclick="AddAssets({{$ticket->id}}+':newasset')" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>  Add Asset</button>
 
-			</div>
-			@foreach($relatedAssets as $relatedAsset)
-				<input type="hidden" id="{{$relatedAsset->id}}:showenassets" class="showenasset">
-				<a href="/assets/{{$relatedAsset->id}}">{{$relatedAsset->name}}</a><br>
-			@endforeach
+			  	</div>
 
-			
-<div id="asseterrormessage"></div>
+				<div id="new-asset">
+					@foreach($relatedAssets as $relatedAsset)
+						<div id='{{$relatedAsset->id}}_{{$ticket->id}}'>				
+							<input type="hidden" id="{{$relatedAsset->id}}:showenassets" class="showenasset">
+							<span class='btn'><a href="/assets/{{$relatedAsset->id}}"><span class="asset">{{$relatedAsset->name}}</span></a><span class='badge' onclick='remove_asset({{$relatedAsset->id}}, {{$ticket->id}})'>x</span></span>
+						</div>
+					@endforeach
+				</div>
+			  	<div id="asseterrormessage"></div>
+
+		
+				
 
 		  </div>
 	</div>
@@ -179,5 +184,3 @@
 </div>
 @endsection
 
-</body>
-</html>

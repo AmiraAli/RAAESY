@@ -1,36 +1,4 @@
-<html>
-<head>
-
-<style>
-	span{
-
-		display: block;
-		float:right;
-
-	}
-</style>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>  
-<script src="/js/reports/logs.js"></script>  
-
-	  
-</head>
-<body>
-<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
-@extends('app')
-@section('content')
-<div class="container">
-	<h3 class="navtxt"><a href="{{ url('/reports')}}"> Reports</a>
-	>>Deletion Log</h3>
-	<a  class="" id="csv" href="/reports/logsCSV" >
-    	<img src="/images/CSV.png" style="width:40px"></img>
-	</a>
-</div>
-<div class="container">
-<br>
-<div  id="con" class="col-md-12" >
-
 <center><?php echo $logs->render(); ?></center>
-
 @foreach ($logs as $log  )
  <div class="row" >
  	<div class="panel">
@@ -100,44 +68,3 @@
 	
 @endforeach
 
-</div>
-
-
-
-		</div>
-			</div>
-				</div>				
-</div>
-
-
-
- <script >
-
-
-
- 	function init(){
- 		if ( "<?php echo Session::get('locale') ; ?>" == 'ar'){
- 		$('.admin').attr("class",'pull-right');
- 		$('.date').attr("class",'pull-left');
- 		$(".panel").css({
-			overflow: "hidden",
-		});
- 		$(".panel-body").css({
-			float:'right',
-		});
- 	}
-	 
-
-	$(".panel-heading").css({
-		overflow: "hidden",
-	});
- 	}
-
-
- </script>  
-
-
-@stop
-
-</body>
-</html>

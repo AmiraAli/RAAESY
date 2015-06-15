@@ -12,7 +12,7 @@
 		    <img src="/images/CSV.png" style="width:40px"></img>
 		</a>
 </div>
-	
+
 	<br><br>
 	<?php
 	if (empty(json_decode(json_encode($allTickets), true)))

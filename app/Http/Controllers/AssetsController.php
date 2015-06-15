@@ -34,7 +34,7 @@ class AssetsController extends Controller {
 	 */
 	public function index()
 	{
-		$assets = Asset::all();
+		$assets = Asset::paginate(2);
 		$types = AssetType::all();
 		return view("assets.index",compact('assets','types'));
 	}
@@ -215,7 +215,7 @@ class AssetsController extends Controller {
 
             if ( !$name && !$serialno && !$location && !$manufacturer && !$assettype_id ) 
             {
-            	$assets = Asset::all(); 
+            	$assets = Asset::paginate(2);
             	return view("assets.searchAssets",compact('assets'));           	
             }
 
@@ -243,7 +243,7 @@ class AssetsController extends Controller {
 	            	$assets=$assets->where('serialno', 'like', '%'.$serialno.'%');
 	            }
 
-	            $assets=$assets->get();
+	            $assets=$assets->paginate(2);
 	            
 	           	return view("assets.searchAssets",compact('assets'));
 	        }  
@@ -321,6 +321,16 @@ class AssetsController extends Controller {
 	    // our response, this will be equivalent to your download() but
 	    // without using a local file
 	    return Response::make(rtrim($output, "\n"), 200, $headers);
+	}
+
+	public function removeAsset(Request $request)
+	{	
+		if($request->ajax()) {
+
+			$ticketId = $request->input('ticket_id');
+			$assetId = $request->input('asset_id');
+			$relatedAsset = TicketAsset::where('ticket_id',$ticketId)->where('asset_id',$assetId)->delete();
+		}
 	}
 		
 }

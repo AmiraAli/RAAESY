@@ -1,3 +1,4 @@
+<div class="col-md-10" >
 @foreach($articles as $article)
 	<div class="col-md-4 article" >	
 		<div class="panel panel-info">
@@ -13,3 +14,7 @@
 	    </div>
 	</div>    
 @endforeach
+
+</div>
+
+<center> <?php echo $articles->render(); ?> </center> 
