@@ -51,7 +51,7 @@
 					@endif
 					  <li role="presentation" id="open"><a href="#" onclick="searchTicket('open', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)">Unclosed <span id="openCount" class="badge">{{ $open[0]->count }}</span></a></li>	  
 					  <li role="presentation" id="closed"><a href="#" onclick="searchTicket('closed', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)">Closed <span id="closedCount" class="badge">{{ $closed[0]->count }}</span></a></li>
-					  <li role="presentation" class="active" id="all"><a href="#" onclick="searchTicket('all', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)">All(including closed) <span id="allCount" class="badge">{{ count($tickets) }}</span></a></li>
+					  <li role="presentation" class="active" id="all"><a href="#" onclick="searchTicket('all', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)">All(including closed) <span id="allCount" class="badge">{{ $allcount }}</span></a></li>
 					@if(Auth::user()->type === "admin")
 					  <li role="presentation" id="spam"><a href="#" onclick="searchTicket('spam', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)">Spam <span id="spamCount" class="badge">{{ $spam[0]->count }}</span></a></li>	
 					@endif
@@ -297,12 +297,16 @@
 									   			<a onclick='openTeckit({{ $ticket->id }},0,3)'>Open</a>@endif"></a>
 									@endif
 
-							   	</td>
-							</tr>
-						@endforeach
-					</tbody>
-				</table>
-			</div>
+
+						   	</td>
+						</tr>
+					@endforeach
+				</tbody>
+			</table>
+					<div>
+{!!  $tickets->render() !!}
+</div>
+
 		</div>
 	</div>
 </div>

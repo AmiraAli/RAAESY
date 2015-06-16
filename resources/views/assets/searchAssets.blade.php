@@ -17,7 +17,7 @@
 	            <td class="text-center">{{ $asset->manufacturer }}</td>
 	            <td class="text-center">{{ $asset->assettype->name }}</td>
 	            <td class="text-center">{{ $asset->serialno }}</td>
-	            <td class="text-center">{{ $asset->user->fname }} {{ $asset->user->lname }}</td>
+	            <td class="text-center"><a href="/users/{{ $asset->user_id}}"><b>{{ $asset->user->fname }} {{ $asset->user->lname }}</b></a></td>
 	            <td class="text-center">{{ $asset->location }}</td>
 	            <td class="text-center">
 	            	<a  title="Edit Asset" href="/assets/{{$asset->id}}/edit" class="do"><img src="/images/edit.png" width="30px" height="30px">	</a>
@@ -29,3 +29,4 @@
  		@endforeach
  	</tbody>
 </table>
+<center><?php echo $assets->render(); ?></center>

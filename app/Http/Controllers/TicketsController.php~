@@ -74,7 +74,15 @@ class TicketsController extends Controller {
 		if(Auth::user()->type === "admin"){
 			//all tickets except spam tickets
 			$tickets = Ticket::where('is_spam', "0")->get();
-			$tickets= $this->sortTicket ( $tickets ,"subject" ,"DESC");
+
+var_dump($tickets->paginate(10));
+exit;
+
+			$ticket= $this->sortTicket ( $tickets ,"subject" ,"DESC");
+
+$tickets->aya=json_decode(json_encode((object)$ticket));
+
+
 
 			// unassigned tickets except spam tickets
 			$unassigned = Ticket::select(DB::raw('count(*) as count'))->whereNull('tech_id')->where('is_spam', "0")->get();
@@ -267,7 +275,8 @@ class TicketsController extends Controller {
 
 	// Get Related Assests
 
-	$relatedAssets = Ticket::find($id)->TicketAssets;
+	// $relatedAssets = Ticket::find($id)->TicketAssets;
+	$relatedAssets = TicketAsset::where("ticket_id", $id)->get();
 //$relatedAssets = Ticket::join('ticket_assets', 'tickets.id', '=', 'ticket_assets.ticket_id')->where('tickets.id','=',$id)->get();
 	//get all comments
 	$comments=Ticket::find($id)->comments;

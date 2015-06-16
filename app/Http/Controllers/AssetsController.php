@@ -34,7 +34,7 @@ class AssetsController extends Controller {
 	 */
 	public function index()
 	{
-		$assets = Asset::all();
+		$assets = Asset::paginate(5);
 		$types = AssetType::all();
 		return view("assets.index",compact('assets','types'));
 	}
@@ -215,7 +215,7 @@ class AssetsController extends Controller {
 
             if ( !$name && !$serialno && !$location && !$manufacturer && !$assettype_id ) 
             {
-            	$assets = Asset::all(); 
+            	$assets = Asset::paginate(5);
             	return view("assets.searchAssets",compact('assets'));           	
             }
 
@@ -243,7 +243,7 @@ class AssetsController extends Controller {
 	            	$assets=$assets->where('serialno', 'like', '%'.$serialno.'%');
 	            }
 
-	            $assets=$assets->get();
+	            $assets=$assets->paginate(5);
 	            
 	           	return view("assets.searchAssets",compact('assets'));
 	        }  

@@ -5,13 +5,13 @@
                 }
             });
             };
-
+//------------------------------------------------------------------------
 function Status(elm){
   var ticket_id = elm;
   var status =document.getElementById(elm).name;
 techid=document.getElementById("techid").value.split(',')[1];
-console.log(techid);
-console.log(techid);
+// console.log(techid);
+// console.log(techid);
                   
 $.ajax({
     url: '/tickets/updatestatus/',
@@ -38,9 +38,9 @@ result=JSON.parse(result);
 
 			}
 var csrf=$("#hidden").val();
-console.log(csrf);
+//console.log(csrf);
 		  $("#addcomments").html(
-"     <form name='addForm' method = 'post'  class = 'form-horizontal' action='javascript:add("+ticket_id+")'><div class='form-group'><input type='hidden' name='_token' value="+csrf+"><div class='col-md-6'><textarea type='text' class='form-control' name='body' ></textarea></div></div><div class='form-group'><div class='col-md-6 col-md-offset-4'><button    type='submit'  class='btn btn-primary' >Add comment</button></div></div></form>"
+"     <form name='addForm' method = 'post'  class = 'form-horizontal' action='javascript:add("+ticket_id+")'><input type='hidden' name='_token' value="+csrf+"><div class='form-group col-md-9' ><div class='col-md-12'><textarea type='text' class='form-control' name='body' placeholder='Write Your Comment' rows='3'></textarea></div></div><div class='form-group col-md-1'><div class='col-md-12' style='margin-top:15px;'><button type='submit'  class='btn btn-default' >Comment</button></div></div></form>"
 );
 		   $('#'+ticket_id).text('close');
 		   $('#'+ticket_id).attr('name','close');
