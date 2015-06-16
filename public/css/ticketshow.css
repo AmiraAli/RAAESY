@@ -74,8 +74,15 @@ float:left;
 }
 .asset{
  	display: inline-block;
-    width: 80px;	
+    width: 70px;	
 }
-
-
-
+#selectallasset{
+    display: inline !important;
+    width: 100px;
+}
+.add-asset{
+    float: right;
+}
+#asseterrormessage{
+    float: right;
+}
