@@ -21,7 +21,7 @@
 	<nav class="navbar mynav" >
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<button  type="button" class="navbar-toggle collapsed txtnav" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<button  type="button" class="glyphicon glyphicon-menu-hamburger navbar-toggle collapsed txtnav" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 					<span class="sr-only">Toggle Navigation</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>

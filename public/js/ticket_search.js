@@ -18,7 +18,7 @@ function paginateWithAjax(){
         e.preventDefault();
 
         var isAdmin = $("#auth").val();
-        alert(isAdmin);
+        //alert(isAdmin);
         var url = $(this).attr('href');
         paginate(isAdmin , url);
     });
@@ -184,7 +184,7 @@ function sortBy(is_admin)
 	    success: function(result) {
 			 $('#table_show').html(result);
 			 paginateWithAjax();
-			 
+
 			 $("#sortType").html("DESC");
 
 			$('.checkbox1').each(function () {
@@ -288,8 +288,7 @@ function searchTicket (id , is_admin) {
 
 
 function searchAjax(searchData , url){
-		alert(url);
-		console.log(searchData);
+	
 		if (url == ""){
 			url = "/tickets/searchTicket";
 		}

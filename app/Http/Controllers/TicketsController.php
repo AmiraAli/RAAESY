@@ -69,8 +69,6 @@ class TicketsController extends Controller {
 	 */
 	public function index(Request $request)
 	{
-		$paginateNumber= 5;
-
 		$tags=Tag::all();
 
 		if(Auth::user()->type === "admin"){
@@ -85,14 +83,6 @@ class TicketsController extends Controller {
 
 			//set default path
 			$ticketPag->setPath('/tickets/searchTicket');
-
-			//pagination
-			/*if($request->has('page')){
-				$tickets=array_slice ( $tickets ,($request->get('page')-1)*$paginateNumber );
-			}
-			$tickets=new Paginator($tickets, $paginateNumber);*/
-			
-
 
 
 			// unassigned tickets except spam tickets
@@ -122,12 +112,7 @@ class TicketsController extends Controller {
 		else if(Auth::user()->type === "tech"){
 			$ticketPag = Ticket::where('is_spam', "0")->where('tech_id', $request->user()->id)->paginate(5);
 			$tickets= $this->sortTicket ( $ticketPag ,"subject" ,"DESC");
-			
-			//pagination
-			/*if($request->has('page')){
-				$tickets=array_slice ( $tickets ,($request->get('page')-1)*$paginateNumber );
-			}
-			$tickets=new Paginator($tickets, $paginateNumber);*/
+
 
 			//set default path
 			$ticketPag->setPath('/tickets/searchTicket');
@@ -151,11 +136,7 @@ class TicketsController extends Controller {
 			//set default path
 			$ticketPag->setPath('/tickets/searchTicket');
 			
-			//pagination 
-			/*if($request->has('page')){
-				$tickets=array_slice ( $tickets ,($request->get('page')-1)*$paginateNumber );
-			}
-			$tickets=new Paginator($tickets, $paginateNumber);*/
+
 			// closed tickets except spam tickets
 			$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('user_id', $request->user()->id)->where('is_spam', "0")->get();
 			// open tickets except spam tickets
@@ -959,11 +940,18 @@ $subject=array();
 				}
 				$tickets = $tickets->whereIn('category_id', $arr);
 			}
+			if ($tag){
+				$tickets= $tickets->join('ticket_tags','ticket_tags.ticket_id','=','tickets.id')
+	              ->where('ticket_tags.tag_id', '=' , $tag );
+	        }
 			$tickets= $this->AdvancedSearch ($tickets , $search);
-			$ticketPag = $tickets->paginate(5);
-			$tickets= $this->relatedTag ( $ticketPag , $tag);
+
+
+			//find by related tags		
+	        $ticketPag = $tickets->paginate(5);
+
 			
-			$tickets= $this->sortTicket ( $tickets , $sortBy , $sortType);
+			$tickets= $this->sortTicket ( $ticketPag , $sortBy , $sortType);
 			return view("tickets.searchTicket",compact('tickets', 'ticketPag')); 
 		}
 	}
