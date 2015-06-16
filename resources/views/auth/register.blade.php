@@ -7,7 +7,7 @@
 <div class="container-fluid">
 	<div class="row" >
 			 <div  class="col-lg-5 col-lg-offset-1 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2"> 
-				<div class="panel-heading panelhead"><b><h4>Register</h4></b></div>
+				<div class="panel-heading panelhead"><b><h4><img src="/images/IOGO-RSP.png" style="height:80px;width:100px;">Register</h4></b></div>
 				<div class="panel-body" id="form-container">
 					@if (count($errors) > 0)
 						<div class="alert alert-danger">
