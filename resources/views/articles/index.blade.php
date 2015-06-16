@@ -98,6 +98,7 @@
 
     <div class="col-md-11" id="table_show">  
      <div id="con">
+	<div class="table-responsive">
         <table class="table table-hover" >
             <thead>
                 <tr class="navbtn txtnav">
@@ -133,6 +134,7 @@
                  @endforeach
              </tbody>
          </table>
+	</div>
       <center> <?php echo $articles->render(); ?> </center> 
         </div>
     </div>

@@ -103,6 +103,9 @@ class ReportsController extends Controller {
 	{
 		
 		$logs =Log::paginate(10);
+		var_dump($logs);
+		//echo count($logs);
+		exit;
 		return view('reports.logs',compact('logs'));
 	}
 
