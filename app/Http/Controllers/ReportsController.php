@@ -256,7 +256,7 @@ class ReportsController extends Controller {
 									->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
 									->get();
 
-		$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
+		$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->paginate(10);
 						
 		return view('reports.summary',compact('inprogressCount','newCount'
 												,'resolvedCount','ticketsPerCategories'
@@ -330,7 +330,7 @@ class ReportsController extends Controller {
 											->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
 											->get();
 
-				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
+				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->paginate(10);
 
 				return view('reports.summarySearchMonth',compact('inprogressCount','newCount'
 												,'resolvedCount','ticketsPerCategories'
@@ -355,7 +355,7 @@ class ReportsController extends Controller {
 											->where('updated_at','>',date('Y-m-d', strtotime('-1 week')))
 											->get();
 
-				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 week')))->get();
+				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 week')))->paginate(10);
 
 				return view('reports.summarySearchWeek',compact('inprogressCount','newCount'
 												,'resolvedCount','ticketsPerCategories'
@@ -389,7 +389,7 @@ class ReportsController extends Controller {
 
 				$tickets=Ticket::where('updated_at','>=',$startdate)
 								->where('updated_at','<=',$enddate)
-								->get();
+								->paginate(10);
 
 				return view('reports.summarySearchCustom',compact('inprogressCount','newCount'
 																,'resolvedCount','ticketsPerCategories'

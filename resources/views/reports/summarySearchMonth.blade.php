@@ -1,42 +1,43 @@
 
 <br>
 	<div class="row">
-		<div class="col-md-3">
+		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 			<select class="form-control" id="date" onchange="custom()">
 				<option value="month" selected="true">Last month</option>
 		  		<option value="week">Last week</option>
 		  		<option value="custom">Custom</option>
 			</select>
 		</div>
-		<div class="col-md-5" style="display:none;" id="customedate">
-			From:<input type="text" id="startdate">
-			To:<input type="text" id="enddate">
+		<div class="col-xs-6 col-sm-5 col-md-5 col-lg-5" style="display:none;" id="customedate">
+			<label class="col-xs-3 col-md-2">From</label><input  class="col-xs-3 col-md-4" type="text" id="startdate">
+			<label class="col-xs-2 col-md-2">To</label><input class="col-xs-3 col-md-4" type="text" id="enddate">
 		</div>
-		<div style="float:left;">
+		<div class=" col-xs-4 col-sm-4 col-md-4 col-lg-4" style="float:left;">
 			<button class="btn navbtn txtnav" onclick="search()"><span class="glyphicon glyphicon-search"></span></button>
-		</div>
-		<a  style="float:left;" id="csv" href="/reports/summaryCSV">
+			<a  id="csv" href="/reports/summaryCSV">
     	<img src="/images/CSV.png" style="width:40px"></img>
 		</a>
+		</div>
 	</div>
 	<br>
 	<div class="row" id="datainfo">
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-xs-12 col-sm-10 col-md-6">
 		@if($ticketsPerCategories)
 			@foreach($ticketsPerCategories as $ticketsPerCategorie)
 				<input type="hidden" class="category" value="{{$ticketsPerCategorie->category->section->name}}/{{$ticketsPerCategorie->category->name}}">
 				<input type="hidden" class="count" value="{{ $ticketsPerCategorie->count }}">
 			@endforeach
 		@endif
-    <div  class="divchart" id="piechart" style="width: 550px; height: 500px;"></div>
+    <div  class="divchart" id="piechart" ></div>
 		</div>
-		<div class="col-md-6">
-			<div  class="divchart" id="status" style="width: 550px; height: 500px;"></div>
+		<div class=" col-xs-12 col-sm-10 col-md-6">
+			<div  class="divchart" id="status" ></div>
 		</div>
 	</div>
 	<br>
-	<div class="row divtable" >
+	<?php echo $tickets->render(); ?>
+	<div class="row divtable table-responsive" >
 		<table class="table table-hover">
 			<thead >
 				<tr class="navbtn txtnav">
