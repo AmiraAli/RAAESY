@@ -72,5 +72,7 @@
 					@endforeach
 				</tbody>
 			</table>
+			{!!  $ticketPag->render() !!}
+
 
 			<script type="text/javascript" src="/js/tickets_index.js"></script>

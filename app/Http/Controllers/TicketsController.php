@@ -75,14 +75,26 @@ class TicketsController extends Controller {
 
 		if(Auth::user()->type === "admin"){
 			//all tickets except spam tickets
-			$tickets = Ticket::where('is_spam', "0")->get();
+			$ticketPag = Ticket::where('is_spam', "0")->paginate(5);
+			
+
 			$allcount=Ticket::where('is_spam', "0")->count();
-			$tickets= $this->sortTicket ( $tickets ,"subject" ,"DESC");
-			if($request->has('page')){
+
+			//sort array
+			$tickets= $this->sortTicket ( $ticketPag ,"subject" ,"DESC");
+
+			//set default path
+			$ticketPag->setPath('/tickets/searchTicket');
+
+			//pagination
+			/*if($request->has('page')){
 				$tickets=array_slice ( $tickets ,($request->get('page')-1)*$paginateNumber );
 			}
-			$tickets=new Paginator($tickets, $paginateNumber);
-			 $tickets->setPath('tickets');
+			$tickets=new Paginator($tickets, $paginateNumber);*/
+			
+
+
+
 			// unassigned tickets except spam tickets
 			$unassigned = Ticket::select(DB::raw('count(*) as count'))->whereNull('tech_id')->where('is_spam', "0")->get();
 			// closed tickets except spam tickets
@@ -105,16 +117,21 @@ class TicketsController extends Controller {
 			$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 group by category_id");
 
 
-			return view('tickets.index',compact('tickets','unassigned','open','closed','expired','spam','tags','technicals','unanswered','categories','allcount'));
+			return view('tickets.index',compact('tickets','ticketPag' , 'unassigned','open','closed','expired','spam','tags','technicals','unanswered','categories','allcount'));
 		}
 		else if(Auth::user()->type === "tech"){
-			$tickets = Ticket::where('is_spam', "0")->where('tech_id', $request->user()->id)->paginate(10);
-			$tickets= $this->sortTicket ( $tickets ,"subject" ,"DESC");
-			if($request->has('page')){
+			$ticketPag = Ticket::where('is_spam', "0")->where('tech_id', $request->user()->id)->paginate(5);
+			$tickets= $this->sortTicket ( $ticketPag ,"subject" ,"DESC");
+			
+			//pagination
+			/*if($request->has('page')){
 				$tickets=array_slice ( $tickets ,($request->get('page')-1)*$paginateNumber );
 			}
-			$tickets=new Paginator($tickets, $paginateNumber);
-			 $tickets->setPath('tickets');
+			$tickets=new Paginator($tickets, $paginateNumber);*/
+
+			//set default path
+			$ticketPag->setPath('/tickets/searchTicket');
+
 			// closed tickets except spam tickets
 			$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('tech_id', $request->user()->id)->where('is_spam', "0")->get();
 			// open tickets except spam tickets
@@ -122,23 +139,30 @@ class TicketsController extends Controller {
 			$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('tech_id', $request->user()->id)->where('is_spam', "0")->get();
 			$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and tech_id = ? group by category_id", array($request->user()->id));
 
-			return view('tickets.index',compact('tickets','open','closed','tags','categories'));
+			return view('tickets.index',compact('tickets' , 'ticketPag','open','closed','tags','categories'));
 		}
 		else if(Auth::user()->type === "regular"){
-			$tickets = Ticket::where('is_spam', "0")->where('user_id', $request->user()->id)->paginate(10);
-			$tickets= $this->sortTicket ( $tickets ,"subject" ,"DESC");
-			if($request->has('page')){
+			$ticketPag = Ticket::where('is_spam', "0")->where('user_id', $request->user()->id)->paginate(5);
+			
+			$tickets= $this->sortTicket ( $ticketPag ,"subject" ,"DESC");
+			
+
+
+			//set default path
+			$ticketPag->setPath('/tickets/searchTicket');
+			
+			//pagination 
+			/*if($request->has('page')){
 				$tickets=array_slice ( $tickets ,($request->get('page')-1)*$paginateNumber );
 			}
-			$tickets=new Paginator($tickets, $paginateNumber);
-			 $tickets->setPath('tickets');
+			$tickets=new Paginator($tickets, $paginateNumber);*/
 			// closed tickets except spam tickets
 			$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('user_id', $request->user()->id)->where('is_spam', "0")->get();
 			// open tickets except spam tickets
 			$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('user_id', $request->user()->id)->where('is_spam', "0")->get();
 			$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and user_id = ? group by category_id", array($request->user()->id));
 
-			return view('tickets.index',compact('tickets','open','closed','tags','categories'));
+			return view('tickets.index',compact('tickets' , 'ticketPag' ,'open','closed','tags','categories'));
 		}
 	}
 
@@ -933,16 +957,14 @@ $subject=array();
 					$arr[$i] = $value->id;
 					$i++;
 				}
-				// file_put_contents("/home/samah/text.html",$arr[$i]);
-
 				$tickets = $tickets->whereIn('category_id', $arr);
 			}
 			$tickets= $this->AdvancedSearch ($tickets , $search);
-			$tickets = $tickets->get();
-
-			$tickets= $this->relatedTag ( $tickets , $tag);
+			$ticketPag = $tickets->paginate(5);
+			$tickets= $this->relatedTag ( $ticketPag , $tag);
+			
 			$tickets= $this->sortTicket ( $tickets , $sortBy , $sortType);
-			return view("tickets.searchTicket",compact('tickets')); 
+			return view("tickets.searchTicket",compact('tickets', 'ticketPag')); 
 		}
 	}
 	
