@@ -1,22 +1,15 @@
 @if (Auth::check())
 <html>
-<head>
-
-     
+<head>  
      
      <script src="/js/users/index.js"></script>
-
-  
-
-        
+       
 </head>
 
 <body>
 
 
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
-
-
 
 @extends('app')
 @section('content')

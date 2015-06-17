@@ -9,6 +9,7 @@
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 
 <div class="container">
+
 	<br>
 	<div class="col-md-6">
 	</div>
@@ -17,8 +18,9 @@
 	<div class="col-md-3">
 		<div id="newasset">
 			<a  href="{{ url('/assets/csvimport') }}"><img src="/images/CSV.png" style="width:40px"></a>
-			<a class="btn navbtn txtnav" href="{{ url('/assets/create') }}"> New Asset</a>
+			<a class="btn navbtn txtnav hv" href="{{ url('/assets/create') }}"> New Asset</a>
 		</div>
+
 	</div>
 
 
@@ -81,7 +83,6 @@
 									</div>
 								</div>
 
-
 								<div class="form-group">
 									<label class="col-md-4 control-label navtxt">Location</label>
 									<div class="col-md-7">
@@ -92,10 +93,10 @@
 								
 								<div class=" row form-group">
 									<div class="col-md-12">
-										<button type="submit" onclick="searchAsset('')" class="btn navbtn txtnav">
+										<button type="submit" onclick="searchAsset('')" class="btn navbtn txtnav hv">
 											Search
 										</button>
-										<button type="reset" class="btn navbtn txtnav">
+										<button type="reset" class="btn navbtn txtnav hv">
 											Reset
 										</button>
 									</div>

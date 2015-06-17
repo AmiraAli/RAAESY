@@ -18,7 +18,7 @@
               <h1> Ticketing System features.</h1>
               <p><h4>The main screen of our Helpdesk Ticketing System features a powerful grid-view showing all the information about  current tickets.</h4></p>
               @if(Auth::user()->type != "tech")
-              <p><a class="btn btn-lg navbtn txtnav" href="{{ url('/tickets/create') }}" role="button">New Ticket</a></p>
+              <p><a class="btn btn-lg navbtn txtnav hv" href="{{ url('/tickets/create') }}" role="button">New Ticket</a></p>
               @endif
             </div>
           </div>

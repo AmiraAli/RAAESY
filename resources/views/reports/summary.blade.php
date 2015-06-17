@@ -21,7 +21,7 @@
 			<label class="col-xs-2 col-md-2">To</label><input class="col-xs-3 col-md-4" type="text" id="enddate">
 		</div>
 		<div class=" col-xs-4 col-sm-4 col-md-4 col-lg-4" style="float:left;">
-			<button class="btn navbtn txtnav" onclick="search()"><span class="glyphicon glyphicon-search"></span></button>
+			<button class="btn navbtn txtnav hv" onclick="search()"><span class="glyphicon glyphicon-search"></span></button>
 			<a  id="csv" href="/reports/summaryCSV">
     	<img src="/images/CSV.png" style="width:40px"></img>
 		</a>
@@ -119,59 +119,40 @@
 											    'newCount'=>$newCount,
 											    'resolvedCount'=>$resolvedCount
 											)); ?>;
-
-
 	$(document).ready(function() {
-
     $('#startdate').datetimepicker({
   		format:'Y-m-d',
         timepicker:false,
         mask:true,
-
       	  });
     $('#enddate').datetimepicker({
   		format:'Y-m-d',
         timepicker:false,
         mask:true,
       	  });
-
      paginateWithAjax();
-
  });
-
-
 google.load("visualization", "1", {packages:["corechart"]});
      google.setOnLoadCallback(drawChart);
       function drawChart() {
-
         var data = google.visualization.arrayToDataTable([
-
 		['Task', 'Hours per Day'],
 		['Inprogress',  Globals.inprogressCount],
                 ['New',      Globals.newCount],
                 ['Resolved',   Globals.resolvedCount] ]);
-
         var options = {
-
           title: 'Tickets Status',
 	
         };
-
         var chart = new google.visualization.PieChart(document.getElementById('status'));
-
         chart.draw(data, options);
       }
-
-
-
 //convert pagination to AJAX
 function paginateWithAjax(){
     $('.pagination a').on('click', function(e){
         e.preventDefault();
-
         var url = $(this).attr('href');
         url = url.replace("/reports/summary/?","/reports/summarySearchDate/?");
-
         var date=document.getElementById("date").value;
 	if( date != "custom"){
 		$.ajax({
@@ -179,7 +160,6 @@ function paginateWithAjax(){
 			      type: "post",
 			      data: {'date':date},
 			      success: function(data){
-
 			       $("#container").html(data);
 			        paginateWithAjax();
 			      },
@@ -205,13 +185,9 @@ function paginateWithAjax(){
 					  }
 				    });
 	}
-
 	}
         
     });
 }
-
-
-
 </script>
 @endsection

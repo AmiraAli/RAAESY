@@ -41,3 +41,12 @@ li {
 #cat-tag{
 	margin-left: 30px;
 }
+
+.hv{
+	color: #ffffff !important;
+}
+
+.serchBtn{
+	width:300px;
+	float:right;
+}
