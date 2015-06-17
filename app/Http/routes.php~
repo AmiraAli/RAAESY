@@ -23,6 +23,9 @@ Route::get("/error", function(){
    return view("errors.404");
 });
 
+Route::get('/home/setLang', 'HomeController@changeLang');
+
+
 Route::get('/assets/csvimport', 'AssetsController@importToCsv');
 Route::get('/tickets/exportCSV', 'TicketsController@exportCSV');
 
@@ -48,9 +51,9 @@ Route::post('users/changepassprocess','UsersController@changepassprocess');
 
 
 Route::resource('/users','UsersController');
-
-Route::get('users/destroy/{id}','UsersController@destroy');
 Route::post('users/autocomplete','UsersController@autocomplete');
+
+Route::post('users/spam/{id}','UsersController@spam');
 
 
 Route::post('articles/autocomplete','ArticlesController@autocomplete');
@@ -63,6 +66,7 @@ Route::get('articles/csvArticleReport', 'ArticlesController@csvArticleReport');
 
 
 Route::post('tickets/searchTicket', 'TicketsController@searchTicket');
+Route::get('tickets/closeticketemail/{id}', 'TicketsController@closeticketemail');
 Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
 Route::post('tickets/relatedTag', 'TicketsController@relatedTag');
 Route::resource('/tickets','TicketsController');
@@ -98,6 +102,8 @@ Route::post('/assets/saveassets/', 'AssetsController@SaveAssets');
 Route::post('assets/addType', 'AssetsController@addType');
 
 Route::get('/reports/logs', 'ReportsController@logs');
+Route::post('/reports/logs', 'ReportsController@logsAjax');
+
 Route::get('/reports/disthour', 'ReportsController@distHour');
 
 Route::get('/reports/summary', 'ReportsController@summary');
@@ -118,6 +124,9 @@ Route::post('/reports/problemMangementDate', 'ReportsController@problemMangement
 
 
 Route::get('/reports/reportTicketStatus','ReportsController@reportTicketStatus');
+Route::post('/reports/reportTicketStatus','ReportsController@reportTicketStatusAjax');
+
+
 Route::get('/reports/exportTicketStatusReport','ReportsController@exportTicketStatusReport');
 
 
@@ -138,4 +147,5 @@ Route::controllers([
 ]);
 
 Route::post('/reports/problemmangementlang','ReportsController@problemMangementLang');
+Route::post('/assets/removeAsset/', 'AssetsController@removeAsset');
 

@@ -497,14 +497,36 @@ class UsersController extends Controller {
 
 	    //put all fields except password
 	    foreach($users as $row) {
+	    	//mb_convert_encoding($row, 'UTF-16LE', 'UTF-8');
 	        fputcsv($handle, array($row['id'], $row['fname'], $row['lname'], $row['email'] , $row['phone'] , $row['location'] , $row['isspam'] , $row['type'] ,$row['created_at']  , $row['updated_at']));
 	    }
 
 	    fclose($handle);
 
-	    $headers = array(
-	        'Content-Type' => 'text/csv',
-	    );
+	    /*$headers = array(
+	        'Content-Type' => 'text/csv; charset=UTF-8',
+	        'Content-Encoding'=> 'UTF-8' ,
+	    );*/
+
+	    $headers = array( 'Content-Description' => 'File Transfer' , 
+		'Content-Type'=> 'text/csv; charset=UTF-8' , 
+		'Content-Disposition' => 'attachment; filename=file.csv' , 
+		'Content-Transfer-Encoding' =>  'binary' , 
+		'Expires' => '0' , 
+		'Cache-Control'=> 'must-revalidate, post-check=0, pre-check=0' , 
+		'Pragma' => 'public' , 
+			);
+/*
+$headers = array('Pragma: public',
+'Expires' =>  '0' , 
+'Cache-Control' =>  must-revalidate, post-check=0, pre-check=0' , 
+header('Content-Description: File Transfer');
+header('Content-Type: text/csv');
+header('Content-Disposition: attachment; filename=export.csv;');
+header('Content-Transfer-Encoding: binary');
+
+*/
+		//echo "\xEF\xBB\xBF"; // UTF-8 BOM
 
 	    return Response::download($filename, 'users.csv', $headers);
 		

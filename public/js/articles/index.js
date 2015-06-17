@@ -68,7 +68,7 @@ function init(){
  function myAutocomplete(data) {
 
  	init();
-
+    data = data.trim();
 	if (data==''){ 
 
 		$("#autocompletemenu").css({
