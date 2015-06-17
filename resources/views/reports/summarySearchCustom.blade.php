@@ -8,8 +8,8 @@
             </select>
         </div>
         <div class="col-xs-6 col-sm-5 col-md-5 col-lg-5" style="display:none;" id="customedate">
-            <label class="col-xs-3 col-md-2">From</label><input  class="col-xs-3 col-md-4" type="text" id="startdate">
-            <label class="col-xs-2 col-md-2">To</label><input class="col-xs-3 col-md-4" type="text" id="enddate">
+            <label class="col-xs-3 col-md-2">From</label><input  class="col-xs-3 col-md-4" type="text" id="startdate" value={{$startdate}}>
+            <label class="col-xs-2 col-md-2">To</label><input class="col-xs-3 col-md-4" type="text" id="enddate" value={{$enddate}}>
         </div>
 		<div class=" col-xs-4 col-sm-4 col-md-4 col-lg-4" style="float:left;">
             <button class="btn navbtn txtnav" onclick="search()"><span class="glyphicon glyphicon-search"></span></button>
