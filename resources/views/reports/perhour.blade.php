@@ -11,10 +11,18 @@
 <br>
 <div class="row">
 
-<form  class="col-xs-9 col-sm-10 col-md-9 col-lg-6" onsubmit="getReport(); return false;" >
-  From : <input type="text" id="date1" value="<?php echo date('Y-m-d H:i:s', strtotime('-10day')) ?>">
-  To : <input type="text" id="date2" value="<?php echo date('Y-m-d H:i:s', time()) ?>">
-  <button class="btn navbtn txtnav hv" >Get Report</button>
+<form  class="form-inline" onsubmit="getReport(); return false;" >
+  <div class="form-group col-md-3">
+    <label>From</label>
+    <input type="text" class="form-control" id="date1" value="<?php echo date('Y-m-d H:i:s', strtotime('-10day')) ?>">
+  </div>
+  <div class="form-group col-md-3">
+    <label>To</label>
+    <input type="text" class="form-control" id="date2" value="<?php echo date('Y-m-d H:i:s', time()) ?>">
+  </div>
+  <div class="form-group col-md-3">
+    <button class="btn navbtn txtnav hv" >Get Report</button>
+  </div>
 </form >
 </div>
 <br><br><br>

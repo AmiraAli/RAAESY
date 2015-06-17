@@ -13,22 +13,23 @@
 <br>
         <div class="container-fluid">
         <div class="row">
-         <div class="col-md-10 col-md-offset-1">
-            <div class="panel ">
-                <div class="panel-heading navbtn txtnav"> <strong>Tickets per day</strong> </div>
+         <div class="col-md-12">
+       
+                <!-- <div class="panel-heading navbtn txtnav"> <strong>Tickets per day</strong> </div> -->
                 <div class="panel-body">
+                    <form class="form-inline">
                         <div class="form-group col-md-3">
-                            <label class="col-md-2 control-label">From</label>
+                            <label>From</label>
                             <input type="text" name="from" class="form-control" value="<?php echo date('Y-m-d', strtotime('-2 day')) ?>" id="from" />
                         </div>
 
                         <div class="form-group col-md-3">
-                            <label class="col-md-2 control-label">To</label>
+                            <label>To</label>
                             <input type="text" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('+0 day')) ?>" id="to"/>
                         </div>
                         
-                        <div class="col-md-3">
-                            <label class="col-md-6 control-label">Group by</label>
+                        <div class="form-group col-md-3">
+                            <label>Group by</label>
                             <select class="form-control" name="groupby" id="groupby">                      
                                 <option value="day" >Day</option>
                                 <option value="month" >Month</option>
@@ -37,15 +38,15 @@
                         </div>
  
                         <div class="form-group col-md-3">
-                        <label class="col-md-6 control-label"></label>
-                        <label class="col-md-6 control-label"></label> <br> &ensp;&ensp;&ensp;&ensp;
+                            
                             <button type="submit" class="btn navbtn txtnav hv" onclick="prepareTickets ()" >Go</button>
 
                         </div>
-                </div>
+                    </form>
                 </div>
             </div>
             </div>
+            <br>
     <div  class="row divchart" id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
     </div>
 
