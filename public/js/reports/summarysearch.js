@@ -36,6 +36,7 @@ function search () {
 				      success: function(data){
 				       $("#container").html(data)
 				       document.getElementById("customedate").style.display="block";
+
 				        paginateWithAjax();
 
 				      },
