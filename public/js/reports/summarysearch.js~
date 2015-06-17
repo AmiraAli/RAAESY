@@ -18,6 +18,8 @@ function search () {
 			      success: function(data){
 
 			       $("#container").html(data);
+			      paginateWithAjax();
+
 			      },
 				  error: function(jqXHR, textStatus, errorThrown) {
 					alert(errorThrown);
@@ -34,6 +36,9 @@ function search () {
 				      success: function(data){
 				       $("#container").html(data)
 				       document.getElementById("customedate").style.display="block";
+if (startdate>enddate)	     document.getElementById("datainfo").innerHTML="<h2 class='navtxt'> Please start date must be greater than end date!</h2>";
+				        paginateWithAjax();
+
 				      },
 					  error: function(jqXHR, textStatus, errorThrown) {
 						alert(errorThrown);
