@@ -1,6 +1,11 @@
+<<!DOCTYPE html>
+<html>
+<head>
+<title>RSB</title></head>
+
 <link href='/bootstrab/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="/css/login.css">
-
+<body>
 <img src="/images/helpdesklogin.jpg" id="bg" alt="" >
 
 
@@ -53,6 +58,8 @@
 			</div>
 	</div>
 </div>
+</body>
+</html>
 
 	<script src="/bootstrab/js/bootstrap.min.js"></script>
 
