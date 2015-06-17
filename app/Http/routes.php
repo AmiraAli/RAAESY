@@ -66,6 +66,7 @@ Route::get('articles/csvArticleReport', 'ArticlesController@csvArticleReport');
 
 
 Route::post('tickets/searchTicket', 'TicketsController@searchTicket');
+Route::get('tickets/closeticketemail/{id}', 'TicketsController@closeticketemail');
 Route::post('tickets/sortTicket', 'TicketsController@sortTicket');
 Route::post('tickets/relatedTag', 'TicketsController@relatedTag');
 Route::resource('/tickets','TicketsController');

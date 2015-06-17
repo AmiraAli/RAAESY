@@ -18,8 +18,7 @@ $.ajax({
 
     success: function(result) {
 result=JSON.parse(result);
-	var currentdate = new Date(); 
-	var currentDate=currentdate.getFullYear()+"-"+currentdate.getMonth()+"-"+currentdate.getDay()+" "+currentdate.getHours()+":" + 		currentdate.getMinutes() + ":"+ currentdate.getSeconds();
+	
 	
 	if($('#'+ticket_id).text()=='close'){
 		$('#'+ticket_id).text('reopen');
@@ -56,7 +55,7 @@ var csrf=$("#hidden").val();
 		var commentDiv1=document.createElement('div');
 		  commentDiv1.setAttribute("class","panel-body ");
 
-		var textDate=document.createTextNode(currentDate);
+		var textDate=document.createTextNode(result['created_at']);
 		headDiv.appendChild(head);
 		commentDiv1.appendChild(text);
 		commentDiv1.appendChild(newLine);
@@ -101,7 +100,7 @@ select.appendChild(option);
 }
 document.getElementById(elm).style.display = 'none';
 var position=document.getElementById(ticket_id);
-var parentElm=document.getElementById("ass");
+var parentElm=document.getElementById("ass2");
 var spac=document.createElement("br");
 spac.setAttribute('class','sp');
 var spac2=document.createElement("br");
@@ -171,8 +170,7 @@ $.ajax({
 
     success: function(result) {
 	result=JSON.parse(result);
-	var currentdate = new Date(); 
-	var currentDate=currentdate.getFullYear()+"-"+currentdate.getMonth()+"-"+currentdate.getDay()+" "+currentdate.getHours()+":" + 		currentdate.getMinutes() + ":"+ currentdate.getSeconds();
+	
 	
 
 	var leftDiv=document.querySelector("#comments");
@@ -187,7 +185,7 @@ $.ajax({
 
 	 commentDiv1.setAttribute("class","panel-body ");
 	var text=document.createTextNode(result['body']);
-	var textDate=document.createTextNode(currentDate);
+	var textDate=document.createTextNode(result['updated_at']);
 	headDiv.appendChild(head);
 	commentDiv1.appendChild(text);
 	commentDiv1.appendChild(newLine);

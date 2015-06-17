@@ -26,7 +26,9 @@ length=array.length;
 
         if(data.getNumberOfRows() == 0){
 
-               $("#datainfo").html("<h2 class='navtxt'> Sorry, No tickets within this range of date!</h2>");
+              // $("#datainfo").html("<h2 class='navtxt'> Sorry, No tickets within this range of date!</h2>");
+	     document.getElementById("datainfo").innerHTML="<h2 class='navtxt'> Sorry, No tickets within this range of date!</h2>";
+document.getElementById("customedate").style.display="block";
 
           }else{
                var options = {

@@ -239,22 +239,22 @@ class TicketsController extends Controller {
 
 			// check if assigned to technical will send mail to him
 
-			// if($request->get('tech')){
+			 if($request->get('tech')){
 
-			// 	$ticket_array=json_decode(json_encode($ticket), true);
-			// 	$ticket_array['verification_code']  = $ticket->verification_code;
-			// 	$ticket_array['tech_fname']=$ticket->tech->fname;
-			// 	$ticket_array['tech_lname']=$ticket->tech->lname;
-			// 	$ticket_array['tech_email']=$ticket->tech->email;
-			// 	$ticket_array['subj_name']=$ticket->subject->name;
+				$ticket_array=json_decode(json_encode($ticket), true);
+			 	$ticket_array['verification_code']  = $ticket->verification_code;
+			 	$ticket_array['tech_fname']=$ticket->tech->fname;
+			 	$ticket_array['tech_lname']=$ticket->tech->lname;
+			 	$ticket_array['tech_email']=$ticket->tech->email;
+			 	$ticket_array['subj_name']=$ticket->subject->name;
 
-			// 	Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
-   //          	{
-	  //               $message->from('yoyo80884@gmail.com', "RAAESY");
-	  //               $message->subject("RAAESY");
-	  //               $message->to($ticket_array['tech_email']);
-   //          	});
-			// }
+			 	Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
+             	{
+	                 $message->from('yoyo80884@gmail.com', "RSB");
+	                 $message->subject("RSB");
+	                 $message->to($ticket_array['tech_email']);
+             	});
+			 }
 
 		}else{
 			$ticket->tech_id=NULL;
@@ -408,22 +408,22 @@ class TicketsController extends Controller {
 
 			// check if assigned to another technical will send mail to him
 
-			// if($request->get('tech') != $prev_tech_id){
+			 if($request->get('tech') != $prev_tech_id){
 
-			// 	$ticket_array=json_decode(json_encode($ticket), true);
-			// 	$ticket_array['verification_code']  = $ticket->verification_code;
-			// 	$ticket_array['tech_fname']=$ticket->tech->fname;
-			// 	$ticket_array['tech_lname']=$ticket->tech->lname;
-			// 	$ticket_array['tech_email']=$ticket->tech->email;
-			// 	$ticket_array['subj_name']=$ticket->subject->name;
+			 	$ticket_array=json_decode(json_encode($ticket), true);
+			 	$ticket_array['verification_code']  = $ticket->verification_code;
+			 	$ticket_array['tech_fname']=$ticket->tech->fname;
+			 	$ticket_array['tech_lname']=$ticket->tech->lname;
+			 	$ticket_array['tech_email']=$ticket->tech->email;
+			 	$ticket_array['subj_name']=$ticket->subject->name;
 
-			// 	Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
-   //          	{
-	  //               $message->from('yoyo80884@gmail.com', "RAAESY");
-	  //               $message->subject("RAAESY");
-	  //               $message->to($ticket_array['tech_email']);
-   //          	});
-			// }
+			 	Mail::send('emails.techassigned', $ticket_array, function($message) use ($ticket_array)
+             	{
+	                 $message->from('yoyo80884@gmail.com', "RSB");
+	                 $message->subject("RSB");
+	                 $message->to($ticket_array['tech_email']);
+             	});
+			 }
 
 		}else{
 			$ticket->tech_id=NULL;
@@ -1280,4 +1280,43 @@ $subject=array();
 			return view('tickets.categories',compact('categories', 'tickets'));	
 		}
 	}
+public function closeticketemail($id){
+
+
+
+		$ticketStatus=Ticket::find($id);
+		$ticketStatus->status="close";
+		$ticketStatus->save();
+
+
+		$ticketStatuses=new TicketStatus;
+		$ticketStatuses->value="close";
+		$ticketStatuses->ticket_id=$id;
+		$ticketStatuses->save();
+	
+		
+
+		// save notification
+		$readonly=0;
+		$body="this ticket has be closed";
+		$notify= new Comment;
+		$notify->body=$body;
+		$notify->readonly=intval($readonly);
+		$notify->ticket_id=intval($id);
+		$notify->user_id=Auth::user()->id;
+		$notify->save();
+		$data['date']=$ticketStatus->updated_at;
+		$data['email']=$ticketStatus->user->email;
+		$data['subject']=$ticketStatus->subject->name;
+		$data['user']=$ticketStatus->user->fname." ".$ticketStatus->user->lname;
+		Mail::send('emails.closeticket', $data, function($message) use ($data)
+            {
+                $message->from('yoyo80884@gmail.com', "RSB");
+                $message->subject("Welcome to RSB");
+                $message->to($data['email']);
+            });
+
+
+		return redirect('/tickets');
+}
 }
