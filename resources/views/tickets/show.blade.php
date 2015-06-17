@@ -28,7 +28,7 @@
 <div class="allBtn col-md-7 ">
 			@if($ticket)
 				@if($ticket->status=='open')
-				   <button name="close" id="{{$ticket->id}}" class="btn btn-default" onclick="Status({{$ticket->id}})" style="float:right !important;">close</button>
+				   <a href="/tickets/closeticketemail/{{$ticket->id}}" name="close" id="{{$ticket->id}}" class="btn btn-default"  style="float:right !important;">close</a>
 				@endif
 				@if($ticket->status=='close')
 				   <button name="open" id="{{$ticket->id}}" class="btn btn-default" onclick="Status({{$ticket->id}})"  style="float:right !important;" >reopen</button>

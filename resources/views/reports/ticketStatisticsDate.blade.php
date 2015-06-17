@@ -1,8 +1,8 @@
 <br>
 <div class="raw">
 		<div class="col-xs-7 col-sm-7 col-md-5 col-lg-5"  id="customedate">
-			{{trans('problemmangement.from')}}:<input type="text" id="startdate">
-			{{trans('problemmangement.to')}}:<input type="text" id="enddate">
+			{{trans('problemmangement.from')}}:<input type="text" id="startdate" value={{$startdate}}>
+			{{trans('problemmangement.to')}}:<input type="text" id="enddate" value={{$enddate}}>
 		</div>
 
 		<div  class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="float:left;">

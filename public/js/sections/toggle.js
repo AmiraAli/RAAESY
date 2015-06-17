@@ -126,6 +126,7 @@ function createCategory(secId , secName ){
                   $("#_"+sectionid).show();
                   $('.'+sectionid+'removeButton').show();
                   $(".disBut").removeAttr('disabled');
+                  $("#e"+sectionid).html("");
                   
             } 
         },
