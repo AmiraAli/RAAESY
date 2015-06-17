@@ -10,7 +10,7 @@
 
       &ensp;&ensp; &ensp;
 
-    	<button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" onclick="deleteCategory( {{ $category->id }}+'category' )"><span class="glyphicon glyphicon-trash"></span></button>			            	
+    	<button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" onclick="deleteCategory( {{ $category->id }}+'category','{{$category->section_id}}')"><span class="glyphicon glyphicon-trash"></span></button>			            	
 	  		</div>
 	 	</td>			
    
