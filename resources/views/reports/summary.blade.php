@@ -9,16 +9,24 @@
 <div class="container" id="container">
 <br>
 	<div class="row">
-		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+		<div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
 			<select class="form-control" id="date" onchange="custom()">
 				<option value="month">Last month</option>
 		  		<option value="week">Last week</option>
 		  		<option value="custom">Custom</option>
 			</select>
 		</div>
-		<div class="col-xs-6 col-sm-5 col-md-5 col-lg-5" style="display:none;" id="customedate">
-			<label class="col-xs-3 col-md-2">From</label><input  class="col-xs-3 col-md-4" type="text" id="startdate">
-			<label class="col-xs-2 col-md-2">To</label><input class="col-xs-3 col-md-4" type="text" id="enddate">
+		<div class="col-xs-6 col-sm-5 col-md-6 col-lg-6" style="display:none;" id="customedate">
+			<form class="form-inline">
+			<div class="form-group">
+				<label>From</label>
+				<input  class="form-control" type="text" id="startdate">
+			</div>
+			<div class="form-group">
+				<label>To</label>
+				<input class="form-control" type="text" id="enddate">
+			</div>
+			</form>
 		</div>
 		<div class=" col-xs-4 col-sm-4 col-md-4 col-lg-4" style="float:left;">
 			<button class="btn navbtn txtnav hv" onclick="search()"><span class="glyphicon glyphicon-search"></span></button>

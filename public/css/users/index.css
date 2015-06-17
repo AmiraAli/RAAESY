@@ -50,11 +50,9 @@ li {
    	border-color: rgba(36,58,117,1);
     padding: 10px;
 }
-#toggle{
-	float: right;
-}
+
 #advancedSearchDiv{
-	float: right;
+	margin-right: 10px;
 }
 
 
