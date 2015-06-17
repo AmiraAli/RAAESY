@@ -42,6 +42,47 @@ class TicketsController extends Controller {
 		$this->middleware('auth');
 	}
 
+	/**
+	 * Authorize admin
+	 * @param  integer $user_id
+	 * @return Response
+	 */
+	private function adminAuth()
+	{		
+		if (Auth::User()->type !="admin"){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Authorize user can view the page
+	 *
+	 * @return Response
+	 */
+	private function userAuth($id)
+	{		
+		if (Auth::User()->id !=$id ){
+			return false;
+		}
+		return true;
+	}
+
+
+	private function ticketValidate($ticket){
+
+		// check if id is valid
+		if (empty($ticket)){
+			return view('errors.404');
+		}
+
+		//authorization
+		$userId = $ticket->user_id;
+		$techId = $ticket->tech_id;
+		if (!$this->adminAuth() && (!$this->userAuth($userId) || !$this->userAuth($techId))){
+			return view('errors.404');
+		}
+	}
 
 	/**
 	 * Notify when ticket is spam/delete (called by AJAX).
@@ -74,10 +115,9 @@ class TicketsController extends Controller {
 		if(Auth::user()->type === "admin"){
 			//all tickets except spam tickets
 			$ticketPag = Ticket::where('is_spam', "0")->paginate(5);
-			$allcount=Ticket::where('is_spam', "0")->count();
-
 			
 
+			$allcount=Ticket::where('is_spam', "0")->count();
 
 			//sort array
 			$tickets= $this->sortTicket ( $ticketPag ,"subject" ,"DESC");
@@ -111,11 +151,7 @@ class TicketsController extends Controller {
 			return view('tickets.index',compact('tickets','ticketPag' , 'unassigned','open','closed','expired','spam','tags','technicals','unanswered','categories','allcount'));
 		}
 		else if(Auth::user()->type === "tech"){
-			$ticketPag = Ticket::where('is_spam', "0")->where('tech_id', $request->user()->id);
-			$allcount=$ticketPag->count();
-			$ticketPag = $ticketPag->paginate(5);
-
-
+			$ticketPag = Ticket::where('is_spam', "0")->where('tech_id', $request->user()->id)->paginate(5);
 			$tickets= $this->sortTicket ( $ticketPag ,"subject" ,"DESC");
 
 
@@ -129,12 +165,10 @@ class TicketsController extends Controller {
 			$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('tech_id', $request->user()->id)->where('is_spam', "0")->get();
 			$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and tech_id = ? group by category_id", array($request->user()->id));
 
-			return view('tickets.index',compact('tickets' , 'ticketPag','open','closed','tags','categories','allcount'));
+			return view('tickets.index',compact('tickets' , 'ticketPag','open','closed','tags','categories'));
 		}
 		else if(Auth::user()->type === "regular"){
-			$ticketPag = Ticket::where('is_spam', "0")->where('user_id', $request->user()->id);
-			$allcount=$ticketPag->count();
-			$ticketPag = $ticketPag->paginate(5);
+			$ticketPag = Ticket::where('is_spam', "0")->where('user_id', $request->user()->id)->paginate(5);
 			
 			$tickets= $this->sortTicket ( $ticketPag ,"subject" ,"DESC");
 			
@@ -150,7 +184,7 @@ class TicketsController extends Controller {
 			$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('user_id', $request->user()->id)->where('is_spam', "0")->get();
 			$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and user_id = ? group by category_id", array($request->user()->id));
 
-			return view('tickets.index',compact('tickets' , 'ticketPag' ,'open','closed','tags','categories' , 'allcount'));
+			return view('tickets.index',compact('tickets' , 'ticketPag' ,'open','closed','tags','categories'));
 		}
 	}
 
@@ -322,7 +356,11 @@ class TicketsController extends Controller {
 	 */
 	public function edit($id)
 	{
+
 		$ticket=Ticket::find($id);
+		
+		// validate ticket
+		$this->ticketValidate($ticket);
 		$subjects=Subject::all();
 		$categories=Category::all();
 		$sections=Section::all();
@@ -562,8 +600,6 @@ class TicketsController extends Controller {
 	**/
 	public function sortTicket( $tickt , $sortBy ,$sortType )
 	{
-
-		
 		if(is_object($tickt) &&  ! $tickt->isEmpty())
 		{		
     		$tickets = array();
@@ -573,13 +609,11 @@ class TicketsController extends Controller {
 	            $tickets[$key] = $value;
             
 	        }
-
 	        foreach ($tickets as $key => $row)
 			{
-
 				if ($sortBy == "subject") 
-				 {	
-				 	$sort[$key] = $row['subject']['name'];
+				{		
+					$sort[$key] = $row['subject']['name'];
 					$sort = array_map('strtolower', $sort);
 				}
 				else 
@@ -612,7 +646,6 @@ class TicketsController extends Controller {
 					array_multisort($sort, SORT_DESC, $tickets);
 				}
 			}
-
 			return $tickets; 
 		}	
 	   
@@ -937,7 +970,8 @@ $subject=array();
 				$tickets = $tickets->where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
             		->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null or sum(comments.readonly) = 0 )  THEN 0  ELSE 1 END as c')
                     ->groupBy('tickets.id')
-                    ->HAVING("c", "=" , '0' );
+                    ->HAVING("c", "=" , '0' )->get();
+
                     $unansweredFlag = true;
 
 			}
@@ -965,19 +999,15 @@ $subject=array();
 			$tickets= $this->AdvancedSearch ($tickets , $search);
 
 			if ($unansweredFlag){
-
-				//in case of unasnswerd tickets, don't use pagination
-				$ticketPag = $tickets->get();
-
+				//$tickets = array_slice ( $tickets , 5 );
+				$ticketPag = new Paginator($tickets, 5, $request->input("page"),['path' =>'/tickets/searchTicket' ]);
 			}else{
 				$ticketPag = $tickets->paginate(5);
-			}	
+			}
 
-			$tickets= $this->sortTicket ( $ticketPag , $sortBy , $sortType);
 			
-
-
-			return view("tickets.searchTicket",compact('tickets', 'ticketPag', 'unansweredFlag' )); 
+			$tickets= $this->sortTicket ( $ticketPag , $sortBy , $sortType);
+			return view("tickets.searchTicket",compact('tickets', 'ticketPag')); 
 		}
 	}
 	
