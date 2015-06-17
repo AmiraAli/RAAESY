@@ -1,6 +1,10 @@
+<html>
+<head>
 <link href='/bootstrab/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="/css/register.css">
-
+<title>RSB</title>
+</head>
+<body>
 <img src="/images/register8.jpg" id="bg" alt="">
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 
@@ -100,6 +104,8 @@
 		</div>
 	</div>
 </div>
+</body>
+</html>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="/bootstrab/js/bootstrap.min.js"></script>
  	<script src="/js/auth/register.js"></script>
