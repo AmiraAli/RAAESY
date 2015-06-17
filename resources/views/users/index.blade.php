@@ -80,7 +80,7 @@
 							<div class="form-group">
 								<label class="col-md-3 control-label navtxt">E-Mail</label>
 								<div class="col-md-6">
-									<input type="email" id="email" class="form-control" name="email" value="{{ old('email') }}">
+									<input type="text" id="email" class="form-control" name="email" value="{{ old('email') }}">
 								</div>
 							</div>
 
@@ -105,7 +105,7 @@
 
 									<button type="submit" onclick="search()" class="btn navbtn txtnav">Search</button>
 								
-									<button type="reset" class="btn navbtn txtnav">Reset</button>
+									<button type="reset" onclick="resetForm()" class="btn navbtn txtnav">Reset</button>
 								</div>
 							</div>
 						</form>	
@@ -113,7 +113,6 @@
 				</div>
 			</div>
 		</div>
-
 
 
 
@@ -176,8 +175,9 @@
 					@endforeach
 				</tbody>
 			</table>
+			<center><?php echo $users->render(); ?><center>
+
 </div>
-			<?php echo $users->render(); ?>
 		</div>
 
 
