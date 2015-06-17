@@ -9,7 +9,7 @@
 <div class="container" id="container">
 <br>
 	<div class="row">
-		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+		<div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
 			<select class="form-control" id="date" onchange="custom()">
 				<option value="month">Last month</option>
 		  		<option value="week">Last week</option>
