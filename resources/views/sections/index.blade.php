@@ -12,7 +12,7 @@
 <div  id="con" class="col-md-12" >
 		
 	@foreach ($sections as $section)
-	<table class="table table-hover formed">	
+	<table class="table table-hover formed" id="{{$section->id}},sec">	
      	<tr id="{{$section->id}},sectionstest" class="info">
 	          <td  id="{{ $section->id }}"> 
 	          	<a href="#" style="text-decoration:none;" id="{{ $section->name }}" class="glyphicon glyphicon-triangle-right  navtxt hideEdit{{$section->id}}" onclick="tog({{ $section->id }},'{{$section->name}}');">
@@ -95,7 +95,7 @@
 					allChild[i].innerHTML="";
 				}
 					//$("#"+id).css("margin-bottom", "0"); 
-				 document.getElementById(id).remove(); 
+				 document.getElementById(ids+",sec").remove(); 
 				 document.getElementById("table_show"+ids).remove();
 				 				  
 				},
