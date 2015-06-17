@@ -878,6 +878,12 @@ $subject=array();
 
 	public function searchTicket(Request $request){
 		if($request->ajax()){ 
+
+			/*flag used to change pagination type 
+			 * when using query with group by
+			 */
+			$unansweredFlag = false;
+
 			$sortType=$request->input('sortType') ;
 			$sortBy=$request->input('sortBy');
 			$tag=$request->input('tagId');
@@ -919,7 +925,10 @@ $subject=array();
 				$tickets = $tickets->where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
             		->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null or sum(comments.readonly) = 0 )  THEN 0  ELSE 1 END as c')
                     ->groupBy('tickets.id')
-                    ->HAVING("c", "=" , '0' );
+                    ->HAVING("c", "=" , '0' )->get();
+
+                    $unansweredFlag = true;
+
 			}
 			if($request->input('cat')){
 				if($request->input('cat') != "all"){
@@ -931,8 +940,6 @@ $subject=array();
 
 				$categories = Category::select("id")->where("section_id", $request->input('sec'))->get();
 
-				// $categories = json_decode(json_encode($categories), TRUE);
-				// file_put_contents("/home/samah/text.html", $categories[0]);
 				$i = 0;
 				foreach ($categories as $key => $value) {
 					$arr[$i] = $value->id;
@@ -946,9 +953,12 @@ $subject=array();
 	        }
 			$tickets= $this->AdvancedSearch ($tickets , $search);
 
-
-			//find by related tags		
-	        $ticketPag = $tickets->paginate(5);
+			if ($unansweredFlag){
+				//$tickets = array_slice ( $tickets , 5 );
+				$ticketPag = new Paginator($tickets, 5, $request->input("page"),['path' =>'/tickets/searchTicket' ]);
+			}else{
+				$ticketPag = $tickets->paginate(5);
+			}
 
 			
 			$tickets= $this->sortTicket ( $ticketPag , $sortBy , $sortType);
