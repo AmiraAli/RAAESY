@@ -27,17 +27,19 @@
                             <input type="text" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('+0 day')) ?>" id="to"/>
                         </div>
                         
-                        <div class="col-md-4">
-                            <label class="col-md-4 control-label">Group by</label>
+                        <div class="col-md-3">
+                            <label class="col-md-6 control-label">Group by</label>
                             <select class="form-control" name="groupby" id="groupby">                      
                                 <option value="day" >Day</option>
                                 <option value="month" >Month</option>
                                 <option value="week" >Week</option>
                             </select>
                         </div>
-
-                        <div class="form-group col-md-2">
-                            <button type="submit" class="btn navbtn txtnav" onclick="prepareTickets ()">Go</button>
+ 
+                        <div class="form-group col-md-3">
+                        <label class="col-md-6 control-label"></label>
+                        <label class="col-md-6 control-label"></label> <br> &ensp;&ensp;&ensp;&ensp;
+                            <button type="submit" class="btn navbtn txtnav hv" onclick="prepareTickets ()" >Go</button>
 
                         </div>
                 </div>

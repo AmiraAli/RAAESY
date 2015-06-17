@@ -4,10 +4,12 @@
 			{{trans('problemmangement.from')}}:<input type="text" id="startdate">
 			{{trans('problemmangement.to')}}:<input type="text" id="enddate">
 		</div>
+
 		<div  class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="float:left;">
-			<button class="btn navbtn txtnav" onclick="searchDate()"><span class="glyphicon glyphicon-search"></span></button>
+			<button class="btn navbtn txtnav" onclick="searchDate()" style=" color: #ffffff !important;"><span class="glyphicon glyphicon-search"></span></button>
 			<!--csv report-->
 		 <a  id="csv" href="/reports/problemMangementCSV">
+
 		    <img src="/images/CSV.png" style="width:40px"></img>
 		</a>
 		</div> 

@@ -5,6 +5,7 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="/js/text_editor/jquery-te-1.4.0.min.js" charset="utf-8"></script>
 <link type="text/css" rel="stylesheet" href="/css/text_editor/jquery-te-1.4.0.css">
+<link href="/css/articles/edit.css" rel="stylesheet">
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" type="text/css" href="/jquery-ui-1.11.4.custom/jquery-ui.css">
@@ -73,9 +74,10 @@
       {!! Form::label('IS SHOW', 'For Technical Only',['class'=> ' navtxt']) !!}
       {!! Form::checkbox('isshow', 'value', old('isshow'),['class'=>'form-control']) !!}
     </div >
+    <br> <br>
 <div class="row">
             <div class="col-md-6 col-md-offset-4">
-              <button onclick="submit_tags ()" class="btn navbtn txtnav">Submit</button>
+              <button onclick="submit_tags ()" class="btn navbtn txtnav hv">Submit</button>
             </div>
   </div>
 

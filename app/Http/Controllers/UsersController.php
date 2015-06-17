@@ -62,7 +62,7 @@ class UsersController extends Controller {
 			return view('errors.404');
 		}
 
-		$users=User::where('isspam', 0)->paginate(10);
+		$users=User::where('isspam', 0)->paginate(5);
 		return view('users.index',compact('users'));
 	}
 
@@ -118,7 +118,7 @@ class UsersController extends Controller {
 
 			//set validation array with arabic field names
 			$arr['الاسم الأول'] = Request::get('fname');
-			$arr['الاسم الثانى'] = Request::get('lname');
+			$arr['الاسم الأخير'] = Request::get('lname');
 			$arr['البريد الإلكترونى'] =  Request::get('email');
 			$arr['كلمة المرور'] = Request::get('password');
 			$arr['رقم الهاتف'] = Request::get('phone');
@@ -451,26 +451,26 @@ class UsersController extends Controller {
 		
 		if ($fname != null) {
 			
-			$users = $users->where('fname' , $fname);
+			$users = $users->where('fname' ,'like' ,  "%$fname%");
 		}
 		if ($lname != null) {
 			
-			$users = $users->where('lname' , $lname);
+			$users = $users->where('lname' , 'like' , "%$lname%");
 		}
 		if ($email != null) {
 			
-			$users = $users->where('email' , $email);
+			$users = $users->where('email' , 'like' , "%$email%");
 		}
 		if ($phone != null) {
 			
-			$users = $users->where('phone' , $phone);
+			$users = $users->where('phone' , 'like' , "%$phone%");
 		}
 		if ($location != null) {
 			
-			$users = $users->where('location', $location);
+			$users = $users->where('location', 'like' , "%$location%" );
 		}
 
-		$users = $users->paginate(10);
+		$users = $users->paginate(5);
 
 		return view('users.ajaxsearch',compact('users', 'showType' ));
 

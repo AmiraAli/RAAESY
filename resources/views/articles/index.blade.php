@@ -12,13 +12,17 @@
     <div class="row">
         <div id="search">
             <div class="form-group">
-                <label class="col-md-3 control-label navtxt"><b>Quick Search</b></label>
-                <div class="col-md-6"> 
-                    <input type="text" class="form-control glyphicon glyphicon-search parent" placeholder="subject...." onkeyup="myAutocomplete(this.value)" name="term" id="quickSearch"  autocomplete="on">
-
+                <div class="col-md-8 serchBtn">
+                    <div class="input-group"> 
+                        <input type="text" class="form-control parent" placeholder="subject...." onkeyup="myAutocomplete(this.value)" name="term" id="quickSearch"  autocomplete="on">
+                        <span class="input-group-btn">
+                                <button class="btn navbtn txtnav hv" type="button"><span class="glyphicon glyphicon-search hv"></span></button>
+                            </span>
+                    </div>
                     <div id="autocompletemenu" style="display: none;">
                        <ul id="autocompleteul"></ul>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -28,7 +32,7 @@
             <a id="csv" href="articles/csvArticleReport">
                 <img src="/images/CSV.png" style="width:40px"></img>
             </a>
-            <a href="{{url('/articles/create')}}" class="btn navbtn txtnav">Create Article</a>
+            <a href="{{url('/articles/create')}}" class="btn navbtn txtnav hv">Create Article</a>
         </div>
     </div>
 
@@ -79,7 +83,7 @@
                 
                 <div class="form-group col-md-3">
 
-                    <button class="btn navbtn txtnav" onclick="show('')">Search</button>
+                    <button class="btn navbtn txtnav hv" onclick="show('')">Search</button>
 
                 </div>
             </div>

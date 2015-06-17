@@ -41,7 +41,7 @@ function SaveCatEdit(elm,id,oldname){
          $.ajax({
                 url: '/categories/'+id,
                 type: 'PUT',
-		            data:{name:name},
+		            data:{name:name.trim()},
                 success: function(result) {
                     if(result=="NOT DONE"){
 			$("."+id+"errorcat").append("<div class='catEditErr err'>Category name already exists!</div>");

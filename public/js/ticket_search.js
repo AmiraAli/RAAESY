@@ -4,8 +4,38 @@ window.onload = function() {
                     'X-XSRF-Token': $('meta[name="_token"]').attr('content')
                 }
             });
+            //convert pagination to AJAX    
+			paginateWithAjax();
+
                     
             };
+
+
+//convert pagination to AJAX
+function paginateWithAjax(){
+  
+    $('.pagination a').on('click', function(e){
+        e.preventDefault();
+
+        var isAdmin = $("#auth").val();
+        //alert(isAdmin);
+        var url = $(this).attr('href');
+        paginate(isAdmin , url);
+    });
+
+     $('.pager a').on('click', function(e){
+        e.preventDefault();
+
+        var isAdmin = $("#auth").val();
+        //alert(isAdmin);
+        var url = $(this).attr('href');
+        paginate(isAdmin , url);
+    });
+}
+
+
+
+
             
 $( "#selectFields" ).click(function() {
   $( '#check' ).slideToggle( "fast" );
@@ -62,7 +92,7 @@ function AdvancedSearch(){
 	var options = TechnicalSelect.options;
 	searchData["tech"] = options[options.selectedIndex].id.split(",")[0];
 
-	searchAjax(searchData);
+	searchAjax(searchData, '');
 }
 
 function tag() 
@@ -104,6 +134,9 @@ function tag()
 	    	data: searchData,
 		    success: function(result) {
 				 $('#table_show').html(result);
+
+				 paginateWithAjax();
+				 
 				 $('.checkbox1').each(function () {
 					 if(!$(this).is(":checked")) 
 				        {
@@ -159,6 +192,8 @@ function sortBy(is_admin)
 	    data: searchData,
 	    success: function(result) {
 			 $('#table_show').html(result);
+			 paginateWithAjax();
+
 			 $("#sortType").html("DESC");
 
 			$('.checkbox1').each(function () {
@@ -222,6 +257,7 @@ function sortType(is_admin){
 	    data: searchData,
 	    success: function(result) {
 			 $('#table_show').html(result);
+			 paginateWithAjax();
 
 			 if ($("#sortType").text() == "DESC")
 			 {
@@ -260,14 +296,19 @@ function searchTicket (id , is_admin) {
 
 
 
-function searchAjax(searchData){
+function searchAjax(searchData , url){
+	
+		if (url == ""){
+			url = "/tickets/searchTicket";
+		}
 
 	   $.ajax({
-	    url: '/tickets/searchTicket',
+	    url: url,
 	    type: 'post',
 	    data: searchData,
 	    success: function(result) {
 			 $('#table_show').html(result);
+			 paginateWithAjax();
 
 			 $('.checkbox1').each(function () {
 			 if(!$(this).is(":checked")) 
@@ -323,7 +364,7 @@ function searchByCat (id, is_admin) {
 		searchData["tech"] = options[options.selectedIndex].id.split(",")[0];
 	}
 
-    searchAjax(searchData);	
+    searchAjax(searchData , '');	
 }
 
 function getCategories(key, is_admin){
@@ -369,10 +410,45 @@ function getCategories(key, is_admin){
 			}
 
 
-		    searchAjax(searchData);	
+		    searchAjax(searchData , '');	
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log(errorThrown);
 	    }
 	});
+}
+function paginate(is_admin , url){
+	var name = $("#icons_list").find(".active").attr('id');
+	var searchData = {
+            'name'  : name
+        };
+	if(is_admin == 1){
+	    searchData["tagId"] = $('#tag').val();
+	    searchData["priority"] = $("#ticketPriority").val();
+	    searchData["StartDate"] = document.getElementById("ticketStartDate").value;
+	   	searchData["endDate"] = document.getElementById('ticketEndDate').value;
+	 	var TechnicalSelect =document.getElementById("ticketTechnical");               
+		var options = TechnicalSelect.options;
+		searchData["tech"] = options[options.selectedIndex].id.split(",")[0];
+	}
+	cat_sec = $("#category_list").find(".active").attr('id').split("_");
+
+    if(cat_sec[0] == "cat"){
+    	searchData["cat"] = cat_sec[1];
+    }
+    if(cat_sec[0] == "sec"){
+    	searchData["sec"] = cat_sec[1];
+    }
+     if ($("#sortType").text() == "DESC"){
+	 	searchData["sortType"] = "DESC";
+	 } 
+	 else{
+	 	searchData["sortType"] = "ASC";
+	 }
+
+	 searchData["sortBy"] = $('#sortBy ').val();
+	
+	searchAjax(searchData , url);
+
+
 }

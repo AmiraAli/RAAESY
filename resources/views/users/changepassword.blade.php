@@ -55,7 +55,7 @@
 			
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn navbtn txtnav">
+								<button type="submit" class="btn navbtn txtnav" style="color: #ffffff !important;">
 									Change password
 								</button>
 							</div>

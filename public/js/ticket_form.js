@@ -87,7 +87,7 @@ $(document).ready(function(){
 								var tags=document.getElementById("tags_selected");
 								var span=document.createElement("span");
 								span.innerHTML=tag_value+" ";
-								span.setAttribute("class","btn txtnav navbtn");
+								span.setAttribute("class","btn txtnav navbtn hv");
 								span.setAttribute("id",tag_value);
 								var remove_span=document.createElement("span");
 								remove_span.setAttribute("class","badge");
@@ -200,7 +200,7 @@ function submit_tag () {
 				var tags=document.getElementById("tags_selected");
 				var span=document.createElement("span");
 				span.innerHTML=newtag+" ";
-				span.setAttribute("class","btn txtnav navbtn");
+				span.setAttribute("class","btn txtnav navbtn hv");
 				span.setAttribute("id",newtag);
 				var remove_span=document.createElement("span");
 				remove_span.setAttribute("class","badge");
@@ -208,6 +208,7 @@ function submit_tag () {
 				remove_span.innerHTML="x";
 				span.appendChild(remove_span);
 				tags.appendChild(span);
+				tags_array.push(newtag);
 		      },
 			  error: function(jqXHR, textStatus, errorThrown) {
 				alert("May be tag is already exists or something wrong!!....");

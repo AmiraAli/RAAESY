@@ -13,18 +13,20 @@
 		<div class="panel ">
 			<div class="panel-heading navbtn txtnav"> <strong>Choose Date</strong> </div>
 			<div class="panel-body">
-					<div class="form-group col-md-5">
+					<div class="form-group col-md-4">
 						<label class="col-md-4 control-label">From</label>
 						<input type="text" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('-1 month')) ?>" id="from" />
 					</div>
 
-					<div class="form-group col-md-5">
+					<div class="form-group col-md-4">
 						<label class="col-md-4 control-label">To</label>
 						<input type="text" name="deadline" class="form-control" value="<?php echo date('Y-m-d', strtotime('+0 day')) ?>" id="to"/>
 					</div>
-					<div class="form-group col-md-2">
-					<button type="submit" class="btn navbtn txtnav " onclick="technicianStatisticsSearch ()">Go</button>
-
+					<div class="form-group col-md-4">
+					 <label class="col-md-6 control-label"></label>
+                        <label class="col-md-6 control-label"></label> <br> &ensp;&ensp;&ensp;&ensp;
+					<button type="submit" class="btn navbtn txtnav " onclick="technicianStatisticsSearch ()" style="color: #ffffff !important;">Go</button>
+					&ensp;&ensp;&ensp;&ensp;
 					<a  href="{{ url('/assets/csvimport') }}"><img src="/images/CSV.png" style="width:40px"></a>
 	
 					</div>

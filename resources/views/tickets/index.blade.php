@@ -8,6 +8,17 @@
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 <br>
 <div class="container">
+
+
+<input type="hidden" id="auth" value=
+"<?php
+if($current_user->type=='admin'){
+	echo 1;
+}else{
+	echo 0;
+}
+?>">
+	
 	<div class="col-md-12">
 		<div class="col-md-3">
 		</div>
@@ -71,7 +82,7 @@
 
 					<div class="panel ">
 						<div class="panel-heading navbtn txtnav">
-							<a  class="txtnav  hv" href="#" id="toggle"><strong>AdvancedSearch              
+							<a  class="txtnav  hv" href="#" id="toggle" style="text-decoration:none;" ><strong>AdvancedSearch              
 							<span class="glyphicon glyphicon-search"></span></strong></a>
 						</div>
 
@@ -128,7 +139,7 @@
 
 			<div class="row" id="category_list">
 				<div class="list-group">
-					<a href="#" class="list-group-item active" id="cat_all" onclick="searchByCat('cat_all', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ count($tickets) }}</span><strong>All categories</strong></a>
+					<a href="#" class="list-group-item active" id="cat_all" onclick="searchByCat('cat_all', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ $allcount }}</span><strong>All categories</strong></a>
 					@foreach ($categories as $category)
 						   <a href="#" class="list-group-item" id="cat_{{ $category->category_id }}" onclick="searchByCat('cat_{{ $category->category_id }}', <?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)"><span class="badge">{{ $category->count }}</span>{{ $category->name }}</a>  			         
 				    @endforeach
@@ -148,9 +159,11 @@
 							<div class="col-md-8">
 								<select class="form-control" name="sort" id="sortBy" onchange="sortBy(<?php if(Auth::user()->type === 'admin'){echo 1; }else{ echo 0;} ?>)">						
 								<option value="subject">Subject</option>
-								<option value="deadline">Deadline</option>
 								<option value="created_at">Create Date</option>
-								<option value="priority">Priority</option>							
+								@if(Auth::user()->type != "regular")
+								<option value="deadline">Deadline</option>					
+								<option value="priority">Priority</option>				
+								@endif	
 								</select>
 							</div>
 						</div>
@@ -160,7 +173,7 @@
 
 						<div class="form-group container">
 							<br>
-							<a href="javascript:;" id="selectFields">Select Column To Show</a>
+							<a href="javascript:;" id="selectFields" style="text-decoration:none;">Select Column To Show</a>
 
 							<div style="display:none" id="check">
 								<div class="checkbox">
@@ -187,6 +200,7 @@
 										Created Date
 									</label>
 								</div>
+								@if(Auth::user()->type != "regular")
 								<div class="checkbox">
 								<label>
 									<input type="checkbox"  class="checkbox1" value="deadline" checked >
@@ -199,6 +213,7 @@
 										Priority
 									</label>
 								</div>
+								@endif
 							</div>
 						</div>
 					</div>
@@ -216,7 +231,7 @@
 									<select class="form-control" name="tag" id="tag" onchange="tag()">
 									<option value="">Select Tag</option>	
 									@foreach ($tags as $tag)				
-									<option value="{{$tag->name}}">{{$tag->name}}</option>
+									<option value="{{$tag->id}}">{{$tag->name}}</option>
 										@endforeach					
 									</select>
 								</div>
@@ -235,8 +250,10 @@
 							<td class="status text-center">Status</td>
 							<td class="category text-center">Category</td>
 							<td class="created_at text-center">Creation date</td>
+							@if(Auth::user()->type != "regular")
 							<td class="deadline text-center">Dead line</td>
 							<td class="priority text-center">Periorty</td>
+							@endif
 							<td class="setting text-center">Settings</td>
 						</tr>
 					</thead>
@@ -247,13 +264,15 @@
 						   		<td id="{{ $ticket->id }}status" class="status text-center"> {{ $ticket->status }}</td>
 						   		<td class="category text-center">{{ $ticket->category->name }}</td>
 						   		<td class="created_at text-center">{{ $ticket->created_at }} </td>
-						   		<td class="deadline text-center">{{ $ticket->deadline }} </td>
-						   		@if($ticket->priority == "low")
-						   			<td class="priority text-center"><b class="alert-success ">{{ $ticket->priority }}</b></td>
-						   		@elseif($ticket->priority == "high")
-						   			<td class="priority text-center"><b class="alert-warning">{{ $ticket->priority }}</b></td>
-						   		@else
-							   		<td class="priority text-center"><b class="alert-danger">{{ $ticket->priority }}</b></td>
+						   		@if(Auth::user()->type != "regular")
+							   		<td class="deadline text-center">{{ $ticket->deadline }} </td>
+							   		@if($ticket->priority == "low")
+							   			<td class="priority text-center"><b class="alert-success ">{{ $ticket->priority }}</b></td>
+							   		@elseif($ticket->priority == "high")
+							   			<td class="priority text-center"><b class="alert-warning">{{ $ticket->priority }}</b></td>
+							   		@else
+								   		<td class="priority text-center"><b class="alert-danger">{{ $ticket->priority }}</b></td>
+								   	@endif
 							   	@endif
 							   	<td class="setting text-center">
 							   		@if (Auth::user()->type == "admin")
@@ -303,8 +322,9 @@
 					@endforeach
 				</tbody>
 			</table>
+			{!!  $ticketPag->render() !!}
+
 					<div>
-{!!  $tickets->render() !!}
 </div>
 
 		</div>
@@ -328,14 +348,12 @@
 
 <script >
     $(document).ready(function() {
-
         $('#ticketStartDate').datetimepicker({
             format:'Y-m-d H:00:00',
               });
         $('#ticketEndDate').datetimepicker({
             format:'Y-m-d H:59:59',
               });
-
  });
  </script>
 
