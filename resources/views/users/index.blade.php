@@ -41,7 +41,7 @@
 
 	<div class="row">
         <div class="form-group">
-            <label class="col-md-1 control-label navtxt sho"><b>Show</b></label>
+            <!-- <label class="col-md-1 control-label navtxt sho"><b>Show</b></label> -->
             <div class="col-md-6"> 
                 <label class="sho"><input type="radio" name="user" value="all"   onclick="search()" checked="true"> All</label> |
 				<label class="sho"><input type="radio" name="user" value="regular"   onclick="search()">  Regular Users</label> | 
@@ -53,8 +53,10 @@
         </div>
 
     </div>
-
+    <br>
+    <div class="col-md-12">
 		<div class="col-md-3 col-xs-12" id="advancedSearchDiv">
+		<div id="advancedSearchDiv">
 			<div class="row">
 				<div class="panel">
 					<div class="panel-heading navbtn txtnav">
@@ -66,35 +68,35 @@
 
 							<div class="form-group">
 								<label class="col-md-3 control-label navtxt">FName</label>
-								<div class="col-md-6">
+								<div class="col-md-7">
 									<input type="text" id="fname" class="form-control" name="fname" value="{{ old('email') }}">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-md-3 control-label navtxt">LName</label>
-								<div class="col-md-6">
+								<div class="col-md-7">
 									<input type="text" id="lname" class="form-control" name="lname" value="{{ old('email') }}">
 								</div>
 							</div>
 							
 							<div class="form-group">
 								<label class="col-md-3 control-label navtxt">E-Mail</label>
-								<div class="col-md-6">
+								<div class="col-md-7">
 									<input type="text" id="email" class="form-control" name="email" value="{{ old('email') }}">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-md-3 control-label navtxt">Phone</label>
-								<div class="col-md-6">
+								<div class="col-md-7">
 									<input type="text" id="phone" class="form-control" name="phone">
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="col-md-3 control-label navtxt">Location</label>
-								<div class="col-md-6">
+								<div class="col-md-7">
 									<input type="text" id="location" class="form-control" name="location">
 								</div>
 							</div>
@@ -105,7 +107,7 @@
 								<div class="col-md-3 col-md-offset-2">
 									<button type="submit" onclick="search()" class="btn navbtn txtnav hv">Search</button>
 								</div>
-								<div class="col-md-3">
+								<div class="col-md-3 col-md-offset-1">
 									<button type="reset" class="btn navbtn txtnav hv">Reset</button>
 
 								</div>
@@ -115,9 +117,8 @@
 				</div>
 			</div>
 		</div>
-	
-	</br>
-	<div class="row">
+		</div>
+
 		<div  id="con" class="col-md-8 table-responsive" >
 			<div class="table-responsive">
 			<table class="table table-hover">
