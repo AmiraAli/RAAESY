@@ -22,6 +22,15 @@ function paginateWithAjax(){
         var url = $(this).attr('href');
         paginate(isAdmin , url);
     });
+
+     $('.pager a').on('click', function(e){
+        e.preventDefault();
+
+        var isAdmin = $("#auth").val();
+        //alert(isAdmin);
+        var url = $(this).attr('href');
+        paginate(isAdmin , url);
+    });
 }
 
 
