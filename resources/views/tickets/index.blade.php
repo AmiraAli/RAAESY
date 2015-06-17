@@ -322,7 +322,7 @@ if($current_user->type=='admin'){
 					@endforeach
 				</tbody>
 			</table>
-			{!!  $ticketPag->render() !!}
+			<center>{!!  $ticketPag->render() !!}</center>
 
 					<div>
 </div>
