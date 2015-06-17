@@ -562,6 +562,8 @@ class TicketsController extends Controller {
 	**/
 	public function sortTicket( $tickt , $sortBy ,$sortType )
 	{
+
+		
 		if(is_object($tickt) &&  ! $tickt->isEmpty())
 		{		
     		$tickets = array();
@@ -571,11 +573,13 @@ class TicketsController extends Controller {
 	            $tickets[$key] = $value;
             
 	        }
+
 	        foreach ($tickets as $key => $row)
 			{
+
 				if ($sortBy == "subject") 
-				{		
-					$sort[$key] = $row['subject']['name'];
+				 {	
+				 	$sort[$key] = $row['subject']['name'];
 					$sort = array_map('strtolower', $sort);
 				}
 				else 
@@ -608,6 +612,7 @@ class TicketsController extends Controller {
 					array_multisort($sort, SORT_DESC, $tickets);
 				}
 			}
+
 			return $tickets; 
 		}	
 	   
@@ -933,7 +938,6 @@ $subject=array();
             		->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null or sum(comments.readonly) = 0 )  THEN 0  ELSE 1 END as c')
                     ->groupBy('tickets.id')
                     ->HAVING("c", "=" , '0' );
-
                     $unansweredFlag = true;
 
 			}
@@ -962,20 +966,18 @@ $subject=array();
 
 			if ($unansweredFlag){
 
-				$array = $tickets->get()->toArray();
-				$page = $request->input("page");
+				//in case of unasnswerd tickets, don't use pagination
+				$ticketPag = $tickets->get();
 
-				if (empty($page)){
-					$page=1;
-				}
-				$ticketPag = array_slice ( $array , ($page-1)*5 );
-				$ticketPag = new Paginator($ticketPag, 5, $request->input("page") , ['path' =>'/tickets/searchTicket' ]);
 			}else{
 				$ticketPag = $tickets->paginate(5);
-			}
-			
+			}	
+
 			$tickets= $this->sortTicket ( $ticketPag , $sortBy , $sortType);
-			return view("tickets.searchTicket",compact('tickets', 'ticketPag')); 
+			
+
+
+			return view("tickets.searchTicket",compact('tickets', 'ticketPag', 'unansweredFlag' )); 
 		}
 	}
 	
