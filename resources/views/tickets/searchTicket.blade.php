@@ -5,8 +5,10 @@
 						<td class="status text-center">Status</td>
 						<td class="category text-center">Category</td>
 						<td class="created_at text-center">Creation date</td>
-						<td class="deadline text-center">Dead line</td>
-						<td class="priority text-center">Periorty</td>
+						@if(Auth::user()->type != "regular")
+							<td class="deadline text-center">Dead line</td>
+							<td class="priority text-center">Periorty</td>
+						@endif
 						<td class="setting text-center">Settings</td>
 					</tr>
 				</thead>
@@ -17,14 +19,16 @@
 					   		<td id="{{ $ticket->id }}status" class="status text-center"> {{ $ticket->status }}</td>
 					   		<td class="category text-center">{{ $ticket->category->name }}</td>
 					   		<td class="created_at text-center">{{ $ticket->created_at }} </td>
-					   		<td class="deadline text-center">{{ $ticket->deadline }} </td>
-					   		@if($ticket->priority == "low")
-					   			<td class="priority text-center"><b class="alert-success ">{{ $ticket->priority }}</b></td>
-					   		@elseif($ticket->priority == "high")
-					   			<td class="priority text-center"><b class="alert-warning">{{ $ticket->priority }}</b></td>
-					   		@else
-						   		<td class="priority text-center"><b class="alert-danger">{{ $ticket->priority }}</b></td>
-						   	@endif
+					   		@if(Auth::user()->type != "regular")
+						   		<td class="deadline text-center">{{ $ticket->deadline }} </td>
+						   		@if($ticket->priority == "low")
+						   			<td class="priority text-center"><b class="alert-success ">{{ $ticket->priority }}</b></td>
+						   		@elseif($ticket->priority == "high")
+						   			<td class="priority text-center"><b class="alert-warning">{{ $ticket->priority }}</b></td>
+						   		@else
+							   		<td class="priority text-center"><b class="alert-danger">{{ $ticket->priority }}</b></td>
+							   	@endif
+							@endif
 						   	<td class="setting text-center">
 						   		@if (Auth::user()->type == "admin")
 

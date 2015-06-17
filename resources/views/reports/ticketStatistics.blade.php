@@ -13,7 +13,7 @@
 			{{trans('problemmangement.to')}}:<input type="text" id="enddate">
 		</div>
 		<div style="float:left;">
-			<button class="btn navbtn txtnav" onclick="searchDate()"><span class="glyphicon glyphicon-search"></span></button>
+			<button class="btn navbtn txtnav" onclick="searchDate()"><span class="glyphicon glyphicon-search" style=" color: #ffffff !important;"></span></button>
 		</div>
 		 <!--csv report-->
 		 <a  id="csv" href="/reports/problemMangementCSV">

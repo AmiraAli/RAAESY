@@ -10,8 +10,6 @@ function Status(elm){
   var ticket_id = elm;
   var status =document.getElementById(elm).name;
 techid=document.getElementById("techid").value.split(',')[1];
-// console.log(techid);
-// console.log(techid);
                   
 $.ajax({
     url: '/tickets/updatestatus/',
@@ -22,6 +20,7 @@ $.ajax({
 result=JSON.parse(result);
 	var currentdate = new Date(); 
 	var currentDate=currentdate.getFullYear()+"-"+currentdate.getMonth()+"-"+currentdate.getDay()+" "+currentdate.getHours()+":" + 		currentdate.getMinutes() + ":"+ currentdate.getSeconds();
+	
 	if($('#'+ticket_id).text()=='close'){
 		$('#'+ticket_id).text('reopen');
 		$('#'+ticket_id).attr('name','open');
@@ -32,13 +31,14 @@ result=JSON.parse(result);
 			takeOverButton=document.createElement("button");
 			takeOverButtonText=document.createTextNode("Assign To");
 			takeOverButton.setAttribute('id',ticket_id+",takeover");
+			takeOverButton.setAttribute("class","btn btn-default");
 			takeOverButton.setAttribute('onclick','TakeOver('+'"'+ticket_id+',takeover'+'"'+')');
 			takeOverButton.appendChild(takeOverButtonText);
-			document.getElementById("takeoverajax").insertBefore(takeOverButton,document.getElementById("newelement"));
+			document.getElementById("ass2").appendChild(takeOverButton);
 
 			}
 var csrf=$("#hidden").val();
-//console.log(csrf);
+
 		  $("#addcomments").html(
 "     <form name='addForm' method = 'post'  class = 'form-horizontal' action='javascript:add("+ticket_id+")'><input type='hidden' name='_token' value="+csrf+"><div class='form-group col-md-9' ><div class='col-md-12'><textarea type='text' class='form-control' name='body' placeholder='Write Your Comment' rows='3'></textarea></div></div><div class='form-group col-md-1'><div class='col-md-12' style='margin-top:15px;'><button type='submit'  class='btn btn-default' >Comment</button></div></div></form>"
 );
@@ -55,6 +55,7 @@ var csrf=$("#hidden").val();
 		var head=document.createTextNode(result['fname']+" "+result['lname']);
 		var commentDiv1=document.createElement('div');
 		  commentDiv1.setAttribute("class","panel-body ");
+
 		var textDate=document.createTextNode(currentDate);
 		headDiv.appendChild(head);
 		commentDiv1.appendChild(text);
@@ -76,13 +77,9 @@ var csrf=$("#hidden").val();
 //----------------------------------TakeOver------------------------------------------------------------------------
 ////////////////////////////////////////////////////TakeOverButton//////////////////////////////////////////////
 function TakeOver(elm){
-
-
-   
+ 
 var ticket_id=elm.split(',')[0];
 
-console.log(document.getElementById(elm));
-                  console.log(ticket_id);
 $.ajax({
     url: '/tickets/takeover/',
     type: 'post',
@@ -90,12 +87,11 @@ $.ajax({
 
     success: function(result) {
 result=JSON.parse(result)
-//console.log(result+"aya");
 if(result.length!=0){
 var select =document.createElement("select");
 select.setAttribute('id','select');
-select.setAttribute('class','form-control');
-// select.className += " "+'col-md-4';
+select.setAttribute('class','form-control col-md-1');
+
 for(i=0;i<result.length;i++){
 var option=document.createElement("option");
 option.setAttribute('id',result[i].id);
@@ -103,34 +99,47 @@ var optiontext=document.createTextNode(result[i].fname+" "+result[i].lname);
 option.appendChild(optiontext);
 select.appendChild(option);
 }
-var position=document.getElementById(ticket_id);
-var parentElm=document.getElementById("newelement");
-parentElm.appendChild(select);
 document.getElementById(elm).style.display = 'none';
+var position=document.getElementById(ticket_id);
+var parentElm=document.getElementById("ass");
+var spac=document.createElement("br");
+spac.setAttribute('class','sp');
+var spac2=document.createElement("br");
+spac2.setAttribute('class','sp');
+parentElm.appendChild(spac);
+parentElm.appendChild(spac2);
+parentElm.appendChild(select);
+
+parentElm.innerHTML += '&nbsp;&nbsp;&nbsp;&nbsp;';
 
 var saveButton=document.createElement('button');
-var saveButtonText=document.createTextNode('save');
-saveButton.appendChild(saveButtonText);
 saveButton.setAttribute('id','saveButton');
-saveButton.setAttribute('class','btn btn-default');
+saveButton.setAttribute('class','btn btn-primary');
 saveButton.setAttribute('onclick','Save('+ticket_id+')');
+var spanSaveButton=document.createElement('span');
+spanSaveButton.setAttribute('class','glyphicon glyphicon-ok');
+saveButton.appendChild(spanSaveButton);
 parentElm.appendChild(saveButton);
 
+parentElm.innerHTML += '&nbsp;';
+
 var cancelButton=document.createElement('button');
-var cancelButtonText=document.createTextNode('cancel');
-cancelButton.appendChild(cancelButtonText);
 cancelButton.setAttribute('id','cancelButton');
-cancelButton.setAttribute('class','btn btn-default');
-cancelButton.setAttribute('onclick','cancel()');
+cancelButton.setAttribute('class','btn btn-danger');
+cancelButton.setAttribute('onclick','cancelAssign()');
+var spanCancelButton=document.createElement('span');
+spanCancelButton.setAttribute('class','glyphicon glyphicon-remove');
+cancelButton.appendChild(spanCancelButton);
 parentElm.appendChild(cancelButton);
 
 }
 else{
 
-var parentElm=document.getElementById("newelement");
+var parentElm=document.getElementById("ass2");
 var divError=document.createElement("div");
 divError.setAttribute("class","text-danger");
 var text=document.createTextNode("No techinical available now  ");
+divError.appendChild(document.createElement("br"));
 divError.appendChild(text);
 if(parentElm.innerHTML.trim()==""){
 parentElm.appendChild(divError);}
@@ -186,10 +195,12 @@ $.ajax({
 	commentDiv.appendChild(headDiv);
 	commentDiv.appendChild(commentDiv1);
 	leftDiv.appendChild(commentDiv);
-	$('.assigned').append(result['techname']);
+	$('.tecname').append(result['techname']);
 
 	$("#select").remove();
 	$("#saveButton").remove();
+	$("#cancelButton").remove();
+	$(".sp").remove();
 
 	},
 	error: function(jqXHR, textStatus, errorThrown) {
@@ -199,11 +210,12 @@ $.ajax({
 });
 }
 
-function cancel ()
+function cancelAssign()
 {
 	$("#select").remove();
 	$("#saveButton").remove();
 	$("#cancelButton").remove();
+	$(".sp").remove();
 	document.getElementsByClassName("assgn")[0].style.display = 'inline';
 }
 

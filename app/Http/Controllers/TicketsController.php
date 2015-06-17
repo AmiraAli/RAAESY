@@ -630,7 +630,6 @@ class TicketsController extends Controller {
 	public function relatedTag($tickt,$tag)
 	{
 
-		//$tag=$data['tagId'];
 		$flag=1;
 		// Getting post data
 	   if( $tag)
@@ -651,8 +650,7 @@ class TicketsController extends Controller {
 
 				// Get Related Tags
 				$relatTagIds[] = Ticket::find((int)$tickets[$i]['id'])->TicketTags;
-				// var_dump($relatTagIds);
-	  	// 		exit();
+
 				for ($j=0; $j < count($relatTagIds[$i]); $j++) 
 				{
 				  

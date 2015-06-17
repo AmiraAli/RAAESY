@@ -21,7 +21,7 @@
 			To:<input type="text" id="enddate">
 		</div>
 		<div style="float:left;">
-			<button class="btn navbtn txtnav" onclick="search()"><span class="glyphicon glyphicon-search"></span></button>
+			<button class="btn navbtn txtnav hv" onclick="search()"><span class="glyphicon glyphicon-search"></span></button>
 		</div>
 		<a  style="float:left;" id="csv" href="/reports/summaryCSV">
     	<img src="/images/CSV.png" style="width:40px"></img>

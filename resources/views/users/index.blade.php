@@ -17,9 +17,13 @@
 	<div class="row">
 		<div id="search">
 	        <div class="form-group">
-	            <label class="col-md-5 control-label navtxt"><b>Quick Search</b></label>
-	            <div class="col-md-7"> 
-	                <input type="text" class="form-control parent" placeholder="Fname/Lname/Email" onkeyup="myAutocomplete(this.value)" name="term" id="quickSearch"  autocomplete="on">
+	            <div class="col-md-8 serchBtn"> 
+	            <div class="input-group">
+	                <input type="search" class="form-control parent" placeholder="Fname/Lname/Email" onkeyup="myAutocomplete(this.value)" name="term" id="quickSearch"  autocomplete="on">
+	                    <span class="input-group-btn">
+					        <button class="btn navbtn txtnav hv" type="button"><span class="glyphicon glyphicon-search hv"></span></button>
+					    </span>
+				</div>
 	            	<div id="autocompletemenu" style="display: none;">
 					   <ul id="autocompleteul"></ul>
 					</div>
@@ -32,7 +36,7 @@
 			 <a id="csv" href="users/downloadCSV"  title='Export as CSV'>
                 <img src="/images/CSV.png" style="width:40px"></img>
             </a>
-			<a class="btn navbtn txtnav" href="/users/create" >Create User</a>
+			<a class="btn navbtn txtnav hv" href="/users/create" >Create User</a>
 		</div>
 	</div>
 
@@ -152,10 +156,10 @@
 
 							<div class="form-group">
 								<div class="col-md-3 col-md-offset-2">
-									<button type="submit" onclick="search()" class="btn navbtn txtnav">Search</button>
+									<button type="submit" onclick="search()" class="btn navbtn txtnav hv">Search</button>
 								</div>
 								<div class="col-md-3">
-									<button type="reset" class="btn navbtn txtnav">Reset</button>
+									<button type="reset" class="btn navbtn txtnav hv">Reset</button>
 								</div>
 							</div>
 						</form>	

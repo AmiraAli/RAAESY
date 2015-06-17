@@ -8,10 +8,8 @@ $(document).ready(function(){
   
 });
 
-
 function tog(elm,elm2){
   
-
   $("#"+elm2).toggleClass('glyphicon glyphicon-triangle-right').toggleClass('glyphicon glyphicon-triangle-bottom');
 
   $("#table_show"+elm).toggle();

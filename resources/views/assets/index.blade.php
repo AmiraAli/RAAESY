@@ -12,7 +12,7 @@
 
 	<div class="row" id="new-asset">
 		<a  href="{{ url('/assets/csvimport') }}"><img src="/images/CSV.png" style="width:40px"></a>
-		<a class="btn navbtn txtnav" href="{{ url('/assets/create') }}"> New Asset</a>
+		<a class="btn navbtn txtnav hv" href="{{ url('/assets/create') }}"> New Asset</a>
 	</div>
 	<div class="col-md-12">
 		<div class="col-md-3">
@@ -82,12 +82,12 @@
 							
 							<div class=" row form-group">
 								<div class="col-md-4 col-md-offset-2">
-									<button type="submit" onclick="searchAsset('')" class="btn navbtn txtnav">
+									<button type="submit" onclick="searchAsset('')" class="btn navbtn txtnav hv">
 										Search
 									</button>
 								</div>
 								<div class="col-md-4">
-									<button type="reset" class="btn navbtn txtnav">
+									<button type="reset" class="btn navbtn txtnav hv">
 										Reset
 									</button>
 								</div>

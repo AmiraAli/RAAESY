@@ -1,5 +1,7 @@
 @extends('app')
 @section('content')
+<link href="/css/users/edit.css" rel="stylesheet">
+
 <div class="container-fluid">
 
 <br>
@@ -103,7 +105,7 @@
 			
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn navbtn txtnav">
+								<button type="submit" class="btn navbtn txtnav hv">
 									{{ trans('words.user_add') }}
 								</button>
 							</div>

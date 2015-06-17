@@ -1,6 +1,8 @@
 @extends('app')
 
 @section('content')
+<link href="/css/assets/creatEdit.css" rel="stylesheet">
+
 <div class="container-fluid">
 	<div class="row">
 	<br>
@@ -82,11 +84,11 @@
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn navbtn txtnav">
+								<button type="submit" class="btn navbtn txtnav hv">
 									Save
 								</button>
 								
-								<a href="/assets/ " class="btn navbtn txtnav btn" >Cancel</a>
+								<a href="/assets/ " class="btn navbtn txtnav btn hv" >Cancel</a>
 							</div>
 						</div>
 					{!! Form::close() !!}
