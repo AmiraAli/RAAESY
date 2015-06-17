@@ -34,5 +34,4 @@
                  @endforeach
              </tbody>
          </table>
-</div>
      <center>  <?php echo $articles->render(); ?></center> 

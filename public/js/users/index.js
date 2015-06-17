@@ -130,6 +130,10 @@ function myAutocomplete(data) {
 
 }
 
+
+/* 
+ * This function is used in searching users
+*/
 function search(){
 
 	form = $('#advSearchForm');
@@ -154,11 +158,14 @@ function search(){
                 console.log(errorThrown);
            }
 
-
-
-
-
 	});
+}
 
 
+/* 
+ * This function is used to reset Advanced Search form
+*/
+function resetForm(){
+    document.getElementById("advSearchForm").reset();
+    search();
 }

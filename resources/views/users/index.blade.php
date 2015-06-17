@@ -1,4 +1,3 @@
-
 @extends('app')
 @section('content')
     
@@ -52,12 +51,75 @@
 
             </div>
         </div>
-        <button id="toggle" class="btn btn-primary" title='Advanced Search' > <span class="glyphicon glyphicon-search"></span></button>
+
     </div>
-		
+
+		<div class="col-md-3 col-xs-12" id="advancedSearchDiv">
+			<div class="row">
+				<div class="panel">
+					<div class="panel-heading navbtn txtnav">
+						<h3 class="panel-title">Advanced Search</h3>
+					</div>
+					<div class="panel-body">
+						<form class= "form-horizontal" onsubmit="return false" id="advSearchForm">					
+							<input type="hidden" name="_token" value="{{ csrf_token() }}"> 
+
+							<div class="form-group">
+								<label class="col-md-3 control-label navtxt">FName</label>
+								<div class="col-md-6">
+									<input type="text" id="fname" class="form-control" name="fname" value="{{ old('email') }}">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-3 control-label navtxt">LName</label>
+								<div class="col-md-6">
+									<input type="text" id="lname" class="form-control" name="lname" value="{{ old('email') }}">
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-md-3 control-label navtxt">E-Mail</label>
+								<div class="col-md-6">
+									<input type="text" id="email" class="form-control" name="email" value="{{ old('email') }}">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-3 control-label navtxt">Phone</label>
+								<div class="col-md-6">
+									<input type="text" id="phone" class="form-control" name="phone">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-3 control-label navtxt">Location</label>
+								<div class="col-md-6">
+									<input type="text" id="location" class="form-control" name="location">
+								</div>
+							</div>
+
+							<input type="hidden" id="displayed" name="displayed">
+
+							<div class="form-group">
+								<div class="col-md-3 col-md-offset-2">
+									<button type="submit" onclick="search()" class="btn navbtn txtnav hv">Search</button>
+								</div>
+								<div class="col-md-3">
+									<button type="reset" class="btn navbtn txtnav hv">Reset</button>
+
+								</div>
+							</div>
+						</form>	
+					</div>
+				</div>
+			</div>
+		</div>
+	
 	</br>
 	<div class="row">
-		<div  id="con" class="col-md-12" >
+		<div  id="con" class="col-md-8 table-responsive" >
+			<div class="table-responsive">
 			<table class="table table-hover">
 				<thead>
 					<tr class="navbtn txtnav">
@@ -103,77 +165,16 @@
 					@endforeach
 				</tbody>
 			</table>
-			<?php echo $users->render(); ?>
+			<center><?php echo $users->render(); ?><center>
+
+</div>
 		</div>
 
 
-		<div class="col-md-3" id="advancedSearchDiv">
-			<div class="row">
-				<div class="panel">
-					<div class="panel-heading navbtn txtnav">
-						<h3 class="panel-title">Advanced Search</h3>
-					</div>
-					<div class="panel-body">
-						<form class= "form-horizontal" onsubmit="return false" id="advSearchForm">					
-							<input type="hidden" name="_token" value="{{ csrf_token() }}"> 
-
-							<div class="form-group">
-								<label class="col-md-3 control-label navtxt">FName</label>
-								<div class="col-md-6">
-									<input type="text" id="fname" class="form-control" name="fname" value="{{ old('email') }}">
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-3 control-label navtxt">LName</label>
-								<div class="col-md-6">
-									<input type="text" id="lname" class="form-control" name="lname" value="{{ old('email') }}">
-								</div>
-							</div>
-							
-							<div class="form-group">
-								<label class="col-md-3 control-label navtxt">E-Mail</label>
-								<div class="col-md-6">
-									<input type="email" id="email" class="form-control" name="email" value="{{ old('email') }}">
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-3 control-label navtxt">Phone</label>
-								<div class="col-md-6">
-									<input type="text" id="phone" class="form-control" name="phone">
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-3 control-label navtxt">Location</label>
-								<div class="col-md-6">
-									<input type="text" id="location" class="form-control" name="location">
-								</div>
-							</div>
-
-							<input type="hidden" id="displayed" name="displayed">
-
-							<div class="form-group">
-								<div class="col-md-3 col-md-offset-2">
-									<button type="submit" onclick="search()" class="btn navbtn txtnav hv">Search</button>
-								</div>
-								<div class="col-md-3">
-									<button type="reset" class="btn navbtn txtnav hv">Reset</button>
-								</div>
-							</div>
-						</form>	
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </div>
 
 
 
 @endsection
-
-
-
 

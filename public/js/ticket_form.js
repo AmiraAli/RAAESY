@@ -208,6 +208,7 @@ function submit_tag () {
 				remove_span.innerHTML="x";
 				span.appendChild(remove_span);
 				tags.appendChild(span);
+				tags_array.push(newtag);
 		      },
 			  error: function(jqXHR, textStatus, errorThrown) {
 				alert("May be tag is already exists or something wrong!!....");

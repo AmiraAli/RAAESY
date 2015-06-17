@@ -11,7 +11,7 @@
 <br>
 <div class="row">
 
-<form onsubmit="getReport(); return false;" >
+<form  class="col-xs-9 col-sm-10 col-md-9 col-lg-6" onsubmit="getReport(); return false;" >
   From : <input type="text" id="date1" value="<?php echo date('Y-m-d H:i:s', strtotime('-10day')) ?>">
   To : <input type="text" id="date2" value="<?php echo date('Y-m-d H:i:s', time()) ?>">
   <button class="btn navbtn txtnav hv" >Get Report</button>

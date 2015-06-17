@@ -1,14 +1,16 @@
 window.onload = function() {
-    
-            $.ajaxSetup({
+
+
+
+$.ajaxSetup({
                 headers: {
                     'X-XSRF-Token': $('meta[name="_token"]').attr('content')
                 }
             });
 
-            //convert pagination to AJAX
-            paginateWithAjax();
-   
+
+    
+    
 
  };
 
@@ -29,29 +31,29 @@ paginateWithAjax();
 
 
 function init(){
-    var input = $("#quickSearch");
-    var pos = input.position();
-    var width = input.outerWidth();
-    var height = input.outerHeight();
+var input = $("#quickSearch");
+var pos = input.position();
+var width = input.outerWidth();
+var height = input.outerHeight();
 
-    $("#autocompletemenu").css({
+$("#autocompletemenu").css({
         position: "absolute",
         top: (pos.top + height) + "px",
         left: pos.left + "px",
         width: width,
    });
 
-    var flag=true;
+var flag=true;
 
 
-    $("#autocompletemenu").mouseover(function(){
-        flag = true;
-    });
+$("#autocompletemenu").mouseover(function(){
+    flag = true;
+});
 
-    $("#autocompletemenu").mouseout(function(){
-        flag = false;
+$("#autocompletemenu").mouseout(function(){
+    flag = false;
     
-    });
+});
 
 
 
@@ -63,7 +65,7 @@ function init(){
     		});
 		}
 	});
-}
+   }
 
  function myAutocomplete(data) {
 

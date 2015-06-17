@@ -1,64 +1,38 @@
 @extends('app')
 @section('content')
 <link href="/css/articles/showArticle.css" rel="stylesheet">
-      {{--  <div class="container-fluid">
-          <div class="col-md-8">
-            <div class="panel-heading">
-            <h3 class="panel-title">Article Show</h3></div>
-            <label for="subject" class="col-sm-2 control-label">SUBJECT</label>
-            <div class="col-sm-10">
-                {{$article->subject}}
-            </div> --}}
 <br><br>
 <div class="container ">
-<div class="col-md-9 ">
-  <div class="row ">
-    <div class="col-md-4">
-      <div class="panel">
-        <div class="panel-heading navbtn txtnav fnt" >{{$article->subject}}
-        </div>
-
-        <div class="panel-body">
-        <span class="write">By&ensp;{{$article->user->fname}} {{$article->user->lname}} </span>
-        {{-- Category&ensp;{{$article->category->name}} --}}
-
-        <br/>
-        </div></div></div></div>
 
  <div class="row ">
-    <div class="col-md-11">
-      <div class="panel ff">
-<div class="panel-body">
-           
+  <img  class="col-xs-10 col-md-5 pull-right" src="/images/helpdeskArticle.png">
+    <div class=" col-xs-11 col-md-7">
+      <div class="panel ">
+      <div class="panel-heading navbtn txtnav fnt" >{{$article->subject}}
+        </div>
+        <div class="panel-body">
+        @if(Auth::user()->type == "admin")
+           <span class="write"><h2><small>By&ensp;{{$article->user->fname}} {{$article->user->lname}}</small></h2> </span>
+        @endif
             <span class="write">
                 {!!  stripcslashes ($article->body);  !!}
           </span>
-            </div></div></div></div></div>
-    
-         
-          {{--   <label for="Tags" class="col-sm-2 control-label">Tags</label>
-            <div class="col-sm-10">
-               @foreach ($articletags as $articletag)
-                 @if($article->id==$articletag->article_id)
-                   -{{$articletag->tag->name}}-<br/>   
-                 @endif
-               @endforeach  
-            </div> --}}
+            </div>
+          </div>
+      </div>
+  </div>
+ 
 
         
- <div class="col-md-3 my">
-     <span class="fntt">Related Articles</span><br>
+ <div class=" col-xs-11 col-md-4 pull-right" >
     <div class="row ">
     <div class="col-md-12">
   
       <div class="panel">
-        <div class="panel-heading navbtn txtnav fnt" >By Tags
+        <div class="panel-heading navbtn txtnav fnt" > Related Articles By Tags
         </div>
 
         <div class="panel-body">
-           
-
-                     
                        @foreach ($tagOfArts as $tagOfArt)
                          
                           @foreach ($articletags as $articletag)
@@ -125,7 +99,7 @@
   
    
       <div class="panel">
-        <div class="panel-heading navbtn txtnav fnt" >By Category (&ensp;{{$article->category->name}}&ensp;)
+        <div class="panel-heading navbtn txtnav fnt" >Related Articles By Category (&ensp;{{$article->category->name}}&ensp;)
         </div>
 
         <div class="panel-body">
@@ -150,6 +124,12 @@
                                @endif
                         
                        @endforeach
-                       </div></div></div></div></div>  </div>
+       </div>
+      </div>
+       </div>
+       </div>
+       </div> 
+        </div>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
 @endsection

@@ -25,7 +25,7 @@ use Carbon\Carbon;
 use App\Log;
 use Mail;
 use Response;
- 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
@@ -73,8 +73,17 @@ class TicketsController extends Controller {
 
 		if(Auth::user()->type === "admin"){
 			//all tickets except spam tickets
-			$tickets = Ticket::where('is_spam', "0")->get();
-			$tickets= $this->sortTicket ( $tickets ,"subject" ,"DESC");
+			$ticketPag = Ticket::where('is_spam', "0")->paginate(5);
+			
+
+			$allcount=Ticket::where('is_spam', "0")->count();
+
+			//sort array
+			$tickets= $this->sortTicket ( $ticketPag ,"subject" ,"DESC");
+
+			//set default path
+			$ticketPag->setPath('/tickets/searchTicket');
+
 
 			// unassigned tickets except spam tickets
 			$unassigned = Ticket::select(DB::raw('count(*) as count'))->whereNull('tech_id')->where('is_spam', "0")->get();
@@ -98,11 +107,16 @@ class TicketsController extends Controller {
 			$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 group by category_id");
 
 
-			return view('tickets.index',compact('tickets','unassigned','open','closed','expired','spam','tags','technicals','unanswered','categories'));
+			return view('tickets.index',compact('tickets','ticketPag' , 'unassigned','open','closed','expired','spam','tags','technicals','unanswered','categories','allcount'));
 		}
 		else if(Auth::user()->type === "tech"){
-			$tickets = Ticket::where('is_spam', "0")->where('tech_id', $request->user()->id)->get();
-			$tickets= $this->sortTicket ( $tickets ,"subject" ,"DESC");
+			$ticketPag = Ticket::where('is_spam', "0")->where('tech_id', $request->user()->id)->paginate(5);
+			$tickets= $this->sortTicket ( $ticketPag ,"subject" ,"DESC");
+
+
+			//set default path
+			$ticketPag->setPath('/tickets/searchTicket');
+
 			// closed tickets except spam tickets
 			$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('tech_id', $request->user()->id)->where('is_spam', "0")->get();
 			// open tickets except spam tickets
@@ -110,18 +124,26 @@ class TicketsController extends Controller {
 			$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('tech_id', $request->user()->id)->where('is_spam', "0")->get();
 			$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and tech_id = ? group by category_id", array($request->user()->id));
 
-			return view('tickets.index',compact('tickets','open','closed','tags','categories'));
+			return view('tickets.index',compact('tickets' , 'ticketPag','open','closed','tags','categories'));
 		}
 		else if(Auth::user()->type === "regular"){
-			$tickets = Ticket::where('is_spam', "0")->where('user_id', $request->user()->id)->get();
-			$tickets= $this->sortTicket ( $tickets ,"subject" ,"DESC");
+			$ticketPag = Ticket::where('is_spam', "0")->where('user_id', $request->user()->id)->paginate(5);
+			
+			$tickets= $this->sortTicket ( $ticketPag ,"subject" ,"DESC");
+			
+
+
+			//set default path
+			$ticketPag->setPath('/tickets/searchTicket');
+			
+
 			// closed tickets except spam tickets
 			$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('user_id', $request->user()->id)->where('is_spam', "0")->get();
 			// open tickets except spam tickets
 			$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('user_id', $request->user()->id)->where('is_spam', "0")->get();
 			$categories = DB::select("select tickets.category_id, categories.name,count(*) as count from tickets join categories on categories.id = tickets.category_id where is_spam = 0 and user_id = ? group by category_id", array($request->user()->id));
 
-			return view('tickets.index',compact('tickets','open','closed','tags','categories'));
+			return view('tickets.index',compact('tickets' , 'ticketPag' ,'open','closed','tags','categories'));
 		}
 	}
 
@@ -547,6 +569,7 @@ class TicketsController extends Controller {
 				if ($sortBy == "subject") 
 				{		
 					$sort[$key] = $row['subject']['name'];
+					$sort = array_map('strtolower', $sort);
 				}
 				else 
 				{
@@ -588,6 +611,7 @@ class TicketsController extends Controller {
 				if ($sortBy == "subject") 
 				{		
 					$sort[$key] = $row['subject']['name'];
+					$sort = array_map('strtolower', $sort);
 				}
 				else 
 				{
@@ -914,16 +938,21 @@ $subject=array();
 					$arr[$i] = $value->id;
 					$i++;
 				}
-				// file_put_contents("/home/samah/text.html",$arr[$i]);
-
 				$tickets = $tickets->whereIn('category_id', $arr);
 			}
+			if ($tag){
+				$tickets= $tickets->join('ticket_tags','ticket_tags.ticket_id','=','tickets.id')
+	              ->where('ticket_tags.tag_id', '=' , $tag );
+	        }
 			$tickets= $this->AdvancedSearch ($tickets , $search);
-			$tickets = $tickets->get();
 
-			$tickets= $this->relatedTag ( $tickets , $tag);
-			$tickets= $this->sortTicket ( $tickets , $sortBy , $sortType);
-			return view("tickets.searchTicket",compact('tickets')); 
+
+			//find by related tags		
+	        $ticketPag = $tickets->paginate(5);
+
+			
+			$tickets= $this->sortTicket ( $ticketPag , $sortBy , $sortType);
+			return view("tickets.searchTicket",compact('tickets', 'ticketPag')); 
 		}
 	}
 	
