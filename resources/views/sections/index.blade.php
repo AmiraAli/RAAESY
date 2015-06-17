@@ -96,6 +96,7 @@
 				}
 					//$("#"+id).css("margin-bottom", "0"); 
 				 document.getElementById(id).remove(); 
+				 document.getElementById("table_show"+ids).remove();
 				 				  
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
