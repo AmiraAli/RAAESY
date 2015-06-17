@@ -42,6 +42,54 @@ class TicketsController extends Controller {
 		$this->middleware('auth');
 	}
 
+	/**
+	 * Authorize admin
+	 * @param  integer $user_id
+	 * @return Response
+	 */
+	private function adminAuth()
+	{		
+		if (Auth::User()->type !="admin"){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Authorize user can view the page
+	 *
+	 * @return Response
+	 */
+	private function userAuth($id)
+	{		
+		if (Auth::User()->id !=$id ){
+			return false;
+		}
+		return true;
+	}
+
+
+	private function ticketValidate($ticket, $action){
+
+		// check if id is valid
+		if (empty($ticket)){
+			return false;
+		}
+
+		//authorization
+		$userId = $ticket->user_id;
+		$techId = $ticket->tech_id;
+		if($action == "show"){
+			if (!$this->adminAuth() && (!$this->userAuth($userId) && !$this->userAuth($techId))){
+				return false;
+			}
+		}else if($action == "edit"){
+			if (!$this->adminAuth() && !$this->userAuth($userId)){
+				return false;
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Notify when ticket is spam/delete (called by AJAX).
@@ -161,6 +209,9 @@ class TicketsController extends Controller {
 	 */
 	public function create()
 	{
+		if (Auth::User()->type =="tech"){
+			return view('errors.404');
+		}
 		$subjects=Subject::all();
 		$categories=Category::all();
 		$sections=Section::all();
@@ -280,6 +331,12 @@ class TicketsController extends Controller {
 	public function show($id)
 	{
 	$ticket=Ticket::find($id);
+
+	// validate ticket
+	if(!$this->ticketValidate($ticket,"show")){
+		return view('errors.404');
+	}
+
 	// Get Related Tags
 
 	$relatedTagIds = Ticket::find($id)->TicketTags;
@@ -322,7 +379,13 @@ class TicketsController extends Controller {
 	 */
 	public function edit($id)
 	{
+
 		$ticket=Ticket::find($id);
+		
+		// validate ticket
+		if(!$this->ticketValidate($ticket,"edit")){
+			return view('errors.404');
+		}
 		$subjects=Subject::all();
 		$categories=Category::all();
 		$sections=Section::all();
@@ -932,7 +995,7 @@ $subject=array();
 				$tickets = $tickets->where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
             		->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null or sum(comments.readonly) = 0 )  THEN 0  ELSE 1 END as c')
                     ->groupBy('tickets.id')
-                    ->HAVING("c", "=" , '0' );
+                    ->HAVING("c", "=" , '0' )->get();
 
                     $unansweredFlag = true;
 
@@ -961,18 +1024,12 @@ $subject=array();
 			$tickets= $this->AdvancedSearch ($tickets , $search);
 
 			if ($unansweredFlag){
-
-				$array = $tickets->get()->toArray();
-				$page = $request->input("page");
-
-				if (empty($page)){
-					$page=1;
-				}
-				$ticketPag = array_slice ( $array , ($page-1)*5 );
-				$ticketPag = new Paginator($ticketPag, 5, $request->input("page") , ['path' =>'/tickets/searchTicket' ]);
+				//$tickets = array_slice ( $tickets , 5 );
+				$ticketPag = new Paginator($tickets, 5, $request->input("page"),['path' =>'/tickets/searchTicket' ]);
 			}else{
 				$ticketPag = $tickets->paginate(5);
 			}
+
 			
 			$tickets= $this->sortTicket ( $ticketPag , $sortBy , $sortType);
 			return view("tickets.searchTicket",compact('tickets', 'ticketPag')); 

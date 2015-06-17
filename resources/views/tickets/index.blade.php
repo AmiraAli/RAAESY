@@ -243,6 +243,7 @@ if($current_user->type=='admin'){
 		</div>
 		<div class="col-md-9 col-xs-12">
 			<div id="table_show">
+			<div class="table-responsive">
 				<table class="table table-hover">
 					<thead>
 						<tr class="navbtn txtnav">	
@@ -322,9 +323,9 @@ if($current_user->type=='admin'){
 					@endforeach
 				</tbody>
 			</table>
-			{!!  $ticketPag->render() !!}
+			<center>{!!  $ticketPag->render() !!}</center>
 
-					<div>
+					</div>
 </div>
 
 		</div>

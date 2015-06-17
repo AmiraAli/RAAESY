@@ -86,6 +86,7 @@ function paginateWithAjax(){
 //Autocompete function
 function myAutocomplete(data) {
 
+    data = data.trim();
 	if (data==''){ 
 
 		$("#autocompletemenu").css({
@@ -93,6 +94,7 @@ function myAutocomplete(data) {
 		});
 		return;
 	}
+
 
 	$.ajax({
 	    url: '/users/autocomplete',

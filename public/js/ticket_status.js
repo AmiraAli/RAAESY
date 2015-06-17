@@ -30,7 +30,7 @@ result=JSON.parse(result);
 			takeOverButton=document.createElement("button");
 			takeOverButtonText=document.createTextNode("Assign To");
 			takeOverButton.setAttribute('id',ticket_id+",takeover");
-			takeOverButton.setAttribute("class","btn btn-default");
+			takeOverButton.setAttribute("class","btn btn-default assgn");
 			takeOverButton.setAttribute('onclick','TakeOver('+'"'+ticket_id+',takeover'+'"'+')');
 			takeOverButton.appendChild(takeOverButtonText);
 			document.getElementById("ass2").appendChild(takeOverButton);
@@ -99,6 +99,7 @@ option.appendChild(optiontext);
 select.appendChild(option);
 }
 document.getElementById(elm).style.display = 'none';
+
 var position=document.getElementById(ticket_id);
 var parentElm=document.getElementById("ass2");
 var spac=document.createElement("br");
