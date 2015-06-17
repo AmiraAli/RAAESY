@@ -20,39 +20,41 @@
   <div class="leftposition">
 	<div class="panel ticketbody">
 	  <div class="panel-body " id="takeoverajax">
+	  <div id='newelement'></div>
 @if(Auth::user()->type=="admin" or Auth::user()->id==$ticket->user_id )
 <input type="hidden" id="techid" value="tech,{{$ticket->tech_id}}">
-		@if($ticket)
-			@if($ticket->status=='open')
-			   <button name="close" id="{{$ticket->id}}" class="btn btn-default" onclick="Status({{$ticket->id}})">close</button>
+<div class="row">
+<div class="col-md-5 fnt">  {{ $ticket->subject->name }}</div> 
+<div class="allBtn col-md-7 ">
+			@if($ticket)
+				@if($ticket->status=='open')
+				   <button name="close" id="{{$ticket->id}}" class="btn btn-default" onclick="Status({{$ticket->id}})" style="float:right !important;">close</button>
+				@endif
+				@if($ticket->status=='close')
+				   <button name="open" id="{{$ticket->id}}" class="btn btn-default" onclick="Status({{$ticket->id}})"  style="float:right !important;" >reopen</button>
+				@endif
 			@endif
-			@if($ticket->status=='close')
-			   <button name="open" id="{{$ticket->id}}" class="btn btn-default" onclick="Status({{$ticket->id}})" >reopen</button>
-			@endif
-			@endif
-@if(Auth::user()->type=="admin")
-			@if(!$ticket->tech_id and $ticket->status=='open')
-			   <button id="{{$ticket->id}},takeover" onclick="TakeOver({{$ticket->id}}+',takeover')" class="btn btn-default">Assign To</button>
-			@endif
-		@endif
-@endif
-		<div id='newelement'>
 
-		</div>
-		<div class="row">
-		<h4 class="col-md-6">  {{ $ticket->subject->name }}</h4> 
-		<p>  {!! $ticket->description !!}</p>
-		</div>
-		<div class="row">
+@endif
+</div>
+</div>
 		
 
-		@if($ticket->file)
-			<div class="col-md-6">
-			<span>More details uploded:</span>
-			<a href="{{ URL::to( '/files/'. $ticket->file)  }}" target="_blank">{{ $ticket->file }}</a>
-			</div>
+<br>		
+		<div class="row">
+		<div class="col-md-12"> 
+		  {!! $ticket->description !!}
+		  </div>
+		</div>
+
+		<div class="row">
+		@if($ticket->file)			
+			<div class="fnt col-md-4">More details uploded:</div>
+			<div class="col-md-8 file"><a href="{{ URL::to( '/files/'. $ticket->file)  }}" target="_blank">{{ $ticket->file }}</a></div>
+			
 		@endif
 		</div>
+
 	  </div>
 	</div>
 
@@ -130,9 +132,18 @@
 		<span class="title">Start Date </span>{{ $ticket->created_at }}<br>
 		<span class="title">Due   </span>{{ $ticket->deadline }}<br>
 		<span class="title">From  </span> {{ $ticket->user->fname }} {{$ticket->user->lname}}<br>
-		<span class="title">Assigned To  </span> @if($ticket->tech){{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}@endif
+		<span class="title">Assigned To  </span> <span class="tecname">@if($ticket->tech){{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}@endif</span>
+
+			@if(Auth::user()->type=="admin")
+				@if(!$ticket->tech_id and $ticket->status=='open')
+					<span id="ass">
+				   <button id="{{$ticket->id}},takeover" onclick="TakeOver({{$ticket->id}}+',takeover')" class="btn btn-default assgn">Assign To</button></span>
+				@endif
+	@endif
+<div id="ass2"></div>
 	  </div>
 	</div>
+
 <!--relatedassets-->
 @if(Auth::user()->type=="admin")	
 	<div class="panel relatedassets">
@@ -140,12 +151,12 @@
 			    <div class="panel-title" style="display:inline;">Related Assets</div>			    
 		  </div> 
           <div class="panel-body">
-	          	<div id="addnewasset">
+	          	<div id="addnewasset" class="col-md-6">
 					<button id="{{$ticket->id}}:newasset" onclick="AddAssets({{$ticket->id}}+':newasset')" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>  Add Asset</button>
 
 			  	</div>
 
-				<div id="new-asset">
+				<div id="new-asset" class="col-md-6">
 					@foreach($relatedAssets as $relatedAsset)
 						<div id='{{$relatedAsset->id}}_{{$ticket->id}}'>				
 							<input type="hidden" id="{{$relatedAsset->id}}:showenassets" class="showenasset">
@@ -153,11 +164,8 @@
 						</div>
 					@endforeach
 				</div>
+				<br><br>
 			  	<div id="asseterrormessage"></div>
-
-		
-				
-
 		  </div>
 	</div>
 <!--relatedtags-->

@@ -1,6 +1,7 @@
 @extends('app')
 
 @section('content')
+<link href="/css/assets/creatEdit.css" rel="stylesheet">
 
 <meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
 
@@ -92,7 +93,7 @@
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn navbtn txtnav">
+								<button type="submit" class="btn navbtn txtnav hv">
 									Add
 								</button>
 							</div>
@@ -115,7 +116,7 @@
 	
 	function addType(){
 
-		$(".new-type").html('<br><div class="form-group"><label class="col-md-4 control-label navtxt">New Type</label><div class="col-md-6"><input type="text" id="type-name" class="form-control" name="name"></div></div><div class="error" id="type-error"></div><div class="form-group"><div class="col-md-6 col-md-offset-4"><a href="#" class="btn navbtn txtnav btn" onclick="saveType()">Add</a>&nbsp<a href="#" class="btn navbtn txtnav btn" onclick="cancel()">Cancel</a></div></div>');
+		$(".new-type").html('<br><div class="form-group"><label class="col-md-4 control-label navtxt">New Type</label><div class="col-md-6"><input type="text" id="type-name" class="form-control" name="name"></div></div><div class="error" id="type-error"></div><div class="form-group"><div class="col-md-6 col-md-offset-4"><a href="#" class="btn navbtn txtnav btn hv" onclick="saveType()">Add</a>&nbsp<a href="#" class="btn navbtn txtnav btn hv" onclick="cancel()">Cancel</a></div></div>');
 	}
 
 	function saveType(){

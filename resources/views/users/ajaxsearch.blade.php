@@ -52,3 +52,5 @@
 		@endforeach
 	</tbody>
 </table>
+<center><?php echo $users->render(); ?><center>
+

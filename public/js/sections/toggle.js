@@ -8,10 +8,8 @@ $(document).ready(function(){
   
 });
 
-
 function tog(elm,elm2){
   
-
   $("#"+elm2).toggleClass('glyphicon glyphicon-triangle-right').toggleClass('glyphicon glyphicon-triangle-bottom');
 
   $("#table_show"+elm).toggle();
@@ -74,7 +72,7 @@ function createCategory(secId , secName ){
     url: '/sections',
     type: 'POST',
     data: {  
-   	name: name
+   	name: name.trim()
    	    },
     success: function(result) {
 
@@ -114,7 +112,7 @@ function createCategory(secId , secName ){
           type: 'POST',
           data:{
             "sectionid":sectionid, 
-            "categoryname":categoryname
+            "categoryname":categoryname.trim()
           },
           success: function(result) {
 

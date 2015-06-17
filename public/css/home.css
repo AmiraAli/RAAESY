@@ -8,6 +8,10 @@
 	word-wrap:break-word;
 }
 #articles{
-	height: 130px !important;
+	height: 120px !important;
 	overflow: hidden;
+}
+
+.hv{
+	color: #ffffff !important;
 }

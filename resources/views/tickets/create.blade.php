@@ -36,8 +36,8 @@
 					<div class="col-md-offset-2"  id="subject_new" style="display:none;">
 					<br>
 						<input type="text" class="form-control col-md-1" id="new_subjvalue"/>
-						<a class="btn navbtn txtnav col-md-3" onclick="submit_subject()">Add</a>&ensp;&ensp;
-						<a class="btn navbtn txtnav col-md-3" onclick="cancel_subject()">Cancel</a>
+						<a class="btn navbtn txtnav col-md-3 hv" onclick="submit_subject()">Add</a>&ensp;&ensp;
+						<a class="btn navbtn txtnav col-md-3 hv" onclick="cancel_subject()">Cancel</a>
 					</div>
 				</div>
 			   </div>
@@ -95,8 +95,8 @@
 						<a class="col-md-4 navtxt" onclick="add_new_tag()">Add New Tag</a>
 						<div class="row"  id="tag_new" style="display:none;">
 							<input type="text" class="form-control col-md-1" id="new_tagvalue"/>
-							<a class="btn txtnav navbtn col-md-3" onclick="submit_tag()">Add</a>
-							<a class="btn txtnav navbtn col-md-3" onclick="cancel_tag()">Cancel</a>
+							<a class="btn txtnav navbtn col-md-3 hv" onclick="submit_tag()">Add</a>
+							<a class="btn txtnav navbtn col-md-3 hv" onclick="cancel_tag()">Cancel</a>
 						</div>
 					</div>
 					<input type="hidden" name="tagValues" id="tagValues">
@@ -112,7 +112,7 @@
 			    </div>
 			    <div class="row">
 				    <div class="col-md-6 col-md-offset-4">
-				    	<button onclick="submit_tags ()" class="btn navbtn txtnav">Submit</button>
+				    	<button onclick="submit_tags ()" class="btn navbtn txtnav hv">Submit</button>
 				    </div>
 			    </div>
 

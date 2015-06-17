@@ -31,11 +31,11 @@ function searchAsset(url){
                 url = '/assets/searchAssets';
             }
         	var formData = {
-            'name'  : $('#model_name').val(),
-            'type': $('#type').val(),
-            'manufacturer' : $('#manufacturer').val(),
-            'serialno' : $('#serialno').val(),
-            'location' : $('#location').val()
+            'name'  : $('#model_name').val().trim(),
+            'type': $('#type').val().trim(),
+            'manufacturer' : $('#manufacturer').val().trim(),
+            'serialno' : $('#serialno').val().trim(),
+            'location' : $('#location').val().trim()
 
         }; 
 

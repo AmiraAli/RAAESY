@@ -83,7 +83,6 @@
 
 		function deleteSection(id){ 
 			   var ids = id.split(',')[0];
-			//console.log(id);
 		   $.ajax({
 			    url: '/sections/'+ids,
 			    type: 'DELETE',
@@ -91,13 +90,13 @@
 
 				var x="text-center "+ids+"category";
 				var allChild=document.getElementsByClassName(x);
-				//console.log(allChild);
 				for(i=0;i<allChild.length;i++){
 
 					allChild[i].innerHTML="";
 				}
 					//$("#"+id).css("margin-bottom", "0"); 
 				 document.getElementById(id).remove(); 
+				 document.getElementById("table_show"+ids).remove();
 				 				  
 				},
 				error: function(jqXHR, textStatus, errorThrown) {

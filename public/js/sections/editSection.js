@@ -46,7 +46,7 @@ function SaveEdit(elm,oldname){
          $.ajax({
                 url: '/sections/'+ids,
                 type: 'PUT',
-		data:{name:name},
+		data:{name:name.trim()},
                 success: function(result) {
                     if(result=="NOT DONE"){
 			$('._'+ids).prepend("<div class='cat err'>Section name already exists!</div>");

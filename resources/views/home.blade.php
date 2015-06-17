@@ -18,7 +18,7 @@
               <h1> Ticketing System features.</h1>
               <p><h4>The main screen of our Helpdesk Ticketing System features a powerful grid-view showing all the information about  current tickets.</h4></p>
               @if(Auth::user()->type != "tech")
-              <p><a class="btn btn-lg navbtn txtnav" href="{{ url('/tickets/create') }}" role="button">New Ticket</a></p>
+              <p><a class="btn btn-lg navbtn txtnav hv" href="{{ url('/tickets/create') }}" role="button">New Ticket</a></p>
               @endif
             </div>
           </div>
@@ -61,7 +61,7 @@
 
 <br><br>
   <div class="col-md-12"> 
-    <div class="col-md-2">
+    <div class="col-xs-12 col-md-3">
       <div class="row" id="category_list">
         <div class="list-group">
 
@@ -72,29 +72,26 @@
         </div>
       </div>
     </div>
-    <div id="article-show">
-    <div class="col-md-10" >
+    <div class="col-xs-12 col-md-9" id="article-show">
       @foreach($articles as $article)
-        <div class="col-md-4 article" > 
+        <div class="col-xs-12 col-md-4 article" > 
           <div class="panel panel-info">
               <div class="panel-body"  id="articles"> 
                 <a href="/articles/{{$article->id}}"><strong>{{$article->subject}}</strong></a><br>             
-                @if (strlen($article->body) <= 100)
+                @if (strlen($article->body) <= 70)
                   {!! $article->body !!}
                 @else
-                  {!! substr(strip_tags($article->body),0,100)." <b>.......</b>" !!}
+                  {!! substr(strip_tags($article->body),0,70)." <b>.......</b>" !!}
                 @endif
             </div>      
-            </div>
+          </div>
         </div>    
       @endforeach
-
-
+      <div class="col-md-12">
+        <center> <?php echo $articles->render(); ?></center>
+      </div> 
     </div>
-                  <center> <?php echo $articles->render(); ?></center>
-</div>
   </div>
-
 </div>
 
 

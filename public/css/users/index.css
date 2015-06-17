@@ -67,3 +67,12 @@ li {
 	outline:none;
 
 }
+
+.serchBtn{
+	width:300px;
+	float:right;
+}
+
+.hv{
+	color: #ffffff !important;
+}

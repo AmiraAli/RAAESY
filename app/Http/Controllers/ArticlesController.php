@@ -59,6 +59,10 @@ class ArticlesController extends Controller {
 		$categories=Category::all();
 		$sections=Section::all();
 		$articles=Article::paginate(5);
+
+		//set default path
+		$articles->setPath('/articles/search/');
+
 		$tags=Tag::all();
 		return view('articles.index',compact('articles','categories','sections','tags'));
 	}
