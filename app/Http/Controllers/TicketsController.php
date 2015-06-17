@@ -209,6 +209,9 @@ class TicketsController extends Controller {
 	 */
 	public function create()
 	{
+		if (Auth::User()->type =="tech"){
+			return view('errors.404');
+		}
 		$subjects=Subject::all();
 		$categories=Category::all();
 		$sections=Section::all();
