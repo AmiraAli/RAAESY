@@ -36,6 +36,7 @@
 					<div class="col-md-offset-2"  id="subject_new" style="display:none;">
 					<br>
 						<input type="text" class="form-control col-md-1" id="new_subjvalue"/>
+						<h5 style="color:#e73827;"><span id="subjerror"></span></h5>
 						<a class="btn navbtn txtnav col-md-3 hv" onclick="submit_subject()">Add</a>&ensp;&ensp;
 						<a class="btn navbtn txtnav col-md-3 hv" onclick="cancel_subject()">Cancel</a>
 					</div>
@@ -95,6 +96,7 @@
 						<a class="col-md-4 navtxt" onclick="add_new_tag()">Add New Tag</a>
 						<div class="row"  id="tag_new" style="display:none;">
 							<input type="text" class="form-control col-md-1" id="new_tagvalue"/>
+							<h5 style="color:#e73827;"><span id="tagerror"></span></h5>
 							<a class="btn txtnav navbtn col-md-3 hv" onclick="submit_tag()">Add</a>
 							<a class="btn txtnav navbtn col-md-3 hv" onclick="cancel_tag()">Cancel</a>
 						</div>

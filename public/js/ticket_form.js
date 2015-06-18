@@ -26,6 +26,7 @@ function submit_subject () {
 		      type: "post",
 		      data: {'newsubj':newsubj},
 		      success: function(data){
+		      	document.getElementById("subjerror").innerHTML="";
 		        var select= document.getElementById("subject_select");
 		        var option = document.createElement("option");
 					option.text = newsubj;
@@ -36,11 +37,11 @@ function submit_subject () {
 				document.getElementById("subject_new").style.display = "none";
 		      },
 			  error: function(jqXHR, textStatus, errorThrown) {
-				alert("May be subject is already exists or something wrong!!....");
+			  	document.getElementById("subjerror").innerHTML="subject name is already exists";
 			  }
 		    });
 	}else{
-		alert("Please Enter subject value!!...");
+		document.getElementById("subjerror").innerHTML="Please Enter subject value";
 	}
 }
 
@@ -51,6 +52,7 @@ function cancel_subject () {
 	document.getElementById("new_subjvalue").value="";
 	document.getElementById("subject_select").style.display = "block";
 	document.getElementById("subject_new").style.display = "none";
+	document.getElementById("subjerror").innerHTML="";
 }
 
 /**
@@ -192,6 +194,7 @@ function submit_tag () {
 		      type: "post",
 		      data: {'newtag':newtag},
 		      success: function(data){
+		      	document.getElementById("tagerror").innerHTML="";
 		      	document.getElementById("new_tagvalue").value="";
 		      	document.getElementById("search").value="";
 				document.getElementById("tag_new").style.display = "none";
@@ -211,11 +214,11 @@ function submit_tag () {
 				tags_array.push(newtag);
 		      },
 			  error: function(jqXHR, textStatus, errorThrown) {
-				alert("May be tag is already exists or something wrong!!....");
+			  	document.getElementById("tagerror").innerHTML="tag name is already exists";
 			  }
 		    });
 	}else{
-		alert("Please Enter tag value!!...");
+		document.getElementById("tagerror").innerHTML="Please Enter tag value!!";
 	}
 }
 
@@ -223,6 +226,7 @@ function submit_tag () {
 *function to cancel new tag form 
 **/
 function cancel_tag () {
+	document.getElementById("tagerror").innerHTML="";
 	document.getElementById("new_tagvalue").value="";
 	document.getElementById("search").value="";
 	document.getElementById("tag_new").style.display = "none";
