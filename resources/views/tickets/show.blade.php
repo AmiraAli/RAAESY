@@ -31,7 +31,7 @@
 				   <a href="/tickets/closeticketemail/{{$ticket->id}}" name="close" id="{{$ticket->id}}" class="btn btn-default"  style="float:right !important;">close</a>
 				@endif
 				@if($ticket->status=='close')
-				   <button name="open" id="{{$ticket->id}}" class="btn btn-default" onclick="Status({{$ticket->id}})"  style="float:right !important;" >reopen</button>
+				   <button name="open" id="{{$ticket->id}}" class="btn btn-default" onclick="Status({{$ticket->id}},<?php  if(Auth::user()->type=="admin") echo 1; else echo 0;?>)"  style="float:right !important;" >reopen</button>
 				@endif
 			@endif
 </div>

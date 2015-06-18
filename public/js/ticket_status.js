@@ -6,7 +6,7 @@
             });
             };
 //------------------------------------------------------------------------
-function Status(elm){
+function Status(elm,admin){
   var ticket_id = elm;
   var status =document.getElementById(elm).name;
 techid=document.getElementById("techid").value.split(',')[1];
@@ -27,14 +27,16 @@ result=JSON.parse(result);
 		window.location = "http://localhost:8000/tickets/";
 		}else{
 		   if(!techid){
-			takeOverButton=document.createElement("button");
-			takeOverButtonText=document.createTextNode("Assign To");
-			takeOverButton.setAttribute('id',ticket_id+",takeover");
-			takeOverButton.setAttribute("class","btn btn-default assgn");
-			takeOverButton.setAttribute('onclick','TakeOver('+'"'+ticket_id+',takeover'+'"'+')');
-			takeOverButton.appendChild(takeOverButtonText);
-			document.getElementById("ass2").appendChild(takeOverButton);
-
+		   	if(admin == 1)
+		   	{
+				takeOverButton=document.createElement("button");
+				takeOverButtonText=document.createTextNode("Assign To");
+				takeOverButton.setAttribute('id',ticket_id+",takeover");
+				takeOverButton.setAttribute("class","btn btn-default assgn");
+				takeOverButton.setAttribute('onclick','TakeOver('+'"'+ticket_id+',takeover'+'"'+')');
+				takeOverButton.appendChild(takeOverButtonText);
+				document.getElementById("ass2").appendChild(takeOverButton);
+			}
 			}
 var csrf=$("#hidden").val();
 
