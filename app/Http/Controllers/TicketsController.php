@@ -259,7 +259,7 @@ class TicketsController extends Controller {
 			'category'=>'required'
 			]);
 			$ticket= new Ticket;
-			$ticket->description=$request->get('description');
+			$ticket->description=trim($request->get('description'));
 
 			//check for uploaded file and store it n public path
 			if ($request->hasFile('file')) { 

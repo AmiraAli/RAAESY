@@ -105,14 +105,14 @@ class AssetsController extends Controller {
 
 		$asset = new Asset;
 		
-		$asset->name = $request->get('name');
-		$asset->serialno = $request->get('serialno');
-		$asset->location = $request->get('location');
-		$asset->comment = $request->get('comment');
+		$asset->name = trim($request->get('name'));
+		$asset->serialno = trim($request->get('serialno'));
+		$asset->location = trim($request->get('location'));
+		$asset->comment = trim($request->get('comment'));
 		$asset->assettype_id = $request->get('assettype_id');
 		$asset->user_id = $request->get('user_id');
 		$asset->admin_id = Auth::user()->id;
-		$asset->manufacturer = $request->get('manufacturer');
+		$asset->manufacturer = trim($request->get('manufacturer'));
 		
 		$asset->save();
 		return redirect("assets");
@@ -168,11 +168,11 @@ class AssetsController extends Controller {
     	]);
 		$asset = Asset::find($id);
 
-		$asset->name = $request->get('name');
-		$asset->serialno = $request->get('serialno');
-		$asset->location = $request->get('location');
-		$asset->comment = $request->get('comment');
-		$asset->manufacturer = $request->get('manufacturer');
+		$asset->name = trim($request->get('name'));
+		$asset->serialno = trim($request->get('serialno'));
+		$asset->location = trim($request->get('location'));
+		$asset->comment = trim($request->get('comment'));
+		$asset->manufacturer = trim($request->get('manufacturer'));
 		$asset->assettype_id = $request->get('assettype_id');
 		$asset->user_id = $request->get('user_id');
 

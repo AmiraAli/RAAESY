@@ -24,7 +24,7 @@ function submit_subject () {
 		$.ajax({
 		      url: '/tickets/addSubject',
 		      type: "post",
-		      data: {'newsubj':newsubj},
+		      data: {'newsubj':newsubj.trim()},
 		      success: function(data){
 		      	document.getElementById("subjerror").innerHTML="";
 		        var select= document.getElementById("subject_select");
@@ -153,7 +153,7 @@ function check_tags_array () {
 **/
 function submit_tags () {
 	// document.getElementById("tags_selected").style.display = "none";
-	var tags_field=document.getElementById("tagValues");
+	var tags_field=document.getElementById("tagValues").trim();
 	tags_field.value=tags_array.toString();
 	document.getElementsByTagName('form')[0].submit();
 }
@@ -192,7 +192,7 @@ function submit_tag () {
 		$.ajax({
 		      url: '/tickets/addTag',
 		      type: "post",
-		      data: {'newtag':newtag},
+		      data: {'newtag':newtag.trim()},
 		      success: function(data){
 		      	document.getElementById("tagerror").innerHTML="";
 		      	document.getElementById("new_tagvalue").value="";
