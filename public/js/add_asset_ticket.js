@@ -64,8 +64,9 @@ if(parentElm.innerHTML.trim()==""){
 		errorDiv.appendChild(noAssets);
 	
 		parentElm.appendChild(errorDiv);
+		$("#asseterrormessage").append("<a href='/assets/create' class='navtxt add-asset'>Add new asset</a>")
 		}
-		// $("#asseterrormessage").append("<a href='/assets/create' class='navtxt add-asset'>Add new asset</a>")
+		
 	}
 	
 	},

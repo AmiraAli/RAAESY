@@ -1,21 +1,30 @@
 <br>
 <div class="raw">
-		<div class="col-xs-7 col-sm-7 col-md-5 col-lg-5"  id="customedate">
-			{{trans('problemmangement.from')}}:<input type="text" id="startdate" value={{$startdate}}>
-			{{trans('problemmangement.to')}}:<input type="text" id="enddate" value={{$enddate}}>
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"  id="customedate">
+		
+				<div class="form-group col-md-3">
+					<label>{{trans('problemmangement.from')}}:</label>
+					<input type="text" class="form-control" id="startdate" value="{{$startdate}}">
+				</div>
+
+				<div  class="col-md-3">
+					<label>{{trans('problemmangement.to')}}:</label>
+					<input type="text" class="form-control" id="enddate" value="{{$enddate}}">
+				</div>
+				<div  class="col-md-3">
+					<button class="btn navbtn txtnav" onclick="searchDate()" style=" color: #ffffff !important;"><span class="glyphicon glyphicon-search"></span></button>
+						<!--csv report-->
+					 <a  id="csv" href="/reports/problemMangementCSV">
+
+					    <img src="/images/CSV.png" style="width:40px"></img>
+					</a>
+				</div>
+		
 		</div>
-
-		<div  class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="float:left;">
-			<button class="btn navbtn txtnav" onclick="searchDate()" style=" color: #ffffff !important;"><span class="glyphicon glyphicon-search"></span></button>
-			<!--csv report-->
-		 <a  id="csv" href="/reports/problemMangementCSV">
-
-		    <img src="/images/CSV.png" style="width:40px"></img>
-		</a>
-		</div> 
+ 
 	</div>
 	
-	<br><br>
+	<br><br><br>
 	<?php
 	if (empty(json_decode(json_encode($allTickets), true)))
 	{
