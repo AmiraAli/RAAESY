@@ -2,6 +2,7 @@
 	@extends('app')
 	@section('content')
 	<meta name="_token" content="{{ app('Illuminate\Encryption\Encrypter')->encrypt(csrf_token()) }}" />
+	<link rel="stylesheet" type="text/css" href="/css/reports/techicianStatistics.css">
 	<div class="container">
     <h3 class="navtxt"><a href="{{ url('/reports')}}"> Reports</a>
     >>Technician Statistics</h3>
