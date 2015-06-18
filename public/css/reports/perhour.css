@@ -8,3 +8,7 @@
 .hv{
 	color: #ffffff !important;
 }
+#error{
+	font: italic 20px serif;
+	color: red;
+}
