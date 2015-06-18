@@ -67,7 +67,7 @@ class AssetsController extends Controller {
 	public function create()
 	{
 		$types = AssetType::all();
-		$users = User::all();
+		$users = User::where('type' ,'regular')->get();
 		return view("assets.create",compact('types','users'));
 	}
 
@@ -129,7 +129,7 @@ class AssetsController extends Controller {
 			return view('errors.404');
 		}
 		$types = AssetType::all();
-		$users = User::all();
+		$users = User::where('type','regular')->get();
 	
 		return view("assets.edit",compact('asset', 'types', 'users'));
 	}
