@@ -11,11 +11,11 @@
             <form class="form-inline">
             <div class="form-group">
                 <label>From</label>
-                <input  class="form-control" type="text" id="startdate">
+                <input  class="form-control" type="text" id="startdate" value="{{ $startdate }}">
             </div>
             <div class="form-group">
                 <label>To</label>
-                <input class="form-control" type="text" id="enddate">
+                <input class="form-control" type="text" id="enddate" value="{{ $enddate }}">
             </div>
             </form>
         </div>

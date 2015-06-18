@@ -9,11 +9,11 @@
     <div class="container">
     <h3 class="navtxt"><a href="{{ url('/reports')}}"> Reports</a>
     >>Tickets per day</h3>
-</div>
+
 <br>
         <div class="container-fluid">
         <div class="row">
-         <div class="col-md-10 col-md-offset-1">
+         <div class="col-md-12">
             <div class="panel ">
                 <div class="panel-heading navbtn txtnav"> <strong>Tickets per day</strong> </div>
                 <div class="panel-body">
@@ -42,13 +42,15 @@
                             <button type="submit" class="btn navbtn txtnav hv" onclick="prepareTickets ()" >Go</button>
 
                         </div>
-                </div>
+                        
+                    </div>
                 </div>
             </div>
+        </div>
+       
+            <div  class="row divchart" id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
             </div>
-    <div  class="row divchart" id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-    </div>
-
+</div>
     <script src="/js/reports/ticketsPerTime.js"></script>
 
     <script>

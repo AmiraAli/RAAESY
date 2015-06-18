@@ -186,7 +186,7 @@
 
 			@foreach($relatedTickets as $Ticket)
 				@if($Ticket->ticket_id!=$ticket->id)
-					<a href="/tickets/{{$Ticket->ticket_id}}">{{substr($Ticket->description,0,10)."....."}}</a><br>
+					<a href="/tickets/{{$Ticket->ticket_id}}">{!!substr($Ticket->description,0,10)."....."!!}</a><br>
 				@endif
 			@endforeach
 
