@@ -3,6 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Section;
+use App\Log;
 use Request;
 use App\Category;
 use Auth;
@@ -12,6 +13,26 @@ use Auth;
 class SectionsController extends Controller {
 
 	
+
+	/**
+	 * Notify when category is spam/delete (called by AJAX).
+	 *
+	 * @param  object  $model_obj , string action
+	 * @return Response
+	 */
+
+
+	private function addnotification($action , $type , $model_obj ){
+
+		$notification = new Log();
+		$notification->type = $type ;
+		$notification->action = $action;
+		$notification->name = $model_obj->name;
+		$notification->type_id = $model_obj['id'];
+		$notification->user_id = Auth::user()->id;
+		$notification->save();
+
+	}
 
 	public function __construct()
 	{
@@ -122,6 +143,13 @@ class SectionsController extends Controller {
 	public function destroy($id)
 	{
 		$section = Section:: find($id);
+
+		$categories=Category::where('section_id','=',$id)->get();
+
+		for ($i=0; $i <count($categories); $i++) {
+			//add notification wher article deleted
+			$this->addnotification("delete"  , "category" , $categories[$i] );
+		}
 		$section->delete();
 	}
 
