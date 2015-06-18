@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Input;
 use Auth;
 use DB;
-//use Request;
 use App\Subject;
 use App\Ticket;
 use App\Category;
@@ -107,6 +106,25 @@ class TicketsController extends Controller {
 		$notification->type_id = $model_obj->id;
 		$notification->user_id = Auth::user()->id;
 		$notification->save();
+
+	}
+
+
+
+	/*
+	 * Headers used to export files to CSV
+	 */
+	private function getCSVHeaders(){
+
+		return array('Pragma' =>  'public',
+			'Expires' =>  '0' , 
+			'Cache-Control' =>  'must-revalidate, post-check=0, pre-check=0' , 
+			'Content-Description' =>  'File Transfer' , 
+			'Content-Type' =>  'text/csv' , 
+			'Content-Disposition' => 'attachment; filename=export.csv;' , 
+			'Content-Transfer-Encoding' =>  'binary' ,
+
+		);
 
 	}
 
@@ -349,23 +367,10 @@ class TicketsController extends Controller {
 	$relatedTickets=Ticket::join('ticket_tags', 'tickets.id', '=', 'ticket_tags.ticket_id')
 	->whereIn('ticket_tags.tag_id',$relatedIds)->groupBy('tickets.id')->get();
 
-	#file_put_contents("/home/aya/teesst.html", $relatedTickets);
-
 	// Get Related Assests
-
 	$relatedAssets = Ticket::find($id)->TicketAssets;
-	// $relatedAssets = TicketAsset::where("ticket_id", $id)->get();
-//$relatedAssets = Ticket::join('ticket_assets', 'tickets.id', '=', 'ticket_assets.ticket_id')->where('tickets.id','=',$id)->get();
-	//get all comments
 	$comments=Ticket::find($id)->comments;
 
-	// Check status of ticket closed or open
-	//$checkStatus=TicketStatus::where('ticket_id', $id)->first();
-
-	
-
-	//get assigned to and user created it
-	//$users=Ticket::find($id)->user;
 
 	return view('tickets.show',compact('ticket','relatedTickets','relatedAssets','comments'));
 
@@ -448,7 +453,6 @@ class TicketsController extends Controller {
 			}
 
 
-			//$ticket->tech_id=$request->get('tech');
 			$ticket->admin_id=Auth::user()->id;
 			$ticket->save();
 
@@ -549,7 +553,6 @@ class TicketsController extends Controller {
 	{
 		// Getting post data
 		if($request->ajax()) {
-			// $data = Input::all();
 			$data = $request->input('newsubj');
 			$subject= new Subject;
 			$subject->name=$data;
@@ -565,13 +568,13 @@ class TicketsController extends Controller {
 	{
 		// Getting post data
 		if($request->ajax()) {
-			// $data = Input::all();
 			$data = $request->input('q');
 			$tags=Tag::select('name')->where('name','like',"%".$data.'%')->get();
-			// file_put_contents("/home/amira/test.html", $tags);
 			echo json_encode($tags);
 		}
 	}
+	
+
 	/**
 	* Function to update status of ticket
 	**/
@@ -597,10 +600,6 @@ class TicketsController extends Controller {
 		$ticketStatuses->ticket_id=$ticket_id;
 		$ticketStatuses->save();
 	
-		//$ticketStatus=TicketStatus::where('ticket_id', $ticket_id)->first();
-		//$ticketStatus->value=$status;
-		//$ticketStatus->save();
-
 		// save notification
 		$readonly=0;
 		if($status=='close')
@@ -616,7 +615,7 @@ class TicketsController extends Controller {
 		$notify->fname=Auth::user()->fname;
 		$notify->lname=Auth::user()->lname;
 		echo json_encode($notify);
-		//file_put_contents("/home/aya/teesst.html", $notify);
+
 
 	}
 
@@ -761,10 +760,7 @@ class TicketsController extends Controller {
 					
 					$relatTickets=[];
 				}
-
-			//convert array to object
-			
-			
+		
 			return $relatTickets;
 
 
@@ -779,20 +775,22 @@ class TicketsController extends Controller {
 	**/
 	public function takeover(Request $request){
 
-	if($request->ajax()) {
-		$users=array();
-		$users_tech=User::where('type','tech')->get();
-			//file_put_contents("/home/aya/teesst.html", $users_tech);
-		for($i=0;$i<count($users_tech);$i++){
-		$count=Ticket::where('tech_id',$users_tech[$i]->id)->count();
-		if($count<5){
-			array_push($users,$users_tech[$i]);
-			}
-			}}
+		if($request->ajax()) {
+			$users=array();
+			$users_tech=User::where('type','tech')->get();
 
-	echo json_encode($users);
+			for($i=0;$i<count($users_tech);$i++){
+				$count=Ticket::where('tech_id',$users_tech[$i]->id)->count();
+				if($count<5){
+					array_push($users,$users_tech[$i]);
+				}
+			}
+		}
+
+		echo json_encode($users);
 
 	}
+
 	/**
 	* Function to save tech that assign to ticket and make notification
 	**/
@@ -821,6 +819,8 @@ class TicketsController extends Controller {
 	}
 	echo json_encode($ticket);
 	}
+
+
 	/**
 	* Function to get all subject in auto complete
 	**/
@@ -887,42 +887,6 @@ $subject=array();
 
 	public function AdvancedSearch($Tickets, $data){
 
-	// if($request->ajax()) {
-	// 	$priority=$request->input("priority");
-	// 	$deadLine=$request->input("enddate");
-	// 	$startDate=$request->input("created_at");
-	// 	$techId=$request->input("tech_id");
-	// 	//$startDate=$startDate+" "+"00:00:00";
-	// 	//$deadLine=$deadLine+" "+"23:59:59";
-	// 	}
-
-	// 		$userType=Auth::user()->type;
-	// 		$userId=Auth::user()->id;
-	// 	if ( !$priority && !$techId && !$deadLine && !$startDate  ) 
-	//             {   
-	// 		if($userType=="regular"){
-	// 		$Tickets = Ticket::all()->where('user_id', $userId);
-	// 		$Tickets = $Tickets->where('is_spam', "0");
-	// 		}else{
-	//             	$Tickets = Ticket::all()->where('is_spam', "0"); 
-	// 			}
-	// 		return (string) view('tickets.adavcedticketsearch',compact('Tickets'));
-	//             }
-
-	//             else
-	//             {
-
-	// 		if($userType=="regular"){
-	// 		$Tickets = Ticket::select('*')->where('user_id', $userId);
-	// 		$Tickets = $Tickets->where('is_spam', "0");
-	// 		}else{
-
-
-
-	// 	            $Tickets =Ticket::select('*')->where('is_spam', "0");
-	// 		}
-
-
 	            if ($data["priority"]) {
 	            	$Tickets=$Tickets->where('priority', $data["priority"]);
 	            }
@@ -937,11 +901,6 @@ $subject=array();
 				}
 
 				return $Tickets;
-
-		//             $Tickets=$Tickets->get();
-		            
-		// return (string) view('tickets.adavcedticketsearch',compact('Tickets'));
-		//         }  
 		
 	}
 
@@ -995,7 +954,7 @@ $subject=array();
 				$tickets = $tickets->where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
             		->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null or sum(comments.readonly) = 0 )  THEN 0  ELSE 1 END as c')
                     ->groupBy('tickets.id')
-                    ->HAVING("c", "=" , '0' )->get();
+                    ->HAVING("c", "=" , '0' );
 
                     $unansweredFlag = true;
 
@@ -1024,15 +983,16 @@ $subject=array();
 			$tickets= $this->AdvancedSearch ($tickets , $search);
 
 			if ($unansweredFlag){
-				//$tickets = array_slice ( $tickets , 5 );
-				$ticketPag = new Paginator($tickets, 5, $request->input("page"),['path' =>'/tickets/searchTicket' ]);
+				//in case of unasnswerd tickets, don't use pagination
+				$ticketPag = $tickets->get();
 			}else{
 				$ticketPag = $tickets->paginate(5);
 			}
 
 			
 			$tickets= $this->sortTicket ( $ticketPag , $sortBy , $sortType);
-			return view("tickets.searchTicket",compact('tickets', 'ticketPag')); 
+
+			return view("tickets.searchTicket",compact('tickets', 'ticketPag' , 'unansweredFlag')); 
 		}
 	}
 	
@@ -1250,7 +1210,8 @@ $subject=array();
 		$tickets = Ticket::all();
 
 	    // the csv file with the first row
-	    $output = implode(",", array('Subject', 'Status', 'Category', 'Creation Date', 'Deadline','Assigned To','Priority'))."\n";
+	    $output = chr(0xEF) . chr(0xBB) . chr(0xBF) ;
+	    $output .= implode(",", array('Subject', 'Status', 'Category', 'Creation Date', 'Deadline','Assigned To','Priority'))."\n";
 
 	    foreach ($tickets as $row) {
 		// iterate over each tweet and add it to the csv
@@ -1258,14 +1219,10 @@ $subject=array();
 				$row['created_at'],$row['deadline'],$row['user']['fname']." ".$row['user']['lname'],$row['priority']))."\n"; // append each row
 	    }
 
-	    // headers used to make the file "downloadable", we set them manually
-	    // since we can't use Laravel's Response::download() function
-	    $headers = array(
-		'Content-Type' => 'text/csv',
-		'Content-Disposition' => 'attachment; filename="tickets.csv"',
-		);
+	    // headers used to make the file "downloadable"
+	    $headers = $this->getCSVHeaders();
 
-	    // our response, this will be equivalent to your download() but
+	    //this will be equivalent to your download() but
 	    // without using a local file
 	    return Response::make(rtrim($output, "\n"), 200, $headers);
 	}

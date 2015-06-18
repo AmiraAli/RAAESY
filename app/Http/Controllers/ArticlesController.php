@@ -28,6 +28,25 @@ class ArticlesController extends Controller {
 	}
 
 
+	/*
+	 * Headers used to export files to CSV
+	 */
+	private function getCSVHeaders(){
+
+		return array('Pragma' =>  'public',
+			'Expires' =>  '0' , 
+			'Cache-Control' =>  'must-revalidate, post-check=0, pre-check=0' , 
+			'Content-Description' =>  'File Transfer' , 
+			'Content-Type' =>  'text/csv' , 
+			'Content-Disposition' => 'attachment; filename=export.csv;' , 
+			'Content-Transfer-Encoding' =>  'binary' ,
+
+		);
+
+	}
+
+
+
 
 	/**
 	 * Authorize admin
@@ -342,7 +361,9 @@ class ArticlesController extends Controller {
 
 
     	$articles=Article::all();
-    	$output = implode(",", array('Subject', 'Category','How can See It!?','Owner','Created_at','Updated_at'))."\n";
+
+    	$output = chr(0xEF) . chr(0xBB) . chr(0xBF) ;
+    	$output .= implode(",", array('Subject', 'Category','How can See It!?','Owner','Created_at','Updated_at'))."\n";
     	foreach ($articles as $article) {
 		// iterate over each tweet and add it to the csv
 			if ($article->isshow==1){
@@ -357,10 +378,7 @@ class ArticlesController extends Controller {
 
     	// headers used to make the file "downloadable", we set them manually
 		// since we can't use Laravel's Response::download() function
-		$headers = array(
-		'Content-Type' => 'text/csv',
-		'Content-Disposition' => 'attachment; filename="ArticleReport.csv"',
-		);
+		$headers = $this->getCSVHeaders();
 
 		// our response, this will be equivalent to your download() but
 		// without using a local file

@@ -59,6 +59,24 @@ class AssetsController extends Controller {
 
 	}
 
+	/*
+	 * Headers used to export files to CSV
+	 */
+	private function getCSVHeaders(){
+
+		return array('Pragma' =>  'public',
+			'Expires' =>  '0' , 
+			'Cache-Control' =>  'must-revalidate, post-check=0, pre-check=0' , 
+			'Content-Description' =>  'File Transfer' , 
+			'Content-Type' =>  'text/csv' , 
+			'Content-Disposition' => 'attachment; filename=export.csv;' , 
+			'Content-Transfer-Encoding' =>  'binary' ,
+
+		);
+
+	}
+
+
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -303,7 +321,8 @@ class AssetsController extends Controller {
 	$assests = Asset::all();
 
 	    // the csv file with the first row
-	    $output = implode(",", array('id', 'Model', 'Manufacturer', 'Type', 'Serial Number','Belongs To','Location'))."\n";
+		$output = chr(0xEF) . chr(0xBB) . chr(0xBF) ;
+	    $output .= implode(",", array('id', 'Model', 'Manufacturer', 'Type', 'Serial Number','Belongs To','Location'))."\n";
 
 	    foreach ($assests as $row) {
 		// iterate over each tweet and add it to the csv
@@ -311,14 +330,10 @@ class AssetsController extends Controller {
 				$row['assettype']['name'],$row['serialno'],$row['user']['fname']." ".$row['user']['lname'],$row		   						['location']))."\n"; // append each row
 	    }
 
-	    // headers used to make the file "downloadable", we set them manually
-	    // since we can't use Laravel's Response::download() function
-	    $headers = array(
-		'Content-Type' => 'text/csv',
-		'Content-Disposition' => 'attachment; filename="assets.csv"',
-		);
+	    // headers used to make the file "downloadable"
+	    $headers = $this->getCSVHeaders();
 
-	    // our response, this will be equivalent to your download() but
+	    // this will be equivalent to your download() but
 	    // without using a local file
 	    return Response::make(rtrim($output, "\n"), 200, $headers);
 	}
