@@ -265,9 +265,8 @@ class UsersController extends Controller {
 	public function update($id)
 	{
 		$v = Validator::make(Request::all(), [
-           			'fname' => 'required|max:255',
-					'lname' => 'required|max:255',
-					'email' => 'required|email|max:255',
+           			'fname' => 'required|max:15',
+					'lname' => 'required|max:15',
 					'phone' => 'required|numeric',
 					'location' => 'required|max:255',
         	]);
@@ -282,7 +281,6 @@ class UsersController extends Controller {
 			$user=User::find($id);
 			$user->fname=Request::get('fname');
 			$user->lname=Request::get('lname');
-			$user->email=Request::get('email');
 			$user->phone=Request::get('phone');
 			$user->location=Request::get('location');
 
