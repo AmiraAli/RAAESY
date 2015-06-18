@@ -265,9 +265,8 @@ class UsersController extends Controller {
 	public function update($id)
 	{
 		$v = Validator::make(Request::all(), [
-           			'fname' => 'required|max:255',
-					'lname' => 'required|max:255',
-					'email' => 'required|email|max:255',
+           			'fname' => 'required|max:15',
+					'lname' => 'required|max:15',
 					'phone' => 'required|numeric',
 					'location' => 'required|max:255',
         	]);
@@ -282,7 +281,6 @@ class UsersController extends Controller {
 			$user=User::find($id);
 			$user->fname=Request::get('fname');
 			$user->lname=Request::get('lname');
-			$user->email=Request::get('email');
 			$user->phone=Request::get('phone');
 			$user->location=Request::get('location');
 
@@ -491,43 +489,27 @@ class UsersController extends Controller {
 	    $filename = "users.csv";
 	    $handle = fopen($filename, 'w+');
 
-	    
+	    fputs($handle, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
 	    fputcsv($handle, array('id', 'First name', 'Last name', 'Email' ,'Phone' ,'Location' , 'Disabled' , 'Type'  , 'Created at' , 'Updated at'));
 
 
 	    //put all fields except password
 	    foreach($users as $row) {
-	    	//mb_convert_encoding($row, 'UTF-16LE', 'UTF-8');
 	        fputcsv($handle, array($row['id'], $row['fname'], $row['lname'], $row['email'] , $row['phone'] , $row['location'] , $row['isspam'] , $row['type'] ,$row['created_at']  , $row['updated_at']));
 	    }
 
 	    fclose($handle);
 
-	    /*$headers = array(
-	        'Content-Type' => 'text/csv; charset=UTF-8',
-	        'Content-Encoding'=> 'UTF-8' ,
-	    );*/
+	    $headers = array('Pragma' =>  'public',
+			'Expires' =>  '0' , 
+			'Cache-Control' =>  'must-revalidate, post-check=0, pre-check=0' , 
+			'Content-Description' =>  'File Transfer' , 
+			'Content-Type' =>  'text/csv' , 
+			'Content-Disposition' => 'attachment; filename=export.csv;' , 
+			'Content-Transfer-Encoding' =>  'binary' ,
 
-	    $headers = array( 'Content-Description' => 'File Transfer' , 
-		'Content-Type'=> 'text/csv; charset=UTF-8' , 
-		'Content-Disposition' => 'attachment; filename=file.csv' , 
-		'Content-Transfer-Encoding' =>  'binary' , 
-		'Expires' => '0' , 
-		'Cache-Control'=> 'must-revalidate, post-check=0, pre-check=0' , 
-		'Pragma' => 'public' , 
-			);
-/*
-$headers = array('Pragma: public',
-'Expires' =>  '0' , 
-'Cache-Control' =>  must-revalidate, post-check=0, pre-check=0' , 
-header('Content-Description: File Transfer');
-header('Content-Type: text/csv');
-header('Content-Disposition: attachment; filename=export.csv;');
-header('Content-Transfer-Encoding: binary');
-
-*/
-		//echo "\xEF\xBB\xBF"; // UTF-8 BOM
-
+		);
+		
 	    return Response::download($filename, 'users.csv', $headers);
 		
 	}

@@ -35,9 +35,11 @@
 
 	<div class="container col-md-10 table_show" id="table_show{{$section->id}}" >
 	<table id="{{$section->id}}categories" class="table table-hover form sec" >
+		<?php $x = 0; ?>
 	@foreach ($categories as $category)
 
 	@if($category->section_id == $section->id)
+		<?php $x = 1; ?>
      <tr class=" {{$section->id}}category" id="{{ $category->id }}category">  						        
         	<td class="col-md-5 {{$category->id}}hideEditCat">
 
@@ -49,13 +51,19 @@
 
 	      &ensp;&ensp; &ensp;
 
-	    	<button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" onclick="deleteCategory( {{ $category->id }}+'category' )"><span class="glyphicon glyphicon-trash"></span></button>			            	
+	    	<button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" onclick="deleteCategory( {{ $category->id }}+'category','{{$section->id}}' )"><span class="glyphicon glyphicon-trash"></span></button>			            	
 		  		</div>
 		 	</td>			
         @endif
  	 </tr>
 	@endforeach
 	</table>
+	<div id="e{{$section->id}}" class="err">
+		<?php if($x == 0){ ?>
+			<center>There is no categories in this section</center>
+		<?php }?>
+
+	</div>
 	</div>
 
 	@endforeach
@@ -94,7 +102,6 @@
 
 					allChild[i].innerHTML="";
 				}
-					//$("#"+id).css("margin-bottom", "0"); 
 				 document.getElementById(ids+",sec").remove(); 
 				 document.getElementById("table_show"+ids).remove();
 				 				  
@@ -106,15 +113,19 @@
 
 		}
 
-
-
-function deleteCategory(id){ 
-		//console.log(id);
+function deleteCategory(id, section){ 
 		   $.ajax({
 			    url: '/categories/'+id,
 			    type: 'DELETE',
 			    success: function(result) {
-					 $('#'+id).remove();    
+					 $('#'+id).remove();
+
+					 if ($('#'+section+"categories").has( "tr" ).length == 0) {
+
+						 $("#e"+section).html("<center>There is no categories in this section</center>");
+					}
+						 
+
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
 					console.log(errorThrown);

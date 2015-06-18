@@ -108,7 +108,7 @@
 									<button type="submit" onclick="search()" class="btn navbtn txtnav hv">Search</button>
 								</div>
 								<div class="col-md-3 col-md-offset-1">
-									<button type="reset" class="btn navbtn txtnav hv">Reset</button>
+									<button type="reset" onclick="resetForm()" class="btn navbtn txtnav hv">Reset</button>
 
 								</div>
 							</div>

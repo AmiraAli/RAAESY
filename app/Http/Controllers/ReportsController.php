@@ -26,6 +26,25 @@ class ReportsController extends Controller {
 		}
 
 	}
+
+
+	/*
+	 * Headers used to export files to CSV
+	 */
+	private function getCSVHeaders(){
+
+		return array('Pragma' =>  'public',
+			'Expires' =>  '0' , 
+			'Cache-Control' =>  'must-revalidate, post-check=0, pre-check=0' , 
+			'Content-Description' =>  'File Transfer' , 
+			'Content-Type' =>  'text/csv' , 
+			'Content-Disposition' => 'attachment; filename=export.csv;' , 
+			'Content-Transfer-Encoding' =>  'binary' ,
+
+		);
+
+	}
+
 	/**
 	* Function to sort tickets
 	**/
@@ -122,7 +141,7 @@ class ReportsController extends Controller {
 	public function logsCSV(){
 		$logs =Log::all();
 
-		$output="";
+		$output = chr(0xEF) . chr(0xBB) . chr(0xBF) ;
 		foreach ($logs as $log ) {
 			
 		
@@ -141,18 +160,15 @@ class ReportsController extends Controller {
 		 	$output .= implode(",", array($log->user->fname));
 
 			if ( $log->action == 'spam'){
-				$output .= implode(",", array(" marked the ".$log->type."#".$log->id." with ".$name." ".$log->name." as spam "))."\n";
+				$output .= implode(",", array(" marked the ".$log->type." #".$log->id." with ".$name." ".$log->name." as spam "))."\n";
 			}else{
-				$output .= implode(",", array($log->action."d the ".$log->type."#".$log->id." with ".$name." ".$log->name))."\n" ;
+				$output .= implode(",", array(" ".$log->action."d the ".$log->type." #".$log->id." with ".$name." ".$log->name))."\n" ;
 			}
 			
 		}
-	// headers used to make the file "downloadable", we set them manually
-	// since we can't use Laravel's Response::download() function
-	$headers = array(
-	'Content-Type' => 'text/csv',
-	'Content-Disposition' => 'attachment; filename="DelegationLogReport.csv"',
-	);
+			// headers used to make the file "downloadable"
+		    $headers = $this->getCSVHeaders();
+
 
 	// our response, this will be equivalent to your download() but
 	// without using a local file
