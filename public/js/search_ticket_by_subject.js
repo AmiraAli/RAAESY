@@ -8,10 +8,7 @@ window.onload = function() {
 
 function SearchButton(){
 
-console.log("aya");
-
   var subjectOfTicket = $('#searchticket').val();
-  console.log(subjectOfTicket);
                   
 $.ajax({
     url: '/tickets/all/subjects',
@@ -20,9 +17,22 @@ $.ajax({
 
     success: function(result) {
 
-	//console.log(JSON.parse(result)[0].id);
 console.log(result);
 $("#table_show").html(result);
+ $('.checkbox1').each(function () {
+             if(!$(this).is(":checked")) 
+             {
+                    
+               $('.'+$(this).val()).hide();
+
+             }
+             else
+             {
+                
+                $('.'+$(this).val()).show();
+             }
+    
+            });
 	},
 	error: function(jqXHR, textStatus, errorThrown) {
                     // alert('HTTP Error: '+errorThrown+' | Error Message: '+textStatus);

@@ -78,6 +78,10 @@ function getReport(){
 
     var date1 = document.getElementById('date1').value;
     var date2 = document.getElementById('date2').value;
+    if(date1 > date2){
+        $(".divchart").html("<br><br><div id='error'><center>End date must be greater than start date</center></div>");
+        return;
+    }
     
     if (date1.trim() == "" && date2.trim() == "") {
         return ;

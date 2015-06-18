@@ -4,8 +4,7 @@
 <br><br>
 <div class="container ">
 
- <div class="row ">
-  <img  class="col-xs-10 col-md-5 pull-right" src="/images/helpdeskArticle.png">
+  <img  class="col-xs-10 col-md-5 pull-right visible-xs hidden-md visible-sm  hidden-lg" src="/images/helpdeskArticle.png">
     <div class=" col-xs-11 col-md-7">
       <div class="panel ">
       <div class="panel-heading navbtn txtnav fnt" >{{$article->subject}}
@@ -20,11 +19,13 @@
             </div>
           </div>
       </div>
-  </div>
- 
-
-        
+      
  <div class=" col-xs-11 col-md-4 pull-right" >
+
+ <div class="row ">
+<img  class="col-xs-10 col-md-12 visible-md visible-lg hidden-xs hidden-sm visible-lg pull-right" src="/images/helpdeskArticle.png">
+ </div>
+
     <div class="row ">
     <div class="col-md-12">
   
@@ -51,7 +52,6 @@
 
                          $distinct[0]=0;
                          $z=0;
-                         $y=0;
                          if (!empty($art)) {
 
                          for ($i=0; $i <sizeof($art) ; $i++) { 
@@ -73,17 +73,7 @@
                               $distinct[$z]=$art[$i];
                               $z=$z+1;
 
-                              if ($y<5)
-                                {       
-                               $y++;
-
                               echo "<a href=/articles/".$art[$i].">".$artSub[$art[$i]]."</a>"."<br/>";
-                              if ($y==5)
-                              {
-                                      echo '<span class="dt">....</span>';
-                                     $y++;
-                                  } 
-                            }
                               $f=0;
                             }
                          }

@@ -34,10 +34,15 @@
 				   <button name="open" id="{{$ticket->id}}" class="btn btn-default" onclick="Status({{$ticket->id}})"  style="float:right !important;" >reopen</button>
 				@endif
 			@endif
-
+</div>
+</div>
+@else
+<div class="row">
+	<div class="col-md-5 fnt">  {{ $ticket->subject->name }}</div> 
+</div>
 @endif
-</div>
-</div>
+
+
 		
 
 <br>		
@@ -49,8 +54,8 @@
 
 		<div class="row">
 		@if($ticket->file)			
-			<div class="fnt col-md-4">More details uploded:</div>
-			<div class="col-md-8 file"><a href="{{ URL::to( '/files/'. $ticket->file)  }}" target="_blank">{{ $ticket->file }}</a></div>
+			<div class="fnt col-md-5">More details uploded:</div>
+			<div class="col-md-6 file"><a href="{{ URL::to( '/files/'. $ticket->file)  }}" target="_blank">{{ $ticket->file }}</a></div>
 			
 		@endif
 		</div>
@@ -128,9 +133,11 @@
 	  <div class="panel-body assigned"> 
 		<span class="title">Section </span>{{ $ticket->category->section->name }}<br>
 		<span class="title">Category </span>{{ $ticket->category->name }}<br>
-		<span class="title">Periorty </span>{{ $ticket->priority }}<br>
+		@if(Auth::user()->type=="admin" or Auth::user()->type=="tech")
+			<span class="title">Periorty </span>{{ $ticket->priority }}<br>
+			<span class="title">Due   </span>{{ $ticket->deadline }}<br>
+		@endif
 		<span class="title">Start Date </span>{{ $ticket->created_at }}<br>
-		<span class="title">Due   </span>{{ $ticket->deadline }}<br>
 		<span class="title">From  </span> {{ $ticket->user->fname }} {{$ticket->user->lname}}<br>
 		<span class="title">Assigned To  </span> <span class="tecname">@if($ticket->tech){{ $ticket->tech->fname}}  {{ $ticket->tech->lname}}@endif</span>
 

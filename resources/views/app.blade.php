@@ -37,7 +37,7 @@
 						@if(Auth::user()->type == "admin")
 							<li><a  class="txtnav" href="{{ url('/assets') }}">Assets</a></li>
 							<li><a  class="txtnav" href="{{ url('/users') }}">Users</a></li>
-							<li><a class="txtnav" href="{{ url('/sections') }}">Categories&Sections</a></li>							
+							<li><a class="txtnav" href="{{ url('/sections') }}">Categories & Sections</a></li>							
 							<li><a class="txtnav" href="{{ url('/articles') }}">Articles</a></li>
 							<li><a class="txtnav" href="{{ url('/reports') }}">Reports</a></li>
 						@endif
