@@ -1,24 +1,24 @@
 <br>
 <div class="raw">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"  id="customedate">
-		
-				<div class="form-group col-md-3">
-					<label>{{trans('problemmangement.from')}}:</label>
-					<input type="text" class="form-control" id="startdate" value="{{$startdate}}">
-				</div>
+	
+			<div class="form-group col-md-3">
+				<label>{{trans('problemmangement.from')}}:</label>
+				<input type="text" class="form-control" id="startdate" value="{{$startdate}}">
+			</div>
 
-				<div  class="col-md-3">
-					<label>{{trans('problemmangement.to')}}:</label>
-					<input type="text" class="form-control" id="enddate" value="{{$enddate}}">
-				</div>
-				<div  class="col-md-3">
-					<button class="btn navbtn txtnav" onclick="searchDate()" style=" color: #ffffff !important;"><span class="glyphicon glyphicon-search"></span></button>
-						<!--csv report-->
-					 <a  id="csv" href="/reports/problemMangementCSV">
+			<div  class="col-md-3">
+				<label>{{trans('problemmangement.to')}}:</label>
+				<input type="text" class="form-control" id="enddate" value="{{$enddate}}">
+			</div>
+			<div  class="col-md-3">
+				<button class="btn navbtn txtnav" onclick="searchDate()" style=" color: #ffffff !important;"><span class="glyphicon glyphicon-search"></span></button>
+					<!--csv report-->
+				 <a  id="csv" href="/reports/problemMangementCSV">
 
-					    <img src="/images/CSV.png" style="width:40px"></img>
-					</a>
-				</div>
+				    <img src="/images/CSV.png" style="width:40px"></img>
+				</a>
+			</div>
 		
 		</div>
  
