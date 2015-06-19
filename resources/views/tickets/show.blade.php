@@ -82,8 +82,8 @@
 					onclick='edit(this)' class="btn btn-link buttonright cmtbtn"><span class='glyphicon glyphicon-pencil'></span></button>
 			@endif		
 		@endif
-		<div id="{{$comment->id}}combdy">
-		<div id="{{$comment->id}}combdy2">
+		<div id="{{$comment->id}}combdy" class="cmbdy">
+		<div id="{{$comment->id}}combdy2" class="cmbdy">
 	        {{$comment->body}}<br>
 		@if($comment->created_at!=$comment->updated_at)
 			{{$comment->updated_at}}

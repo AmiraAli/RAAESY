@@ -72,3 +72,6 @@ textarea {
 #select{
 	width: 200px;
 }
+.cmbdy{
+	word-wrap:break-word;
+}

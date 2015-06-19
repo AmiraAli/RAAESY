@@ -94,7 +94,7 @@ function add(ticketId){
 			edited = "Edited: ";
 		}
 //console.log(result);
-		$("#comments").append("<div class='panel  commentbody' id="+result['id']+"Comments"+"><div class='panel-heading navbtn txtnav'>"+result['fname']+" "+result['lname']+"</div><div class='panel-body'>"+"<button name="+result['id']+"_"+ticketId+"_dl onclick='Delete(this)' class='btn btn-link buttonright'><span class='glyphicon glyphicon-remove' style='color:#d82727;'></span></button> <button id='"+body+"'name="+result['id']+"_"+ticketId+" onclick='edit(this)' class='btn btn-link buttonright cmtbtn' ><span class='glyphicon glyphicon-pencil'></span></button><div id="+result['id']+"combdy><div id="+result['id']+"combdy2>"+body+"<br>"+result['created_at']+"</div></div></div>");
+		$("#comments").append("<div class='panel  commentbody' id="+result['id']+"Comments"+"><div class='panel-heading navbtn txtnav'>"+result['fname']+" "+result['lname']+"</div><div class='panel-body'>"+"<button name="+result['id']+"_"+ticketId+"_dl onclick='Delete(this)' class='btn btn-link buttonright'><span class='glyphicon glyphicon-remove' style='color:#d82727;'></span></button> <button id='"+body+"'name="+result['id']+"_"+ticketId+" onclick='edit(this)' class='btn btn-link buttonright cmtbtn' ><span class='glyphicon glyphicon-pencil'></span></button><div id="+result['id']+"combdy class='cmbdy'><div id="+result['id']+"combdy2 class='cmbdy'>"+body+"<br>"+result['created_at']+"</div></div></div>");
 		document.forms["addForm"]["body"].value = '';
 			},
 	error: function(jqXHR, textStatus, errorThrown) {
