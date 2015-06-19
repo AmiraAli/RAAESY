@@ -835,7 +835,9 @@ $subject=array();
 		$subjects=Subject::all()->lists('name');
 
 	if($type == 'regular'){
-	$tickets=Ticket::where('user_id','=',$id)->get();
+	$tickets=Ticket::where('user_id','=',$id);
+	$tickets=$tickets->where('is_spam','=','0');
+	$tickets=$tickets->get();
 	foreach($tickets as $ticket){
 		$subject[]=Subject::where('id','=',$ticket->subject_id)->lists('name')[0];
 
@@ -844,12 +846,14 @@ $subject=array();
 			}
 	
 	if($type == 'tech'){
-	$tickets=Ticket::where('tech_id','=',$id)->get();
+	$tickets=Ticket::where('tech_id','=',$id);
+	$tickets=$tickets->where('is_spam','=','0');
+	$tickets=$tickets->get();
 	foreach($tickets as $ticket){
 		$subject[]=Subject::where('id','=',$ticket->subject_id)->lists('name')[0];
 
 			}
-	$subjects = json_decode(json_encode($subject), FALSE);
+	$subjects = json_decode(json_encode($subject), False);
 			}
 		
 

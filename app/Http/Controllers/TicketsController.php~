@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Input;
 use Auth;
 use DB;
-//use Request;
 use App\Subject;
 use App\Ticket;
 use App\Category;
@@ -42,6 +41,54 @@ class TicketsController extends Controller {
 		$this->middleware('auth');
 	}
 
+	/**
+	 * Authorize admin
+	 * @param  integer $user_id
+	 * @return Response
+	 */
+	private function adminAuth()
+	{		
+		if (Auth::User()->type !="admin"){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Authorize user can view the page
+	 *
+	 * @return Response
+	 */
+	private function userAuth($id)
+	{		
+		if (Auth::User()->id !=$id ){
+			return false;
+		}
+		return true;
+	}
+
+
+	private function ticketValidate($ticket, $action){
+
+		// check if id is valid
+		if (empty($ticket)){
+			return false;
+		}
+
+		//authorization
+		$userId = $ticket->user_id;
+		$techId = $ticket->tech_id;
+		if($action == "show"){
+			if (!$this->adminAuth() && (!$this->userAuth($userId) && !$this->userAuth($techId))){
+				return false;
+			}
+		}else if($action == "edit"){
+			if (!$this->adminAuth() && !$this->userAuth($userId)){
+				return false;
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Notify when ticket is spam/delete (called by AJAX).
@@ -59,6 +106,25 @@ class TicketsController extends Controller {
 		$notification->type_id = $model_obj->id;
 		$notification->user_id = Auth::user()->id;
 		$notification->save();
+
+	}
+
+
+
+	/*
+	 * Headers used to export files to CSV
+	 */
+	private function getCSVHeaders(){
+
+		return array('Pragma' =>  'public',
+			'Expires' =>  '0' , 
+			'Cache-Control' =>  'must-revalidate, post-check=0, pre-check=0' , 
+			'Content-Description' =>  'File Transfer' , 
+			'Content-Type' =>  'text/csv' , 
+			'Content-Disposition' => 'attachment; filename=export.csv;' , 
+			'Content-Transfer-Encoding' =>  'binary' ,
+
+		);
 
 	}
 
@@ -161,6 +227,9 @@ class TicketsController extends Controller {
 	 */
 	public function create()
 	{
+		if (Auth::User()->type =="tech"){
+			return view('errors.404');
+		}
 		$subjects=Subject::all();
 		$categories=Category::all();
 		$sections=Section::all();
@@ -190,7 +259,7 @@ class TicketsController extends Controller {
 			'category'=>'required'
 			]);
 			$ticket= new Ticket;
-			$ticket->description=$request->get('description');
+			$ticket->description=trim($request->get('description'));
 
 			//check for uploaded file and store it n public path
 			if ($request->hasFile('file')) { 
@@ -280,6 +349,12 @@ class TicketsController extends Controller {
 	public function show($id)
 	{
 	$ticket=Ticket::find($id);
+
+	// validate ticket
+	if(!$this->ticketValidate($ticket,"show")){
+		return view('errors.404');
+	}
+
 	// Get Related Tags
 
 	$relatedTagIds = Ticket::find($id)->TicketTags;
@@ -292,23 +367,10 @@ class TicketsController extends Controller {
 	$relatedTickets=Ticket::join('ticket_tags', 'tickets.id', '=', 'ticket_tags.ticket_id')
 	->whereIn('ticket_tags.tag_id',$relatedIds)->groupBy('tickets.id')->get();
 
-	#file_put_contents("/home/aya/teesst.html", $relatedTickets);
-
 	// Get Related Assests
-
 	$relatedAssets = Ticket::find($id)->TicketAssets;
-	// $relatedAssets = TicketAsset::where("ticket_id", $id)->get();
-//$relatedAssets = Ticket::join('ticket_assets', 'tickets.id', '=', 'ticket_assets.ticket_id')->where('tickets.id','=',$id)->get();
-	//get all comments
 	$comments=Ticket::find($id)->comments;
 
-	// Check status of ticket closed or open
-	//$checkStatus=TicketStatus::where('ticket_id', $id)->first();
-
-	
-
-	//get assigned to and user created it
-	//$users=Ticket::find($id)->user;
 
 	return view('tickets.show',compact('ticket','relatedTickets','relatedAssets','comments'));
 
@@ -322,7 +384,13 @@ class TicketsController extends Controller {
 	 */
 	public function edit($id)
 	{
+
 		$ticket=Ticket::find($id);
+		
+		// validate ticket
+		if(!$this->ticketValidate($ticket,"edit")){
+			return view('errors.404');
+		}
 		$subjects=Subject::all();
 		$categories=Category::all();
 		$sections=Section::all();
@@ -385,7 +453,6 @@ class TicketsController extends Controller {
 			}
 
 
-			//$ticket->tech_id=$request->get('tech');
 			$ticket->admin_id=Auth::user()->id;
 			$ticket->save();
 
@@ -486,7 +553,6 @@ class TicketsController extends Controller {
 	{
 		// Getting post data
 		if($request->ajax()) {
-			// $data = Input::all();
 			$data = $request->input('newsubj');
 			$subject= new Subject;
 			$subject->name=$data;
@@ -502,13 +568,13 @@ class TicketsController extends Controller {
 	{
 		// Getting post data
 		if($request->ajax()) {
-			// $data = Input::all();
 			$data = $request->input('q');
 			$tags=Tag::select('name')->where('name','like',"%".$data.'%')->get();
-			// file_put_contents("/home/amira/test.html", $tags);
 			echo json_encode($tags);
 		}
 	}
+	
+
 	/**
 	* Function to update status of ticket
 	**/
@@ -534,10 +600,6 @@ class TicketsController extends Controller {
 		$ticketStatuses->ticket_id=$ticket_id;
 		$ticketStatuses->save();
 	
-		//$ticketStatus=TicketStatus::where('ticket_id', $ticket_id)->first();
-		//$ticketStatus->value=$status;
-		//$ticketStatus->save();
-
 		// save notification
 		$readonly=0;
 		if($status=='close')
@@ -553,7 +615,7 @@ class TicketsController extends Controller {
 		$notify->fname=Auth::user()->fname;
 		$notify->lname=Auth::user()->lname;
 		echo json_encode($notify);
-		//file_put_contents("/home/aya/teesst.html", $notify);
+
 
 	}
 
@@ -698,10 +760,7 @@ class TicketsController extends Controller {
 					
 					$relatTickets=[];
 				}
-
-			//convert array to object
-			
-			
+		
 			return $relatTickets;
 
 
@@ -716,20 +775,22 @@ class TicketsController extends Controller {
 	**/
 	public function takeover(Request $request){
 
-	if($request->ajax()) {
-		$users=array();
-		$users_tech=User::where('type','tech')->get();
-			//file_put_contents("/home/aya/teesst.html", $users_tech);
-		for($i=0;$i<count($users_tech);$i++){
-		$count=Ticket::where('tech_id',$users_tech[$i]->id)->count();
-		if($count<5){
-			array_push($users,$users_tech[$i]);
-			}
-			}}
+		if($request->ajax()) {
+			$users=array();
+			$users_tech=User::where('type','tech')->get();
 
-	echo json_encode($users);
+			for($i=0;$i<count($users_tech);$i++){
+				$count=Ticket::where('tech_id',$users_tech[$i]->id)->count();
+				if($count<5){
+					array_push($users,$users_tech[$i]);
+				}
+			}
+		}
+
+		echo json_encode($users);
 
 	}
+
 	/**
 	* Function to save tech that assign to ticket and make notification
 	**/
@@ -758,6 +819,8 @@ class TicketsController extends Controller {
 	}
 	echo json_encode($ticket);
 	}
+
+
 	/**
 	* Function to get all subject in auto complete
 	**/
@@ -772,7 +835,9 @@ $subject=array();
 		$subjects=Subject::all()->lists('name');
 
 	if($type == 'regular'){
-	$tickets=Ticket::where('user_id','=',$id)->get();
+	$tickets=Ticket::where('user_id','=',$id);
+	$tickets=$tickets->where('is_spam','=','0');
+	$tickets=$tickets->get();
 	foreach($tickets as $ticket){
 		$subject[]=Subject::where('id','=',$ticket->subject_id)->lists('name')[0];
 
@@ -781,12 +846,14 @@ $subject=array();
 			}
 	
 	if($type == 'tech'){
-	$tickets=Ticket::where('tech_id','=',$id)->get();
+	$tickets=Ticket::where('tech_id','=',$id);
+	$tickets=$tickets->where('is_spam','=','0');
+	$tickets=$tickets->get();
 	foreach($tickets as $ticket){
 		$subject[]=Subject::where('id','=',$ticket->subject_id)->lists('name')[0];
 
 			}
-	$subjects = json_decode(json_encode($subject), FALSE);
+	$subjects = json_decode(json_encode($subject), False);
 			}
 		
 
@@ -824,42 +891,6 @@ $subject=array();
 
 	public function AdvancedSearch($Tickets, $data){
 
-	// if($request->ajax()) {
-	// 	$priority=$request->input("priority");
-	// 	$deadLine=$request->input("enddate");
-	// 	$startDate=$request->input("created_at");
-	// 	$techId=$request->input("tech_id");
-	// 	//$startDate=$startDate+" "+"00:00:00";
-	// 	//$deadLine=$deadLine+" "+"23:59:59";
-	// 	}
-
-	// 		$userType=Auth::user()->type;
-	// 		$userId=Auth::user()->id;
-	// 	if ( !$priority && !$techId && !$deadLine && !$startDate  ) 
-	//             {   
-	// 		if($userType=="regular"){
-	// 		$Tickets = Ticket::all()->where('user_id', $userId);
-	// 		$Tickets = $Tickets->where('is_spam', "0");
-	// 		}else{
-	//             	$Tickets = Ticket::all()->where('is_spam', "0"); 
-	// 			}
-	// 		return (string) view('tickets.adavcedticketsearch',compact('Tickets'));
-	//             }
-
-	//             else
-	//             {
-
-	// 		if($userType=="regular"){
-	// 		$Tickets = Ticket::select('*')->where('user_id', $userId);
-	// 		$Tickets = $Tickets->where('is_spam', "0");
-	// 		}else{
-
-
-
-	// 	            $Tickets =Ticket::select('*')->where('is_spam', "0");
-	// 		}
-
-
 	            if ($data["priority"]) {
 	            	$Tickets=$Tickets->where('priority', $data["priority"]);
 	            }
@@ -874,11 +905,6 @@ $subject=array();
 				}
 
 				return $Tickets;
-
-		//             $Tickets=$Tickets->get();
-		            
-		// return (string) view('tickets.adavcedticketsearch',compact('Tickets'));
-		//         }  
 		
 	}
 
@@ -961,21 +987,16 @@ $subject=array();
 			$tickets= $this->AdvancedSearch ($tickets , $search);
 
 			if ($unansweredFlag){
-
-				$array = $tickets->get()->toArray();
-				$page = $request->input("page");
-
-				if (empty($page)){
-					$page=1;
-				}
-				$ticketPag = array_slice ( $array , ($page-1)*5 );
-				$ticketPag = new Paginator($ticketPag, 5, $request->input("page") , ['path' =>'/tickets/searchTicket' ]);
+				//in case of unasnswerd tickets, don't use pagination
+				$ticketPag = $tickets->get();
 			}else{
 				$ticketPag = $tickets->paginate(5);
 			}
+
 			
 			$tickets= $this->sortTicket ( $ticketPag , $sortBy , $sortType);
-			return view("tickets.searchTicket",compact('tickets', 'ticketPag')); 
+
+			return view("tickets.searchTicket",compact('tickets', 'ticketPag' , 'unansweredFlag')); 
 		}
 	}
 	
@@ -1086,33 +1107,61 @@ $subject=array();
 			$ticketStatus->value='close';
 			$ticketStatus->ticket_id=$ticket->id;
 			$ticketStatus->save();
+			if(Auth::user()->type === "admin"){
+				$tickets = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "0")->get();
+				// unassigned tickets except spam tickets
+				$unassigned = Ticket::select(DB::raw('count(*) as count'))->whereNull('tech_id')->where('is_spam', "0")->get();
+				// closed tickets except spam tickets
+				$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('is_spam', "0")->get();
+				// open tickets except spam tickets
+				$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('is_spam', "0")->get();
+				// deadline exceeded except spam tickets
+				$expired = Ticket::select(DB::raw('count(*) as count'))->where('deadline', '<', Carbon::now())->where('is_spam', "0")->get();
+				// unanswered tickets tickets except spam tickets
 
-			$tickets = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "0")->get();
-			// unassigned tickets except spam tickets
-			$unassigned = Ticket::select(DB::raw('count(*) as count'))->whereNull('tech_id')->where('is_spam', "0")->get();
-			// closed tickets except spam tickets
-			$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('is_spam', "0")->get();
-			// open tickets except spam tickets
-			$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('is_spam', "0")->get();
-			// deadline exceeded except spam tickets
-			$expired = Ticket::select(DB::raw('count(*) as count'))->where('deadline', '<', Carbon::now())->where('is_spam', "0")->get();
-			// unanswered tickets tickets except spam tickets
-
-			$unanswered = Ticket::where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
-	            ->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null or sum(comments.readonly) = 0)  THEN 0  ELSE 1 END as c')
-	                    ->groupBy('tickets.id')
-	                    ->HAVING("c", "=" , '0' )
-	                     ->get();
-	        			// spam tickets except spam tickets
-			$spam = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "1")->get();
-
+				$unanswered = Ticket::where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
+		            ->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null or sum(comments.readonly) = 0)  THEN 0  ELSE 1 END as c')
+		                    ->groupBy('tickets.id')
+		                    ->HAVING("c", "=" , '0' )
+		                     ->get();
+		        			// spam tickets except spam tickets
+				$spam = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "1")->get();
+				$data["unassigned"] = $unassigned[0]->count;	        
+		        $data["expired"] = $expired[0]->count;
+		        $data["unanswered"] = count($unanswered);
+		        $data["spam"] = $spam[0]->count;
+			}else if(Auth::user()->type === "tech"){
+				$tickets = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "0")->where('tech_id', $request->user()->id)->get();
+					// closed tickets except spam tickets
+				$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('is_spam', "0")->where('tech_id', $request->user()->id)->get();
+				// open tickets except spam tickets
+				$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('is_spam', "0")->where('tech_id', $request->user()->id)->get();
+				
+			}else if(Auth::user()->type === "regular"){
+				$tickets = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "0")->where('user_id', $request->user()->id)->get();
+					// closed tickets except spam tickets
+				$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('is_spam', "0")->where('user_id', $request->user()->id)->get();
+				// open tickets except spam tickets
+				$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('is_spam', "0")->where('user_id', $request->user()->id)->get();
+				
+			}
 	        $data["all"] = $tickets[0]->count;
-	        $data["unassigned"] = $unassigned[0]->count;
 	        $data["closed"] = $closed[0]->count;
 	        $data["open"] = $open[0]->count;
-	        $data["expired"] = $expired[0]->count;
-	        $data["unanswered"] = count($unanswered);
-	        $data["spam"] = $spam[0]->count;
+
+	       $status="close";
+	    // save notification
+		$readonly=0;
+		if($status=='close')
+		$body="this ticket has be closed";
+		if($status=='open')
+		$body="this ticket has been re-opened";	
+		$notify= new Comment;
+		$notify->body=$body;
+		$notify->readonly=intval($readonly);
+		$notify->ticket_id=$ticket->id;
+		$notify->user_id=Auth::user()->id;
+		$notify->save();
 
 			echo json_encode($data);
 		}	
@@ -1135,33 +1184,62 @@ $subject=array();
 			$ticketStatus->value='open';
 			$ticketStatus->ticket_id=$ticket->id;
 			$ticketStatus->save();
+			if(Auth::user()->type === "admin"){
+				$tickets = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "0")->get();
+				// unassigned tickets except spam tickets
+				$unassigned = Ticket::select(DB::raw('count(*) as count'))->whereNull('tech_id')->where('is_spam', "0")->get();
+				// closed tickets except spam tickets
+				$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('is_spam', "0")->get();
+				// open tickets except spam tickets
+				$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('is_spam', "0")->get();
+				// deadline exceeded except spam tickets
+				$expired = Ticket::select(DB::raw('count(*) as count'))->where('deadline', '<', Carbon::now())->where('is_spam', "0")->get();
+				// unanswered tickets tickets except spam tickets
 
-			$tickets = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "0")->get();
-			// unassigned tickets except spam tickets
-			$unassigned = Ticket::select(DB::raw('count(*) as count'))->whereNull('tech_id')->where('is_spam', "0")->get();
-			// closed tickets except spam tickets
-			$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('is_spam', "0")->get();
-			// open tickets except spam tickets
-			$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('is_spam', "0")->get();
-			// deadline exceeded except spam tickets
-			$expired = Ticket::select(DB::raw('count(*) as count'))->where('deadline', '<', Carbon::now())->where('is_spam', "0")->get();
-			// unanswered tickets tickets except spam tickets
-
-			$unanswered = Ticket::where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
-	            ->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null or sum(comments.readonly) = 0)  THEN 0  ELSE 1 END as c')
-	                    ->groupBy('tickets.id')
-	                    ->HAVING("c", "=" , '0' )
-	                     ->get();
-	        			// spam tickets except spam tickets
-			$spam = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "1")->get();
-
+				$unanswered = Ticket::where('is_spam', "0")->leftJoin('comments','tickets.id','=','comments.ticket_id')
+		            ->selectRaw('tickets.*, CASE WHEN (   sum(comments.readonly) is null or sum(comments.readonly) = 0)  THEN 0  ELSE 1 END as c')
+		                    ->groupBy('tickets.id')
+		                    ->HAVING("c", "=" , '0' )
+		                     ->get();
+		        			// spam tickets except spam tickets
+				$spam = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "1")->get();
+				$data["expired"] = $expired[0]->count;
+		        $data["unanswered"] = count($unanswered);
+		        $data["spam"] = $spam[0]->count;
+				$data["unassigned"] = $unassigned[0]->count;
+			}else if(Auth::user()->type === "tech"){
+				$tickets = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "0")->where('tech_id', $request->user()->id)->get();
+					// closed tickets except spam tickets
+				$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('is_spam', "0")->where('tech_id', $request->user()->id)->get();
+				// open tickets except spam tickets
+				$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('is_spam', "0")->where('tech_id', $request->user()->id)->get();
+				
+			}else if(Auth::user()->type === "regular"){
+				$tickets = Ticket::select(DB::raw('count(*) as count'))->where('is_spam', "0")->where('user_id', $request->user()->id)->get();
+					// closed tickets except spam tickets
+				$closed = Ticket::select(DB::raw('count(*) as count'))->where('status', "close")->where('is_spam', "0")->where('user_id', $request->user()->id)->get();
+				// open tickets except spam tickets
+				$open = Ticket::select(DB::raw('count(*) as count'))->where('status', "open")->where('is_spam', "0")->where('user_id', $request->user()->id)->get();
+				
+			}
 	        $data["all"] = $tickets[0]->count;
-	        $data["unassigned"] = $unassigned[0]->count;
 	        $data["closed"] = $closed[0]->count;
 	        $data["open"] = $open[0]->count;
-	        $data["expired"] = $expired[0]->count;
-	        $data["unanswered"] = count($unanswered);
-	        $data["spam"] = $spam[0]->count;
+	       
+
+	    $status="open";
+	    // save notification
+		$readonly=0;
+		if($status=='close')
+		$body="this ticket has be closed";
+		if($status=='open')
+		$body="this ticket has been re-opened";	
+		$notify= new Comment;
+		$notify->body=$body;
+		$notify->readonly=intval($readonly);
+		$notify->ticket_id=$ticket->id;
+		$notify->user_id=Auth::user()->id;
+		$notify->save();
 
 			echo json_encode($data);
 		}	
@@ -1193,7 +1271,8 @@ $subject=array();
 		$tickets = Ticket::all();
 
 	    // the csv file with the first row
-	    $output = implode(",", array('Subject', 'Status', 'Category', 'Creation Date', 'Deadline','Assigned To','Priority'))."\n";
+	    $output = chr(0xEF) . chr(0xBB) . chr(0xBF) ;
+	    $output .= implode(",", array('Subject', 'Status', 'Category', 'Creation Date', 'Deadline','Assigned To','Priority'))."\n";
 
 	    foreach ($tickets as $row) {
 		// iterate over each tweet and add it to the csv
@@ -1201,14 +1280,10 @@ $subject=array();
 				$row['created_at'],$row['deadline'],$row['user']['fname']." ".$row['user']['lname'],$row['priority']))."\n"; // append each row
 	    }
 
-	    // headers used to make the file "downloadable", we set them manually
-	    // since we can't use Laravel's Response::download() function
-	    $headers = array(
-		'Content-Type' => 'text/csv',
-		'Content-Disposition' => 'attachment; filename="tickets.csv"',
-		);
+	    // headers used to make the file "downloadable"
+	    $headers = $this->getCSVHeaders();
 
-	    // our response, this will be equivalent to your download() but
+	    //this will be equivalent to your download() but
 	    // without using a local file
 	    return Response::make(rtrim($output, "\n"), 200, $headers);
 	}
