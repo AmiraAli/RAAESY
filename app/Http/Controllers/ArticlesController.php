@@ -30,7 +30,7 @@ class ArticlesController extends Controller {
 
 	/**
 	 * Authorize user to view article
-	 * @param  integer $user_id
+	 * @param  integer $article
 	 * @return Response
 	 */
 	private function articleAuth( $article )
