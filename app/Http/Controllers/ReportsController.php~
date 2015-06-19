@@ -26,6 +26,25 @@ class ReportsController extends Controller {
 		}
 
 	}
+
+
+	/*
+	 * Headers used to export files to CSV
+	 */
+	private function getCSVHeaders(){
+
+		return array('Pragma' =>  'public',
+			'Expires' =>  '0' , 
+			'Cache-Control' =>  'must-revalidate, post-check=0, pre-check=0' , 
+			'Content-Description' =>  'File Transfer' , 
+			'Content-Type' =>  'text/csv' , 
+			'Content-Disposition' => 'attachment; filename=export.csv;' , 
+			'Content-Transfer-Encoding' =>  'binary' ,
+
+		);
+
+	}
+
 	/**
 	* Function to sort tickets
 	**/
@@ -106,10 +125,23 @@ class ReportsController extends Controller {
 		return view('reports.logs',compact('logs'));
 	}
 
+
+	public function logsAjax()
+	{
+		
+		
+		if(!Request::ajax()) {
+			return;
+		}
+		
+		$logs =Log::paginate(10);
+		return view('reports.logsAjax',compact('logs'));
+	}
+
 	public function logsCSV(){
 		$logs =Log::all();
 
-		$output="";
+		$output = chr(0xEF) . chr(0xBB) . chr(0xBF) ;
 		foreach ($logs as $log ) {
 			
 		
@@ -128,18 +160,15 @@ class ReportsController extends Controller {
 		 	$output .= implode(",", array($log->user->fname));
 
 			if ( $log->action == 'spam'){
-				$output .= implode(",", array(" marked the ".$log->type."#".$log->id." with ".$name." ".$log->name." as spam "))."\n";
+				$output .= implode(",", array(" marked the ".$log->type." #".$log->id." with ".$name." ".$log->name." as spam "))."\n";
 			}else{
-				$output .= implode(",", array($log->action."d the ".$log->type."#".$log->id." with ".$name." ".$log->name))."\n" ;
+				$output .= implode(",", array(" ".$log->action."d the ".$log->type." #".$log->id." with ".$name." ".$log->name))."\n" ;
 			}
 			
 		}
-	// headers used to make the file "downloadable", we set them manually
-	// since we can't use Laravel's Response::download() function
-	$headers = array(
-	'Content-Type' => 'text/csv',
-	'Content-Disposition' => 'attachment; filename="DelegationLogReport.csv"',
-	);
+			// headers used to make the file "downloadable"
+		    $headers = $this->getCSVHeaders();
+
 
 	// our response, this will be equivalent to your download() but
 	// without using a local file
@@ -240,7 +269,7 @@ class ReportsController extends Controller {
 									->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
 									->get();
 
-		$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
+		$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->paginate(10);
 						
 		return view('reports.summary',compact('inprogressCount','newCount'
 												,'resolvedCount','ticketsPerCategories'
@@ -314,7 +343,7 @@ class ReportsController extends Controller {
 											->where('updated_at','>',date('Y-m-d', strtotime('-1 month')))
 											->get();
 
-				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
+				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->paginate(10);
 
 				return view('reports.summarySearchMonth',compact('inprogressCount','newCount'
 												,'resolvedCount','ticketsPerCategories'
@@ -339,7 +368,7 @@ class ReportsController extends Controller {
 											->where('updated_at','>',date('Y-m-d', strtotime('-1 week')))
 											->get();
 
-				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 week')))->get();
+				$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 week')))->paginate(10);
 
 				return view('reports.summarySearchWeek',compact('inprogressCount','newCount'
 												,'resolvedCount','ticketsPerCategories'
@@ -373,7 +402,7 @@ class ReportsController extends Controller {
 
 				$tickets=Ticket::where('updated_at','>=',$startdate)
 								->where('updated_at','<=',$enddate)
-								->get();
+								->paginate(10);
 
 				return view('reports.summarySearchCustom',compact('inprogressCount','newCount'
 																,'resolvedCount','ticketsPerCategories'
@@ -498,7 +527,7 @@ class ReportsController extends Controller {
 
 	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->whereBetween('updated_at', [$startdate, $enddate])
 									   ->groupBy('subject_id')->get();
-	$all=Ticket::all();
+	$all=Ticket::whereBetween('updated_at', [$startdate, $enddate])->get();
 
 	foreach($allTickets as $allTicket){
 	$count=0;
@@ -524,9 +553,11 @@ class ReportsController extends Controller {
 	if($allTickets){
 		return view('reports.ticketStatisticsDate',compact('allTickets','startdate','enddate'));
 	}else{
-		echo "<h1 class='navtxt'> No Tickets Within this rrange of date!</h1>";
+		echo "<h1 class='navtxt'> No Tickets Within this range of date!</h1>";
 	}
 }
+
+
 	public function technicianStatistics()
 	{
 
@@ -764,22 +795,28 @@ class ReportsController extends Controller {
 
 	public function reportTicketStatus(){
 
-		if (!empty(Request::get('lang'))  && Request::get('lang') =='ar'){
-			Lang::setLocale('ar');
-			Session::set('lang', 'ar');
-		}else{
-			Lang::setLocale('en');
-			Session::set('lang', 'en');
-
-		}
-
-		$tickets=Ticket::all();
+		$tickets=Ticket::paginate(2);
 		$ticketStatuses= TicketStatus::all();
 		$opens=TicketStatus::where('value','open')->count();
 		$closes=TicketStatus::where('value','close')->count();
 		return view('reports.reportTicketStatus',compact('tickets','ticketStatuses','opens','closes'));
 	}
 
+
+	/**
+	 * Show the ticket Status of the opened/closed tickets ( called by AJAX )
+	 *
+	 * @return Response
+	 */
+
+	public function reportTicketStatusAjax(){
+
+		$tickets=Ticket::paginate(2);
+		$ticketStatuses= TicketStatus::all();
+		$opens=TicketStatus::where('value','open')->count();
+		$closes=TicketStatus::where('value','close')->count();
+		return view('reports.reportTicketStatusAjax',compact('tickets','ticketStatuses','opens','closes'));
+	}
 
 	public function exportTicketStatusReport(){
 
@@ -866,17 +903,19 @@ class ReportsController extends Controller {
 
 public function problemMangementLang(){
 
-      $lang=Request::input("lang1");
-if($lang=="ع")
-      Session::set('locale', 'ar');
-if($lang=="E")
-      Session::set('locale', 'en');
+    $lang=Request::input("lang");
+	if($lang=="ع"){
+    	Session::set('locale', 'ar');
+    	Lang::setLocale('ar');
+    }
+	if($lang=="E"){
+      	Session::set('locale', 'en');
+      	Lang::setLocale('en');
+
+	}
 
 
-
-
-
-$startdate=Request::input('startdate');
+	$startdate=Request::input('startdate');
 	$enddate=Request::input('enddate');
 
 	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->whereBetween('updated_at', [$startdate, $enddate])
@@ -905,6 +944,7 @@ $startdate=Request::input('startdate');
 
 	$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
 	return  view('reports.problemMangementLang',compact('lang','allTickets','startdate','enddate'));
+	
 
 	}
 
