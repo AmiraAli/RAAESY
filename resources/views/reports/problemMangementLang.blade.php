@@ -2,13 +2,16 @@
 <div class="raw">
 		<div class="col-md-5"  id="customedate">
 			<form class="form-inline">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="form-group col-md-3">
 					<label>{{trans('problemmangement.from')}}:</label>
 					<input type="text" class="form-control" id="startdate" value={{$startdate}}>
 				</div>
+
 				<div class="form-group col-md-3">
 					<label>{{trans('problemmangement.to')}}::</label>
 					<input type="text" class="form-control" id="enddate" value={{$enddate}}>
+				</div>
 				</div>
 			</form>
 		</div>
