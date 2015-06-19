@@ -28,6 +28,25 @@ class ArticlesController extends Controller {
 	}
 
 
+	/**
+	 * Authorize user to view article
+	 * @param  integer $user_id
+	 * @return Response
+	 */
+	private function articleAuth( $article )
+	{		
+
+		//article exists
+		if (empty($article)){
+			return false;
+		}
+		//article shown to tech only or all users
+		if (Auth::User()->type =="regular" && $article->isshow == 0 ){
+			return false;
+		}
+		return true;
+	}
+
 	/*
 	 * Headers used to export files to CSV
 	 */
@@ -193,7 +212,9 @@ class ArticlesController extends Controller {
 	{
 		
 		$article=Article::find($id);
-		if (empty($article)){
+
+		//authorize user to view article
+		if (!$this->articleAuth($article) ){
 			return view('errors.404');
 		}
 	    $articletags=ArticleTag::all();

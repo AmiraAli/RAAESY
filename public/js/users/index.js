@@ -140,7 +140,15 @@ function search(){
 
 	form = $('#advSearchForm');
     $('#displayed').val ( $('input[name=user]:checked').val() );
+
+
     data =  form.serializeArray();
+
+    //trim form values
+    for(var i=0 ; i<data.length  ; i++){
+        data[i]['value'] = data[i]['value'].trim();
+    }
+
 
 	$.ajax({
     url: '/users/ajaxsearch',
