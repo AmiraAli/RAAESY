@@ -115,9 +115,9 @@
 						    @foreach ($users as $user)
 						
 						    	@if ($assign_tech && $assign_tech->id == $user->id)
-						    		<option value="{{ $user->id }}" selected="true"> {{ $user->fname }}</option>
+						    		<option value="{{ $user->id }}" selected="true"> {{ $user->fname }} {{ $user->lname }}</option>
 						    	@else
-						    		<option value="{{ $user->id }}"> {{ $user->fname }}</option>
+						    		<option value="{{ $user->id }}"> {{ $user->fname }} {{ $user->lname }}</option>
 						    	@endif
 						
 							@endforeach
