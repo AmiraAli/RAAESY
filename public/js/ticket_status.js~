@@ -6,7 +6,7 @@
             });
             };
 //------------------------------------------------------------------------
-function Status(elm){
+function Status(elm,admin){
   var ticket_id = elm;
   var status =document.getElementById(elm).name;
 techid=document.getElementById("techid").value.split(',')[1];
@@ -27,14 +27,16 @@ result=JSON.parse(result);
 		window.location = "http://localhost:8000/tickets/";
 		}else{
 		   if(!techid){
-			takeOverButton=document.createElement("button");
-			takeOverButtonText=document.createTextNode("Assign To");
-			takeOverButton.setAttribute('id',ticket_id+",takeover");
-			takeOverButton.setAttribute("class","btn btn-default");
-			takeOverButton.setAttribute('onclick','TakeOver('+'"'+ticket_id+',takeover'+'"'+')');
-			takeOverButton.appendChild(takeOverButtonText);
-			document.getElementById("ass2").appendChild(takeOverButton);
-
+		   	if(admin == 1)
+		   	{
+				takeOverButton=document.createElement("button");
+				takeOverButtonText=document.createTextNode("Assign To");
+				takeOverButton.setAttribute('id',ticket_id+",takeover");
+				takeOverButton.setAttribute("class","btn btn-default assgn");
+				takeOverButton.setAttribute('onclick','TakeOver('+'"'+ticket_id+',takeover'+'"'+')');
+				takeOverButton.appendChild(takeOverButtonText);
+				document.getElementById("ass2").appendChild(takeOverButton);
+			}
 			}
 var csrf=$("#hidden").val();
 
@@ -42,6 +44,7 @@ var csrf=$("#hidden").val();
 "     <form name='addForm' method = 'post'  class = 'form-horizontal' action='javascript:add("+ticket_id+")'><input type='hidden' name='_token' value="+csrf+"><div class='form-group col-md-9' ><div class='col-md-12'><textarea type='text' class='form-control' name='body' placeholder='Write Your Comment' rows='3'></textarea></div></div><div class='form-group col-md-1'><div class='col-md-12' style='margin-top:15px;'><button type='submit'  class='btn btn-default' >Comment</button></div></div></form>"
 );
 		   $('#'+ticket_id).text('close');
+
 		   $('#'+ticket_id).attr('name','close');
 		   var text=document.createTextNode('this ticket has been re-opened');
 			}
@@ -99,6 +102,7 @@ option.appendChild(optiontext);
 select.appendChild(option);
 }
 document.getElementById(elm).style.display = 'none';
+
 var position=document.getElementById(ticket_id);
 var parentElm=document.getElementById("ass2");
 var spac=document.createElement("br");
