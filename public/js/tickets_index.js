@@ -21,12 +21,6 @@ window.onload = function() {
             				};
 
 
-// $('#all').live('click', function() {
-
-//     // alert($(this).index());
-//     alert("done");
-
-// });
  /**
  * delete function
  **/
@@ -123,7 +117,7 @@ $.ajax({
 		type: "post",
 		data: {'id':id},
 		success: function(data){
-					if($('#all').attr('class') != "active"){
+					if($('#all').attr('class') != "active" && $('#expired').attr('class') != "active" && $('#unassigned').attr('class') != "active" && $('#unanswered').attr('class') != "active" && $('#spam').attr('class') != "active"){
 						document.getElementById(id).remove();
 					}else{
 							if(checkspam == 0){
@@ -132,7 +126,7 @@ $.ajax({
 								}else if(usertype == 2){
 								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='openTeckit("+id+","+checkspam+",2)'>Open</a>");
 								}else{
-								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a onclick='openTeckit("+id+","+checkspam+",3)'>Open</a>");	
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>");	
 								}							
 							}else{
 
@@ -141,7 +135,7 @@ $.ajax({
 								}else if(usertype == 2){
 								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='openTeckit("+id+","+checkspam+",2)'>Open</a>");
 								}else{
-								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a onclick='openTeckit("+id+","+checkspam+",3)'>Open</a>");	
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>");	
 								}
 							}
 
@@ -174,7 +168,7 @@ $.ajax({
 		data: {'id':id},
 		success: function(data){
 
-				if($('#all').attr('class') != "active"){
+				if($('#all').attr('class') != "active" && $('#expired').attr('class') != "active" && $('#unassigned').attr('class') != "active" && $('#unanswered').attr('class') != "active" && $('#spam').attr('class') != "active"){
 						document.getElementById(id).remove();
 					}else{
 
@@ -184,7 +178,7 @@ $.ajax({
 								}else if(usertype == 2){
 								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='closeTeckit("+id+","+checkspam+",2)'>Close</a>");
 								}else{
-								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a onclick='closeTeckit("+id+","+checkspam+",3)'>Close</a>");	
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>");	
 								}							
 							}else{
 
@@ -193,7 +187,7 @@ $.ajax({
 								}else if(usertype == 2){
 								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='closeTeckit("+id+","+checkspam+",2)'>Close</a>");
 								}else{
-								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a onclick='closeTeckit("+id+","+checkspam+",3)'>Close</a>");	
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>");	
 								}
 							}
 							document.getElementById(id+"status").innerHTML="Open";
