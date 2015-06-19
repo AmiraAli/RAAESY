@@ -909,7 +909,7 @@ public function problemMangementLang(){
 
 	$allTickets=Ticket::selectRaw('count(*) as allticket ,subject_id ')->whereBetween('updated_at', [$startdate, $enddate])
 									   ->groupBy('subject_id')->get();
-	$all=Ticket::all();
+	$all=Ticket::whereBetween('updated_at', [$startdate, $enddate])->get();
 
 	foreach($allTickets as $allTicket){
 	$count=0;
