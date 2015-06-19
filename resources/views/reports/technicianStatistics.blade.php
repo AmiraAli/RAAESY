@@ -28,7 +28,6 @@
                         <label class="col-md-6 control-label"></label> <br> &ensp;&ensp;&ensp;&ensp;
 					<button type="submit" class="btn navbtn txtnav " onclick="technicianStatisticsSearch ()" style="color: #ffffff !important;">Go</button>
 					&ensp;&ensp;&ensp;&ensp;
-					<a  href="{{ url('/assets/csvimport') }}"><img src="/images/CSV.png" style="width:40px"></a>
 	
 					</div>
 			</div>

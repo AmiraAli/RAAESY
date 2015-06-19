@@ -282,7 +282,8 @@ class ReportsController extends Controller {
 
 		$tickets=Ticket::where('updated_at','>=',date('Y-m-d', strtotime('-1 month')))->get();
 		
-		$output = implode(",", array(' Ticket ID', ' Ticket Subject',' Ticket Category',' Assigned To',' Close Date','Deadline','Status',' Priority'))."\n";
+		$output = chr(0xEF) . chr(0xBB) . chr(0xBF) ;
+		$output = $output . implode(",", array(' Ticket ID', ' Ticket Subject',' Ticket Category',' Assigned To',' Close Date','Deadline','Status',' Priority'))."\n";
 		foreach($tickets as $ticket){
 			
 				if($ticket->tech_id != NULL){
@@ -304,14 +305,10 @@ class ReportsController extends Controller {
 			
 		}
 
-        // headers used to make the file "downloadable", we set them manually
-		// since we can't use Laravel's Response::download() function
-		$headers = array(
-		'Content-Type' => 'text/csv',
-		'Content-Disposition' => 'attachment; filename="summaryCSV.csv"',
-		);
+        // headers used to make the file "downloadable"
+		$headers = $this->getCSVHeaders();
 
-		// our response, this will be equivalent to your download() but
+		//this will be equivalent to your download() but
 		// without using a local file
 		return Response::make(rtrim($output, "\n"), 200, $headers);
 
@@ -322,7 +319,6 @@ class ReportsController extends Controller {
 
 		// Getting post data
 		if(Request::ajax()) {
-			// $data = Input::all();
 			$data = Request::input('date');
 			if($data == "month"){
 
@@ -479,7 +475,8 @@ class ReportsController extends Controller {
 		}
 		$allTickets=$this->sortTicket( $allTickets , 'percentage' ,'ASC' );
 
-        $output = implode(",", array('Subject', 'Total Ticket Count ','Total Ticket Solved ','Percentages'))."\n";
+		$output = chr(0xEF) . chr(0xBB) . chr(0xBF) ;
+        $output = $output . implode(",", array('Subject', 'Total Ticket Count ','Total Ticket Solved ','Percentages'))."\n";
         foreach($allTickets as $allTicket){
         	
 			$output .= implode(",", array($allTicket->subject->name ,  $allTicket->allticket , $allTicket->closedcount , $allTicket->percentage )); // append each row
@@ -495,14 +492,10 @@ class ReportsController extends Controller {
 
 		}
 			
-				// headers used to make the file "downloadable", we set them manually
-			// since we can't use Laravel's Response::download() function
-			$headers = array(
-			'Content-Type' => 'text/csv',
-			'Content-Disposition' => 'attachment; filename="ProblemManagmentReport.csv"',
-			);
+			// headers used to make the file "downloadable"
+			$headers = $this->getCSVHeaders();
 
-			// our response, this will be equivalent to your download() but
+			//this will be equivalent to your download() but
 			// without using a local file
 			return Response::make(rtrim($output, "\n"), 200, $headers);
 
@@ -849,8 +842,8 @@ class ReportsController extends Controller {
 			
 
 
-
-        $output = implode(",", array('id', 'subject','Current Status','No of Open','No of Close'))."\n";
+		$output = chr(0xEF) . chr(0xBB) . chr(0xBF) ;
+        $output = $output .  implode(",", array('id', 'subject','Current Status','No of Open','No of Close'))."\n";
 
 		foreach ($tickets as $row) {
 		// iterate over each tweet and add it to the csv
@@ -883,14 +876,10 @@ class ReportsController extends Controller {
 			
 		}
 
-		// headers used to make the file "downloadable", we set them manually
-		// since we can't use Laravel's Response::download() function
-		$headers = array(
-		'Content-Type' => 'text/csv',
-		'Content-Disposition' => 'attachment; filename="TicketStatusReport.csv"',
-		);
+		// headers used to make the file "downloadable"
+		$headers = $this->getCSVHeaders();
 
-		// our response, this will be equivalent to your download() but
+		//this will be equivalent to your download() but
 		// without using a local file
 		return Response::make(rtrim($output, "\n"), 200, $headers);
 	

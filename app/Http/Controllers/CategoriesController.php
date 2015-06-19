@@ -13,7 +13,7 @@ class CategoriesController extends Controller {
 	
 
 	/**
-	 * Notify when user is spam/delete (called by AJAX).
+	 * Notify when category is spam/delete (called by AJAX).
 	 *
 	 * @param  object  $model_obj , string action
 	 * @return Response

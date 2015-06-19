@@ -125,7 +125,7 @@
 				dataType: "json",
 			    url: '/assets/addType',
 			    type: "post",
-			    data: {'name' : $("#type-name").val()},
+			    data: {'name' : $("#type-name").val().trim()},
 			    success: function(result) {
 			    	// alert(result);
 			    	$(".new-type").html('<a href="#" onclick="addType()">Add new type</a>');
