@@ -64,11 +64,7 @@
 								@else
 									<a id="{{ $ticket->id }}popup" href="#" class="glyphicon glyphicon-plus-sign" data-toggle="popover" data-trigger="focus" 
 								   		data-content=
-								   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>|						  
-										@if($ticket->status == 'open')
-								   			<a onclick='closeTeckit({{ $ticket->id }},0,3)'>Close</a>|
-										@else
-								   			<a onclick='openTeckit({{ $ticket->id }},0,3)'>Open</a>@endif"></a>
+								   		"<a href='/tickets/{{ $ticket->id }}'>Show</a>"></a>
 								@endif
 
 						   	</td>

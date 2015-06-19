@@ -1145,7 +1145,19 @@ $subject=array();
 	        $data["closed"] = $closed[0]->count;
 	        $data["open"] = $open[0]->count;
 
-	       
+	       $status="close";
+	    // save notification
+		$readonly=0;
+		if($status=='close')
+		$body="this ticket has be closed";
+		if($status=='open')
+		$body="this ticket has been re-opened";	
+		$notify= new Comment;
+		$notify->body=$body;
+		$notify->readonly=intval($readonly);
+		$notify->ticket_id=$ticket->id;
+		$notify->user_id=Auth::user()->id;
+		$notify->save();
 
 			echo json_encode($data);
 		}	
@@ -1210,6 +1222,20 @@ $subject=array();
 	        $data["closed"] = $closed[0]->count;
 	        $data["open"] = $open[0]->count;
 	       
+
+	    $status="open";
+	    // save notification
+		$readonly=0;
+		if($status=='close')
+		$body="this ticket has be closed";
+		if($status=='open')
+		$body="this ticket has been re-opened";	
+		$notify= new Comment;
+		$notify->body=$body;
+		$notify->readonly=intval($readonly);
+		$notify->ticket_id=$ticket->id;
+		$notify->user_id=Auth::user()->id;
+		$notify->save();
 
 			echo json_encode($data);
 		}	
