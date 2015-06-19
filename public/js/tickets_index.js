@@ -126,7 +126,7 @@ $.ajax({
 								}else if(usertype == 2){
 								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='openTeckit("+id+","+checkspam+",2)'>Open</a>");
 								}else{
-								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a onclick='openTeckit("+id+","+checkspam+",3)'>Open</a>");	
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>");	
 								}							
 							}else{
 
@@ -135,7 +135,7 @@ $.ajax({
 								}else if(usertype == 2){
 								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='openTeckit("+id+","+checkspam+",2)'>Open</a>");
 								}else{
-								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a onclick='openTeckit("+id+","+checkspam+",3)'>Open</a>");	
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>");	
 								}
 							}
 
@@ -178,7 +178,7 @@ $.ajax({
 								}else if(usertype == 2){
 								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='closeTeckit("+id+","+checkspam+",2)'>Close</a>");
 								}else{
-								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a onclick='closeTeckit("+id+","+checkspam+",3)'>Close</a>");	
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>");	
 								}							
 							}else{
 
@@ -187,7 +187,7 @@ $.ajax({
 								}else if(usertype == 2){
 								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a href='/tickets/"+id+"/edit'>Edit</a>|<a onclick='closeTeckit("+id+","+checkspam+",2)'>Close</a>");
 								}else{
-								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>|<a onclick='closeTeckit("+id+","+checkspam+",3)'>Close</a>");	
+								popupelem.setAttribute("data-content","<a href='/tickets/"+id+"'>Show</a>");	
 								}
 							}
 							document.getElementById(id+"status").innerHTML="Open";
