@@ -876,7 +876,12 @@ $subject=array();
 		if($userType=="regular"){
 		$targetTickets=Ticket::whereSubject_idAndIs_spam($subjectId,0);
 		$targetTickets=$targetTickets->where('user_id',$userId)->get();
-		}else{
+		}
+		elseif($userType=="tech"){
+		$targetTickets=Ticket::whereSubject_idAndIs_spam($subjectId,0);
+		$targetTickets=$targetTickets->where('tech_id',$userId)->get();
+		}
+		else{
 		$targetTickets=Ticket::whereSubject_idAndIs_spam($subjectId,0)->get();
 		}
 		}
