@@ -21,12 +21,6 @@ window.onload = function() {
             				};
 
 
-// $('#all').live('click', function() {
-
-//     // alert($(this).index());
-//     alert("done");
-
-// });
  /**
  * delete function
  **/
@@ -123,7 +117,7 @@ $.ajax({
 		type: "post",
 		data: {'id':id},
 		success: function(data){
-					if($('#all').attr('class') != "active"){
+					if($('#all').attr('class') != "active" && $('#expired').attr('class') != "active" && $('#unassigned').attr('class') != "active" && $('#unanswered').attr('class') != "active" && $('#spam').attr('class') != "active"){
 						document.getElementById(id).remove();
 					}else{
 							if(checkspam == 0){
@@ -174,7 +168,7 @@ $.ajax({
 		data: {'id':id},
 		success: function(data){
 
-				if($('#all').attr('class') != "active"){
+				if($('#all').attr('class') != "active" && $('#expired').attr('class') != "active" && $('#unassigned').attr('class') != "active" && $('#unanswered').attr('class') != "active" && $('#spam').attr('class') != "active"){
 						document.getElementById(id).remove();
 					}else{
 
